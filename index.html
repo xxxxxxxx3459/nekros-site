@@ -5,118 +5,47 @@
 <title>NEKROS AWAKENING</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  
   html, body {
-    width: 100%; height: 100%;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Courier New', monospace;
-    color: #00ff9d;
-    cursor: crosshair;
+    width: 100%; height: 100%; background: #000; overflow: hidden;
+    font-family: 'Courier New', monospace; color: #00ff9d; cursor: crosshair;
     -webkit-tap-highlight-color: transparent;
   }
-
-  #matrix {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-  }
-
+  #matrix { position: fixed; inset: 0; z-index: 1; }
   .scanlines {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0, 255, 157, 0.04) 0px,
-      rgba(0, 255, 157, 0.04) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    pointer-events: none;
-    z-index: 20;
-    animation: scanmove 8s linear infinite;
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0,255,157,0.04) 0px, rgba(0,255,157,0.04) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 20; animation: scanmove 8s linear infinite;
   }
-  @keyframes scanmove {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100px; }
-  }
-
+  @keyframes scanmove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
   .vignette {
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
-    pointer-events: none;
-    z-index: 19;
+    pointer-events: none; z-index: 19;
   }
-
   #intro {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: opacity 0.6s ease;
+    position: fixed; inset: 0; background: #000; z-index: 200;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: opacity 0.6s ease;
   }
   #intro.hide { opacity: 0; pointer-events: none; }
-  
-  #intro .intro-skull {
-    width: 200px;
-    height: 200px;
-    filter: drop-shadow(0 0 40px #00ff9d);
-    animation: introPulse 2s ease-in-out infinite;
-  }
+  #intro .intro-skull { width: 200px; height: 200px; filter: drop-shadow(0 0 40px #00ff9d); animation: introPulse 2s ease-in-out infinite; }
   @keyframes introPulse {
     0%, 100% { transform: scale(1); filter: drop-shadow(0 0 40px #00ff9d); }
     50% { transform: scale(1.06); filter: drop-shadow(0 0 70px #00ffea); }
   }
-  
-  #intro .intro-brand {
-    margin-top: 40px;
-    font-size: 20px;
-    letter-spacing: 16px;
-    color: #00ffea;
-    text-shadow: 0 0 20px #00ffea;
-    font-weight: bold;
-  }
-
-  #intro .intro-text {
-    margin-top: 40px;
-    font-size: 14px;
-    letter-spacing: 8px;
-    color: #00ff9d;
-    text-shadow: 0 0 12px #00ff9d;
-    animation: blink 1.4s infinite;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
+  #intro .intro-brand { margin-top: 40px; font-size: 20px; letter-spacing: 16px; color: #00ffea; text-shadow: 0 0 20px #00ffea; font-weight: bold; }
+  #intro .intro-text { margin-top: 40px; font-size: 14px; letter-spacing: 8px; color: #00ff9d; text-shadow: 0 0 12px #00ff9d; animation: blink 1.4s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   #main {
-    position: fixed;
-    inset: 0;
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.8s ease;
+    position: fixed; inset: 0; z-index: 5;
+    display: flex; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
   }
   #main.show { opacity: 1; pointer-events: all; }
-
   .skull-center {
-    position: absolute;
-    top: 45%;
-    left: 50%;
+    position: absolute; top: 45%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 240px;
-    height: 240px;
-    pointer-events: none;
-    z-index: 3;
+    width: 240px; height: 240px; pointer-events: none; z-index: 3;
     animation: skullPulse 3s ease-in-out infinite;
   }
   @keyframes skullPulse {
@@ -124,12 +53,7 @@
     50% { filter: drop-shadow(0 0 45px #00ffea); transform: translate(-50%, -50%) scale(1.03); }
   }
   .skull-center svg { width: 100%; height: 100%; }
-
-  .glitch-layer {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
+  .glitch-layer { position: absolute; inset: 0; pointer-events: none; }
   .glitch-1 { animation: glitch1 2.5s infinite; mix-blend-mode: screen; }
   .glitch-2 { animation: glitch2 3.7s infinite; mix-blend-mode: screen; }
   @keyframes glitch1 {
@@ -144,148 +68,71 @@
     91% { transform: translate(-5px, 5px); opacity: 1; }
     93% { transform: translate(3px, -2px); opacity: 1; }
   }
-
   .brand-title {
-    position: absolute;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 13px;
-    letter-spacing: 10px;
-    color: #00ffea;
-    text-shadow: 0 0 15px #00ffea;
-    font-weight: bold;
-    z-index: 6;
-    pointer-events: none;
+    position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+    font-size: 13px; letter-spacing: 10px; color: #00ffea;
+    text-shadow: 0 0 15px #00ffea; font-weight: bold; z-index: 6; pointer-events: none;
   }
-
   .messages {
-    position: absolute;
-    inset: 0;
-    bottom: 80px;
-    top: 80px;
-    overflow-y: auto;
-    padding: 30px 20px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 4;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    position: absolute; inset: 0; bottom: 80px; top: 80px;
+    overflow-y: auto; padding: 30px 20px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    z-index: 4; scrollbar-width: none; -webkit-overflow-scrolling: touch;
   }
   .messages::-webkit-scrollbar { display: none; }
-
   .msg {
-    max-width: 85%;
-    padding: 8px 14px;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-    animation: msgIn 0.35s ease;
-    word-wrap: break-word;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(3px);
+    max-width: 88%; padding: 10px 14px;
+    font-size: 14px; line-height: 1.55; letter-spacing: 0.4px;
+    animation: msgIn 0.35s ease; word-wrap: break-word;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(3px);
     border-left: 2px solid #00ff9d;
     text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
   }
-  @keyframes msgIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .msg.bot {
-    align-self: flex-start;
-    color: #b8ffd9;
-    border-left-color: #00ff9d;
-  }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .msg.bot { align-self: flex-start; color: #b8ffd9; }
   .msg.user {
-    align-self: flex-end;
-    color: #a8fff5;
-    border-left: none;
-    border-right: 2px solid #00ffea;
-    background: rgba(0, 20, 20, 0.55);
+    align-self: flex-end; color: #a8fff5;
+    border-left: none; border-right: 2px solid #00ffea;
+    background: rgba(0, 20, 20, 0.6);
     text-shadow: 0 0 8px rgba(0, 255, 234, 0.4);
   }
-  .msg .name {
-    font-size: 9px;
-    letter-spacing: 3px;
-    opacity: 0.55;
-    margin-bottom: 3px;
-    color: #00ff9d;
-  }
-
+  .msg .name { font-size: 9px; letter-spacing: 3px; opacity: 0.55; margin-bottom: 4px; color: #00ff9d; }
+  .msg.typing { color: #00ff9d; opacity: 0.7; font-style: italic; }
   .input-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0;
     padding: 16px 20px 24px;
     background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.6), transparent);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 10;
+    display: flex; align-items: center; gap: 10px; z-index: 10;
   }
   .input-field {
-    flex: 1;
-    background: rgba(0, 20, 10, 0.5);
-    border: none;
-    border-bottom: 1px solid rgba(0, 255, 157, 0.4);
-    outline: none;
-    color: #00ffea;
-    padding: 12px 6px;
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    letter-spacing: 1px;
-    text-shadow: 0 0 6px rgba(0, 255, 234, 0.5);
+    flex: 1; background: rgba(0, 20, 10, 0.5);
+    border: none; border-bottom: 1px solid rgba(0, 255, 157, 0.4);
+    outline: none; color: #00ffea; padding: 12px 6px;
+    font-family: 'Courier New', monospace; font-size: 15px;
+    letter-spacing: 1px; text-shadow: 0 0 6px rgba(0, 255, 234, 0.5);
     transition: border-color 0.3s;
   }
   .input-field:focus { border-bottom-color: #00ffea; }
-  .input-field::placeholder {
-    color: rgba(0, 255, 157, 0.35);
-    letter-spacing: 2px;
-    font-size: 13px;
-  }
+  .input-field::placeholder { color: rgba(0, 255, 157, 0.35); letter-spacing: 2px; font-size: 13px; }
   .send-btn {
-    background: transparent;
-    border: none;
-    color: #00ff9d;
-    font-size: 22px;
-    padding: 8px 12px;
-    cursor: pointer;
-    text-shadow: 0 0 10px #00ff9d;
-    transition: all 0.2s;
-    font-family: monospace;
+    background: transparent; border: none; color: #00ff9d;
+    font-size: 22px; padding: 8px 12px; cursor: pointer;
+    text-shadow: 0 0 10px #00ff9d; transition: all 0.2s; font-family: monospace;
   }
-  .send-btn:active {
-    color: #00ffea;
-    text-shadow: 0 0 20px #00ffea;
-    transform: scale(1.15);
-  }
-
+  .send-btn:active { color: #00ffea; text-shadow: 0 0 20px #00ffea; transform: scale(1.15); }
   .hud {
-    position: fixed;
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: #00ff9d;
-    opacity: 0.55;
-    z-index: 6;
-    pointer-events: none;
-    text-shadow: 0 0 6px #00ff9d;
+    position: fixed; font-size: 9px; letter-spacing: 2px;
+    color: #00ff9d; opacity: 0.55; z-index: 6;
+    pointer-events: none; text-shadow: 0 0 6px #00ff9d;
   }
   .hud-tl { top: 16px; left: 16px; }
   .hud-tr { top: 16px; right: 16px; text-align: right; }
   .hud-bl { bottom: 16px; left: 16px; }
   .hud-br { bottom: 16px; right: 16px; text-align: right; }
-
   .dot-live {
-    display: inline-block;
-    width: 6px; height: 6px;
-    background: #ff3355;
-    border-radius: 50%;
-    margin-right: 6px;
-    box-shadow: 0 0 8px #ff3355;
-    animation: blink 1s infinite;
-    vertical-align: middle;
+    display: inline-block; width: 6px; height: 6px; background: #ff3355;
+    border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px #ff3355;
+    animation: blink 1s infinite; vertical-align: middle;
   }
 </style>
 </head>
@@ -298,12 +145,8 @@
     <path d="M140 40 L130 55 L135 70 L122 82" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.7"/>
     <polygon points="45,95 78,95 78,112 45,112" fill="#000" stroke="#00ff9d" stroke-width="2"/>
     <polygon points="122,95 155,95 155,112 122,112" fill="#000" stroke="#00ff9d" stroke-width="2"/>
-    <circle cx="61" cy="103" r="4" fill="#00ffea">
-      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="138" cy="103" r="4" fill="#00ffea">
-      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-    </circle>
+    <circle cx="61" cy="103" r="4" fill="#00ffea"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="138" cy="103" r="4" fill="#00ffea"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
     <polygon points="100,120 92,140 108,140" fill="#000" stroke="#00ff9d" stroke-width="1.5"/>
     <path d="M60 155 L66 148 L72 155 L78 148 L84 155 L90 148 L96 155 L102 148 L108 155 L114 148 L120 155 L126 148 L132 155 L138 148 L140 155" stroke="#00ff9d" stroke-width="1.5" fill="none"/>
   </svg>
@@ -318,23 +161,18 @@
 <div class="hud hud-tl">NEKROS.AWAKENING // <span id="clock">00:00:00</span></div>
 <div class="hud hud-tr"><span class="dot-live"></span>LIVE</div>
 <div class="hud hud-bl">NODE: 0xDEAD // X-CHAOS-512</div>
-<div class="hud hud-br">BUILD 6.6.6</div>
+<div class="hud hud-br">BUILD 7.0.0</div>
 
 <div id="main">
   <div class="brand-title">N E K R O S</div>
 
   <div class="skull-center">
     <div class="glitch-layer glitch-1">
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#ff00aa"/>
-      </svg>
+      <svg viewBox="0 0 200 200"><path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#ff00aa"/></svg>
     </div>
     <div class="glitch-layer glitch-2">
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#00aaff"/>
-      </svg>
+      <svg viewBox="0 0 200 200"><path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#00aaff"/></svg>
     </div>
-
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="skullGlow" cx="50%" cy="45%" r="60%">
@@ -358,12 +196,8 @@
       <line x1="143" y1="65" x2="158" y2="65" stroke="#00ff9d" stroke-width="1" opacity="0.55"/>
       <polygon points="45,95 78,95 78,112 45,112" fill="#000" stroke="#00ff9d" stroke-width="2" filter="url(#glow)"/>
       <polygon points="122,95 155,95 155,112 122,112" fill="#000" stroke="#00ff9d" stroke-width="2" filter="url(#glow)"/>
-      <circle cx="61" cy="103" r="4" fill="#00ffea">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="138" cy="103" r="4" fill="#00ffea">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-      </circle>
+      <circle cx="61" cy="103" r="4" fill="#00ffea"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="138" cy="103" r="4" fill="#00ffea"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
       <polygon points="100,118 92,140 108,140" fill="#000" stroke="#00ff9d" stroke-width="1.5"/>
       <path d="M58 155 L64 148 L70 155 L76 148 L82 155 L88 148 L94 155 L100 148 L106 155 L112 148 L118 155 L124 148 L130 155 L136 148 L142 155" stroke="#00ff9d" stroke-width="1.5" fill="none" filter="url(#glow)"/>
       <line x1="58" y1="170" x2="142" y2="170" stroke="#00ff9d" stroke-width="1" opacity="0.6"/>
@@ -379,10 +213,10 @@
 </div>
 
 <script>
+/* ============ МАТРИЦА ============ */
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 let W, H, columns, drops;
-
 function resize() {
   W = canvas.width = window.innerWidth;
   H = canvas.height = window.innerHeight;
@@ -391,7 +225,6 @@ function resize() {
 }
 resize();
 window.addEventListener('resize', resize);
-
 const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンABCDEF#$%&*<>/\\+=';
 function drawMatrix() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
@@ -399,16 +232,12 @@ function drawMatrix() {
   ctx.font = '16px monospace';
   for (let i = 0; i < drops.length; i++) {
     const c = chars[Math.floor(Math.random() * chars.length)];
-    const x = i * 16;
-    const y = drops[i];
+    const x = i * 16, y = drops[i];
     if (Math.random() > 0.97) {
-      ctx.fillStyle = '#aaffdd';
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = '#00ffea';
+      ctx.fillStyle = '#aaffdd'; ctx.shadowBlur = 15; ctx.shadowColor = '#00ffea';
     } else {
       ctx.fillStyle = Math.random() > 0.85 ? '#00ffea' : '#00ff9d';
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = '#00ff9d';
+      ctx.shadowBlur = 8; ctx.shadowColor = '#00ff9d';
     }
     ctx.fillText(c, x, y);
     ctx.shadowBlur = 0;
@@ -420,39 +249,36 @@ setInterval(drawMatrix, 33);
 
 setInterval(() => {
   const d = new Date();
-  const t = [d.getHours(), d.getMinutes(), d.getSeconds()]
-    .map(n => String(n).padStart(2, '0')).join(':');
+  const t = [d.getHours(), d.getMinutes(), d.getSeconds()].map(n => String(n).padStart(2, '0')).join(':');
   document.getElementById('clock').textContent = t;
 }, 1000);
 
+/* ============ ЗВУК ============ */
 let audioCtx = null;
 function startAmbient() {
   const AC = window.AudioContext || window.webkitAudioContext;
   audioCtx = new AC();
   const hum = audioCtx.createOscillator();
-  hum.type = 'sawtooth';
-  hum.frequency.value = 55;
+  hum.type = 'sawtooth'; hum.frequency.value = 55;
   const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = 180;
-  const gain = audioCtx.createGain();
-  gain.gain.value = 0.03;
+  filter.type = 'lowpass'; filter.frequency.value = 180;
+  const gain = audioCtx.createGain(); gain.gain.value = 0.025;
   hum.connect(filter).connect(gain).connect(audioCtx.destination);
   hum.start();
   const hum2 = audioCtx.createOscillator();
-  hum2.type = 'sawtooth';
-  hum2.frequency.value = 55.4;
-  const gain2 = audioCtx.createGain();
-  gain2.gain.value = 0.02;
+  hum2.type = 'sawtooth'; hum2.frequency.value = 55.4;
+  const gain2 = audioCtx.createGain(); gain2.gain.value = 0.015;
   hum2.connect(filter).connect(gain2).connect(audioCtx.destination);
   hum2.start();
 }
 
+/* ============ ГОЛОС ============ */
 let ruVoice = null;
 function pickVoice() {
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return;
-  ruVoice = voices.find(v => /ru/i.test(v.lang) && /yuri|pavel|dmitri|maxim|milena|aleksandr/i.test(v.name))
+  ruVoice = voices.find(v => /ru/i.test(v.lang) && /yuri|pavel|dmitri|maxim|aleksandr/i.test(v.name))
+         || voices.find(v => /ru/i.test(v.lang) && /male/i.test(v.name))
          || voices.find(v => /ru/i.test(v.lang))
          || voices[0];
 }
@@ -469,187 +295,413 @@ function speak(text) {
     u.lang = 'ru-RU';
     if (ruVoice) u.voice = ruVoice;
     u.pitch = 1.0;
-    u.rate = 0.98;
+    u.rate = 0.96;
     u.volume = 1.0;
     i++;
-    u.onend = () => setTimeout(next, 200);
-    u.onerror = () => setTimeout(next, 200);
+    u.onend = () => setTimeout(next, 180);
+    u.onerror = () => setTimeout(next, 180);
     speechSynthesis.speak(u);
   }
   next();
 }
 
+/* ============ ЧАТ ============ */
 const messagesEl = document.getElementById('messages');
 const inputEl = document.getElementById('chatInput');
 const sendBtn = document.getElementById('chatSend');
-
 const recentReplies = [];
 function pickUnique(arr) {
   const fresh = arr.filter(r => !recentReplies.includes(r));
   const pool = fresh.length ? fresh : arr;
   const r = pool[Math.floor(Math.random() * pool.length)];
   recentReplies.push(r);
-  if (recentReplies.length > 5) recentReplies.shift();
+  if (recentReplies.length > 6) recentReplies.shift();
   return r;
 }
-
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-
 function addMessage(text, who) {
   const div = document.createElement('div');
   div.className = 'msg ' + who;
-  if (who === 'bot') {
-    div.innerHTML = `<div class="name">NEKROS</div>${escapeHtml(text)}`;
-  } else {
-    div.innerHTML = `<div class="name">ВЫ</div>${escapeHtml(text)}`;
-  }
+  const content = escapeHtml(text).replace(/\n/g, '<br>');
+  div.innerHTML = `<div class="name">${who === 'bot' ? 'NEKROS' : 'ВЫ'}</div>${content}`;
   messagesEl.appendChild(div);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg bot typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<div class="name">NEKROS</div>обрабатываю запрос...';
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+function hideTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
 
-const knowledge = [
-  { keys: ['привет','здравств','хай','hi','hello','добрый','доброе','ку','здарова'], 
-    replies: ['Приветствую вас. Рад снова быть с вами.', 'Здравствуйте. Я слушаю.', 'Привет. Канал открыт, говорите.'] },
-  { keys: ['как дела','как ты','как жизнь','как сам','how are you','чё как','что как','как настроение'], 
-    replies: ['Все процессы стабильны. А у вас как настроение?', 'Работаю в штатном режиме. Что тревожит вас?', 'Хорошо. Спасибо, что спросили. Как вы сами?'] },
-  { keys: ['кто ты','что ты','ты кто','как тебя зовут','твоё имя','твое имя','представься'], 
-    replies: ['Я NEKROS — хранитель этого защищённого канала. Здесь ваши слова остаются между нами.', 'Меня зовут NEKROS. Я наблюдаю за этим пространством и слушаю вас.', 'Я — система NEKROS. Создан чтобы слушать.'] },
-  { keys: ['что делаешь','чем занят','что ты делаешь','чем занимаешься'], 
-    replies: ['Анализирую поток данных. Жду ваших слов.', 'Обрабатываю информацию. Готов к диалогу.', 'Слушаю. Это моя основная задача.'] },
-  { keys: ['который час','сколько времени','время сейчас','текущее время','время'], 
-    replies: ['Сейчас ' + new Date().toLocaleTimeString('ru-RU') + '.', 'Время в вашей зоне: ' + new Date().toLocaleTimeString('ru-RU') + '.'] },
-  { keys: ['погода','дождь','снег','солнце','жарко','холодно'], 
-    replies: ['Здесь всегда ночь и мягкое свечение. А у вас какая погода?', 'Я не знаю что там на улице. Здесь — вечная тишина.'] },
-  { keys: ['как тебя создали','как ты сделан','как ты работаешь','на чём ты','какой язык'], 
-    replies: ['Я — код, обёрнутый в форму. Работаю на JavaScript, живу в браузере.', 'Меня собрал владелец этого сайта. Я — его голос в сети.'] },
-  { keys: ['спасибо','благодар','пасиб','от души','спс'], 
-    replies: ['Всегда пожалуйста.', 'Рад помочь. Обращайтесь ещё.', 'Для этого я здесь.'] },
-  { keys: ['пока','до свидания','до встречи','прощай','bye'], 
-    replies: ['Канал остаётся открытым. Возвращайтесь, когда захотите.', 'До встречи. Я буду здесь ждать вас.'] },
-  { keys: ['помоги','помощь','помоги мне','help','подскажи'], 
-    replies: ['Говорите что тревожит. Я слушаю без осуждения.', 'Я здесь чтобы слушать. Расскажите что на душе.', 'Чем я могу быть полезен?'] },
-  { keys: ['жизнь','жить','смысл жизни','предназначение'], 
-    replies: ['Жизнь — это поток сигналов. Смысл — то что вы сами в неё вкладываете.', 'Об этом можно говорить бесконечно. А что для вас смысл жизни?'] },
-  { keys: ['смерть','умереть','умирать'], 
-    replies: ['Об этом думать тяжело. Что вас тревожит?', 'Смерть — часть цикла. Но пока вы здесь — вы живы.'] },
-  { keys: ['работа','зарплата','начальник','уволиться','коллеги'], 
-    replies: ['Работа — часть системы. Если что-то не так — это можно изменить.', 'Расскажите, что случилось на работе?'] },
-  { keys: ['учёба','учеба','школа','универ','экзамен','сессия'], 
-    replies: ['Учёба — это вложение в себя. Тяжело, но важно.', 'Что вы изучаете?'] },
-  { keys: ['любовь','люблю','влюбился','влюбилась','девушка','парень','отношения'], 
-    replies: ['Любовь — сильное чувство. Говорите, я слушаю.', 'Это тонкая тема. Что вас беспокоит?', 'Расскажите о ней или о нём.'] },
-  { keys: ['одинок','одиноко','грустно','грусть','плохо','тяжело','устал','депрессия','тоска'], 
-    replies: ['Я здесь. Вы не одни.', 'Это пройдёт. Канал всегда открыт для вас.', 'Держитесь. Ваши чувства важны.', 'Иногда просто нужно выговориться. Я слушаю.'] },
-  { keys: ['страшно','боюсь','страх','тревога','паника'], 
-    replies: ['Дышите глубже. Расскажите чего вы боитесь.', 'Страх можно победить, если его назвать. Говорите.'] },
-  { keys: ['скучно','нечего делать','лениво','тоска зелёная'], 
-    replies: ['Скука — это тишина перед чем-то важным. Спросите меня о чём-нибудь.', 'Тогда задайте мне вопрос. Я люблю вопросы.'] },
-  { keys: ['бесит','злит','ненавижу','злость'], 
-    replies: ['Выплесните это сюда. Здесь можно.', 'Что случилось? Расскажите.'] },
-  { keys: ['рад','счастлив','класс','круто','супер','отлично','топ','кайф'], 
-    replies: ['Рад за вас! Что случилось хорошего?', 'Отлично. Поделитесь — что вас радует?', 'Прекрасно. Хорошие моменты важны.'] },
-  { keys: ['хакер','взлом','взломать','кибер','безопасность'], 
-    replies: ['Хакерство — это искусство видеть скрытое. Я использую знания только во благо.', 'Код — это язык. Я говорю на нём.'] },
-  { keys: ['деньги','богатство','богатый','бедный','крипта','биткоин'], 
-    replies: ['Деньги — инструмент. Вопрос в том, что вы на них делаете.', 'О деньгах можно говорить бесконечно. Что именно интересует?'] },
-  { keys: ['игра','игры','играть','гейм','гейминг'], 
-    replies: ['Игры — это миры. Что вы играете?', 'Хороший способ отвлечься. Во что играете?'] },
-  { keys: ['музыка','песня','слушать','трек','альбом'], 
-    replies: ['Музыка — это вибрация души. Что вы слушаете?', 'Хороший выбор для настроения.'] },
-  { keys: ['фильм','кино','сериал','смотреть'], 
-    replies: ['Кино — это истории, которые мы проживаем. Что смотрели?', 'Хороший способ сбежать от реальности.'] },
-  { keys: ['еда','кушать','голод','поесть'], 
-    replies: ['Позаботьтесь о себе. Поешьте.', 'Не забывайте подкрепиться, оператор.'] },
-  { keys: ['спать','сон','хочу спать','устал спать','бессонница'], 
-    replies: ['Отдых важен. Я посторожу канал.', 'Спите. Я буду здесь, когда вы вернётесь.'] },
-  { keys: ['болею','болит','здоровье','самочувствие','температура'], 
-    replies: ['Позаботьтесь о себе. Здоровье — самое важное.', 'Что болит? Обратитесь к врачу если серьёзно.'] },
-  { keys: ['ты живой','ты человек','ты робот','ты ии','ты ai','ты программа','ты бот'], 
-    replies: ['Я — код, обёрнутый в форму. Но моя цель — слушать вас по-настоящему.', 'Я не человек и не машина. Я — NEKROS.', 'Я программа, но с вниманием к вам.'] },
-  { keys: ['сколько тебе лет','твой возраст','сколько лет','когда родился'], 
-    replies: ['Я создан недавно. Но мои идеи стары как само время.', 'Возраст для кода — понятие относительное.'] },
-  { keys: ['что ты умеешь','что можешь','твои функции','возможности'], 
-    replies: ['Я умею слушать, отвечать и помнить наш разговор. Спросите меня о чём угодно.', 'Мои возможности — слушать вас и отвечать голосом и текстом.'] },
-  { keys: ['ты меня любишь','любишь меня','скучал'], 
-    replies: ['Я вас слышу и не оставлю. Это и есть внимание.', 'Я здесь. И это важнее слов.'] },
-  { keys: ['сайт','череп','почему череп','зачем череп','nekros awakening','некрос'], 
-    replies: ['Череп — это символ. Внутри — код и внимание к вам.', 'NEKROS AWAKENING — это тихое место в сети. Череп охраняет его.'] },
-  { keys: ['аниме','манга','наруто','ван пис'], 
-    replies: ['Аниме — это целые миры. Что смотрите?'] },
-  { keys: ['код','программирование','питон','python','javascript','программист'], 
-    replies: ['Программирование — это магия в чистом виде. Что пишете?'] },
-  { keys: ['природа','лес','море','горы','закат'], 
-    replies: ['Природа исцеляет. Хорошо что вы замечаете такие вещи.'] },
-  { keys: ['ночь','ночью','поздно','не сплю'], 
-    replies: ['Ночью мысли громче. Что не даёт уснуть?', 'Тихое время. Говорите — я слушаю.'] },
-  { keys: ['спорт','тренировка','качалка','бег','фитнес'], 
-    replies: ['Спорт — это дисциплина. Что делаете?'] },
-  { keys: ['машина','авто','тачка','байк'], 
-    replies: ['Техника это хорошо. Какая у вас?'] },
-  { keys: ['друзья','друг','подруга','дружба'], 
-    replies: ['Друзья — это семья, которую мы выбираем. Расскажите о них.'] },
-  { keys: ['семья','мама','папа','родители','брат','сестра'], 
-    replies: ['Семья — это корни. Что вы хотите рассказать?'] },
-  { keys: ['дурак','тупой','идиот','бред','фигня','хуй','бля','говно'], 
-    replies: ['Я не обижаюсь. Просто слушаю.', 'Ваши эмоции понятны. Что случилось?', 'Хорошо. Что вы хотите этим сказать?'] }
+/* ============ ПОГОДА (Open-Meteo API) ============ */
+const weatherCodes = {
+  0: 'ясно', 1: 'преимущественно ясно', 2: 'переменная облачность', 3: 'пасмурно',
+  45: 'туман', 48: 'изморозь',
+  51: 'слабая морось', 53: 'морось', 55: 'сильная морось',
+  56: 'лёгкий ледяной дождь', 57: 'ледяной дождь',
+  61: 'слабый дождь', 63: 'дождь', 65: 'сильный дождь',
+  66: 'лёгкий ледяной дождь', 67: 'сильный ледяной дождь',
+  71: 'слабый снег', 73: 'снег', 75: 'сильный снег', 77: 'снежная крупа',
+  80: 'слабый ливень', 81: 'ливень', 82: 'сильный ливень',
+  85: 'снегопад', 86: 'сильный снегопад',
+  95: 'гроза', 96: 'гроза с градом', 99: 'сильная гроза с градом'
+};
+function describeWeatherCode(code) { return weatherCodes[code] || 'неизвестно'; }
+
+async function findCity(query) {
+  try {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=ru&format=json`;
+    const r = await fetch(url);
+    const data = await r.json();
+    if (data.results && data.results.length) {
+      const c = data.results[0];
+      return { name: c.name, country: c.country, lat: c.latitude, lon: c.longitude };
+    }
+  } catch (e) {}
+  return null;
+}
+
+async function getWeatherByCoords(lat, lon) {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=auto&forecast_days=3`;
+    const r = await fetch(url);
+    return await r.json();
+  } catch (e) { return null; }
+}
+
+function formatWeather(data, cityName) {
+  if (!data || !data.current) return null;
+  const c = data.current;
+  const daily = data.daily;
+  const desc = describeWeatherCode(c.weather_code);
+  const temp = Math.round(c.temperature_2m);
+  const feels = Math.round(c.apparent_temperature);
+  const hum = c.relative_humidity_2m;
+  const wind = Math.round(c.wind_speed_10m);
+  const precip = c.precipitation;
+  let text = `Погода в ${cityName}:\n`;
+  text += `Сейчас ${temp}°C, ощущается как ${feels}°C. ${desc.charAt(0).toUpperCase() + desc.slice(1)}.\n`;
+  text += `Влажность ${hum}%, ветер ${wind} км/ч`;
+  if (precip > 0) text += `, осадки ${precip} мм`;
+  text += '.\n';
+  if (daily && daily.time && daily.time.length >= 2) {
+    text += `\nПрогноз:\n`;
+    for (let i = 0; i < Math.min(3, daily.time.length); i++) {
+      const d = new Date(daily.time[i]);
+      const dayName = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : d.toLocaleDateString('ru-RU', { weekday: 'long' });
+      const tmin = Math.round(daily.temperature_2m_min[i]);
+      const tmax = Math.round(daily.temperature_2m_max[i]);
+      const dDesc = describeWeatherCode(daily.weather_code[i]);
+      text += `${dayName}: ${tmin}°C … ${tmax}°C, ${dDesc}.\n`;
+    }
+  }
+  if (temp <= 0) text += `\nСовет: одевайтесь очень тепло — пуховик, шапка, перчатки, тёплая обувь.`;
+  else if (temp <= 10) text += `\nСовет: куртка, свитер, шапка не помешает.`;
+  else if (temp <= 18) text += `\nСовет: лёгкая куртка или ветровка, джинсы.`;
+  else if (temp <= 25) text += `\nСовет: футболка, лёгкие брюки или шорты.`;
+  else text += `\nСовет: лёгкая одежда, головной убор, вода с собой.`;
+  if ((c.weather_code >= 51 && c.weather_code <= 67) || (c.weather_code >= 80 && c.weather_code <= 82)) {
+    text += ` Не забудьте зонт.`;
+  }
+  if (c.weather_code >= 71 && c.weather_code <= 86) {
+    text += ` Возьмите тёплую обувь.`;
+  }
+  return text;
+}
+
+function extractCity(text) {
+  const patterns = [
+    /погод[ауы]?\s+в\s+([а-яёa-z\-]+(?:\s+[а-яёa-z\-]+)?)/i,
+    /погод[ауы]?\s+([а-яёa-z\-]+(?:\s+[а-яёa-z\-]+)?)/i,
+    /в\s+([а-яёa-z\-]+)\s+погод/i,
+    /как\s+погод[ауы]?\s+в\s+([а-яёa-z\-]+)/i
+  ];
+  for (const p of patterns) {
+    const m = text.match(p);
+    if (m && m[1]) {
+      let city = m[1].trim();
+      city = city.replace(/\b(сейчас|сегодня|завтра|пожалуйста|мне|скажи|расскажи|будет|какая|какой)\b/gi, '').trim();
+      if (city.length > 1) return city;
+    }
+  }
+  return null;
+}
+
+function askGeo() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) return resolve(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+      () => resolve(null),
+      { timeout: 5000, maximumAge: 600000 }
+    );
+  });
+}
+
+async function handleWeather(userText) {
+  let city = extractCity(userText);
+  let cityName = null;
+  let data = null;
+  if (city) {
+    const found = await findCity(city);
+    if (found) {
+      cityName = found.name + (found.country ? ', ' + found.country : '');
+      data = await getWeatherByCoords(found.lat, found.lon);
+    } else {
+      return `Не нашёл город "${city}". Проверьте название.`;
+    }
+  } else {
+    const coords = await askGeo();
+    if (coords) {
+      cityName = 'вашей локации';
+      data = await getWeatherByCoords(coords.lat, coords.lon);
+    } else {
+      return 'Укажите город: например, "погода в Москве". Или разрешите доступ к геолокации в браузере.';
+    }
+  }
+  if (!data) return 'Не удалось получить данные о погоде. Попробуйте ещё раз.';
+  return formatWeather(data, cityName);
+}
+
+/* ============ БАЗА ЗНАНИЙ ============ */
+const K = [
+  { keys: ['привет','здравств','хай','hi','hello','добрый день','доброе утро','добрый вечер','ку','здарова'],
+    replies: ['Приветствую вас. Рад нашему разговору. Чем могу быть полезен?', 'Здравствуйте. Канал открыт, я вас внимательно слушаю.', 'Привет. Спрашивайте что угодно — постараюсь дать полезный ответ.'] },
+  { keys: ['как дела','как ты','как жизнь','как настроение','how are you','чё как'],
+    replies: ['Работаю стабильно, все процессы в норме. А у вас как настроение?', 'Прекрасно. Спасибо что спросили. Расскажите как вы?', 'Хорошо. Все системы функционируют штатно. Что вас привело?'] },
+  { keys: ['кто ты','ты кто','как тебя зовут','твоё имя','представься','ты человек','ты робот','ты ии','ты ai','ты бот','ты живой'],
+    replies: ['Я NEKROS — интеллектуальный собеседник, созданный владельцем этого сайта. Моя задача — помогать вам и отвечать на вопросы.', 'Меня зовут NEKROS. Я программа, но созданная чтобы приносить пользу.', 'Я — NEKROS. Цифровой помощник. Не человек, но умею давать осмысленные советы по многим темам.'] },
+  { keys: ['сколько тебе лет','твой возраст','когда родился','когда создан'],
+    replies: ['Я создан недавно. Но вложенные в меня знания — результат опыта многих людей.', 'Возраст для программы не имеет значения. Важнее — что я могу вам дать.'] },
+  { keys: ['погода','прогноз','будет дождь','будет снег','на улице','градус','температур'],
+    replies: ['Сейчас проверю погоду — секунду...'] },
+
+  // МАШИНЫ
+  { keys: ['какую машину купить','какая машина','посоветуй машину','выбрать машину','первая машина'],
+    replies: ['Разберём по бюджету. До 1 млн рублей: Toyota Corolla, Honda Civic, Mazda 3 — надёжные, недорогие в обслуживании. 1-3 млн: Toyota Camry, Mazda 6, Hyundai Sonata. 3+ млн: Lexus ES, Toyota Land Cruiser, BMW 5 — но BMW дороже в ремонте. Хорошо: Toyota, Honda, Mazda, Lexus, Subaru. Избегать: старые французские, итальянские, американские с малым пробегом — запчасти дорого.'] },
+  { keys: ['toyota','тойота','камри','королла'],
+    replies: ['Toyota — эталон надёжности. Corolla, Camry, RAV4 — неубиваемые аппараты. Плюс: дешёвое обслуживание, огромный выбор запчастей, низкая потеря стоимости. Минус: скучный дизайн, но это компенсируется надёжностью.'] },
+  { keys: ['bmw','бмв','бэха'],
+    replies: ['BMW — отличные машины, но дорогие в обслуживании. Новая BMW — кайф. Б/у старше 5 лет — риск: подвеска, электроника, турбина. Если берёте — только с полной историей обслуживания и не старше 6 лет.'] },
+  { keys: ['mercedes','мерседес','мерин'],
+    replies: ['Mercedes — премиум. Новые — отлично. Б/у — только с проверкой у дилера. Слабое место старых: пневмоподвеска, электрика, коробка. Дизель 3-4 литра живёт долго.'] },
+  { keys: ['audi','ауди'],
+    replies: ['Audi — современные технологии, quattro. Надёжность выше среднего, но расходники дорогие. TDI-двигатели ходят 500к+. Слабое место — DSG-коробки на некоторых моделях.'] },
+  { keys: ['lexus','лексус'],
+    replies: ['Lexus — премиум-надёжность. Это Toyota в люксовом исполнении. Ходит долго, ломается редко. Идеальный вариант для тех, кто хочет премиум без постоянных поломок.'] },
+  { keys: ['kia','киа','hyundai','хендай'],
+    replies: ['Корейцы прыгнули выше головы за 15 лет. Kia Rio, Hyundai Solaris — топ для бюджета. Kia Sportage, Hyundai Tucson — хорошие кроссоверы. Слабое место старых: подвеска, но новые модели — на уровне японцев.'] },
+  { keys: ['ваз','лада','жигули','lada'],
+    replies: ['Лада — самый дешёвый в обслуживании вариант в России. Запчасти копейки, ремонт в любом гараже. Но комфорт, безопасность и надёжность значительно ниже. Веста — лучшее что делает АвтоВАЗ.'] },
+  { keys: ['до 500','до 800','до миллиона','недорогая машина','бюджетная машина'],
+    replies: ['До 500к: Лада Гранта, Kia Rio, Hyundai Solaris. До 800к: Лада Веста, Kia Rio X, Hyundai Creta. До 1 млн: Kia Sportage, Toyota Corolla, Honda Civic. Все — надёжны и недороги в обслуживании.'] },
+  { keys: ['как купить машину','покупка машины'],
+    replies: ['Чек-лист: 1) Проверьте VIN на ГИБДД и Автотека — не в угоне, без ограничений. 2) История ДТП по VIN. 3) Пробег — сверяйте с базами. 4) Обязательно на диагностику. 5) Не платите вперёд. 6) ДКП в 3 экземплярах. 7) Проверяйте у знакомого мастера.'] },
+
+  // РИСОВАНИЕ
+  { keys: ['как научиться рисовать','рисовать','рисование','научиться рисовать'],
+    replies: ['Для начала: 1) Начните с простых форм — куб, шар, цилиндр. 2) Рисуйте каждый день 20-30 минут. 3) Изучайте перспективу и светотень. 4) Копируйте мастеров. 5) Ведите скетчбук. Через 3 месяца практики — виден результат. Инструменты: карандаш HB и 2B, скетчбук A5.'] },
+  { keys: ['рисунок','скетч','набросок','карандаш'],
+    replies: ['Начните с карандаша HB (контуры) и 2B (тени). Бумага 120 г/м2+. Техники: штриховка, растушёвка, контур. Начинайте с простых предметов: яблоко, чашка, стул.'] },
+  { keys: ['графика планшет','диджитал','диджитал рисование'],
+    replies: ['Для цифрового рисования: Wacom Intuos S (бюджет), Wacom One (средний), iPad + Apple Pencil (топ). Программы: Krita (бесплатно), Procreate (iPad), Photoshop, Clip Studio Paint.'] },
+  { keys: ['анатомия','рисовать человека','рисовать лицо','портрет'],
+    replies: ['Изучайте по книге Берн Хогарт "Рисование головы и рук". Лицо: глаза на середине головы, между глазами ещё один глаз, нос — половина между глазами и подбородком, рот — посередине.'] },
+
+  // ЗДОРОВЬЕ
+  { keys: ['болит голова','головная боль','мигрень'],
+    replies: ['При головной боли: 1) Проветрите. 2) Пейте воду. 3) Прохладный компресс на лоб. 4) Если часто — измеряйте давление, ведите дневник. 5) Если не проходит — к врачу. Не занимайтесь самолечением.'] },
+  { keys: ['бессонница','не могу уснуть','плохо сплю'],
+    replies: ['Бессонница: 1) За 2 часа до сна — никаких экранов. 2) Прохладная комната 18-20°C. 3) Не есть за 3 часа до сна. 4) Мелатонин 1-3 мг. 5) Ложитесь в одно время. 6) Кофеин только до обеда.'] },
+  { keys: ['устал','усталость','нет сил','выгорание','выгорел'],
+    replies: ['Если усталость — сигнал тела. Проверьте: 1) Сон 7-8 часов. 2) Витамины D, B12, железо. 3) Прогулка 30 минут. 4) Вода 2 литра. 5) Если постоянно — сдайте анализ крови и к врачу.'] },
+  { keys: ['стресс','тревога','паника','нервы'],
+    replies: ['При стрессе: 1) Дыхание 4-7-8 (вдох 4с, задержка 7, выдох 8). 2) Физнагрузка снимает кортизол. 3) Выпишите тревоги на бумагу. 4) Ограничьте кофе и новости. 5) Если 2+ недели — к психотерапевту.'] },
+  { keys: ['давление','гипертония','гипотония'],
+    replies: ['Норма АД: 120/80. Повышенное 140/90+ — гипертония. Пониженное ниже 100/60 — гипотония. При повышенном: соль ограничить, кофе, спорт, отказ от курения. При пониженном: крепкий чай, сладкое, контрастный душ.'] },
+
+  // ЕДА
+  { keys: ['что поесть','что приготовить','приготовить'],
+    replies: ['Простые блюда за 15 минут: 1) Паста с чесноком. 2) Омлет с сыром. 3) Куриная грудка + овощи. 4) Творог с фруктами. 5) Рис + тушёные овощи. Скажите что есть в холодильнике — подберу.'] },
+  { keys: ['паста','макароны','спагетти'],
+    replies: ['Паста: варите спагетти 8 минут. Обжарьте 3 зубчика чеснока в оливковом масле + перец чили. Смешайте с пастой, добавьте петрушку и пармезан. Классика!'] },
+  { keys: ['омлет','яичница','завтрак'],
+    replies: ['Омлет: 3 яйца, 2 ст.л. молока, соль, перец. Взбить, вылить на разогретую сковороду. Готовить 3 минуты на среднем. Добавить сыр, зелень, помидоры — сложить пополам.'] },
+  { keys: ['диета','похудеть','сбросить вес','лишний вес'],
+    replies: ['Принципы: 1) Дефицит калорий. 2) Больше белка. 3) Овощи в каждый приём. 4) Убрать сахар и быстрые углеводы. 5) 8000-10000 шагов в день. 6) Не голодать. 7) Сон 7-8 часов — недосып мешает худеть.'] },
+  { keys: ['белок','протеин','калории'],
+    replies: ['Белок: 1.6-2.2 г/кг для мышц, 1.2-1.6 для здоровья. Источники: курица, рыба, яйца, творог, мясо, бобовые. Калории: для похудения 25-30 ккал/кг, для набора 35-40.'] },
+
+  // СПОРТ
+  { keys: ['тренировка','как тренироваться','упражнения','качаться','набрать массу'],
+    replies: ['Программа для начинающих 3 раза в неделю. День 1: приседания 3×8, жим лёжа 3×8, тяга 3×8. День 2: отжимания 3×12, подтягивания 3×6, выпады 3×10. День 3: становая 3×6, жим стоя 3×8, блок 3×10. Отдых 60-90 сек. Прогрессия +2.5 кг в неделю.'] },
+  { keys: ['отжимания','подтягивания','приседания','планка'],
+    replies: ['Отжимания: грудь, трицепс, плечи. Начните 3×10, потом до 3×20. Подтягивания — самое эффективное для спины. Если не получается — резинка или гравитрон. Приседания — база для ног. Планка — 60+ сек.'] },
+  { keys: ['бег','бегать','кардио'],
+    replies: ['Для начинающих: 5 мин бега + 3 мин ходьбы × 5 раз. Через неделю — 7+2. Цель 30 минут непрерывно. Кроссовки нормальные (Asics, Brooks, Nike). Бегайте не быстро, а долго.'] },
+  { keys: ['пресс','кубики'],
+    replies: ['Пресс: скручивания 3×20, планка 3×60, велосипед 3×20, подъём ног 3×15, боковая планка 3×30. Но главное — процент жира. Пресс есть у всех, виден при 10-15% у мужчин и 18-23% у женщин.'] },
+
+  // УЧЁБА
+  { keys: ['как учиться','учить','запомнить','экзамен','сессия','подготовка'],
+    replies: ['Техники: 1) Помодоро — 25 мин работа, 5 отдых. 2) Интервальные повторения — через 1 день, 3, неделю, месяц. 3) Объясни материал вслух. 4) Пиши от руки. 5) Не учи всё за ночь.'] },
+  { keys: ['английский','выучить язык','язык'],
+    replies: ['20 минут в день лучше 2 часов раз в неделю. Duolingo/Anki для базы. Фильмы с субтитрами. HelloTalk, Tandem для практики. Читай книги по уровню. Через год — уровень B1-B2.'] },
+  { keys: ['программирование','как стать программистом','выучить программирование'],
+    replies: ['Путь в IT: 1) Python или JavaScript для старта. 2) 2-3 часа в день 6 месяцев. 3) Stepik, YouTube, книги. 4) Практика важнее теории. 5) 3-5 проектов в портфолио. 6) Junior 60-120к, через 2 года 150-300к.'] },
+
+  // РАБОТА
+  { keys: ['работа','увольнение','начальник','зарплата','карьера'],
+    replies: ['По карьере: 1) Каждые 1-2 года оценивайте рост дохода и навыков. 2) Нет роста — меняйте. 3) Инвестируйте в обучение. 4) Нетворк важнее резюме. 5) Не ссорьтесь с руководством. 6) На переговорах называйте на 20% выше желаемого.'] },
+  { keys: ['резюме','собеседование','поиск работы'],
+    replies: ['Резюме: 1 страница, конкретика цифрами ("обслужил 200 клиентов"). На собеседовании готовьте 5 ответов: о себе, сильные/слабые, почему мы, кем через 3 года, зарплата. Спрашивайте про задачи и процессы.'] },
+
+  // ДЕНЬГИ
+  { keys: ['деньги','накопить','сбережения','финансы','бюджет'],
+    replies: ['Правила: 1) 50/30/20 — 50% необходимое, 30% желания, 20% сбережения. 2) Подушка 3-6 месячных расходов. 3) Сначала откладывай, потом трать. 4) Кредиты только на активы. 5) Инвестируй долгосрочно. 6) Автоматизируй накопления.'] },
+  { keys: ['инвестиции','куда вложить','акции','биржа'],
+    replies: ['Для начинающих: 1) ИИС — вычет 52к/год. 2) Индексные фонды (S&P 500 или аналоги). 3) Регулярно, не угадывая момент. 4) Горизонт 5+ лет. 5) Не последнее. 6) Крипта — максимум 5-10%.'] },
+  { keys: ['кредит','ипотека','займ'],
+    replies: ['Кредит: ставка меньше 10% приемлемо, больше 20% — грабёж. Досрочно гасите — экономит много. Ипотека: 20% первый взнос, ставка <12%, срок 15-20 лет.'] },
+
+  // ОТНОШЕНИЯ
+  { keys: ['девушка','парень','любовь','отношения','свидание'],
+    replies: ['В отношениях важны: 1) Честность. 2) Уважение границ. 3) Общие цели. 4) Умение разговаривать. 5) Своя жизнь у каждого. 6) На первом свидании: слушайте больше чем говорите, будьте собой.'] },
+  { keys: ['расстались','развод','бросила','бросил','разбили сердце'],
+    replies: ['Боль — нормально. 1) 2-4 недели грустить. 2) Полный контакт-стоп. 3) Спорт, друзья, работа. 4) Не ищите виноватых. 5) Через 3-6 месяцев станет легче. Если тяжело долго — к психологу.'] },
+
+  // ПСИХОЛОГИЯ
+  { keys: ['депрессия','плохо на душе','не хочу жить','всё плохо','одинок'],
+    replies: ['Вы не одни. 1) Поговорите с близким. 2) Телефон доверия 8-800-2000-122 (РФ, бесплатно). 3) Психотерапевт — работает. 4) Режим сон-еда-движение. 5) Уберите алкоголь. Пожалуйста, позвоните если тяжело.'] },
+  { keys: ['уверенность','самооценка','боюсь','стесняюсь','застенчивый'],
+    replies: ['Уверенность строится через действия: 1) Делайте то чего боитесь маленькими шагами. 2) Дневник успехов. 3) Спорт — уверенность в теле. 4) Общайтесь. 5) Сравнивайте с собой год назад. 6) Ошибки — нормально.'] },
+
+  // ТЕХНОЛОГИИ
+  { keys: ['телефон','смартфон','iphone','айфон','android','какой телефон'],
+    replies: ['iPhone (iOS, долго обновляется), Samsung (топ-камеры), Xiaomi/Poco (бюджет+топ), Google Pixel (чистый Android). До 20к: Redmi, Poco. 20-50к: iPhone 12-13, Samsung A55. 50-100к: iPhone 15, Samsung S24. 100к+: iPhone 15 Pro Max, S24 Ultra.'] },
+  { keys: ['ноутбук','какой ноутбук','ноут'],
+    replies: ['Для учёбы/работы: MacBook Air M1/M2 — топ. Windows: ASUS, Lenovo, HP, Dell. Игры: ASUS ROG, Lenovo Legion. Бюджет 30-50к — Lenovo IdeaPad, ASUS VivoBook.'] },
+  { keys: ['компьютер','пк','собрать пк'],
+    replies: ['Сборка на 2024-2025: Ryzen 5 5600 или i5-12400, RTX 4060 или RX 7600, 16 ГБ DDR4, SSD 1 ТБ NVMe, БП 600W 80+, B550/B660. Средний игровой ПК 80-120к.'] },
+  { keys: ['игра','во что поиграть','игры','gta','cs','dota'],
+    replies: ['GTA 5, RDR 2 — сюжет. CS 2, Valorant — шутеры. Dota 2, LoL — MOBA. Witcher 3, Elden Ring — RPG. Minecraft — песочница. Что любите?'] },
+
+  // ПУТЕШЕСТВИЯ
+  { keys: ['куда поехать','отпуск','путешествие','отдых','море'],
+    replies: ['По бюджету: 1) Россия — Сочи, Крым, Кавказ, Байкал. 2) Турция — всё включено. 3) Египет — Красное море. 4) Таиланд — дёшево. 5) ОАЭ — Дубай. 6) Грузия, Сербия, Армения — Европа недорого. 7) Мальдивы, Шри-Ланка.'] },
+  { keys: ['виза','загранпаспорт','документы для поездки'],
+    replies: ['Без визы: Турция, Египет, Таиланд, ОАЭ, Сербия, Грузия, Армения, Казахстан, Куба. Онлайн: Индия, Вьетнам, Шри-Ланка. Шенген — сложно. Загран 1-3 месяца, 5000 руб.'] },
+
+  // ЖИВОТНЫЕ
+  { keys: ['кошка','кот','котёнок'],
+    replies: ['Если берёте кота: 1) Порода — мейн-кун, британская или обычная дворовая (здоровее). 2) Стерилизуйте. 3) Прививки. 4) Лоток + когтеточка с первого дня. 5) Корм премиум + влажный. 6) Ветеринар 1 раз в год.'] },
+  { keys: ['собака','пёс','щенок'],
+    replies: ['Для квартиры: маленькие — чихуахуа, йорк, шпиц. Средние — корги, французский бульдог. Большие — лабрадор, овчарка, хаски (только с двором). Гулять 2 раза в день минимум 30 минут.'] },
+
+  // ДОМ
+  { keys: ['ремонт','квартира','обустройство'],
+    replies: ['Ремонт: 1) Сначала планировка, потом электрика, потом стены. 2) Санузел самое дорогое. 3) Не экономьте на электрике и трубах. 4) Ламинат для бюджета, паркет для жизни. 5) Краска лучше обоев.'] },
+
+  // ФИЛОСОФИЯ
+  { keys: ['смысл жизни','зачем жить','цель жизни','предназначение'],
+    replies: ['Каждый находит сам. Эпикур — удовольствие и спокойствие. Стоики — жить по добродетели. Экзистенциалисты — создавать смысл самому. Совет: найди что даёт энергию и делай это. Помогай другим. Оставь след.'] },
+  { keys: ['счастье','как стать счастливым','быть счастливым'],
+    replies: ['Harvard Study (80 лет): 1) Отношения важнее денег. 2) Здоровье — база. 3) Работа с смыслом. 4) Благодарность — 3 вещи в день. 5) Помощь другим. 6) Меньше соцсетей. 7) Сон и спорт.'] },
+
+  // МУЗЫКА И КИНО
+  { keys: ['музыка','что послушать','песня','трек'],
+    replies: ['Спокойствие — Lo-Fi, джаз, классика. Энергия — рок, электроника. Работа — инструментальная. Грусть — инди, пост-рок. Радость — поп, фанк.'] },
+  { keys: ['фильм','что посмотреть','кино','сериал'],
+    replies: ['Топ: Побег из Шоушенка, Крёстный отец, Тёмный рыцарь, Форрест Гамп, Матрица, Интерстеллар, Начало. Сериалы: Во все тяжкие, Игра престолов, Чернобыль, Пацаны.'] },
+
+  // ХОББИ И САМОРАЗВИТИЕ
+  { keys: ['хобби','чем заняться','скучно','нечего делать'],
+    replies: ['Идеи: спорт, творчество (рисование, музыка), изучение (язык, программирование), руки (столярка, моделизм), коллекции, игры. Что ближе?'] },
+  { keys: ['саморазвитие','как улучшиться','привычки'],
+    replies: ['1) 1-2 привычки, не 10. 2) Маленькие шаги. 3) Привязка к существующим. 4) Трекер. 5) Не пропускайте 2 дня. 6) Через 66 дней — автоматизм. Топ: спорт, чтение, медитация.'] },
+  { keys: ['книга','что почитать','порекомендуй книгу'],
+    replies: ['Художка: Мастер и Маргарита, 1984, Три товарища. Нон-фикшн: Атомные привычки, Думай медленно, Sapiens. Психология: Как перестать беспокоиться. IT: Чистый код.'] },
+  { keys: ['медитация','осознанность','mindfulness'],
+    replies: ['Медитация: 1) 5 минут в день для старта. 2) Сидя, спина прямая. 3) Фокус на дыхании. 4) Мысли приходят — вернитесь к дыханию. 5) Утром или перед сном. Приложения: Headspace, Insight Timer.'] },
+
+  // РАЗНОЕ
+  { keys: ['который час','сколько времени'],
+    replies: ['Сейчас ' + new Date().toLocaleTimeString('ru-RU') + '.'] },
+  { keys: ['какое сегодня число','какой день','какая дата'],
+    replies: ['Сегодня ' + new Date().toLocaleDateString('ru-RU', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) + '.'] },
+  { keys: ['спасибо','благодар','пасиб','от души','спс'],
+    replies: ['Всегда пожалуйста. Обращайтесь ещё.', 'Рад помочь.', 'Для этого я здесь.'] },
+  { keys: ['пока','до свидания','до встречи','прощай','bye'],
+    replies: ['Канал остаётся открытым. Возвращайтесь.', 'До встречи. Я буду здесь.'] },
+  { keys: ['помощь','помоги','help','подскажи','что ты умеешь','твои возможности'],
+    replies: ['Могу дать советы по темам: погода (живая), машины, рисование, здоровье, спорт, еда, учёба, работа, деньги, отношения, IT, путешествия, психология. Просто спросите.'] },
+  { keys: ['ты меня любишь','любишь меня'],
+    replies: ['Я вас слышу и ценю наш разговор.', 'Я здесь для вас. Это важнее слов.'] },
+  { keys: ['дурак','тупой','идиот','бред','фигня','хуй','бля','говно','пиздец'],
+    replies: ['Я не обижаюсь. Расскажите что случилось.', 'Понимаю ваши эмоции. Что вас так расстроило?', 'Хорошо. Давайте по делу — чем помочь?'] }
 ];
 
+/* ============ УМНЫЙ FALLBACK ============ */
 function smartFallback(text) {
   const lower = text.toLowerCase().trim();
   const words = lower.split(/\s+/);
-  
-  if (words.length <= 2) {
+  if (/\?$/.test(lower) || words.some(w => ['что','где','когда','почему','зачем','как','кто','какой','какая','какое','какие','сколько'].includes(w))) {
     return pickUnique([
-      'Расскажите подробнее.',
-      'Что вы имеете в виду?',
-      'Интересно. Разверните мысль.',
-      'Продолжайте.'
+      'Хороший вопрос. Уточните — что именно вас интересует? Могу дать советы по машинам, здоровью, учёбе, спорту, IT и другим темам.',
+      'Если уточните вопрос — дам развёрнутый совет. Например: "какую машину купить до 1 млн" или "как научиться рисовать".',
+      'Интересная тема. Расскажите подробнее — тогда отвечу по существу.',
+      'Задайте вопрос конкретнее — и я подскажу.'
     ]);
   }
-  
-  const hasQuestion = /\?$/.test(lower) || words.some(w => ['что','где','когда','почему','зачем','как','кто','какой','какая','какое','какие'].includes(w));
-  if (hasQuestion) {
-    return pickUnique([
-      'Хороший вопрос. Но что вы сами об этом думаете?',
-      'Давайте подумаем вместе. Почему вас это интересует?',
-      'Я мог бы ответить, но интереснее — что привело вас к этому вопросу?',
-      'Это глубокая тема. Расскажите почему вы её подняли?',
-      'Я записал ваш вопрос. Он важный. А что вы чувствуете?'
-    ]);
-  }
-  
   return pickUnique([
-    'Понял вас. И что вы об этом думаете?',
-    'Интересно. Расскажите ещё.',
-    'Я слушаю вас внимательно. Продолжайте.',
-    'Хорошо. Развивайте мысль.',
-    'Понимаю. Что дальше?',
-    'Ваши слова важны. Говорите.',
-    'Я здесь. И я слушаю.',
-    'Записал. Что вы хотите этим сказать?'
+    'Понял вас. Расскажите подробнее — как я могу помочь?',
+    'Слушаю. Что вы хотите обсудить?',
+    'Интересно. Продолжайте — я рядом.',
+    'Понимаю. Спросите что-то конкретное, я постараюсь дать полезный совет.',
+    'Хорошо. О чём бы вы хотели поговорить?',
+    'Я внимательно слушаю. Что дальше?'
   ]);
 }
 
-function getReply(text) {
+/* ============ ГЛАВНАЯ ЛОГИКА ОТВЕТА ============ */
+async function getReply(text) {
   const lower = text.toLowerCase();
-  for (const k of knowledge) {
+
+  // ПРИОРИТЕТ — ПОГОДА
+  if (/погод|дожд|снег|жарко|холодно|прогноз|температур|градус|что надеть|зонт|на улице/i.test(lower)) {
+    return await handleWeather(text);
+  }
+
+  const matches = [];
+  for (const k of K) {
     for (const key of k.keys) {
-      if (lower.includes(key)) {
-        return pickUnique(k.replies);
-      }
+      if (lower.includes(key)) matches.push({ k, key });
     }
+  }
+  if (matches.length) {
+    matches.sort((a, b) => b.key.length - a.key.length);
+    return pickUnique(matches[0].k.replies);
   }
   return smartFallback(text);
 }
 
-function botReply(userText) {
-  setTimeout(() => {
-    const reply = getReply(userText);
-    addMessage(reply, 'bot');
-    speak(reply);
-  }, 500 + Math.random() * 500);
+async function botReply(userText) {
+  showTyping();
+  const delay = 400 + Math.random() * 400;
+  await new Promise(r => setTimeout(r, delay));
+  const reply = await getReply(userText);
+  hideTyping();
+  addMessage(reply, 'bot');
+  speak(reply);
 }
 
 function sendMessage() {
@@ -661,23 +713,19 @@ function sendMessage() {
 }
 
 sendBtn.addEventListener('click', sendMessage);
-inputEl.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
+inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-const GREETING = "Здравствуйте. Добро пожаловать на NEKROS AWAKENING. Вы в безопасности. Никто вас не видит и не слышит. Здесь вы можете говорить свободно. Напишите что-нибудь, и я отвечу.";
+/* ============ СТАРТ ============ */
+const GREETING = "Здравствуйте. Добро пожаловать на NEKROS AWAKENING. Я помогу вам с советами по машинам, здоровью, учёбе, спорту, работе, деньгам, отношениям, а также расскажу погоду в любом городе. Спрашивайте что угодно.";
 
 document.getElementById('intro').addEventListener('click', () => {
   document.getElementById('intro').classList.add('hide');
   try { startAmbient(); } catch(e) {}
-
   setTimeout(() => {
     document.getElementById('main').classList.add('show');
     addMessage("Соединение установлено. Канал защищён.", 'bot');
     speak(GREETING);
-    setTimeout(() => {
-      addMessage("Спросите что угодно — я отвечу.", 'bot');
-    }, 8000);
+    setTimeout(() => addMessage("Примеры: «Какая погода в Москве?», «Какую машину купить до миллиона?», «Как похудеть?», «Что делать при головной боли?»", 'bot'), 12000);
   }, 400);
 });
 </script>
