@@ -410,12 +410,12 @@
     align-items: center; justify-content: center; gap: 4px;
     background: transparent; border: none;
     color: rgba(255,255,255,0.5);
-    font-size: 11px; cursor: pointer;
+    font-size: 10px; cursor: pointer;
     padding: 8px 0; transition: color 0.2s;
     font-family: inherit;
   }
   .nav-btn.active { color: #ff8c42; }
-  .nav-icon { font-size: 22px; }
+  .nav-icon { font-size: 20px; }
 
   .modal {
     position: fixed; inset: 0; z-index: 200;
@@ -490,6 +490,68 @@
     border: 1px solid rgba(255,140,66,0.3);
     text-align: center;
   }
+
+  /* ПРОДВИЖЕНИЕ */
+  .promo-card {
+    margin: 8px 16px 14px;
+    padding: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+  }
+  .promo-card.premium {
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,66,0.15));
+    border-color: rgba(255,215,0,0.35);
+  }
+  .promo-head {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .promo-emoji { font-size: 32px; line-height: 1; }
+  .promo-name {
+    color: #fff; font-size: 15px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .promo-desc {
+    color: rgba(255,255,255,0.65); font-size: 12px;
+    line-height: 1.4;
+  }
+  .promo-prices {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .promo-price {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none;
+    color: #fff;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(255,100,80,0.35);
+    position: relative;
+    text-align: center;
+  }
+  .promo-price:active { transform: scale(0.97); }
+  .promo-price small {
+    display: block;
+    font-size: 10px; font-weight: 500;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+  .promo-price.best {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+  }
+  .promo-note {
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+    padding: 16px 20px 30px;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -554,6 +616,97 @@
       <div class="section-title">📢 Каналы о жизни</div>
       <div id="channelsList"></div>
     </div>
+
+    <div class="tab-content" id="tab-promo">
+      <div class="section-title">💰 Услуги продвижения</div>
+
+      <div class="promo-card">
+        <div class="promo-head">
+          <span class="promo-emoji">🌍</span>
+          <div>
+            <div class="promo-name">Продвижение сообщества</div>
+            <div class="promo-desc">В топе поиска + показ в ленте всем</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="community_month" data-price="400">400 ₽ / мес</button>
+          <button class="promo-price best" data-buy="community_year" data-price="3500">3 500 ₽ / год <small>−27%</small></button>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-head">
+          <span class="promo-emoji">📢</span>
+          <div>
+            <div class="promo-name">Продвижение канала</div>
+            <div class="promo-desc">В топе каналов + рекомендации подписчикам</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="channel_month" data-price="400">400 ₽ / мес</button>
+          <button class="promo-price best" data-buy="channel_year" data-price="3500">3 500 ₽ / год <small>−27%</small></button>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-head">
+          <span class="promo-emoji">🥇</span>
+          <div>
+            <div class="promo-name">Топ-1 в поиске</div>
+            <div class="promo-desc">Первая позиция по вашему запросу</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="top1" data-price="800">800 ₽ / мес</button>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-head">
+          <span class="promo-emoji">🖼️</span>
+          <div>
+            <div class="promo-name">Баннер в ленте</div>
+            <div class="promo-desc">Ваш баннер видят все пользователи</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="banner_week" data-price="300">300 ₽ / нед</button>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-head">
+          <span class="promo-emoji">📝</span>
+          <div>
+            <div class="promo-name">Свой канал в ленте</div>
+            <div class="promo-desc">Посты автоматически в ленте всех</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="autopost" data-price="500">500 ₽ / мес</button>
+        </div>
+      </div>
+
+      <div class="section-title">⭐ Premium для себя</div>
+
+      <div class="promo-card premium">
+        <div class="promo-head">
+          <span class="promo-emoji">👑</span>
+          <div>
+            <div class="promo-name">Sunset Premium</div>
+            <div class="promo-desc">Галочка ✅ · без рекламы · эксклюзивные стикеры · 2 ГБ загрузки</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price" data-buy="premium_month" data-price="199">199 ₽ / мес</button>
+          <button class="promo-price best" data-buy="premium_year" data-price="1900">1 900 ₽ / год <small>−20%</small></button>
+        </div>
+      </div>
+
+      <div class="promo-note">
+        💳 Оплата: СБП · Карта · Крипта. Возврат в течение 7 дней.
+      </div>
+    </div>
   </div>
 
   <div class="player-bar" id="playerBar">
@@ -571,6 +724,7 @@
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
     <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
     <button class="nav-btn" data-tab="channels"><span class="nav-icon">📢</span><span>Каналы</span></button>
+    <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
   <div id="chat">
@@ -605,7 +759,7 @@
 
     <div class="modal-option" data-action="group-closed">
       <div class="opt-title">🔒 Закрытая группа</div>
-      <div class="opt-desc">Только по ссылке-приглашению. Пишешь с теми, кого позвал.</div>
+      <div class="opt-desc">Только по ссылке-приглашению.</div>
     </div>
 
     <div class="modal-option" data-action="channel">
@@ -656,10 +810,10 @@ function cacheSet(key, data) {
 /* ============================================================
    ХРАНИЛИЩЕ
    ============================================================ */
-const STORAGE_KEY = 'sunset_user_v7';
-const CHATS_KEY = 'sunset_chats_v7';
-const GROUPS_KEY = 'sunset_groups_v7';
-const CHANNELS_KEY = 'sunset_channels_v7';
+const STORAGE_KEY = 'sunset_user_v8';
+const CHATS_KEY = 'sunset_chats_v8';
+const GROUPS_KEY = 'sunset_groups_v8';
+const CHANNELS_KEY = 'sunset_channels_v8';
 let currentUser = null;
 let chats = {};
 let groups = [];
@@ -709,13 +863,10 @@ const BOT_TEMPLATES = {
   greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
   reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Ничего себе!', 'Кайф!', 'Норм!', 'Топ!'],
   agree: ['Согласен', 'Точно', 'Абсолютно', 'Именно так', 'Вот-вот', 'Однозначно', 'Да, это так'],
-  surprise: ['Серьёзно?', 'Да ладно!', 'Не может быть!', 'Ты шутишь?', 'Правда?', 'Ничего себе!'],
   emoji_love: ['❤️', '💕', '😘', '🤗', '💖', '💜', '💗', '🥰', '🌸'],
   emoji_fun: ['😄', '😁', '🤣', '😊', '😜', '😂', '😎', '🤪', '🤩'],
   emoji_ok: ['👌', '👍', '✌️', '💪', '👏', '✅', '🔥', '⚡'],
-  ask: ['А ты что думаешь?', 'Как ты?', 'А у тебя как?', 'Что нового?', 'Расскажи что-нибудь', 'Как сам?'],
-  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Норм'],
-  topic: ['Работа задолбала', 'Хочу спать', 'Хочу отдохнуть', 'Что смотришь?', 'Что слушаешь?', 'Играешь во что-нибудь?', 'Кофе пью']
+  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Норм']
 };
 
 function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -761,37 +912,24 @@ const SONGS = [
   ['Dua Lipa', 'Levitating'], ['Billie Eilish', 'Bad Guy'], ['Post Malone', 'Circles'],
   ['Harry Styles', 'As It Was'], ['The Kid LAROI', 'Stay'], ['Glass Animals', 'Heat Waves'],
   ['Lil Nas X', 'Montero'], ['Olivia Rodrigo', 'Drivers License'], ['Adele', 'Easy On Me'],
-  ['Coldplay', 'Yellow'], ['Coldplay', 'Viva La Vida'], ['Coldplay', 'Hymn for the Weekend'],
-  ['Maroon 5', 'Sugar'], ['Maroon 5', 'Girls Like You'], ['Maroon 5', 'Memories'],
-  ['The Chainsmokers', 'Closer'], ['The Chainsmokers', 'Something Just Like This'],
-  ['Avicii', 'Wake Me Up'], ['Avicii', 'Levels'], ['Alan Walker', 'Faded'],
-  ['Marshmello', 'Happier'], ['DJ Snake', 'Let Me Love You'], ['Kygo', 'Firestone'],
-  ['Ed Sheeran', 'Perfect'], ['Ed Sheeran', 'Photograph'], ['Shawn Mendes', 'Senorita'],
-  ['Camila Cabello', 'Havana'], ['Selena Gomez', 'Lose You to Love Me'], ['Ariana Grande', '7 Rings'],
-  ['Ariana Grande', 'Thank U Next'], ['Ariana Grande', 'Into You'], ['Katy Perry', 'Roar'],
-  ['Katy Perry', 'Firework'], ['Rihanna', 'Diamonds'], ['Rihanna', 'Umbrella'], ['Beyoncé', 'Halo'],
-  ['Lady Gaga', 'Bad Romance'], ['Lady Gaga', 'Shallow'], ['Bruno Mars', 'Just the Way You Are'],
-  ['Bruno Mars', 'Uptown Funk'], ['Bruno Mars', 'Locked Out of Heaven'], ['Justin Bieber', 'Sorry'],
-  ['Justin Bieber', 'Love Yourself'], ['Justin Bieber', 'Peaches'], ['Taylor Swift', 'Love Story'],
-  ['Taylor Swift', 'Shake It Off'], ['Taylor Swift', 'Blank Space'], ['Taylor Swift', 'Anti-Hero'],
-  ['Dua Lipa', "Don't Start Now"], ['Dua Lipa', 'New Rules'], ['Doja Cat', 'Say So'],
-  ['Doja Cat', 'Kiss Me More'], ['Sia', 'Chandelier'], ['Sia', 'Cheap Thrills'],
-  ['Sia', 'Snowman'], ['Ava Max', 'Sweet But Psycho'], ['Ava Max', 'Kings & Queens'],
-  ['Meduza', 'Piece of Your Heart'], ['Regard', 'Ride It'], ['Tones and I', 'Dance Monkey'],
-  ['Harry Styles', 'Watermelon Sugar'], ['Harry Styles', 'Adore You'], ['Billie Eilish', 'Lovely'],
-  ['Billie Eilish', 'Happier Than Ever'], ['Olivia Rodrigo', 'Good 4 U'],
-  ['Imagine Dragons', 'Thunder'], ['Imagine Dragons', 'Radioactive'], ['Imagine Dragons', 'Demons'],
-  ['OneRepublic', 'Counting Stars'], ['OneRepublic', 'Apologize'], ['OneRepublic', 'Secrets'],
-  ['Passenger', 'Let Her Go'], ['James Arthur', "Say You Won't Let Go"],
-  ['Sam Smith', 'Stay With Me'], ['Lewis Capaldi', 'Someone You Loved'], ['Ruth B', 'Lost Boy'],
-  ['Adele', 'Hello'], ['Adele', 'Rolling in the Deep'], ['Adele', 'Someone Like You'],
-  ['Lana Del Rey', 'Summertime Sadness'], ['Lana Del Rey', 'Young and Beautiful'],
-  ['Lorde', 'Royals'], ['Hozier', 'Take Me to Church'], ["Rag'n'Bone Man", 'Human'],
-  ['Tom Odell', 'Another Love'], ['Keane', 'Somewhere Only We Know'],
-  ['Linkin Park', 'Numb'], ['Linkin Park', 'In the End'], ['System of a Down', 'Chop Suey!'],
-  ['Green Day', 'Boulevard of Broken Dreams'], ['Red Hot Chili Peppers', 'Californication'],
-  ['Nirvana', 'Smells Like Teen Spirit'], ['Queen', 'Bohemian Rhapsody'],
-  ['AC/DC', 'Thunderstruck'], ['Muse', 'Supermassive Black Hole'], ['Arctic Monkeys', 'Do I Wanna Know?']
+  ['Coldplay', 'Yellow'], ['Coldplay', 'Viva La Vida'], ['Maroon 5', 'Sugar'],
+  ['The Chainsmokers', 'Closer'], ['Avicii', 'Wake Me Up'], ['Alan Walker', 'Faded'],
+  ['Marshmello', 'Happier'], ['DJ Snake', 'Let Me Love You'], ['Ed Sheeran', 'Perfect'],
+  ['Shawn Mendes', 'Senorita'], ['Camila Cabello', 'Havana'], ['Ariana Grande', '7 Rings'],
+  ['Katy Perry', 'Roar'], ['Rihanna', 'Diamonds'], ['Beyoncé', 'Halo'],
+  ['Lady Gaga', 'Bad Romance'], ['Bruno Mars', 'Uptown Funk'], ['Justin Bieber', 'Sorry'],
+  ['Taylor Swift', 'Shake It Off'], ['Taylor Swift', 'Anti-Hero'], ['Dua Lipa', "Don't Start Now"],
+  ['Doja Cat', 'Say So'], ['Sia', 'Chandelier'], ['Sia', 'Snowman'],
+  ['Ava Max', 'Sweet But Psycho'], ['Meduza', 'Piece of Your Heart'], ['Tones and I', 'Dance Monkey'],
+  ['Harry Styles', 'Watermelon Sugar'], ['Billie Eilish', 'Lovely'], ['Olivia Rodrigo', 'Good 4 U'],
+  ['Imagine Dragons', 'Thunder'], ['Imagine Dragons', 'Radioactive'], ['OneRepublic', 'Counting Stars'],
+  ['Passenger', 'Let Her Go'], ['Sam Smith', 'Stay With Me'], ['Lewis Capaldi', 'Someone You Loved'],
+  ['Adele', 'Hello'], ['Adele', 'Rolling in the Deep'], ['Lana Del Rey', 'Summertime Sadness'],
+  ['Hozier', 'Take Me to Church'], ['Tom Odell', 'Another Love'],
+  ['Linkin Park', 'Numb'], ['Linkin Park', 'In the End'], ['Green Day', 'Boulevard of Broken Dreams'],
+  ['Red Hot Chili Peppers', 'Californication'], ['Nirvana', 'Smells Like Teen Spirit'],
+  ['Queen', 'Bohemian Rhapsody'], ['AC/DC', 'Thunderstruck'], ['Muse', 'Supermassive Black Hole'],
+  ['Arctic Monkeys', 'Do I Wanna Know?']
 ];
 
 let currentTrack = null;
@@ -807,29 +945,27 @@ const MEMES = [
   'https://i.imgflip.com/26am.jpg', 'https://i.imgflip.com/9ehk.jpg', 'https://i.imgflip.com/1otk96.jpg',
   'https://i.imgflip.com/24y43o.jpg', 'https://i.imgflip.com/1ur9b0.jpg', 'https://i.imgflip.com/261o3j.jpg',
   'https://i.imgflip.com/1e7ql7.jpg', 'https://i.imgflip.com/1ihzfe.jpg', 'https://i.imgflip.com/20cylt.jpg',
-  'https://i.imgflip.com/1jwhww.jpg', 'https://i.imgflip.com/1yx9e5.jpg', 'https://i.imgflip.com/20y95f.jpg',
-  'https://i.imgflip.com/1h7in3.jpg', 'https://i.imgflip.com/345v97.jpg', 'https://i.imgflip.com/2wifvo.jpg',
-  'https://i.imgflip.com/1o00in.jpg', 'https://i.imgflip.com/1q9v36.jpg'
+  'https://i.imgflip.com/1jwhww.jpg', 'https://i.imgflip.com/1yx9e5.jpg', 'https://i.imgflip.com/20y95f.jpg'
 ];
 
 /* ============================================================
    ИСТОРИИ
    ============================================================ */
 const STORIES = [
-  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода идеальная. Нашла уютное кафе рядом — провела 2 часа с книгой. Иногда нужно просто остановиться.' },
-  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения HTML, CSS и JS — и вот оно работает. Не бойтесь начинать.' },
-  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному рецепту. Секрет — гуанчале и яйца комнатной температуры. Получилось лучше чем в ресторане!' },
-  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Думал не смогу, но дошёл. Начинайте с малого — 5 минут в день.' },
-  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Каждый раз нахожу что-то новое. Книги меняются с тобой. Что у вас в списке?' },
-  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой. Теперь ищу пластинки на блошиных рынках.' },
-  { author: 'Елена', color: '#f5a623', text: 'Начала рисовать акварелью. Пока получается криво, но это так расслабляет! Через месяц покажу прогресс.' },
-  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. RTX 4080, 32 ГБ RAM. Следующая цель — домашний сервер.' },
-  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной 40 минут без телефона. Рекомендую всем — попробуйте раз в неделю.' },
-  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 новых английских слов за месяц. Метод: 20 карточек утром, 20 вечером. Через полгода буду свободно говорить.' }
+  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода идеальная. Нашла уютное кафе рядом.' },
+  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения — и вот оно работает. Не бойтесь начинать.' },
+  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному рецепту. Получилось лучше чем в ресторане!' },
+  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Начинайте с малого — 5 минут в день.' },
+  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Книги меняются с тобой.' },
+  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой.' },
+  { author: 'Елена', color: '#f5a623', text: 'Начала рисовать акварелью. Пока криво, но так расслабляет!' },
+  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. Следующая цель — домашний сервер.' },
+  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной 40 минут без телефона.' },
+  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 английских слов за месяц. Метод: 20 карточек утром, 20 вечером.' }
 ];
 
 /* ============================================================
-   РЕГИСТРАЦИЯ — ИСПРАВЛЕНО
+   РЕГИСТРАЦИЯ
    ============================================================ */
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
@@ -841,38 +977,25 @@ function updateAvatar() {
   const name = regName.value.trim();
   avatarPreview.textContent = name ? name.charAt(0).toUpperCase() : '?';
   avatarPreview.style.background = chosenColor;
-  if (name.length >= 2) {
-    regBtn.style.opacity = '1';
-  } else {
-    regBtn.style.opacity = '0.6';
-  }
+  regBtn.style.opacity = name.length >= 2 ? '1' : '0.6';
 }
-
 avatarPreview.addEventListener('click', () => {
   let i = AVATAR_COLORS.indexOf(chosenColor);
   i = (i + 1) % AVATAR_COLORS.length;
   chosenColor = AVATAR_COLORS[i];
   updateAvatar();
 });
-
 regName.addEventListener('input', updateAvatar);
 regName.addEventListener('change', updateAvatar);
 regName.addEventListener('keyup', updateAvatar);
 regName.addEventListener('paste', () => setTimeout(updateAvatar, 50));
-
-// Автопроверка каждые 300 мс
 setInterval(updateAvatar, 300);
-
-// Начальный цвет
 avatarPreview.style.background = chosenColor;
 updateAvatar();
 
 regBtn.addEventListener('click', () => {
   const name = regName.value.trim();
-  if (name.length < 2) {
-    alert('Введите имя (минимум 2 символа)');
-    return;
-  }
+  if (name.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
   currentUser = { name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
   startApp();
@@ -951,9 +1074,7 @@ function renderChatsList(tab, query) {
     items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
   }
 
-  if (query) {
-    items = items.filter(i => i.name.toLowerCase().includes(query));
-  }
+  if (query) items = items.filter(i => i.name.toLowerCase().includes(query));
 
   if (!items.length) {
     list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
@@ -966,8 +1087,7 @@ function renderChatsList(tab, query) {
 
     let badge = '';
     if (item.type === 'group') {
-      if (item.closed) badge = '<span class="badge closed">🔒 Закрытая</span>';
-      else badge = '<span class="badge open">🌍 Открытая</span>';
+      badge = item.closed ? '<span class="badge closed">🔒 Закрытая</span>' : '<span class="badge open">🌍 Открытая</span>';
     } else if (item.type === 'community') {
       badge = '<span class="badge open">🌍 Сообщество</span>';
     }
@@ -1017,7 +1137,7 @@ function openChat(item) {
   if (item.type === 'group' && item.closed && item.link) {
     inviteBar.style.display = 'flex';
     inviteBar.onclick = () => {
-      navigator.clipboard && navigator.clipboard.writeText(item.link);
+      if (navigator.clipboard) navigator.clipboard.writeText(item.link);
       alert('Ссылка скопирована: ' + item.link);
     };
   } else {
@@ -1188,7 +1308,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
       document.getElementById('linkBox').textContent = link;
       const btn = document.getElementById('formSubmit');
       btn.textContent = 'Готово';
-      const oldOnclick = btn.onclick;
       btn.onclick = () => {
         document.getElementById('formModal').classList.remove('show');
         btn.textContent = 'Создать';
@@ -1244,14 +1363,14 @@ async function loadFeed() {
   const el = document.getElementById('feedContent');
   el.innerHTML = '<div class="loading">Загружаю ленту</div>';
 
-  let cached = cacheGet('feed_v7');
+  let cached = cacheGet('feed_v8');
   if (cached) { renderFeed(cached); return; }
 
   const memesForToday = pickDailyItems(MEMES, 8);
   const storiesForToday = pickDailyItems(STORIES, 5);
   const fact = rnd([
-    { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов — больше, чем звёзд в Млечном Пути.' },
-    { emoji: '🌍', text: 'Земля вращается вокруг Солнца со скоростью ~107 000 км/ч.' },
+    { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов.' },
+    { emoji: '🌍', text: 'Земля вращается вокруг Солнца ~107 000 км/ч.' },
     { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно.' },
     { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина.' },
     { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день.' },
@@ -1261,7 +1380,7 @@ async function loadFeed() {
 
   let news = [];
   try {
-    const proxies = ['https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy/?quest=', 'https://api.allorigins.win/raw?url='];
+    const proxies = ['https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy/?quest='];
     for (const proxy of proxies) {
       try {
         const controller = new AbortController();
@@ -1294,7 +1413,7 @@ async function loadFeed() {
   }
 
   const data = { news, memes: memesForToday, stories: storiesForToday, fact };
-  cacheSet('feed_v7', data);
+  cacheSet('feed_v8', data);
   renderFeed(data);
 }
 
@@ -1425,15 +1544,16 @@ async function playSong(artist, title) {
       document.getElementById('playerName').textContent = track.title;
       document.getElementById('playerArtist').textContent = track.artist.name;
       document.getElementById('playerPlay').textContent = '⏸';
+    } else {
+      alert('Трек не найден');
     }
   } catch(e) {
-    alert('Не удалось загрузить трек. Проверьте интернет.');
+    alert('Не удалось загрузить. Проверьте интернет.');
   }
 }
 
 document.getElementById('musicSearchBtn').addEventListener('click', () => {
-  const q = document.getElementById('musicSearch').value.trim();
-  loadMusicList(q);
+  loadMusicList(document.getElementById('musicSearch').value.trim());
 });
 document.getElementById('musicSearch').addEventListener('input', e => {
   loadMusicList(e.target.value.trim());
@@ -1453,7 +1573,7 @@ document.getElementById('playerClose').addEventListener('click', () => {
    ============================================================ */
 function scheduleHourlyRefresh() {
   setInterval(() => {
-    localStorage.removeItem('cache_feed_v7');
+    localStorage.removeItem('cache_feed_v8');
     loadFeed();
   }, 3600000);
 }
@@ -1463,7 +1583,7 @@ document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     const now = Date.now();
     if (now - lastActiveTime > 3600000) {
-      localStorage.removeItem('cache_feed_v7');
+      localStorage.removeItem('cache_feed_v8');
       loadFeed();
     }
     lastActiveTime = now;
@@ -1471,7 +1591,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ============================================================
-   ХЭШ #join=...
+   ХЭШ #join=
    ============================================================ */
 window.addEventListener('load', () => {
   const hash = location.hash;
@@ -1482,6 +1602,29 @@ window.addEventListener('load', () => {
       if (g) alert('Вы вошли в группу "' + g.name + '" по ссылке!');
     }, 1500);
   }
+});
+
+/* ============================================================
+   ПОКУПКИ ПРОДВИЖЕНИЯ
+   ============================================================ */
+document.querySelectorAll('.promo-price').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.dataset.buy;
+    const price = btn.dataset.price;
+    const names = {
+      community_month: 'Продвижение сообщества на 1 месяц',
+      community_year: 'Продвижение сообщества на 1 год',
+      channel_month: 'Продвижение канала на 1 месяц',
+      channel_year: 'Продвижение канала на 1 год',
+      top1: 'Топ-1 в поиске на 1 месяц',
+      banner_week: 'Баннер в ленте на 1 неделю',
+      autopost: 'Автопостинг в ленту на 1 месяц',
+      premium_month: 'Sunset Premium на 1 месяц',
+      premium_year: 'Sunset Premium на 1 год'
+    };
+    const name = names[item] || item;
+    alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Обратитесь к администратору\n(СБП, карта или крипта)');
+  });
 });
 </script>
 </body>
