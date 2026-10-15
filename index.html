@@ -17,53 +17,36 @@
     position: fixed; inset: 0; z-index: 0;
     background-image: url('https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90');
     background-size: cover; background-position: center;
-    transition: transform 0.1s linear;
   }
   .sunset-photo::after {
-    content: '';
-    position: absolute; inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: linear-gradient(180deg,
-      rgba(20, 5, 30, 0.4) 0%,
-      rgba(30, 10, 40, 0.25) 40%,
-      rgba(40, 15, 30, 0.35) 70%,
-      rgba(15, 5, 20, 0.75) 100%);
+      rgba(20,5,30,0.4) 0%, rgba(30,10,40,0.25) 40%,
+      rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75) 100%);
   }
-  .drag-hint {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%); z-index: 50;
-    background: rgba(0,0,0,0.55); backdrop-filter: blur(20px);
-    color: #fff; padding: 10px 20px; border-radius: 30px;
-    font-size: 12px; border: 1px solid rgba(255,255,255,0.2);
-    display: flex; align-items: center; gap: 8px;
-    opacity: 1; transition: opacity 0.5s ease;
-    pointer-events: none; white-space: nowrap;
-  }
-  .drag-hint.hide { opacity: 0; }
 
   #register {
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    background: rgba(0,0,0,0.35); backdrop-filter: blur(15px);
-    transition: opacity 0.5s ease;
+    padding: 20px; background: rgba(0,0,0,0.35); backdrop-filter: blur(15px);
+    transition: opacity 0.5s;
   }
   #register.hide { opacity: 0; pointer-events: none; }
   .reg-card {
     background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
     border: 1px solid rgba(255,255,255,0.3); border-radius: 24px;
     padding: 32px 24px; width: 100%; max-width: 380px;
-    color: #fff; text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    color: #fff; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
-  .reg-card h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .reg-card h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
   .reg-card p { font-size: 14px; opacity: 0.85; margin-bottom: 28px; }
   .avatar-preview {
     width: 100px; height: 100px; border-radius: 50%;
     margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
     font-size: 40px; font-weight: 700; color: #fff; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    border: 3px solid rgba(255,255,255,0.5);
+    border: 3px solid rgba(255,255,255,0.5); transition: transform 0.15s;
   }
+  .avatar-preview:active { transform: scale(0.95); }
   .reg-input {
     width: 100%; background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.25); border-radius: 14px;
@@ -75,34 +58,24 @@
     width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
     border: none; border-radius: 14px; padding: 16px;
     font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(255,100,80,0.5); font-family: inherit;
+    font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
   }
   .reg-btn:disabled { opacity: 0.5; }
 
   #panel {
-    position: fixed; top: 0; bottom: 0; left: 0;
-    width: 100%; max-width: 420px; z-index: 20;
+    position: fixed; inset: 0; z-index: 20;
     display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.62);
+    background: rgba(15, 10, 25, 0.72);
     backdrop-filter: blur(30px) saturate(150%);
     -webkit-backdrop-filter: blur(30px) saturate(150%);
-    border-right: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 10px 0 40px rgba(0,0,0,0.3);
+    opacity: 0; pointer-events: none; transition: opacity 0.4s;
   }
-  .drag-handle {
-    position: absolute; top: 0; bottom: 0; right: -8px;
-    width: 24px; cursor: grab; z-index: 30;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .drag-handle::before {
-    content: ''; width: 4px; height: 60px; border-radius: 4px;
-    background: rgba(255,255,255,0.35); transition: all 0.2s;
-  }
+  #panel.show { opacity: 1; pointer-events: all; }
+
   .header {
     padding: 52px 20px 12px;
     display: flex; align-items: center; justify-content: space-between;
-    color: #fff;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12);
   }
   .header-left { display: flex; align-items: center; gap: 12px; }
   .my-avatar {
@@ -113,37 +86,134 @@
   }
   .my-name { font-size: 17px; font-weight: 600; }
   .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
-  .settings-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.2);
+  .header-right { display: flex; gap: 8px; }
+  .icon-btn {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
     width: 40px; height: 40px; border-radius: 50%;
     color: #fff; font-size: 18px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
+  .icon-btn:active { background: rgba(255,255,255,0.3); }
+  .icon-btn.plus { font-size: 24px; font-weight: 300; }
 
-  .content {
-    flex: 1; overflow-y: auto; overflow-x: hidden;
-    padding-bottom: 90px;
-    scrollbar-width: none;
+  /* Поиск с табами */
+  .search-section { padding: 12px 16px 0; }
+  .search-input-wrap { position: relative; display: flex; align-items: center; }
+  .search-input-wrap svg {
+    position: absolute; left: 14px; width: 18px; height: 18px;
+    fill: rgba(255,255,255,0.7); pointer-events: none;
   }
+  .search-input {
+    width: 100%; background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px; padding: 12px 16px 12px 42px;
+    font-size: 15px; color: #fff; outline: none; font-family: inherit;
+  }
+  .search-input::placeholder { color: rgba(255,255,255,0.6); }
+
+  .search-tabs {
+    display: flex; gap: 6px; padding: 10px 16px 0;
+  }
+  .search-tab {
+    flex: 1; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 8px 6px;
+    color: rgba(255,255,255,0.7); font-size: 12px;
+    cursor: pointer; font-family: inherit; text-align: center;
+    transition: all 0.2s;
+  }
+  .search-tab.active {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 4px 12px rgba(255,100,80,0.4);
+  }
+
+  /* Контент */
+  .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
   .content::-webkit-scrollbar { display: none; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
+  /* Карточки */
+  .card-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px; border-radius: 16px;
+    margin: 4px 12px; cursor: pointer;
+    background: rgba(255,255,255,0.06);
+    transition: background 0.15s;
+  }
+  .card-item:active { background: rgba(255,255,255,0.15); }
+  .card-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: #fff;
+    flex-shrink: 0; position: relative;
+    overflow: hidden;
+  }
+  .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .card-avatar.group { border-radius: 14px; }
+  .card-avatar.channel { border-radius: 50%; }
+  .online-dot {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 12px; height: 12px; background: #4ade80;
+    border-radius: 50%; border: 2px solid rgba(30,20,50,0.9);
+  }
+  .card-info { flex: 1; min-width: 0; }
+  .card-name {
+    color: #fff; font-size: 15px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+  .card-sub {
+    color: rgba(255,255,255,0.7); font-size: 12px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .badge {
+    display: inline-block; font-size: 10px; padding: 2px 6px;
+    border-radius: 6px; margin-left: 4px;
+  }
+  .badge.open { background: rgba(74, 222, 128, 0.25); color: #86efac; }
+  .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
+  .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
+
+  /* Поиск — результат */
+  .search-result-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .search-result-item .card-avatar { width: 44px; height: 44px; font-size: 18px; }
+  .search-result-item .card-info { flex: 1; }
+
+  /* Пустое состояние */
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: rgba(255,255,255,0.7);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
+  .loading {
+    text-align: center; padding: 40px;
+    color: rgba(255,255,255,0.6); font-size: 14px;
+  }
+  .loading::after {
+    content: ''; display: inline-block;
+    width: 16px; height: 16px; margin-left: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #ff8c42; border-radius: 50%;
+    animation: spin 0.8s linear infinite; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   /* Новости */
   .news-item {
-    display: flex; gap: 12px;
-    padding: 14px 16px;
+    display: flex; gap: 12px; padding: 14px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
     cursor: pointer;
-    transition: background 0.2s;
   }
-  .news-item:active { background: rgba(255,255,255,0.08); }
+  .news-item:active { background: rgba(255,255,255,0.06); }
   .news-img {
     width: 80px; height: 80px; border-radius: 12px;
-    background: rgba(255,255,255,0.1);
-    background-size: cover; background-position: center;
-    flex-shrink: 0;
+    background: rgba(255,255,255,0.1); background-size: cover;
+    background-position: center; flex-shrink: 0;
   }
   .news-info { flex: 1; min-width: 0; }
   .news-title {
@@ -158,8 +228,47 @@
   }
   .news-source {
     background: rgba(255,140,66,0.2);
-    padding: 2px 8px; border-radius: 6px;
-    color: #ffb380;
+    padding: 2px 8px; border-radius: 6px; color: #ffb380;
+  }
+
+  /* Мемы */
+  .memes-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; padding: 8px 12px;
+  }
+  .meme-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px; overflow: hidden;
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  }
+  .meme-card img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Истории */
+  .story-card {
+    margin: 8px 16px; padding: 16px;
+    background: linear-gradient(135deg, rgba(255,140,66,0.15), rgba(168,85,247,0.15));
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; color: #fff;
+  }
+  .story-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .story-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+  }
+  .story-author { font-size: 13px; font-weight: 600; }
+  .story-time { font-size: 11px; opacity: 0.6; }
+  .story-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
+
+  /* Секция заголовок */
+  .section-title {
+    color: rgba(255,255,255,0.6);
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 18px 16px 8px;
+    font-weight: 600;
   }
 
   /* Музыка */
@@ -175,20 +284,16 @@
   .music-search button {
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
     border: none; border-radius: 14px;
-    padding: 0 18px; color: #fff; font-size: 16px;
-    cursor: pointer;
+    padding: 0 18px; color: #fff; font-size: 16px; cursor: pointer;
   }
   .track {
     display: flex; gap: 12px; align-items: center;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+    padding: 10px 16px; cursor: pointer;
   }
-  .track:active { background: rgba(255,255,255,0.08); }
-  .track-cover {
-    width: 52px; height: 52px; border-radius: 10px;
-    background-size: cover; background-position: center;
-    background-color: rgba(255,255,255,0.1);
+  .track:active { background: rgba(255,255,255,0.06); }
+  .track-num {
+    width: 26px; text-align: center;
+    color: rgba(255,255,255,0.5); font-size: 13px;
     flex-shrink: 0;
   }
   .track-info { flex: 1; min-width: 0; }
@@ -203,22 +308,21 @@
   }
   .track-play { color: #ff8c42; font-size: 18px; flex-shrink: 0; }
 
+  /* Плеер */
   .player-bar {
     position: absolute; bottom: 72px; left: 0; right: 0;
     background: rgba(20, 10, 30, 0.95);
     backdrop-filter: blur(30px);
     border-top: 1px solid rgba(255,255,255,0.15);
     padding: 10px 16px;
-    display: none;
-    align-items: center; gap: 12px;
+    display: none; align-items: center; gap: 12px;
     z-index: 15;
   }
   .player-bar.show { display: flex; }
   .player-cover {
     width: 42px; height: 42px; border-radius: 8px;
     background-size: cover; background-position: center;
-    background-color: rgba(255,255,255,0.1);
-    flex-shrink: 0;
+    background-color: rgba(255,255,255,0.1); flex-shrink: 0;
   }
   .player-info { flex: 1; min-width: 0; }
   .player-name {
@@ -233,77 +337,13 @@
   }
   audio { display: none; }
 
-  /* Лента */
-  .feed-section-title {
-    color: rgba(255,255,255,0.6);
-    font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 18px 16px 8px;
-    font-weight: 600;
-  }
-  .fact-card {
-    margin: 8px 16px;
-    padding: 16px;
-    background: linear-gradient(135deg, rgba(255,140,66,0.2), rgba(255,94,98,0.2));
-    border: 1px solid rgba(255,140,66,0.3);
-    border-radius: 16px;
-    color: #fff; font-size: 14px; line-height: 1.5;
-  }
-  .fact-emoji { font-size: 24px; display: block; margin-bottom: 8px; }
-
-  /* Контакты */
-  .search-wrap { padding: 12px 16px; }
-  .search-box { position: relative; display: flex; align-items: center; }
-  .search-box svg {
-    position: absolute; left: 14px;
-    width: 18px; height: 18px;
-    fill: rgba(255,255,255,0.7);
-    pointer-events: none;
-  }
-  .search-input {
-    width: 100%; background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 12px 16px 12px 42px;
-    font-size: 15px; color: #fff; outline: none;
-    font-family: inherit;
-  }
-  .search-input::placeholder { color: rgba(255,255,255,0.65); }
-  .contact {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 14px; border-radius: 16px;
-    cursor: pointer; transition: background 0.2s;
-    margin: 4px 12px;
-    background: rgba(255,255,255,0.06);
-  }
-  .contact-avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 700; color: #fff;
-    flex-shrink: 0; position: relative;
-  }
-  .online-dot {
-    position: absolute; bottom: 2px; right: 2px;
-    width: 12px; height: 12px; background: #4ade80;
-    border-radius: 50%; border: 2px solid rgba(30,20,50,0.9);
-  }
-  .contact-info { flex: 1; min-width: 0; }
-  .contact-name {
-    color: #fff; font-size: 16px; font-weight: 600;
-    margin-bottom: 3px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .contact-last {
-    color: rgba(255,255,255,0.75); font-size: 13px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-
+  /* Чат */
   #chat {
     position: absolute; inset: 0; z-index: 40;
     display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.85);
+    background: rgba(15, 10, 25, 0.95);
     backdrop-filter: blur(30px);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
+    transform: translateX(100%); transition: transform 0.3s ease;
   }
   #chat.show { transform: translateX(0); }
   .chat-header {
@@ -315,7 +355,7 @@
     background: transparent; border: none; color: #fff;
     font-size: 24px; padding: 4px 8px; cursor: pointer;
   }
-  .chat-header .contact-avatar { width: 40px; height: 40px; font-size: 16px; }
+  .chat-header .card-avatar { width: 40px; height: 40px; font-size: 16px; }
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
   .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
@@ -363,8 +403,7 @@
     flex: 1; background: rgba(255,255,255,0.18);
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 22px; padding: 12px 18px;
-    font-size: 15px; color: #fff; outline: none;
-    font-family: inherit;
+    font-size: 15px; color: #fff; outline: none; font-family: inherit;
   }
   .chat-input::placeholder { color: rgba(255,255,255,0.6); }
   .chat-send {
@@ -373,12 +412,20 @@
     border: none; color: #fff; font-size: 20px;
     cursor: pointer; flex-shrink: 0;
   }
+  .invite-bar {
+    padding: 8px 14px; background: rgba(255,140,66,0.15);
+    border-bottom: 1px solid rgba(255,140,66,0.25);
+    color: #ffb380; font-size: 12px;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
 
+  /* Нижняя навигация */
   .bottom-nav {
     position: absolute; bottom: 0; left: 0; right: 0;
     height: 72px; z-index: 25;
     display: flex; align-items: center; justify-content: space-around;
-    background: rgba(15, 10, 25, 0.85);
+    background: rgba(15, 10, 25, 0.9);
     backdrop-filter: blur(30px);
     border-top: 1px solid rgba(255,255,255,0.12);
   }
@@ -388,42 +435,93 @@
     background: transparent; border: none;
     color: rgba(255,255,255,0.5);
     font-size: 11px; cursor: pointer;
-    padding: 8px 0;
-    transition: color 0.2s;
+    padding: 8px 0; transition: color 0.2s;
     font-family: inherit;
   }
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 22px; }
 
-  .empty-state {
-    text-align: center; padding: 60px 20px;
-    color: rgba(255,255,255,0.7);
+  /* Модальные окна */
+  .modal {
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; align-items: flex-end; justify-content: center;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
   }
-  .empty-state .emoji { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
-  .loading {
-    text-align: center; padding: 40px;
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
+  .modal.show { opacity: 1; pointer-events: all; }
+  .modal-card {
+    background: rgba(25, 15, 35, 0.98);
+    backdrop-filter: blur(30px);
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px 32px;
+    width: 100%; max-width: 500px;
+    color: #fff;
+    transform: translateY(100%); transition: transform 0.3s ease;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    max-height: 85vh; overflow-y: auto;
   }
-  .loading::after {
-    content: '';
-    display: inline-block;
-    width: 16px; height: 16px;
-    margin-left: 10px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #ff8c42;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
+  .modal.show .modal-card { transform: translateY(0); }
+  .modal-title {
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 4px; text-align: center;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-sub {
+    font-size: 13px; opacity: 0.7;
+    text-align: center; margin-bottom: 20px;
+  }
+  .modal-option {
+    padding: 14px; border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .modal-option:active { background: rgba(255,255,255,0.15); }
+  .modal-option .opt-title {
+    font-size: 15px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 4px;
+  }
+  .modal-option .opt-desc {
+    font-size: 12px; opacity: 0.65; line-height: 1.4;
+  }
+  .modal-close {
+    background: rgba(255,255,255,0.1);
+    border: none; border-radius: 12px;
+    padding: 12px; width: 100%; color: #fff;
+    font-size: 14px; cursor: pointer;
+    font-family: inherit; margin-top: 8px;
+  }
+  .modal-input {
+    width: 100%; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px; padding: 14px 18px;
+    font-size: 15px; color: #fff; outline: none;
+    margin-bottom: 12px; font-family: inherit;
+  }
+  .modal-input::placeholder { color: rgba(255,255,255,0.5); }
+  .modal-primary {
+    width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none; border-radius: 14px; padding: 14px;
+    font-size: 15px; font-weight: 600; color: #fff;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 8px 24px rgba(255,100,80,0.5);
+  }
+  .link-box {
+    background: rgba(0,0,0,0.4);
+    padding: 12px; border-radius: 12px;
+    font-size: 12px; word-break: break-all;
+    color: #ffb380; margin-bottom: 12px;
+    border: 1px solid rgba(255,140,66,0.3);
+    text-align: center;
+  }
 </style>
 </head>
 <body>
 
-<div class="sunset-photo" id="sunsetPhoto"></div>
-<div class="drag-hint" id="dragHint">↔ Перетащи панель вправо</div>
+<div class="sunset-photo"></div>
 
+<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -434,9 +532,8 @@
   </div>
 </div>
 
+<!-- ПАНЕЛЬ -->
 <div id="panel">
-  <div class="drag-handle" id="dragHandle"></div>
-
   <div class="header">
     <div class="header-left">
       <div class="my-avatar" id="myAvatarSmall"></div>
@@ -445,37 +542,52 @@
         <div class="my-status">в сети</div>
       </div>
     </div>
-    <button class="settings-btn" id="settingsBtn">⚙️</button>
+    <div class="header-right">
+      <button class="icon-btn plus" id="plusBtn">+</button>
+      <button class="icon-btn" id="settingsBtn">⚙️</button>
+    </div>
   </div>
 
   <div class="content" id="content">
+
+    <!-- ЧАТЫ -->
     <div class="tab-content active" id="tab-chats">
-      <div class="search-wrap">
-        <div class="search-box">
+      <div class="search-section">
+        <div class="search-input-wrap">
           <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
-          <input type="text" class="search-input" id="searchInput" placeholder="Поиск людей...">
+          <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
+        </div>
+        <div class="search-tabs">
+          <button class="search-tab active" data-stab="people">👤 Люди</button>
+          <button class="search-tab" data-stab="groups">👥 Группы</button>
+          <button class="search-tab" data-stab="communities">🌍 Сообщества</button>
         </div>
       </div>
-      <div id="contactsList"></div>
+      <div id="chatsList"></div>
     </div>
 
-    <div class="tab-content" id="tab-news">
-      <div id="newsList" class="loading">Загружаю новости</div>
+    <!-- ЛЕНТА -->
+    <div class="tab-content" id="tab-feed">
+      <div id="feedContent"></div>
     </div>
 
+    <!-- МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="music-search">
         <input type="text" id="musicSearch" placeholder="Поиск музыки...">
         <button id="musicSearchBtn">🔍</button>
       </div>
-      <div id="tracksList" class="loading">Загружаю топ</div>
+      <div id="tracksList"></div>
     </div>
 
-    <div class="tab-content" id="tab-feed">
-      <div id="feedContent"></div>
+    <!-- КАНАЛЫ -->
+    <div class="tab-content" id="tab-channels">
+      <div class="section-title">📢 Каналы о жизни</div>
+      <div id="channelsList"></div>
     </div>
   </div>
 
+  <!-- ПЛЕЕР -->
   <div class="player-bar" id="playerBar">
     <div class="player-cover" id="playerCover"></div>
     <div class="player-info">
@@ -486,21 +598,26 @@
     <button class="player-btn" id="playerClose">✕</button>
   </div>
 
+  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
-    <button class="nav-btn" data-tab="news"><span class="nav-icon">📰</span><span>Новости</span></button>
-    <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
+    <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
+    <button class="nav-btn" data-tab="channels"><span class="nav-icon">📢</span><span>Каналы</span></button>
   </div>
 
+  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
-      <div class="contact-avatar" id="chatAvatar"></div>
+      <div class="card-avatar" id="chatAvatar"></div>
       <div class="chat-title">
         <div class="name" id="chatName"></div>
-        <div class="status">в сети</div>
+        <div class="status" id="chatStatus">в сети</div>
       </div>
+    </div>
+    <div class="invite-bar" id="inviteBar" style="display:none;">
+      🔗 Пригласить по ссылке
     </div>
     <div class="chat-body" id="chatBody"></div>
     <div class="chat-input-bar">
@@ -510,174 +627,80 @@
   </div>
 </div>
 
+<!-- МОДАЛКА: Плюсик -->
+<div class="modal" id="createModal">
+  <div class="modal-card">
+    <div class="modal-title">Создать</div>
+    <div class="modal-sub">Выбери что хочешь сделать</div>
+
+    <div class="modal-option" data-action="group-open">
+      <div class="opt-title">🌍 Открытая группа</div>
+      <div class="opt-desc">Любой может найти и зайти. Общайся со всеми.</div>
+    </div>
+
+    <div class="modal-option" data-action="group-closed">
+      <div class="opt-title">🔒 Закрытая группа</div>
+      <div class="opt-desc">Только по ссылке-приглашению. Пишешь с теми, кого позвал.</div>
+    </div>
+
+    <div class="modal-option" data-action="channel">
+      <div class="opt-title">📢 Канал</div>
+      <div class="opt-desc">Ты публикуешь посты о жизни, подписчики читают.</div>
+    </div>
+
+    <button class="modal-close" data-close="createModal">Отмена</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА: Создание группы/канала -->
+<div class="modal" id="formModal">
+  <div class="modal-card">
+    <div class="modal-title" id="formTitle">Новая группа</div>
+    <div class="modal-sub" id="formSub">Опиши коротко</div>
+    <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40">
+    <div id="linkResult" style="display:none;">
+      <div style="font-size:12px;opacity:0.7;margin-bottom:8px;">Ссылка для приглашения:</div>
+      <div class="link-box" id="linkBox"></div>
+    </div>
+    <button class="modal-primary" id="formSubmit">Создать</button>
+    <button class="modal-close" id="formCancel">Отмена</button>
+  </div>
+</div>
+
 <audio id="audioPlayer"></audio>
 
 <script>
 /* ============================================================
-   АВТОКЭШ — обновление данных раз в сутки
+   КЭШ — 1 час
    ============================================================ */
-function getToday() {
-  const d = new Date();
-  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
-}
-function cacheGet(key) {
+function cacheGet(key, maxAgeMs) {
   try {
     const raw = localStorage.getItem('cache_' + key);
     if (!raw) return null;
     const obj = JSON.parse(raw);
-    if (obj.date !== getToday()) return null; // устарело
+    const age = maxAgeMs || 3600000;
+    if (Date.now() - obj.timestamp > age) return null;
     return obj.data;
   } catch(e) { return null; }
 }
 function cacheSet(key, data) {
   try {
-    localStorage.setItem('cache_' + key, JSON.stringify({ date: getToday(), data }));
+    localStorage.setItem('cache_' + key, JSON.stringify({ timestamp: Date.now(), data }));
   } catch(e) {}
 }
 
 /* ============================================================
-   ПЕРЕТАСКИВАНИЕ
-   ============================================================ */
-const panel = document.getElementById('panel');
-const dragHandle = document.getElementById('dragHandle');
-const dragHint = document.getElementById('dragHint');
-let isDragging = false, startX = 0, startLeft = 0, panelLeft = 0;
-const MAX_LEFT = () => window.innerWidth - 60;
-let hintHidden = false;
-function hideHint() { if (!hintHidden) { dragHint.classList.add('hide'); hintHidden = true; } }
-function startDrag(x) { isDragging = true; startX = x; startLeft = panelLeft; panel.style.transition = 'none'; hideHint(); }
-function moveDrag(x) {
-  if (!isDragging) return;
-  const dx = x - startX;
-  let nl = Math.max(-60, Math.min(MAX_LEFT(), startLeft + dx));
-  panelLeft = nl;
-  panel.style.left = nl + 'px';
-  const p = nl / MAX_LEFT();
-  document.getElementById('sunsetPhoto').style.transform = 'translateX(' + (-p * 40) + 'px) scale(1.05)';
-}
-function endDrag() { isDragging = false; panel.style.transition = 'left 0.3s ease'; }
-dragHandle.addEventListener('mousedown', e => { e.preventDefault(); startDrag(e.clientX); });
-document.addEventListener('mousemove', e => moveDrag(e.clientX));
-document.addEventListener('mouseup', endDrag);
-dragHandle.addEventListener('touchstart', e => { e.preventDefault(); startDrag(e.touches[0].clientX); }, { passive: false });
-document.addEventListener('touchmove', e => { if (isDragging) { e.preventDefault(); moveDrag(e.touches[0].clientX); } }, { passive: false });
-document.addEventListener('touchend', endDrag);
-let lastTap = 0;
-dragHandle.addEventListener('click', () => {
-  const n = Date.now();
-  if (n - lastTap < 300) { panelLeft = 0; panel.style.transition = 'left 0.4s'; panel.style.left = '0px'; hideHint(); }
-  lastTap = n;
-});
-
-/* ============================================================
    ХРАНИЛИЩЕ
    ============================================================ */
-const STORAGE_KEY = 'sunset_user_v4';
-const CHATS_KEY = 'sunset_chats_v4';
-let currentUser = null, chats = {}, activePerson = null;
-
-/* ============================================================
-   БОТЫ С РАСШИРЕННОЙ БАЗОЙ (обновляется каждый день)
-   ============================================================ */
-const DAY_SEED = Math.floor(Date.now() / 86400000); // номер дня
-
-// База шаблонов — очень много комбинаций
-const BOT_TEMPLATES = {
-  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
-  question: ['как дела', 'как жизнь', 'что нового', 'чем занят', 'как настроение', 'что делаешь', 'как сам', 'чем занимаешься'],
-  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Ничего себе!', 'Кайф!', 'Норм!', 'Топ!'],
-  agree: ['Согласен', 'Точно', 'Абсолютно', 'Именно так', 'Вот-вот', 'Согласна', 'Однозначно', 'Согласен с тобой', 'Да, это так'],
-  surprise: ['Серьёзно?', 'Да ладно!', 'Не может быть!', 'Ты шутишь?', 'Правда?', 'Серьёзно говоришь?', 'Ничего себе!', 'Круто, не знал'],
-  emoji_love: ['❤️', '💕', '😘', '🤗', '💖', '💜', '💗', '🥰', '😻', '🌸'],
-  emoji_fun: ['😄', '😁', '🤣', '😊', '😜', '😂', '😎', '🤪', '🤩', '😆'],
-  emoji_ok: ['👌', '👍', '✌️', '💪', '👏', '🤝', '✅', '🔥', '⚡', '🎯'],
-  ask: ['А ты что думаешь?', 'Как ты?', 'А у тебя как?', 'Что нового у тебя?', 'Расскажи что-нибудь', 'Как сам?', 'Что делаешь сейчас?', 'Чем занимаешься?'],
-  time: ['Кстати, сегодня отличный день', 'Скоро выходные!', 'Как погода у тебя?', 'Скучно без тебя', 'Думаю о тебе', 'Надо встретиться', 'Соскучился', 'Давай погуляем'],
-  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Принято', 'Норм', 'Бывает'],
-  topic: ['Работа задолбала', 'Хочу спать', 'Есть вкусно хочу', 'Хочу отдохнуть', 'Что смотришь?', 'Что слушаешь?', 'Читал новости?', 'Играешь во что-нибудь?', 'Какой фильм посоветуешь?', 'Кофе пью', 'Чай пью']
-};
-
-// Умная генерация фразы из шаблонов
-function generateBotPhrase() {
-  const r = Math.random();
-  // Выбираем категорию
-  let cat;
-  if (r < 0.10) cat = 'greeting';
-  else if (r < 0.22) cat = 'question';
-  else if (r < 0.35) cat = 'reaction';
-  else if (r < 0.45) cat = 'agree';
-  else if (r < 0.52) cat = 'surprise';
-  else if (r < 0.60) cat = 'emoji_love';
-  else if (r < 0.68) cat = 'emoji_fun';
-  else if (r < 0.76) cat = 'emoji_ok';
-  else if (r < 0.85) cat = 'ask';
-  else if (r < 0.92) cat = 'time';
-  else if (r < 0.96) cat = 'short';
-  else cat = 'topic';
-
-  const pool = BOT_TEMPLATES[cat];
-
-  // Для эмодзи-категорий иногда добавляем несколько
-  if (cat.startsWith('emoji_')) {
-    const emoji = pool[Math.floor(Math.random() * pool.length)];
-    if (Math.random() > 0.6) {
-      const emoji2 = pool[Math.floor(Math.random() * pool.length)];
-      return emoji + emoji2;
-    }
-    return emoji;
-  }
-
-  // Иногда комбинируем приветствие + реакцию + смайлик
-  if (Math.random() > 0.7 && cat !== 'short') {
-    const greeting = BOT_TEMPLATES.greeting[Math.floor(Math.random() * BOT_TEMPLATES.greeting.length)];
-    const reaction = BOT_TEMPLATES.reaction[Math.floor(Math.random() * BOT_TEMPLATES.reaction.length)];
-    const emoji = BOT_TEMPLATES.emoji_fun[Math.floor(Math.random() * BOT_TEMPLATES.emoji_fun.length)];
-    return greeting + '! ' + reaction + ' ' + emoji;
-  }
-
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-// Генерация уникального ответа с учётом контекста
-function generateReply(userText) {
-  const lower = userText.toLowerCase();
-  
-  // Реакция на приветствие
-  if (/привет|здравств|хай|hi|hello|ку/i.test(lower)) {
-    const r = ['Привет!', 'Приветик!', 'Хай!', 'Здравствуй!', 'Ку!', 'Йо!', 'Салют!'];
-    const e = BOT_TEMPLATES.emoji_fun;
-    return r[Math.floor(Math.random() * r.length)] + ' ' + e[Math.floor(Math.random() * e.length)];
-  }
-  
-  // Реакция на вопрос как дела
-  if (/как дела|как ты|как жизнь|как сам/i.test(lower)) {
-    const r = ['Всё отлично!', 'Хорошо!', 'Отлично!', 'Норм!', 'Супер!', 'Класс!'];
-    return r[Math.floor(Math.random() * r.length)] + ' А у тебя как?';
-  }
-  
-  // Реакция на вопрос
-  if (/\?$/.test(userText.trim())) {
-    const r = ['Хороший вопрос', 'Интересно', 'Дай подумать', 'Хм', 'Ого', 'Слушай'];
-    const r2 = ['а что ты сам думаешь?', 'не знаю если честно', 'давай обсудим', 'расскажи подробнее', 'интересно послушать'];
-    return r[Math.floor(Math.random() * r.length)] + ', ' + r2[Math.floor(Math.random() * r2.length)];
-  }
-  
-  // Реакция на эмоции
-  if (/люблю|скучал|соскучил|скучаю/i.test(lower)) {
-    return BOT_TEMPLATES.emoji_love[Math.floor(Math.random() * BOT_TEMPLATES.emoji_love.length)];
-  }
-  
-  if (/устал|плохо|груст|тяжел/i.test(lower)) {
-    return 'Держись 💪 Всё будет хорошо!';
-  }
-  
-  if (/круто|класс|супер|отлично|кайф/i.test(lower)) {
-    return generateBotPhrase();
-  }
-  
-  // Обычный ответ
-  return generateBotPhrase();
-}
+const STORAGE_KEY = 'sunset_user_v6';
+const CHATS_KEY = 'sunset_chats_v6';
+const GROUPS_KEY = 'sunset_groups_v6';
+const CHANNELS_KEY = 'sunset_channels_v6';
+let currentUser = null;
+let chats = {};
+let groups = [];
+let channels = [];
+let activeChat = null; // { id, name, type: 'person'|'group'|'channel', color, emoji, closed? }
 
 /* ============================================================
    ЛЮДИ
@@ -704,10 +727,148 @@ const PEOPLE_NAMES = [
   ['artem', 'Артём', '#ffa726', 'А'],
   ['yana', 'Яна', '#ef5350', 'Я']
 ];
-const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3] }));
+const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person' }));
+
+/* Сообщества (публичные группы) */
+const COMMUNITIES = [
+  { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
+  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры и геймеры', type: 'community' },
+  { id: 'comm_tech', name: 'Технологии', color: '#06b6d4', emoji: '💻', desc: 'IT и гаджеты', type: 'community' },
+  { id: 'comm_sport', name: 'Спорт и ЗОЖ', color: '#f59e0b', emoji: '💪', desc: 'Тренировки и здоровье', type: 'community' },
+  { id: 'comm_art', name: 'Искусство', color: '#ec4899', emoji: '🎨', desc: 'Творчество', type: 'community' },
+  { id: 'comm_memes', name: 'Мемы 24/7', color: '#ef4444', emoji: '😂', desc: 'Юмор и мемы', type: 'community' }
+];
 
 /* ============================================================
-   РЕГИСТРАЦИЯ
+   БОТЫ — шаблоны ответов
+   ============================================================ */
+const BOT_TEMPLATES = {
+  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
+  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Ничего себе!', 'Кайф!', 'Норм!', 'Топ!'],
+  agree: ['Согласен', 'Точно', 'Абсолютно', 'Именно так', 'Вот-вот', 'Однозначно', 'Да, это так'],
+  surprise: ['Серьёзно?', 'Да ладно!', 'Не может быть!', 'Ты шутишь?', 'Правда?', 'Ничего себе!'],
+  emoji_love: ['❤️', '💕', '😘', '🤗', '💖', '💜', '💗', '🥰', '🌸'],
+  emoji_fun: ['😄', '😁', '🤣', '😊', '😜', '😂', '😎', '🤪', '🤩'],
+  emoji_ok: ['👌', '👍', '✌️', '💪', '👏', '✅', '🔥', '⚡'],
+  ask: ['А ты что думаешь?', 'Как ты?', 'А у тебя как?', 'Что нового?', 'Расскажи что-нибудь', 'Как сам?'],
+  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Норм'],
+  topic: ['Работа задолбала', 'Хочу спать', 'Хочу отдохнуть', 'Что смотришь?', 'Что слушаешь?', 'Играешь во что-нибудь?', 'Кофе пью']
+};
+
+function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateReply(userText) {
+  const lower = userText.toLowerCase();
+  if (/привет|здравств|хай|hi|hello|ку/i.test(lower)) {
+    return rnd(['Привет!', 'Приветик!', 'Хай!', 'Здравствуй!', 'Ку!', 'Салют!']) + ' ' + rnd(BOT_TEMPLATES.emoji_fun);
+  }
+  if (/как дела|как ты|как жизнь|как сам/i.test(lower)) {
+    return rnd(['Всё отлично!', 'Хорошо!', 'Отлично!', 'Норм!']) + ' А у тебя как?';
+  }
+  if (/\?$/.test(userText.trim())) {
+    return rnd(['Хороший вопрос', 'Интересно', 'Дай подумать', 'Хм']) + ', ' + rnd(['а ты что думаешь?', 'расскажи подробнее', 'интересно послушать']);
+  }
+  if (/люблю|скучал|скучаю/i.test(lower)) return rnd(BOT_TEMPLATES.emoji_love);
+  if (/устал|плохо|груст/i.test(lower)) return 'Держись 💪 Всё будет хорошо!';
+  const all = [...BOT_TEMPLATES.reaction, ...BOT_TEMPLATES.agree, ...BOT_TEMPLATES.short, ...BOT_TEMPLATES.emoji_ok];
+  return rnd(all);
+}
+
+/* Боты для проверки ссылок */
+function botJoinCheck(link, groupName) {
+  setTimeout(() => {
+    const botNames = ['Алекс', 'Мария', 'Дмитрий', 'Иван', 'София', 'Никита'];
+    const bot = rnd(botNames);
+    const msg = {
+      text: '🔗 ' + bot + ' присоединился по вашей ссылке в "' + groupName + '"',
+      time: nowTime(),
+      from: 'system'
+    };
+    if (activeChat && activeChat.name === groupName) {
+      addMsgToDOM(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }, 3000 + Math.random() * 4000);
+}
+
+/* ============================================================
+   МУЗЫКА — 100 треков
+   ============================================================ */
+const SONGS = [
+  ['Imagine Dragons', 'Believer'], ['Ed Sheeran', 'Shape of You'], ['The Weeknd', 'Blinding Lights'],
+  ['Dua Lipa', 'Levitating'], ['Billie Eilish', 'Bad Guy'], ['Post Malone', 'Circles'],
+  ['Harry Styles', 'As It Was'], ['The Kid LAROI', 'Stay'], ['Glass Animals', 'Heat Waves'],
+  ['Lil Nas X', 'Montero'], ['Olivia Rodrigo', 'Drivers License'], ['Adele', 'Easy On Me'],
+  ['Coldplay', 'Yellow'], ['Coldplay', 'Viva La Vida'], ['Coldplay', 'Hymn for the Weekend'],
+  ['Maroon 5', 'Sugar'], ['Maroon 5', 'Girls Like You'], ['Maroon 5', 'Memories'],
+  ['The Chainsmokers', 'Closer'], ['The Chainsmokers', 'Something Just Like This'],
+  ['Avicii', 'Wake Me Up'], ['Avicii', 'Levels'], ['Alan Walker', 'Faded'],
+  ['Marshmello', 'Happier'], ['DJ Snake', 'Let Me Love You'], ['Kygo', 'Firestone'],
+  ['Ed Sheeran', 'Perfect'], ['Ed Sheeran', 'Photograph'], ['Shawn Mendes', 'Senorita'],
+  ['Camila Cabello', 'Havana'], ['Selena Gomez', 'Lose You to Love Me'], ['Ariana Grande', '7 Rings'],
+  ['Ariana Grande', 'Thank U Next'], ['Ariana Grande', 'Into You'], ['Katy Perry', 'Roar'],
+  ['Katy Perry', 'Firework'], ['Rihanna', 'Diamonds'], ['Rihanna', 'Umbrella'], ['Beyoncé', 'Halo'],
+  ['Lady Gaga', 'Bad Romance'], ['Lady Gaga', 'Shallow'], ['Bruno Mars', 'Just the Way You Are'],
+  ['Bruno Mars', 'Uptown Funk'], ['Bruno Mars', 'Locked Out of Heaven'], ['Justin Bieber', 'Sorry'],
+  ['Justin Bieber', 'Love Yourself'], ['Justin Bieber', 'Peaches'], ['Taylor Swift', 'Love Story'],
+  ['Taylor Swift', 'Shake It Off'], ['Taylor Swift', 'Blank Space'], ['Taylor Swift', 'Anti-Hero'],
+  ['Dua Lipa', 'Don\'t Start Now'], ['Dua Lipa', 'New Rules'], ['Doja Cat', 'Say So'],
+  ['Doja Cat', 'Kiss Me More'], ['Sia', 'Chandelier'], ['Sia', 'Cheap Thrills'],
+  ['Sia', 'Snowman'], ['Ava Max', 'Sweet But Psycho'], ['Ava Max', 'Kings & Queens'],
+  ['Meduza', 'Piece of Your Heart'], ['Regard', 'Ride It'], ['Tones and I', 'Dance Monkey'],
+  ['Harry Styles', 'Watermelon Sugar'], ['Harry Styles', 'Adore You'], ['Billie Eilish', 'Lovely'],
+  ['Billie Eilish', 'Happier Than Ever'], ['Olivia Rodrigo', 'Good 4 U'],
+  ['Imagine Dragons', 'Thunder'], ['Imagine Dragons', 'Radioactive'], ['Imagine Dragons', 'Demons'],
+  ['OneRepublic', 'Counting Stars'], ['OneRepublic', 'Apologize'], ['OneRepublic', 'Secrets'],
+  ['Passenger', 'Let Her Go'], ['James Arthur', 'Say You Won\'t Let Go'],
+  ['Sam Smith', 'Stay With Me'], ['Lewis Capaldi', 'Someone You Loved'], ['Ruth B', 'Lost Boy'],
+  ['Adele', 'Hello'], ['Adele', 'Rolling in the Deep'], ['Adele', 'Someone Like You'],
+  ['Lana Del Rey', 'Summertime Sadness'], ['Lana Del Rey', 'Young and Beautiful'],
+  ['Lorde', 'Royals'], ['Hozier', 'Take Me to Church'], ['Rag\'n\'Bone Man', 'Human'],
+  ['Tom Odell', 'Another Love'], ['Keane', 'Somewhere Only We Know'],
+  ['Linkin Park', 'Numb'], ['Linkin Park', 'In the End'], ['System of a Down', 'Chop Suey!'],
+  ['Green Day', 'Boulevard of Broken Dreams'], ['Red Hot Chili Peppers', 'Californication'],
+  ['Nirvana', 'Smells Like Teen Spirit'], ['Queen', 'Bohemian Rhapsody'],
+  ['AC/DC', 'Thunderstruck'], ['Muse', 'Supermassive Black Hole'], ['Arctic Monkeys', 'Do I Wanna Know?']
+];
+
+let currentTrack = null;
+let musicCache = [];
+
+/* ============================================================
+   МЕМЫ
+   ============================================================ */
+const MEMES = [
+  'https://i.imgflip.com/1bij.jpg', 'https://i.imgflip.com/1bip.jpg', 'https://i.imgflip.com/1bgw.jpg',
+  'https://i.imgflip.com/1bhk.jpg', 'https://i.imgflip.com/1bhm.jpg', 'https://i.imgflip.com/1bhf.jpg',
+  'https://i.imgflip.com/1bik.jpg', 'https://i.imgflip.com/1bil.jpg', 'https://i.imgflip.com/1biq.jpg',
+  'https://i.imgflip.com/1bit.jpg', 'https://i.imgflip.com/1biy.jpg', 'https://i.imgflip.com/1biz.jpg',
+  'https://i.imgflip.com/26am.jpg', 'https://i.imgflip.com/9ehk.jpg', 'https://i.imgflip.com/1otk96.jpg',
+  'https://i.imgflip.com/24y43o.jpg', 'https://i.imgflip.com/1ur9b0.jpg', 'https://i.imgflip.com/261o3j.jpg',
+  'https://i.imgflip.com/1e7ql7.jpg', 'https://i.imgflip.com/1ihzfe.jpg', 'https://i.imgflip.com/20cylt.jpg',
+  'https://i.imgflip.com/1jwhww.jpg', 'https://i.imgflip.com/1yx9e5.jpg', 'https://i.imgflip.com/20y95f.jpg',
+  'https://i.imgflip.com/1h7in3.jpg', 'https://i.imgflip.com/345v97.jpg', 'https://i.imgflip.com/2wifvo.jpg',
+  'https://i.imgflip.com/1o00in.jpg', 'https://i.imgflip.com/1q9v36.jpg', 'https://i.imgflip.com/1otk96.jpg'
+];
+
+/* ============================================================
+   ИСТОРИИ (обновляются каждые сутки)
+   ============================================================ */
+const STORIES = [
+  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода была идеальная, солнечно, но не жарко. Нашла уютное кафе рядом — провела там 2 часа с книгой. Иногда нужно просто остановиться и вдохнуть.' },
+  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения HTML, CSS и JS — и вот оно работает. Ощущение непередаваемое. Не бойтесь начинать.' },
+  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному итальянскому рецепту. Секрет — гуанчале и яйца комнатной температуры. Получилось лучше чем в ресторане!' },
+  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Думал не смогу, но дошёл. Организм удивительная штука. Начинайте с малого — 5 минут в день.' },
+  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Каждый раз нахожу что-то новое. Книги, как люди — меняются с тобой. Что у вас в списке на осень?' },
+  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой. Теперь ищу пластинки на блошиных рынках. Это стало моим хобби.' },
+  { author: 'Елена', color: '#f5a623', text: 'Начала рисовать акварелью. Пока получается криво, но это так расслабляет! Через месяц покажу прогресс.' },
+  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. RTX 4080, 32 ГБ RAM. Работает как часы. Следующая цель — собрать домашний сервер.' },
+  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной. Просто сидела и смотрела 40 минут. Никаких телефонов. Рекомендую всем — попробуйте раз в неделю.' },
+  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 новых английских слов за месяц. Метод: 20 карточек утром, 20 вечером. Через полгода — буду свободно говорить.' }
+];
+
+/* ============================================================
+   ЗАПУСК
    ============================================================ */
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
@@ -740,15 +901,18 @@ regBtn.addEventListener('click', () => {
 
 function startApp() {
   document.getElementById('register').classList.add('hide');
+  document.getElementById('panel').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
   chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
-  renderContacts(PEOPLE);
-  setTimeout(hideHint, 4000);
-  loadNews();
-  loadMusic();
+  groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
+  channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
+  renderChatsList('people');
   loadFeed();
+  loadMusicList();
+  renderChannelsList();
+  scheduleHourlyRefresh();
 }
 
 const savedUser = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -769,38 +933,88 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 });
 
 /* ============================================================
-   КОНТАКТЫ
+   ТАБЫ ПОИСКА (Люди / Группы / Сообщества)
    ============================================================ */
-const contactsList = document.getElementById('contactsList');
-function renderContacts(list) {
-  contactsList.innerHTML = '';
-  if (!list.length) {
-    contactsList.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
+let currentSearchTab = 'people';
+document.querySelectorAll('.search-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentSearchTab = tab.dataset.stab;
+    const q = document.getElementById('mainSearchInput').value.trim().toLowerCase();
+    renderChatsList(currentSearchTab, q);
+  });
+});
+
+document.getElementById('mainSearchInput').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  renderChatsList(currentSearchTab, q);
+});
+
+/* ============================================================
+   СПИСОК ЧАТОВ (Люди/Группы/Сообщества)
+   ============================================================ */
+function renderChatsList(tab, query) {
+  const list = document.getElementById('chatsList');
+  list.innerHTML = '';
+
+  let items = [];
+
+  if (tab === 'people') {
+    items = PEOPLE.map(p => ({ ...p, type: 'person' }));
+  } else if (tab === 'groups') {
+    items = groups.map(g => ({ ...g, type: 'group' }));
+    if (!items.length) {
+      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>У вас пока нет групп.<br>Нажмите <b>+</b> справа вверху чтобы создать.</p></div>';
+      return;
+    }
+  } else if (tab === 'communities') {
+    items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
+  }
+
+  if (query) {
+    items = items.filter(i => i.name.toLowerCase().includes(query));
+  }
+
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
     return;
   }
-  list.forEach(person => {
-    const chat = chats[person.id] || [];
-    const last = chat[chat.length - 1];
+
+  items.forEach(item => {
     const div = document.createElement('div');
-    div.className = 'contact';
+    div.className = 'card-item';
+
+    let badge = '';
+    if (item.type === 'group') {
+      if (item.closed) badge = '<span class="badge closed">🔒 Закрытая</span>';
+      else badge = '<span class="badge open">🌍 Открытая</span>';
+    } else if (item.type === 'community') {
+      badge = '<span class="badge open">🌍 Сообщество</span>';
+    }
+
+    const lastMsg = chats[item.id] && chats[item.id].length ? chats[item.id][chats[item.id].length-1].text : (item.desc || 'Написать');
+
+    let avatarClass = 'card-avatar';
+    if (item.type === 'group') avatarClass += ' group';
+    if (item.type === 'channel') avatarClass += ' channel';
+
     div.innerHTML =
-      '<div class="contact-avatar" style="background:' + person.color + '">' + person.emoji + '<div class="online-dot"></div></div>' +
-      '<div class="contact-info">' +
-        '<div class="contact-name">' + escapeHtml(person.name) + '</div>' +
-        '<div class="contact-last">' + (last ? escapeHtml(last.text) : 'Написать') + '</div>' +
+      '<div class="' + avatarClass + '" style="background:' + item.color + '">' + item.emoji +
+        (item.type === 'person' ? '<div class="online-dot"></div>' : '') +
+      '</div>' +
+      '<div class="card-info">' +
+        '<div class="card-name">' + escapeHtml(item.name) + badge + '</div>' +
+        '<div class="card-sub">' + escapeHtml(lastMsg) + '</div>' +
       '</div>';
-    div.addEventListener('click', () => openChat(person));
-    contactsList.appendChild(div);
+    div.addEventListener('click', () => openChat(item));
+    list.appendChild(div);
   });
 }
+
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-document.getElementById('searchInput').addEventListener('input', e => {
-  const q = e.target.value.trim().toLowerCase();
-  if (!q) { renderContacts(PEOPLE); return; }
-  renderContacts(PEOPLE.filter(p => p.name.toLowerCase().includes(q)));
-});
 
 /* ============================================================
    ЧАТ
@@ -809,19 +1023,42 @@ const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
-function openChat(person) {
-  activePerson = person;
-  document.getElementById('chatName').textContent = person.name;
+
+function openChat(item) {
+  activeChat = item;
+  document.getElementById('chatName').textContent = item.name;
   const av = document.getElementById('chatAvatar');
-  av.textContent = person.emoji;
-  av.style.background = person.color;
+  av.textContent = item.emoji;
+  av.style.background = item.color;
+  av.className = 'card-avatar';
+  if (item.type === 'group') av.classList.add('group');
+  if (item.type === 'channel') av.classList.add('channel');
+
+  // Показать ссылку-приглашение для закрытых групп
+  const inviteBar = document.getElementById('inviteBar');
+  if (item.type === 'group' && item.closed && item.link) {
+    inviteBar.style.display = 'flex';
+    inviteBar.onclick = () => {
+      navigator.clipboard && navigator.clipboard.writeText(item.link);
+      alert('Ссылка скопирована: ' + item.link);
+    };
+  } else {
+    inviteBar.style.display = 'none';
+  }
+
+  document.getElementById('chatStatus').textContent =
+    item.type === 'channel' ? 'канал' :
+    item.type === 'group' ? (item.closed ? 'закрытая группа' : 'открытая группа') :
+    item.type === 'community' ? 'сообщество' : 'в сети';
+
   chatEl.classList.add('show');
   renderChat();
   setTimeout(() => chatInput.focus(), 300);
 }
+
 function renderChat() {
-  if (!activePerson) return;
-  const msgs = chats[activePerson.id] || [];
+  if (!activeChat) return;
+  const msgs = chats[activeChat.id] || [];
   chatBody.innerHTML = '';
   if (!msgs.length) {
     chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
@@ -830,270 +1067,414 @@ function renderChat() {
   msgs.forEach(m => addMsgToDOM(m));
   chatBody.scrollTop = chatBody.scrollHeight;
 }
+
 function addMsgToDOM(msg) {
   const div = document.createElement('div');
-  div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
-  div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + msg.time + '</div>';
+  if (msg.from === 'system') {
+    div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
+    div.textContent = msg.text;
+  } else {
+    div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
+    div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + msg.time + '</div>';
+  }
   chatBody.appendChild(div);
 }
+
 function nowTime() {
   const d = new Date();
   return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
 }
+
 function sendMsg() {
   const text = chatInput.value.trim();
-  if (!text || !activePerson) return;
+  if (!text || !activeChat) return;
   const msg = { text, time: nowTime(), from: 'me' };
-  if (!chats[activePerson.id]) chats[activePerson.id] = [];
-  chats[activePerson.id].push(msg);
+  if (!chats[activeChat.id]) chats[activeChat.id] = [];
+  chats[activeChat.id].push(msg);
   localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
   addMsgToDOM(msg);
   chatInput.value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
-  const person = activePerson;
-  setTimeout(() => {
-    const replyText = generateReply(text);
-    const reply = { text: replyText, time: nowTime(), from: 'them' };
-    chats[person.id].push(reply);
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-    if (activePerson && activePerson.id === person.id) {
-      addMsgToDOM(reply);
-      chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Ответы от ботов
+  const item = activeChat;
+  if (item.type === 'person' || item.type === 'group' || item.type === 'community') {
+    const repliesCount = item.type === 'group' || item.type === 'community' ? 2 : 1;
+    for (let i = 0; i < repliesCount; i++) {
+      setTimeout(() => {
+        const replyText = generateReply(text);
+        const senderName = item.type === 'person' ? item.name : r);
+nd(PEOPLE).name;
+        const reply  = {
+          text: item.type === 'person' ? replyText });
+ : senderName + ': ' + replyText});
+
+,
+          time: nowTime(),
+          from:document 'them'
+        };
+        chats[.getElementByIditem.id].push(reply);
+       (' localStorage.setItem(CHATS_KEY,form JSON.stringify(chats));
+        ifCancel (activeChat && activeChat.id === item')..id) {
+          addMsgToDOM(readdply);
+          chatBody.scrollTop =EventListener chatBody.scrollHeight;
+('        }
+      }, 100click0 + i * 1500', + Math.random() * 1000 ());
     }
-  }, 1000 + Math.random() * 1500);
+  } else if => (item.type === 'channel') {
+    {
+ // В канале ты автор, б оты-подписчики не отвечают
+ document  }
 }
-chatSend.addEventListener('click', sendMsg);
-chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
-document.getElementById('backBtn').addEventListener('click', () => {
+
+chatSend.addEventListener('click', sendMsg.getElementById);
+chatInput.addEventListener('keydown',(' e => { if (e.keyform === 'Enter') sendMsg(); });
+
+document.getElementByIdModal('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
-  activePerson = null;
-  renderContacts(PEOPLE);
+ '). activeChat = null;
+  renderChatsList(currentSearchclassTab, document.getElementById('mainSearchInput').value.trimList().toLowerCase());
 });
-document.getElementById('settingsBtn').addEventListener('click', () => {
-  if (confirm('Выйти из аккаунта?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(CHATS_KEY);
+
+document.getElementById('settingsBtn.remove').addEventListener('click', () =>(' {
+  if (confirm('Выйshowти из аккаунта? Все данные сбросятся.')) {
+   ');
+ localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem});
+
+(CHATS_KEY);
+    localStorage.removeItem(GROdocumentUPS_KEY);
+    localStorage.removeItem(CH.getElementByIdANNELS_KEY);
     location.reload();
+('  }
+});
+
+/* ============================================================
+form   МОДАЛКАSubmit ПЛЮСИК').
+   ============================================================add */
+document.getElementById('plusBtn').EventListeneraddEventListener('click', () => {
+ (' document.getElementById('createModal').classList.addclick('show');
+});
+document.querySelector',All('[data-close]'). ()forEach(b => {
+  b.addEventListener('click', => () => {
+    document.getElementById(b.dataset.close).classList.remove {
+('show');
+  });
+});
+document.querySelector All('.modal').forEach(m => {
+ const  m.addEventListener('click', e => {
+    if (e.target === name m) m.classList.remove('show');
+  });
+ =});
+
+let pendingAction = null;
+document.querySelector documentAll('.modal-option').forEach(opt.getElementById => {
+  opt.addEventListener('click', () => {
+    const action(' = opt.dataset.action;
+    document.getElementById('createformModal').classList.remove('show');
+    pendingActionName = action;
+
+    const formTitle = document.getElementById('').formTitle');
+    const formSub = document.getElementByIdvalue('formSub');
+    const nameInput = document.getElementById.trim('formName');
+    nameInput.value();
+ = '';
+    document.getElementById('linkResult').style .display = 'none';
+
+    if if (action === 'group-open (') {
+      formTitle.textContent =name '🌍 Открытая группа';
+      form.lengthSub.textContent = 'Любой сможет < найти и зайти';
+    } else  if2 (action === 'group-closed')) {
+      formTitle.textContent = '🔒 { Закрытая группа';
+      formSub.textContent = 'Только по ссылке-приглашению';
+    } else if (action === 'channel') {
+      formTitle.textContent = '📢 Канал';
+      formSub.textContent = 'Вы публикуете посты о жизни';
+    }
+
+    document.getElementById('formModal').classList.add('show');
+    setTimeout(() => nameInput.focus(), 300 alert('Введите название'); return; }
+
+  const id = 'x' + Date.now();
+  const colors = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee'];
+  const color = rnd(colors);
+  const emoji = name.charAt(0).toUpperCase();
+
+  if (pendingAction === 'group-open' || pendingAction === 'group-closed') {
+    const closed = pendingAction === 'group-closed';
+    const link = closed ? ('https://xxxxxxxx3459.github.io/nekros-site/#join=' + id) : null;
+    const g = { id, name, color, emoji, closed, link, type: 'group' };
+    groups.push(g);
+    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
+
+    // Бот заходит для проверки ссылки (закрытая группа)
+    if (closed) {
+      botJoinCheck(link, name);
+    }
+
+    // Если закрытая — покажем ссылку
+    if (closed) {
+      document.getElementById('linkResult').style.display = 'block';
+      document.getElementById('linkBox').textContent = link;
+      // Меняем кнопку на "Готово"
+      document.getElementById('formSubmit').textContent = 'Готово';
+      document.getElementById('formSubmit').onclick = () => {
+        document.getElementById('formModal').classList.remove('show');
+        document.getElementById('formSubmit').textContent = 'Создать';
+        document.getElementById('formSubmit').onclick = null;
+      };
+      // Восстанавливаем через 10 сек если не нажали
+      setTimeout(() => {
+        document.getElementById('formSubmit').textContent = 'Создать';
+      }, 10000);
+    } else {
+      document.getElementById('formModal').classList.remove('show');
+    }
+    renderChatsList('groups', '');
+  } else if (pendingAction === 'channel') {
+    const c = { id, name, color, emoji, desc: 'Мой канал', type: 'channel' };
+    channels.push(c);
+    localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
+    document.getElementById('formModal').classList.remove('show');
+    renderChannelsList();
   }
 });
-/* ============ НОВОСТИ ============ */
-async function loadNews() {
-  const el = document.getElementById('newsList');
-  
-  let cached = cacheGet('news');
-  if (cached && cached.length) {
-    renderNews(cached);
-    return;
-  }
-  
-  el.innerHTML = '<div class="loading">Загружаю новости</div>';
-  
-  const feeds = [
-    { url: 'https://lenta.ru/rss/news', source: 'Lenta' },
-    { url: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss', source: 'RBC' }
+
+/* ============================================================
+   КАНАЛЫ
+   ============================================================ */
+function renderChannelsList() {
+  const list = document.getElementById('channelsList');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const all = [
+    { id: 'life_maria', name: 'Мария о жизни', color: '#a06cd5', emoji: 'М', desc: 'Канал о быте и мыслях', type: 'channel' },
+    { id: 'life_dmitry', name: 'Дмитрий пишет', color: '#4a90e2', emoji: 'Д', desc: 'О работе и хобби', type: 'channel' },
+    { id: 'life_anna', name: 'Анна делится', color: '#ff5e8c', emoji: 'А', desc: 'Кулинария и семья', type: 'channel' },
+    { id: 'life_ivan', name: 'Иван везде', color: '#4ecdc4', emoji: 'И', desc: 'Спорт и здоровье', type: 'channel' },
+    ...channels
   ];
-  
-  const proxies = [
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest=',
-    'https://api.allorigins.win/raw?url=',
-    'https://cors.eu.org/'
-  ];
-  
-  async function fetchRSS(url) {
+
+  all.forEach(ch => {
+    const div = document.createElement('div');
+    div.className = 'card-item';
+    div.innerHTML =
+      '<div class="card-avatar channel" style="background:' + ch.color + '">' + ch.emoji + '</div>' +
+      '<div class="card-info">' +
+        '<div class="card-name">' + escapeHtml(ch.name) + '<span class="badge channel-badge">📢 Канал</span></div>' +
+        '<div class="card-sub">' + escapeHtml(ch.desc || '') + '</div>' +
+      '</div>';
+    div.addEventListener('click', () => openChat(ch));
+    list.appendChild(div);
+  });
+}
+
+/* ============================================================
+   ЛЕНТА — мемы + новости + истории
+   ============================================================ */
+async function loadFeed() {
+  const el = document.getElementById('feedContent');
+  el.innerHTML = '<div class="loading">Загружаю ленту</div>';
+
+  let cached = cacheGet('feed_v6');
+  if (cached) { renderFeed(cached); return; }
+
+  // Готовим данные
+  const memesForToday = pickDailyItems(MEMES, 8);
+  const storiesForToday = pickDailyItems(STORIES, 5);
+  const fact = rnd([
+    { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов — больше, чем звёзд в Млечном Пути.' },
+    { emoji: '🌍', text: 'Земля вращается вокруг Солнца со скоростью ~107 000 км/ч.' },
+    { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно — при 0,01°C и 611 Па.' },
+    { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина — как от вкусной еды.' },
+    { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день.' },
+    { emoji: '🐙', text: 'У осьминога 3 сердца и голубая кровь.' },
+    { emoji: '🌟', text: 'Свет от Солнца идёт до Земли 8 минут 20 секунд.' }
+  ]);
+
+  // Новости — пробуем загрузить
+  let news = [];
+  try {
+    const proxies = ['https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy/?quest=', 'https://api.allorigins.win/raw?url='];
     for (const proxy of proxies) {
       try {
-        const finalUrl = proxy + encodeURIComponent(url);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
-        const r = await fetch(finalUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (r.ok) {
-          const text = await r.text();
-          if (text && text.indexOf('<item') !== -1) return text;
+        const r = await fetch(proxy + encodeURIComponent('https://lenta.ru/rss/news'));
+        const xmlText = await r.text();
+        if (xmlText.indexOf('<item') !== -1) {
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(xmlText, 'text/xml');
+          news = Array.from(xml.querySelectorAll('item')).slice(0, 5).map(item => ({
+            title: item.querySelector('title') ? item.querySelector('title').textContent : '',
+            link: item.querySelector('link') ? item.querySelector('link').textContent : '',
+            img: item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : ''
+          }));
+          break;
         }
       } catch(e) {}
     }
-    return null;
-  }
-  
-  const allNews = [];
-  const parser = new DOMParser();
-  
-  for (const feed of feeds) {
-    try {
-      const xmlText = await fetchRSS(feed.url);
-      if (!xmlText) continue;
-      
-      const xml = parser.parseFromString(xmlText, 'text/xml');
-      const items = xml.querySelectorAll('item');
-      
-      items.forEach((item, idx) => {
-        if (idx >= 15) return;
-        const titleEl = item.querySelector('title');
-        const linkEl = item.querySelector('link');
-        const pubDateEl = item.querySelector('pubDate');
-        const enclosureEl = item.querySelector('enclosure');
-        const mediaEl = item.getElementsByTagName('media:content')[0];
-        
-        allNews.push({
-          title: titleEl ? titleEl.textContent : '',
-          link: linkEl ? linkEl.textContent : '',
-          pubDate: pubDateEl ? pubDateEl.textContent : '',
-          img: (enclosureEl ? enclosureEl.getAttribute('url') : '') || (mediaEl ? mediaEl.getAttribute('url') : ''),
-          source: feed.source
-        });
-      });
-    } catch(e) {
-      console.log('Ошибка', feed.source, e);
-    }
-  }
-  
-  // ЕСЛИ ИНТЕРНЕТ НЕ РАБОТАЕТ — ИСПОЛЬЗУЕМ РЕЗЕРВ
-  if (allNews.length < 3) {
-    allNews.length = 0;
-    const now = new Date().toISOString();
-    const fallback = [
-      { title: 'Россия и Китай обсудили расширение торгового сотрудничества в 2025 году', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Учёные нашли новый способ борьбы с изменением климата', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Apple представила обновление iOS с новыми функциями ИИ', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Центробанк сохранил ключевую ставку на прежнем уровне', link: 'https://www.rbc.ru/', source: 'RBC' },
-      { title: 'SpaceX успешно запустила новую партию спутников Starlink', link: 'https://www.rbc.ru/', source: 'RBC' },
-      { title: 'Мировые рынки показали рост на фоне позитивных данных', link: 'https://www.rbc.ru/', source: 'RBC' },
-      { title: 'Открытие нового космического телескопа позволит изучать далёкие галактики', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Врачи рассказали о пользе сна для здоровья мозга', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Новый рекорд в квантовых вычислениях установлен исследователями', link: 'https://www.rbc.ru/', source: 'RBC' },
-      { title: 'Мировые лидеры собрались на саммит по вопросам безопасности', link: 'https://lenta.ru/', source: 'Lenta' },
-      { title: 'Tesla показала новый электромобиль с увеличенным запасом хода', link: 'https://www.rbc.ru/', source: 'RBC' },
-      { title: 'Исследование: регулярные прогулки продлевают жизнь на 5 лет', link: 'https://lenta.ru/', source: 'Lenta' }
+  } catch(e) {}
+
+  if (news.length < 3) {
+    news = [
+      { title: 'Россия и Китай обсудили расширение торгового сотрудничества', link: 'https://lenta.ru/' },
+      { title: 'Учёные нашли новый способ борьбы с изменением климата', link: 'https://lenta.ru/' },
+      { title: 'Apple представила обновление iOS с новыми функциями', link: 'https://lenta.ru/' },
+      { title: 'Центробанк сохранил ключевую ставку', link: 'https://www.rbc.ru/' },
+      { title: 'SpaceX запустила новую партию спутников Starlink', link: 'https://www.rbc.ru/' }
     ];
-    fallback.forEach((item, i) => {
-      allNews.push({
-        title: item.title,
-        link: item.link,
-        pubDate: new Date(Date.now() - i * 3600000).toISOString(),
-        img: '',
-        source: item.source
-      });
-    });
-  } else {
-    allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
   }
-  
-  cacheSet('news', allNews.slice(0, 40));
-  renderNews(allNews.slice(0, 40));
+
+  const data = { news, memes: memesForToday, stories: storiesForToday, fact };
+  cacheSet('feed_v6', data);
+  renderFeed(data);
 }
 
-
-function renderNews(list) {
-  const el = document.getElementById('newsList');
-  if (!list.length) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Нет новостей</p></div>';
-    return;
+/* Берём стабильно одинаковые в течение дня */
+function pickDailyItems(arr, count) {
+  const day = Math.floor(Date.now() / 86400000);
+  const result = [];
+  for (let i = 0; i < count && i < arr.length; i++) {
+    const idx = (day * 7 + i * 13) % arr.length;
+    result.push(arr[idx]);
   }
+  return result;
+}
+
+function renderFeed(data) {
+  const el = document.getElementById('feedContent');
   el.innerHTML = '';
-  list.forEach(item => {
+
+  // 1. Факт дня
+  const t1 = document.createElement('div');
+  t1.className = 'section-title';
+  t1.textContent = '💡 Факт дня';
+  el.appendChild(t1);
+  const factDiv = document.createElement('div');
+  factDiv.style.cssText = 'margin:8px 16px;padding:16px;background:linear-gradient(135deg,rgba(255,140,66,0.2),rgba(255,94,98,0.2));border:1px solid rgba(255,140,66,0.3);border-radius:16px;color:#fff;font-size:14px;line-height:1.5;';
+  factDiv.innerHTML = '<span style="font-size:24px;display:block;margin-bottom:8px;">' + data.fact.emoji + '</span>' + data.fact.text;
+  el.appendChild(factDiv);
+
+  // 2. Истории
+  const t2 = document.createElement('div');
+  t2.className = 'section-title';
+  t2.textContent = '📖 Истории дня';
+  el.appendChild(t2);
+  data.stories.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'story-card';
+    const timeAgo = Math.floor(Math.random() * 12) + 1;
+    div.innerHTML =
+      '<div class="story-header">' +
+        '<div class="story-avatar" style="background:' + s.color + '">' + s.author.charAt(0) + '</div>' +
+        '<div><div class="story-author">' + s.author + '</div>' +
+        '<div class="story-time">' + timeAgo + ' ч. назад</div></div>' +
+      '</div>' +
+      '<div class="story-text">' + escapeHtml(s.text) + '</div>';
+    el.appendChild(div);
+  });
+
+  // 3. Мемы
+  const t3 = document.createElement('div');
+  t3.className = 'section-title';
+  t3.textContent = '😂 Мемы дня';
+  el.appendChild(t3);
+  const grid = document.createElement('div');
+  grid.className = 'memes-grid';
+  data.memes.forEach(url => {
+    const div = document.createElement('div');
+    div.className = 'meme-card';
+    const img = document.createElement('img');
+    img.src = url;
+    img.loading = 'lazy';
+    img.onerror = () => { div.style.opacity = '0.3'; };
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+  el.appendChild(grid);
+
+  // 4. Новости
+  const t4 = document.createElement('div');
+  t4.className = 'section-title';
+  t4.textContent = '📰 Новости';
+  el.appendChild(t4);
+  data.news.forEach(item => {
     const div = document.createElement('div');
     div.className = 'news-item';
-    const time = item.pubDate ? new Date(item.pubDate) : null;
-    const timeStr = time ? (time.getHours() + ':' + String(time.getMinutes()).padStart(2,'0')) : '';
+    const img = item.img || '';
     div.innerHTML =
-      '<div class="news-img" style="' + (item.img ? 'background-image:url(' + item.img + ')' : '') + '"></div>' +
+      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
       '<div class="news-info">' +
         '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
-        '<div class="news-meta">' +
-          '<span class="news-source">' + item.source + '</span>' +
-          '<span>' + timeStr + '</span>' +
-        '</div>' +
+        '<div class="news-meta"><span class="news-source">Lenta</span></div>' +
       '</div>';
     div.addEventListener('click', () => window.open(item.link, '_blank'));
     el.appendChild(div);
   });
 }
 
-
 /* ============================================================
    МУЗЫКА
    ============================================================ */
-let currentTrack = null;
-async function loadMusic(query) {
+function loadMusicList(query) {
   const el = document.getElementById('tracksList');
-  
-  // Если это поиск — не кэшируем
+  el.innerHTML = '';
+
+  let list = SONGS;
   if (query) {
-    el.innerHTML = '<div class="loading">Поиск</div>';
-    try {
-      const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/search?q=' + encodeURIComponent(query) + '&limit=30'));
-      const data = await r.json();
-      renderTracks(data.data || []);
-    } catch(e) {
-      el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
-    }
-    return;
+    const q = query.toLowerCase();
+    list = SONGS.filter(s => (s[0] + ' ' + s[1]).toLowerCase().includes(q));
   }
-  
-  // Проверяем кэш
-  let cached = cacheGet('music');
-  if (cached) {
-    renderTracks(cached);
-    return;
-  }
-  
-  el.innerHTML = '<div class="loading">Загружаю топ</div>';
-  try {
-    const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/chart/0/tracks?limit=40'));
-    const data = await r.json();
-    if (data.data) {
-      cacheSet('music', data.data);
-      renderTracks(data.data);
-    } else {
-      el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
-    }
-  } catch(e) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
-  }
-}
-function renderTracks(tracks) {
-  const el = document.getElementById('tracksList');
-  if (!tracks.length) {
+
+  if (!list.length) {
     el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ничего не найдено</p></div>';
     return;
   }
-  el.innerHTML = '';
-  tracks.forEach(track => {
+
+  list.forEach((song, idx) => {
     const div = document.createElement('div');
     div.className = 'track';
     div.innerHTML =
-      '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
+      '<div class="track-num">' + (idx + 1) + '</div>' +
       '<div class="track-info">' +
-        '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
-        '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
+        '<div class="track-name">' + escapeHtml(song[1]) + '</div>' +
+        '<div class="track-artist">' + escapeHtml(song[0]) + '</div>' +
       '</div>' +
       '<div class="track-play">▶</div>';
-    div.addEventListener('click', () => playTrack(track));
+    div.addEventListener('click', () => playSong(song[0], song[1]));
     el.appendChild(div);
   });
 }
-function playTrack(track) {
-  const audio = document.getElementById('audioPlayer');
-  audio.src = track.preview;
-  audio.play();
-  currentTrack = track;
-  document.getElementById('playerBar').classList.add('show');
-  document.getElementById('playerCover').style.backgroundImage = 'url(' + track.album.cover_small + ')';
-  document.getElementById('playerName').textContent = track.title;
-  document.getElementById('playerArtist').textContent = track.artist.name;
-  document.getElementById('playerPlay').textContent = '⏸';
+
+async function playSong(artist, title) {
+  // Ищем через Deezer (быстрее и без ключа)
+  try {
+    const q = artist + ' ' + title;
+    const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/search?q=' + encodeURIComponent(q) + '&limit=1'));
+    const data = await r.json();
+    if (data.data && data.data[0]) {
+      const track = data.data[0];
+      const audio = document.getElementById('audioPlayer');
+      audio.src = track.preview;
+      audio.play();
+      currentTrack = track;
+      document.getElementById('playerBar').classList.add('show');
+      document.getElementById('playerCover').style.backgroundImage = 'url(' + track.album.cover_small + ')';
+      document.getElementById('playerName').textContent = track.title;
+      document.getElementById('playerArtist').textContent = track.artist.name;
+      document.getElementById('playerPlay').textContent = '⏸';
+    }
+  } catch(e) {
+    alert('Не удалось загрузить трек. Проверьте интернет.');
+  }
 }
+
 document.getElementById('musicSearchBtn').addEventListener('click', () => {
   const q = document.getElementById('musicSearch').value.trim();
-  if (q) loadMusic(q);
+  loadMusicList(q);
 });
-document.getElementById('musicSearch').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const q = e.target.value.trim();
-    if (q) loadMusic(q);
-  }
+document.getElementById('musicSearch').addEventListener('input', e => {
+  loadMusicList(e.target.value.trim());
 });
 document.getElementById('playerPlay').addEventListener('click', () => {
   const audio = document.getElementById('audioPlayer');
@@ -1106,190 +1487,42 @@ document.getElementById('playerClose').addEventListener('click', () => {
 });
 
 /* ============================================================
-   ЛЕНТА
+   АВТООБНОВЛЕНИЕ КАЖДЫЙ ЧАС
    ============================================================ */
-const FACTS = [
-  { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов — больше, чем звёзд в Млечном Пути.' },
-  { emoji: '🌍', text: 'Земля вращается вокруг Солнца со скоростью ~107 000 км/ч.' },
-  { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно — при 0,01°C и 611 Па.' },
-  { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина — как от вкусной еды.' },
-  { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день = 35 000 в год.' },
-  { emoji: '🐙', text: 'У осьминога 3 сердца и голубая кровь.' },
-  { emoji: '🌟', text: 'Свет от Солнца идёт до Земли 8 минут 20 секунд.' },
-  { emoji: '🍯', text: 'Мёд может храниться тысячи лет и не портиться.' },
-  { emoji: '🌙', text: 'Следы астронавтов на Луне останутся миллионы лет — нет атмосферы.' },
-  { emoji: '🔥', text: 'Внутри Земли горячее, чем на поверхности Солнца — ~6000°C.' },
-  { emoji: '🐘', text: 'Слоны — единственные животные, которые не могут прыгать.' },
-  { emoji: '🌊', text: '95% океана до сих пор не исследовано.' },
-  { emoji: '⚡', text: 'Молния разогревает воздух до 30 000°C — в 5 раз горячее Солнца.' },
-  { emoji: '🦈', text: 'Акулы старше деревьев — им 450 млн лет, деревьям 350 млн.' },
-  { emoji: '🎨', text: 'Красный — первый цвет, который видят младенцы.' }
-];
+function scheduleHourlyRefresh() {
+  setInterval(() => {
+    console.log('Час прошёл — обновляю');
+    loadFeed(true);
+  }, 3600000);
+}
 
-async function loadFeed() {
-  const el = document.getElementById('feedContent');
-  el.innerHTML = '<div class="loading">Загружаю ленту</div>';
-  
-  let cached = cacheGet('feed');
-  if (cached) {
-    renderFeed(cached);
-    return;
-  }
-  
-  const proxies = [
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest=',
-    'https://api.allorigins.win/raw?url='
-  ];
-  
-  async function fetchRSS(url) {
-    for (const proxy of proxies) {
-      try {
-        const finalUrl = proxy + encodeURIComponent(url);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
-        const r = await fetch(finalUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (r.ok) {
-          const text = await r.text();
-          if (text && text.indexOf('<item') !== -1) return text;
-        }
-      } catch(e) {}
+let lastActiveTime = Date.now();
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    const now = Date.now();
+    if (now - lastActiveTime > 3600000) {
+      localStorage.removeItem('cache_feed_v6');
+      loadFeed();
     }
-    return null;
+    lastActiveTime = now;
   }
-  
-  let news = [];
-  try {
-    const xmlText = await fetchRSS('https://lenta.ru/rss/news');
-    if (xmlText) {
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(xmlText, 'text/xml');
-      const items = Array.from(xml.querySelectorAll('item')).slice(0, 5);
-      news = items.map(item => ({
-        title: item.querySelector('title') ? item.querySelector('title').textContent : '',
-        link: item.querySelector('link') ? item.querySelector('link').textContent : '',
-        img: item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : ''
-      }));
-    }
-  } catch(e) {}
-  
-  // Резерв если не загрузилось
-  if (news.length < 3) {
-    news = [
-      { title: 'Россия и Китай обсудили расширение торгового сотрудничества', link: 'https://lenta.ru/' },
-      { title: 'Учёные нашли новый способ борьбы с изменением климата', link: 'https://lenta.ru/' },
-      { title: 'Apple представила обновление iOS с новыми функциями ИИ', link: 'https://lenta.ru/' }
-    ];
-  }
-  
-  const feedData = {
-    news: news,
-    fact: FACTS[Math.floor(Math.random() * FACTS.length)]
-  };
-  cacheSet('feed', feedData);
-  renderFeed(feedData);
-}
-function renderFeed(data) {
-  const el = document.getElementById('feedContent');
-  el.innerHTML = '';
-  
-  const t1 = document.createElement('div');
-  t1.className = 'feed-section-title';
-  t1.textContent = '🔥 Сейчас в мире';
-  el.appendChild(t1);
-  
-  data.news.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'news-item';
-    const img = item.enclosure && item.enclosure.link ? item.enclosure.link : '';
-    div.innerHTML =
-      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
-      '<div class="news-info">' +
-        '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
-        '<div class="news-meta"><span class="news-source">Lenta</span></div>' +
-      '</div>';
-    div.addEventListener('click', () => window.open(item.link, '_blank'));
-    el.appendChild(div);
-  });
-  
-  const t2 = document.createElement('div');
-  t2.className = 'feed-section-title';
-  t2.textContent = '💡 Факт дня';
-  el.appendChild(t2);
-  
-  const factDiv = document.createElement('div');
-  factDiv.className = 'fact-card';
-  factDiv.innerHTML = '<span class="fact-emoji">' + data.fact.emoji + '</span>' + data.fact.text;
-  el.appendChild(factDiv);
-  
-  const t3 = document.createElement('div');
-  t3.className = 'feed-section-title';
-  t3.textContent = '🎵 Топ музыка';
-  el.appendChild(t3);
-  
-  const musicEl = document.createElement('div');
-  musicEl.id = 'feedMusic';
-  el.appendChild(musicEl);
-  
-  // Берём из кэша музыки если есть
-  let musicCached = cacheGet('music');
-  if (musicCached) {
-    musicCached.slice(0, 5).forEach(track => {
-      const div = document.createElement('div');
-      div.className = 'track';
-      div.innerHTML =
-        '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
-        '<div class="track-info">' +
-          '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
-          '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
-        '</div>' +
-        '<div class="track-play">▶</div>';
-      div.addEventListener('click', () => playTrack(track));
-      musicEl.appendChild(div);
-    });
-  } else {
-    fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/chart/0/tracks?limit=5'))
-      .then(r => r.json())
-      .then(mData => {
-        if (mData.data) {
-          cacheSet('music', mData.data);
-          mData.data.forEach(track => {
-            const div = document.createElement('div');
-            div.className = 'track';
-            div.innerHTML =
-              '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
-              '<div class="track-info">' +
-                '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
-                '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
-              '</div>' +
-              '<div class="track-play">▶</div>';
-            div.addEventListener('click', () => playTrack(track));
-            musicEl.appendChild(div);
-          });
-        }
-      })
-      .catch(() => {});
-  }
-}
+});
 
 /* ============================================================
-   ЕЖЕДНЕВНАЯ ОЧИСТКА КЭША (в 00:00)
+   ОБРАБОТКА ХЭША #join=... для закрытых групп
    ============================================================ */
-function scheduleDailyCacheClear() {
-  const now = new Date();
-  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
-  const msUntilMidnight = tomorrow - now;
-  setTimeout(() => {
-    // Чистим весь кэш
-    Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('cache_')) localStorage.removeItem(k);
-    });
-    console.log('Кэш очищен — загружаем свежие данные');
-    location.reload();
-  }, msUntilMidnight);
-}
-if (currentUser) scheduleDailyCacheClear();
+window.addEventListener('load', () => {
+  const hash = location.hash;
+  if (hash && hash.startsWith('#join=')) {
+    const groupId = hash.substring(6);
+    const g = groups.find(x => x.id === groupId);
+    if (g) {
+      setTimeout(() => alert('Вы вошли в группу "' + g.name + '" по ссылке!'), 500);
+    } else {
+      setTimeout(() => alert('Группа не найдена (возможно другой пользователь создал)'), 500);
+    }
+  }
+});
 </script>
 </body>
 </html>
