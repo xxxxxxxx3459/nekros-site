@@ -2,925 +2,877 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>NEKROS AWAKENING</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sunset Chat</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
-    width: 100%; height: 100%; background: #000; overflow: hidden;
-    font-family: 'Courier New', monospace; color: #00ff9d;
-    cursor: crosshair; -webkit-tap-highlight-color: transparent;
+    width: 100%; height: 100%; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
   }
 
-  #matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.55; }
-
-  .scanlines {
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0,255,157,0.03) 0px, rgba(0,255,157,0.03) 1px,
-      transparent 1px, transparent 3px
+  /* ============ ЗАКАТ ============ */
+  .sunset-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(180deg,
+      #0a0616 0%,
+      #2d1b4e 15%,
+      #6b2d5c 30%,
+      #b8456b 45%,
+      #e86a4a 60%,
+      #ff9a56 72%,
+      #ffc46b 82%,
+      #ffd97d 90%,
+      #ffe89d 100%
     );
-    pointer-events: none; z-index: 20;
-    animation: scanmove 8s linear infinite;
+    overflow: hidden;
   }
-  @keyframes scanmove {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100px; }
+  /* Солнце */
+  .sun {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle,
+      #fff8d0 0%,
+      #ffe66d 20%,
+      #ffb347 45%,
+      #ff6b35 70%,
+      transparent 80%
+    );
+    border-radius: 50%;
+    filter: blur(2px);
+    box-shadow:
+      0 0 60px 20px rgba(255, 180, 80, 0.7),
+      0 0 120px 60px rgba(255, 120, 60, 0.4);
+    animation: sunGlow 4s ease-in-out infinite;
+  }
+  @keyframes sunGlow {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.05); opacity: 0.95; }
+  }
+  /* Облака */
+  .cloud {
+    position: absolute;
+    background: linear-gradient(180deg, rgba(255,180,150,0.6), rgba(255,220,180,0.3));
+    border-radius: 100px;
+    filter: blur(20px);
+    animation: cloudMove 40s linear infinite;
+  }
+  .cloud1 { width: 400px; height: 80px; top: 25%; left: -20%; animation-duration: 60s; }
+  .cloud2 { width: 300px; height: 60px; top: 35%; left: -40%; animation-duration: 80s; animation-delay: -20s; opacity: 0.7; }
+  .cloud3 { width: 500px; height: 90px; top: 15%; left: -30%; animation-duration: 70s; animation-delay: -40s; opacity: 0.5; }
+  .cloud4 { width: 350px; height: 70px; top: 45%; left: -50%; animation-duration: 90s; animation-delay: -10s; opacity: 0.4; }
+  @keyframes cloudMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(150vw); }
+  }
+  /* Звёзды сверху */
+  .stars {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 80% 25%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 35% 8%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 50% 35%, rgba(255,255,255,0.7), transparent);
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.5; }
   }
 
-  .vignette {
-    position: fixed; inset: 0;
-    background: radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.95) 100%);
-    pointer-events: none; z-index: 19;
-  }
-
-  #flash {
-    position: fixed; inset: 0; z-index: 30;
-    background: #fff; opacity: 0;
-    pointer-events: none; mix-blend-mode: difference;
-  }
-
-  /* ЭКРАН ВХОДА */
-  #intro {
-    position: fixed; inset: 0; background: #000; z-index: 200;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    cursor: pointer; transition: opacity 0.6s ease;
-  }
-  #intro.hide { opacity: 0; pointer-events: none; }
-
-  .intro-skull-wrap {
-    position: relative; width: 240px; height: 240px;
+  /* ============ РЕГИСТРАЦИЯ ============ */
+  #register {
+    position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.5s ease;
   }
-  .skull-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .skull-main {
-    filter: drop-shadow(0 0 25px #fff) drop-shadow(0 0 50px rgba(0,255,234,0.4));
-    animation: introPulse 2.2s ease-in-out infinite;
-    z-index: 3;
+  #register.hide { opacity: 0; pointer-events: none; }
+  .reg-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 380px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   }
-  .skull-red {
-    filter: drop-shadow(0 0 10px #ff0044);
-    mix-blend-mode: screen;
-    animation: rgbRed 0.28s infinite steps(1);
-    z-index: 2;
+  .reg-card h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
   }
-  .skull-blue {
-    filter: drop-shadow(0 0 10px #00aaff);
-    mix-blend-mode: screen;
-    animation: rgbBlue 0.33s infinite steps(1);
-    z-index: 1;
+  .reg-card p {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 28px;
   }
-  @keyframes introPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.04); }
+  .avatar-preview {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border: 3px solid rgba(255,255,255,0.4);
   }
-  @keyframes rgbRed {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(-4px, 2px); }
-    50% { transform: translate(3px, -3px); }
-    75% { transform: translate(-2px, -1px); }
-    100% { transform: translate(3px, 2px); }
-  }
-  @keyframes rgbBlue {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(4px, -2px); }
-    50% { transform: translate(-3px, 3px); }
-    75% { transform: translate(2px, 1px); }
-    100% { transform: translate(-3px, -2px); }
-  }
+  .avatar-preview:active { transform: scale(0.95); }
 
-  .intro-brand {
-    margin-top: 50px; font-size: 20px; letter-spacing: 16px;
-    color: #00ffea;
-    text-shadow: 0 0 20px #00ffea, 2px 0 0 #ff0044, -2px 0 0 #00aaff;
-    font-weight: bold; animation: textGlitch 3s infinite;
+  .reg-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 16px;
+    color: #fff;
+    outline: none;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+    font-family: inherit;
   }
-  @keyframes textGlitch {
-    0%, 90%, 100% { text-shadow: 0 0 20px #00ffea, 2px 0 0 #ff0044, -2px 0 0 #00aaff; }
-    92% { text-shadow: 0 0 20px #00ffea, -4px 0 0 #ff0044, 4px 0 0 #00aaff; }
-    94% { text-shadow: 0 0 20px #00ffea, 3px 0 0 #ff0044, -3px 0 0 #00aaff; }
+  .reg-input::placeholder { color: rgba(255,255,255,0.5); }
+  .reg-input:focus {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.5);
   }
-  .intro-text {
-    margin-top: 40px; font-size: 14px; letter-spacing: 8px;
-    color: #00ff9d; text-shadow: 0 0 12px #00ff9d;
-    animation: blink 1.4s infinite;
+  .reg-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 24px rgba(255, 100, 80, 0.4);
+    font-family: inherit;
   }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .reg-btn:active { transform: scale(0.97); }
+  .reg-btn:disabled { opacity: 0.5; }
 
-  /* ГЛАВНЫЙ ЭКРАН */
-  #main {
-    position: fixed; inset: 0; z-index: 5;
+  /* ============ ГЛАВНЫЙ ЭКРАН ============ */
+  #app {
+    position: fixed; inset: 0; z-index: 10;
     display: flex; flex-direction: column;
-    opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
   }
-  #main.show { opacity: 1; pointer-events: all; }
+  #app.show { opacity: 1; pointer-events: all; }
 
-  .skull-center {
-    position: absolute; top: 42%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 260px; height: 260px;
-    pointer-events: none; z-index: 3;
-    animation: skullPulse 3s ease-in-out infinite;
+  /* Хедер */
+  .header {
+    padding: 16px 20px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: #fff;
+    background: rgba(0,0,0,0.15);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-  @keyframes skullPulse {
-    0%, 100% { filter: drop-shadow(0 0 20px #fff) drop-shadow(0 0 40px rgba(0,255,234,0.3)); transform: translate(-50%, -50%) scale(1); }
-    50% { filter: drop-shadow(0 0 35px #fff) drop-shadow(0 0 70px rgba(0,255,234,0.5)); transform: translate(-50%, -50%) scale(1.04); }
+  .header-left {
+    display: flex; align-items: center; gap: 12px;
   }
-  .skull-center svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .glitch-red { animation: glitch1 2.8s infinite; mix-blend-mode: screen; }
-  .glitch-blue { animation: glitch2 3.6s infinite; mix-blend-mode: screen; }
-  @keyframes glitch1 {
-    0%, 88%, 100% { transform: translate(0); opacity: 0; }
-    90% { transform: translate(-8px, 3px); opacity: 0.9; }
-    92% { transform: translate(6px, -4px); opacity: 0.9; }
-    94% { transform: translate(-3px, 2px); opacity: 0.9; }
-    96% { transform: translate(0); opacity: 0; }
+  .my-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.4);
   }
-  @keyframes glitch2 {
-    0%, 84%, 100% { transform: translate(0); opacity: 0; }
-    86% { transform: translate(7px, -3px); opacity: 0.9; }
-    89% { transform: translate(-5px, 5px); opacity: 0.9; }
-    92% { transform: translate(3px, -2px); opacity: 0.9; }
-    94% { transform: translate(0); opacity: 0; }
+  .my-name {
+    font-size: 17px; font-weight: 600;
+  }
+  .my-status {
+    font-size: 12px; opacity: 0.75;
+    margin-top: 2px;
+  }
+  .settings-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .settings-btn:active { background: rgba(255,255,255,0.25); }
+
+  /* Поиск */
+  .search-wrap {
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.1);
+    backdrop-filter: blur(20px);
+  }
+  .search-box {
+    position: relative;
+    display: flex; align-items: center;
+  }
+  .search-box svg {
+    position: absolute;
+    left: 14px;
+    width: 18px; height: 18px;
+    fill: rgba(255,255,255,0.6);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 12px 16px 12px 42px;
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .search-input::placeholder { color: rgba(255,255,255,0.55); }
+  .search-input:focus {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.4);
   }
 
-  .brand-title {
-    position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
-    font-size: 13px; letter-spacing: 10px; color: #00ffea;
-    text-shadow: 0 0 15px #00ffea, 2px 0 0 #ff0044, -2px 0 0 #00aaff;
-    font-weight: bold; z-index: 6; pointer-events: none;
-    animation: textGlitch 3s infinite;
+  /* Список контактов */
+  .contacts {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px 100px;
+    scrollbar-width: none;
+  }
+  .contacts::-webkit-scrollbar { display: none; }
+  .contact {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 4px;
+    background: rgba(255,255,255,0.05);
+  }
+  .contact:active { background: rgba(255,255,255,0.15); }
+  .contact-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .online-dot {
+    position: absolute;
+    bottom: 2px; right: 2px;
+    width: 12px; height: 12px;
+    background: #4ade80;
+    border-radius: 50%;
+    border: 2px solid rgba(30,20,50,0.9);
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  }
+  .contact-info { flex: 1; min-width: 0; }
+  .contact-name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .contact-last {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .contact-time {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    flex-shrink: 0;
   }
 
-  .messages {
-    position: absolute; inset: 0; bottom: 80px; top: 80px;
-    overflow-y: auto; padding: 30px 20px 20px;
-    display: flex; flex-direction: column; gap: 12px;
-    z-index: 4; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255,255,255,0.6);
   }
-  .messages::-webkit-scrollbar { display: none; }
-  .msg {
-    max-width: 88%; padding: 10px 14px;
-    font-size: 14px; line-height: 1.55; letter-spacing: 0.4px;
-    animation: msgIn 0.35s ease; word-wrap: break-word;
-    background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(4px);
-    border-left: 2px solid #00ff9d;
-    text-shadow: 0 0 8px rgba(0,255,157,0.4);
-    box-shadow: 0 0 15px rgba(0,255,157,0.1);
+  .empty-state .emoji {
+    font-size: 60px;
+    margin-bottom: 16px;
+    opacity: 0.5;
   }
-  @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .msg.bot { align-self: flex-start; color: #b8ffd9; }
-  .msg.user {
-    align-self: flex-end; color: #a8fff5;
-    border-left: none; border-right: 2px solid #00ffea;
-    background: rgba(0, 20, 20, 0.78);
-    text-shadow: 0 0 8px rgba(0,255,234,0.4);
-    box-shadow: 0 0 15px rgba(0,255,234,0.15);
-  }
-  .msg .name { font-size: 9px; letter-spacing: 3px; opacity: 0.65; margin-bottom: 4px; color: #00ff9d; }
-  .msg.typing { color: #00ff9d; opacity: 0.75; font-style: italic; }
+  .empty-state p { font-size: 15px; }
 
-  .input-bar {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 16px 20px 24px;
-    background: linear-gradient(to top, rgba(0,0,0,0.98), rgba(0,0,0,0.7), transparent);
-    display: flex; align-items: center; gap: 10px; z-index: 10;
+  /* ============ ЧАТ ============ */
+  #chat {
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; flex-direction: column;
+    background: rgba(15, 10, 30, 0.75);
+    backdrop-filter: blur(30px);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
   }
-  .input-field {
-    flex: 1; background: rgba(0, 20, 10, 0.6);
-    border: none; border-bottom: 1px solid rgba(0,255,157,0.4);
-    outline: none; color: #00ffea; padding: 12px 6px;
-    font-family: 'Courier New', monospace; font-size: 15px;
-    letter-spacing: 1px; text-shadow: 0 0 6px rgba(0,255,234,0.5);
-    transition: border-color 0.3s;
-  }
-  .input-field:focus { border-bottom-color: #00ffea; }
-  .input-field::placeholder { color: rgba(0,255,157,0.4); letter-spacing: 2px; font-size: 13px; }
-  .send-btn {
-    background: transparent; border: none; color: #00ff9d;
-    font-size: 22px; padding: 8px 12px; cursor: pointer;
-    text-shadow: 0 0 10px #00ff9d; transition: all 0.2s; font-family: monospace;
-  }
-  .send-btn:active { color: #00ffea; text-shadow: 0 0 20px #00ffea; transform: scale(1.15); }
+  #chat.show { transform: translateX(0); }
 
-  .hud {
-    position: fixed; font-size: 9px; letter-spacing: 2px;
-    color: #00ff9d; opacity: 0.6; z-index: 6;
-    pointer-events: none; text-shadow: 0 0 6px #00ff9d;
+  .chat-header {
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
   }
-  .hud-tl { top: 16px; left: 16px; }
-  .hud-tr { top: 16px; right: 16px; text-align: right; }
-  .hud-bl { bottom: 16px; left: 16px; }
-  .hud-br { bottom: 16px; right: 16px; text-align: right; }
-  .dot-live {
-    display: inline-block; width: 6px; height: 6px; background: #ff3355;
-    border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px #ff3355;
-    animation: blink 1s infinite; vertical-align: middle;
+  .back-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex; align-items: center;
   }
+  .chat-header .contact-avatar {
+    width: 40px; height: 40px;
+    font-size: 16px;
+  }
+  .chat-title { flex: 1; }
+  .chat-title .name { font-size: 16px; font-weight: 600; }
+  .chat-title .status { font-size: 12px; opacity: 0.7; margin-top: 1px; }
+
+  .chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 14px 90px;
+    display: flex; flex-direction: column;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .chat-body::-webkit-scrollbar { display: none; }
+
+  .message {
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    animation: msgPop 0.25s ease;
+    position: relative;
+  }
+  @keyframes msgPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .message.me {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    color: #fff;
+    border-bottom-right-radius: 6px;
+    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.3);
+  }
+  .message.them {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border-bottom-left-radius: 6px;
+    backdrop-filter: blur(10px);
+  }
+  .message .time {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  .chat-input-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 14px 20px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 22px;
+    padding: 12px 18px;
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+    font-family: inherit;
+  }
+  .chat-input::placeholder { color: rgba(255,255,255,0.5); }
+  .chat-input:focus { background: rgba(255,255,255,0.22); }
+  .chat-send {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.4);
+    transition: transform 0.15s;
+    flex-shrink: 0;
+  }
+  .chat-send:active { transform: scale(0.9); }
 </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-<div class="scanlines"></div>
-<div class="vignette"></div>
-<div id="flash"></div>
-
-<div class="hud hud-tl">NEKROS.AWAKENING // <span id="clock">00:00:00</span></div>
-<div class="hud hud-tr"><span class="dot-live"></span>LIVE</div>
-<div class="hud hud-bl">NODE: 0xDEAD // X-CHAOS-512</div>
-<div class="hud hud-br">BUILD 14.0.0</div>
-
-<!-- ЭКРАН ВХОДА -->
-<div id="intro">
-  <div class="intro-skull-wrap">
-    <!-- ХАКЕРСКИЙ ЧЕРЕП — синий слой -->
-    <svg class="skull-svg skull-blue" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" fill="#00aaff"/>
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000"/>
-      <polygon points="100,116 92,140 108,140" fill="#000"/>
-    </svg>
-    <!-- ХАКЕРСКИЙ ЧЕРЕП — красный слой -->
-    <svg class="skull-svg skull-red" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" fill="#ff0044"/>
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000"/>
-      <polygon points="100,116 92,140 108,140" fill="#000"/>
-    </svg>
-    <!-- ХАКЕРСКИЙ ЧЕРЕП — основной -->
-    <svg class="skull-svg skull-main" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="skullGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#0a0a0a"/>
-          <stop offset="100%" stop-color="#000000"/>
-        </linearGradient>
-        <filter id="sharpGlow">
-          <feGaussianBlur stdDeviation="1" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      <!-- Основной контур черепа — угловатый, злой -->
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" 
-            fill="url(#skullGrad)" stroke="#fff" stroke-width="2" stroke-linejoin="miter" filter="url(#sharpGlow)"/>
-
-      <!-- Трещины на лбу -->
-      <path d="M60 40 L68 55 L62 68 L72 78" stroke="#fff" stroke-width="1" fill="none" opacity="0.7"/>
-      <path d="M140 40 L132 55 L138 68 L128 78" stroke="#fff" stroke-width="1" fill="none" opacity="0.7"/>
-      <path d="M100 20 L100 32 L94 40 L100 46 L106 40 L100 32" stroke="#fff" stroke-width="1" fill="none" opacity="0.6"/>
-
-      <!-- Tech-линии на лбу -->
-      <line x1="38" y1="58" x2="58" y2="58" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="38" y1="63" x2="54" y2="63" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="162" y1="58" x2="142" y2="58" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="162" y1="63" x2="146" y2="63" stroke="#fff" stroke-width="1" opacity="0.5"/>
-
-      <!-- ГЛАЗА — угловатые, злые, наклонные -->
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000" stroke="#fff" stroke-width="1.5"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000" stroke="#fff" stroke-width="1.5"/>
-
-      <!-- Зрачки — светящиеся бирюзовые -->
-      <circle cx="62" cy="96" r="3.5" fill="#00ffea">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="138" cy="96" r="3.5" fill="#00ffea">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
-      </circle>
-
-      <!-- НОС — угловатый треугольник -->
-      <polygon points="100,116 92,140 108,140" fill="#000" stroke="#fff" stroke-width="1.5"/>
-
-      <!-- ЗУБЫ — рваные, острые -->
-      <path d="M52 152 L58 142 L64 152 L70 142 L76 152 L82 142 L88 152 L94 142 L100 152 L106 142 L112 152 L118 142 L124 152 L130 142 L136 152 L142 142 L148 152" 
-            stroke="#fff" stroke-width="1.5" fill="none" stroke-linejoin="miter"/>
-
-      <!-- Нижняя челюстная линия -->
-      <line x1="56" y1="170" x2="144" y2="170" stroke="#fff" stroke-width="1" opacity="0.5"/>
-    </svg>
-  </div>
-  <div class="intro-brand">NEKROS AWAKENING</div>
-  <div class="intro-text">[ TAP TO INITIATE ]</div>
+<!-- ФОН ЗАКАТ -->
+<div class="sunset-bg">
+  <div class="stars"></div>
+  <div class="sun"></div>
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+  <div class="cloud cloud4"></div>
 </div>
 
-<!-- ГЛАВНЫЙ ЭКРАН -->
-<div id="main">
-  <div class="brand-title">N E K R O S</div>
+<!-- РЕГИСТРАЦИЯ -->
+<div id="register">
+  <div class="reg-card">
+    <h1>Sunset Chat</h1>
+    <p>Добро пожаловать 👋</p>
+    <div class="avatar-preview" id="avatarPreview"></div>
+    <input type="text" class="reg-input" id="regName" placeholder="Ваше имя" maxlength="20">
+    <button class="reg-btn" id="regBtn" disabled>Начать общение</button>
+  </div>
+</div>
 
-  <div class="skull-center">
-    <svg class="glitch-blue" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" fill="#00aaff"/>
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000"/>
-      <polygon points="100,116 92,140 108,140" fill="#000"/>
-    </svg>
-    <svg class="glitch-red" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" fill="#ff0044"/>
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000"/>
-      <polygon points="100,116 92,140 108,140" fill="#000"/>
-    </svg>
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="skullGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#0a0a0a"/>
-          <stop offset="100%" stop-color="#000000"/>
-        </linearGradient>
-        <filter id="sharpGlow2">
-          <feGaussianBlur stdDeviation="1" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      <path d="M100 14 L58 20 L36 38 L26 62 L24 84 L32 100 L26 108 L24 120 L30 134 L42 146 L48 158 L50 176 L60 184 L74 184 L74 168 L86 168 L86 184 L114 184 L114 168 L126 168 L126 184 L140 184 L150 176 L152 158 L158 146 L170 134 L176 120 L174 108 L168 100 L176 84 L174 62 L164 38 L142 20 Z" 
-            fill="url(#skullGrad2)" stroke="#fff" stroke-width="2" stroke-linejoin="miter" filter="url(#sharpGlow2)"/>
-
-      <path d="M60 40 L68 55 L62 68 L72 78" stroke="#fff" stroke-width="1" fill="none" opacity="0.7"/>
-      <path d="M140 40 L132 55 L138 68 L128 78" stroke="#fff" stroke-width="1" fill="none" opacity="0.7"/>
-      <path d="M100 20 L100 32 L94 40 L100 46 L106 40 L100 32" stroke="#fff" stroke-width="1" fill="none" opacity="0.6"/>
-
-      <line x1="38" y1="58" x2="58" y2="58" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="38" y1="63" x2="54" y2="63" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="162" y1="58" x2="142" y2="58" stroke="#fff" stroke-width="1" opacity="0.5"/>
-      <line x1="162" y1="63" x2="146" y2="63" stroke="#fff" stroke-width="1" opacity="0.5"/>
-
-      <polygon points="44,88 78,80 82,104 44,110" fill="#000" stroke="#fff" stroke-width="1.5"/>
-      <polygon points="156,88 122,80 118,104 156,110" fill="#000" stroke="#fff" stroke-width="1.5"/>
-
-      <circle cx="62" cy="96" r="3.5" fill="#00ffea">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="138" cy="96" r="3.5" fill="#00ffea">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
-      </circle>
-
-      <polygon points="100,116 92,140 108,140" fill="#000" stroke="#fff" stroke-width="1.5"/>
-
-      <path d="M52 152 L58 142 L64 152 L70 142 L76 152 L82 142 L88 152 L94 142 L100 152 L106 142 L112 152 L118 142 L124 152 L130 142 L136 152 L142 142 L148 152" 
-            stroke="#fff" stroke-width="1.5" fill="none" stroke-linejoin="miter"/>
-
-      <line x1="56" y1="170" x2="144" y2="170" stroke="#fff" stroke-width="1" opacity="0.5"/>
-    </svg>
+<!-- ОСНОВНОЙ ЭКРАН -->
+<div id="app">
+  <div class="header">
+    <div class="header-left">
+      <div class="my-avatar" id="myAvatarSmall"></div>
+      <div>
+        <div class="my-name" id="myNameLabel"></div>
+        <div class="my-status">в сети</div>
+      </div>
+    </div>
+    <button class="settings-btn" id="settingsBtn">⚙️</button>
   </div>
 
-  <div class="messages" id="messages"></div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Поиск людей...">
+    </div>
+  </div>
 
-  <div class="input-bar">
-    <input type="text" class="input-field" id="chatInput" placeholder="Спросите NEKROS..." autocomplete="off">
-    <button class="send-btn" id="chatSend">▶</button>
+  <div class="contacts" id="contactsList"></div>
+</div>
+
+<!-- ЧАТ -->
+<div id="chat">
+  <div class="chat-header">
+    <button class="back-btn" id="backBtn">←</button>
+    <div class="contact-avatar" id="chatAvatar"></div>
+    <div class="chat-title">
+      <div class="name" id="chatName"></div>
+      <div class="status" id="chatStatus">в сети</div>
+    </div>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-bar">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
+    <button class="chat-send" id="chatSend">➤</button>
   </div>
 </div>
 
 <script>
-/* ============ МАТРИЦА ============ */
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
-let W, H, columns, drops;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-  columns = Math.floor(W / 16);
-  drops = Array(columns).fill(0).map(() => Math.random() * H);
-}
-resize();
-window.addEventListener('resize', resize);
-const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンABCDEF#$%&*<>/\\+=';
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
-  ctx.fillRect(0, 0, W, H);
-  ctx.font = '16px monospace';
-  for (let i = 0; i < drops.length; i++) {
-    const c = chars[Math.floor(Math.random() * chars.length)];
-    const x = i * 16, y = drops[i];
-    if (Math.random() > 0.97) {
-      ctx.fillStyle = '#aaffdd';
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = '#00ffea';
-    } else {
-      ctx.fillStyle = Math.random() > 0.85 ? '#00ffea' : '#00ff9d';
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = '#00ff9d';
-    }
-    ctx.fillText(c, x, y);
-    ctx.shadowBlur = 0;
-    if (y > H && Math.random() > 0.97) drops[i] = 0;
-    drops[i] += 16;
-  }
-}
-setInterval(drawMatrix, 33);
-
-/* ============ ЧАСЫ ============ */
-setInterval(() => {
-  const d = new Date();
-  const t = [d.getHours(), d.getMinutes(), d.getSeconds()].map(n => String(n).padStart(2, '0')).join(':');
-  document.getElementById('clock').textContent = t;
-}, 1000);
-
-/* ============ ГЛИТЧ-ВСПЫШКИ ============ */
-const flashEl = document.getElementById('flash');
-function randomFlash() {
-  if (Math.random() > 0.78) {
-    flashEl.style.transition = 'none';
-    flashEl.style.opacity = '0.14';
-    setTimeout(() => {
-      flashEl.style.transition = 'opacity 0.15s';
-      flashEl.style.opacity = '0';
-    }, 40);
-  }
-  if (Math.random() > 0.92) {
-    document.body.style.transform = 'translate(' + (Math.random() * 5 - 2.5) + 'px, ' + (Math.random() * 5 - 2.5) + 'px)';
-    setTimeout(() => { document.body.style.transform = ''; }, 55);
-  }
-  setTimeout(randomFlash, 1200 + Math.random() * 3500);
-}
-randomFlash();
-
-/* ============ ЗВУК ============ */
-let audioCtx = null;
-function startAmbient() {
-  const AC = window.AudioContext || window.webkitAudioContext;
-  audioCtx = new AC();
-  const hum = audioCtx.createOscillator();
-  hum.type = 'sine';
-  hum.frequency.value = 55;
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = 180;
-  const gain = audioCtx.createGain();
-  gain.gain.value = 0.02;
-  hum.connect(filter).connect(gain).connect(audioCtx.destination);
-  hum.start();
-}
-
-/* ============ ГОЛОС ============ */
-let ruVoice = null;
-let isMaleVoice = false;
-function scoreVoice(v) {
-  let s = 0;
-  const n = v.name.toLowerCase();
-  const l = v.lang.toLowerCase();
-  if (!l.startsWith('ru')) return -10000;
-  s += 100;
-  if (/yuri|юрий/.test(n)) s += 500;
-  if (/dmitri|дмитрий|dmitry/.test(n)) s += 490;
-  if (/pavel|павел/.test(n)) s += 480;
-  if (/maxim|максим/.test(n)) s += 480;
-  if (/aleksandr|александр/.test(n)) s += 470;
-  if (/\bmale\b|мужск/.test(n)) s += 400;
-  if (/milena|милена|katya|катя|irina|ирина|female|женск|alena|алёна/.test(n)) s -= 800;
-  if (/premium|enhanced|neural|natural|siri/.test(n)) s += 300;
-  return s;
-}
-function pickVoice() {
-  const voices = speechSynthesis.getVoices();
-  if (!voices.length) return;
-  let best = null, bestScore = -9999;
-  for (const v of voices) {
-    const s = scoreVoice(v);
-    if (s > bestScore) { bestScore = s; best = v; }
-  }
-  if (best && bestScore > 0) {
-    ruVoice = best;
-    isMaleVoice = bestScore >= 400;
-  }
-}
-speechSynthesis.onvoiceschanged = pickVoice;
-pickVoice();
-setTimeout(pickVoice, 500);
-setTimeout(pickVoice, 1500);
-
-function speak(text) {
-  if (speechSynthesis.speaking) speechSynthesis.cancel();
-  const parts = text.split(/(?<=[.!?])\s+/);
-  let i = 0;
-  function next() {
-    if (i >= parts.length) return;
-    const u = new SpeechSynthesisUtterance(parts[i]);
-    u.lang = 'ru-RU';
-    if (ruVoice) u.voice = ruVoice;
-    if (isMaleVoice) { u.pitch = 0.9; u.rate = 0.97; }
-    else { u.pitch = 0.35; u.rate = 0.9; }
-    u.volume = 1.0;
-    i++;
-    u.onend = () => setTimeout(next, 200);
-    u.onerror = () => setTimeout(next, 200);
-    speechSynthesis.speak(u);
-  }
-  next();
-}
-
-/* ============ ЧАТ ============ */
-const messagesEl = document.getElementById('messages');
-const inputEl = document.getElementById('chatInput');
-const sendBtn = document.getElementById('chatSend');
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function addMessage(text, who) {
-  const div = document.createElement('div');
-  div.className = 'msg ' + who;
-  const content = escapeHtml(text).replace(/\n/g, '<br>');
-  div.innerHTML = '<div class="name">' + (who === 'bot' ? 'NEKROS' : 'ВЫ') + '</div>' + content;
-  messagesEl.appendChild(div);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-function showTyping() {
-  const div = document.createElement('div');
-  div.className = 'msg bot typing';
-  div.id = 'typingIndicator';
-  div.innerHTML = '<div class="name">NEKROS</div>думаю...';
-  messagesEl.appendChild(div);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-function hideTyping() {
-  const t = document.getElementById('typingIndicator');
-  if (t) t.remove();
-}
-
-/* ============ ПОГОДА ============ */
-const weatherCodes = {
-  0: 'ясно', 1: 'преимущественно ясно', 2: 'переменная облачность', 3: 'пасмурно',
-  45: 'туман', 48: 'изморозь', 51: 'слабая морось', 53: 'морось', 55: 'сильная морось',
-  61: 'слабый дождь', 63: 'дождь', 65: 'сильный дождь', 71: 'слабый снег', 73: 'снег', 75: 'сильный снег',
-  80: 'слабый ливень', 81: 'ливень', 82: 'сильный ливень', 95: 'гроза', 99: 'сильная гроза с градом'
-};
-function describeWeatherCode(code) { return weatherCodes[code] || 'неизвестно'; }
-
-const CITY_DB = {
-  'москва': { name: 'Москва', lat: 55.7558, lon: 37.6173, country: 'Россия' },
-  'питер': { name: 'Санкт-Петербург', lat: 59.9343, lon: 30.3351, country: 'Россия' },
-  'санкт-петербург': { name: 'Санкт-Петербург', lat: 59.9343, lon: 30.3351, country: 'Россия' },
-  'спб': { name: 'Санкт-Петербург', lat: 59.9343, lon: 30.3351, country: 'Россия' },
-  'новосибирск': { name: 'Новосибирск', lat: 55.0084, lon: 82.9357, country: 'Россия' },
-  'екатеринбург': { name: 'Екатеринбург', lat: 56.8389, lon: 60.6057, country: 'Россия' },
-  'казань': { name: 'Казань', lat: 55.8304, lon: 49.0661, country: 'Россия' },
-  'нижний новгород': { name: 'Нижний Новгород', lat: 56.3269, lon: 44.0059, country: 'Россия' },
-  'челябинск': { name: 'Челябинск', lat: 55.1644, lon: 61.4368, country: 'Россия' },
-  'самара': { name: 'Самара', lat: 53.1959, lon: 50.1002, country: 'Россия' },
-  'омск': { name: 'Омск', lat: 54.9885, lon: 73.3242, country: 'Россия' },
-  'ростов': { name: 'Ростов-на-Дону', lat: 47.2357, lon: 39.7015, country: 'Россия' },
-  'уфа': { name: 'Уфа', lat: 54.7388, lon: 55.9721, country: 'Россия' },
-  'красноярск': { name: 'Красноярск', lat: 56.0153, lon: 92.8932, country: 'Россия' },
-  'воронеж': { name: 'Воронеж', lat: 51.6720, lon: 39.1843, country: 'Россия' },
-  'пермь': { name: 'Пермь', lat: 58.0105, lon: 56.2502, country: 'Россия' },
-  'волгоград': { name: 'Волгоград', lat: 48.7080, lon: 44.5133, country: 'Россия' },
-  'краснодар': { name: 'Краснодар', lat: 45.0355, lon: 38.9753, country: 'Россия' },
-  'саратов': { name: 'Саратов', lat: 51.5336, lon: 46.0343, country: 'Россия' },
-  'тюмень': { name: 'Тюмень', lat: 57.1522, lon: 65.5272, country: 'Россия' },
-  'сочи': { name: 'Сочи', lat: 43.6028, lon: 39.7342, country: 'Россия' },
-  'калининград': { name: 'Калининград', lat: 54.7104, lon: 20.4522, country: 'Россия' },
-  'мурманск': { name: 'Мурманск', lat: 68.9585, lon: 33.0827, country: 'Россия' },
-  'владивосток': { name: 'Владивосток', lat: 43.1155, lon: 131.8855, country: 'Россия' },
-  'хабаровск': { name: 'Хабаровск', lat: 48.4827, lon: 135.0838, country: 'Россия' },
-  'киев': { name: 'Киев', lat: 50.4501, lon: 30.5234, country: 'Украина' },
-  'минск': { name: 'Минск', lat: 53.9045, lon: 27.5615, country: 'Беларусь' },
-  'алматы': { name: 'Алматы', lat: 43.2220, lon: 76.8512, country: 'Казахстан' },
-  'астана': { name: 'Астана', lat: 51.1694, lon: 71.4491, country: 'Казахстан' },
-  'ташкент': { name: 'Ташкент', lat: 41.2995, lon: 69.2401, country: 'Узбекистан' },
-  'тбилиси': { name: 'Тбилиси', lat: 41.7151, lon: 44.8271, country: 'Грузия' },
-  'ереван': { name: 'Ереван', lat: 40.1792, lon: 44.4991, country: 'Армения' },
-  'баку': { name: 'Баку', lat: 40.4093, lon: 49.8671, country: 'Азербайджан' },
-  'стамбул': { name: 'Стамбул', lat: 41.0082, lon: 28.9784, country: 'Турция' },
-  'анталия': { name: 'Анталия', lat: 36.8969, lon: 30.7133, country: 'Турция' },
-  'дубай': { name: 'Дубай', lat: 25.2048, lon: 55.2708, country: 'ОАЭ' },
-  'каир': { name: 'Каир', lat: 30.0444, lon: 31.2357, country: 'Египет' },
-  'хургада': { name: 'Хургада', lat: 27.2579, lon: 33.8116, country: 'Египет' },
-  'пхукет': { name: 'Пхукет', lat: 7.8804, lon: 98.3923, country: 'Таиланд' },
-  'берлин': { name: 'Берлин', lat: 52.5200, lon: 13.4050, country: 'Германия' },
-  'париж': { name: 'Париж', lat: 48.8566, lon: 2.3522, country: 'Франция' },
-  'лондон': { name: 'Лондон', lat: 51.5074, lon: -0.1278, country: 'Великобритания' },
-  'рим': { name: 'Рим', lat: 41.9028, lon: 12.4964, country: 'Италия' },
-  'мадрид': { name: 'Мадрид', lat: 40.4168, lon: -3.7038, country: 'Испания' },
-  'прага': { name: 'Прага', lat: 50.0755, lon: 14.4378, country: 'Чехия' },
-  'нью-йорк': { name: 'Нью-Йорк', lat: 40.7128, lon: -74.0060, country: 'США' },
-  'токио': { name: 'Токио', lat: 35.6762, lon: 139.6503, country: 'Япония' },
-  'сеул': { name: 'Сеул', lat: 37.5665, lon: 126.9780, country: 'Южная Корея' },
-  'пекин': { name: 'Пекин', lat: 39.9042, lon: 116.4074, country: 'Китай' }
-};
-
-function normalizeCity(raw) {
-  let w = raw.toLowerCase().trim();
-  const endings = ['е','у','ы','и','ой','ей','а','я','ь','ю','ов','ев','ах','ям','ом','ем','ами','ями'];
-  const variants = new Set([w]);
-  for (const e of endings) {
-    if (w.endsWith(e) && w.length - e.length >= 3) {
-      variants.add(w.slice(0, -e.length));
-      variants.add(w.slice(0, -e.length) + 'а');
-    }
-  }
-  return Array.from(variants);
-}
-async function findCity(query) {
-  const variants = normalizeCity(query);
-  for (const v of variants) { if (CITY_DB[v]) return CITY_DB[v]; }
-  for (const key in CITY_DB) {
-    for (const v of variants) { if (key.startsWith(v) || v.startsWith(key)) return CITY_DB[key]; }
-  }
-  for (const v of variants) {
-    if (!v || v.length < 3) continue;
-    try {
-      const r = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(v) + '&count=1&language=ru&format=json');
-      const data = await r.json();
-      if (data.results && data.results.length) {
-        const c = data.results[0];
-        return { name: c.name, country: c.country, lat: c.latitude, lon: c.longitude };
-      }
-    } catch(e) {}
-  }
-  return null;
-}
-async function getWeatherByCoords(lat, lon) {
-  try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=3');
-    return await r.json();
-  } catch (e) { return null; }
-}
-function formatWeather(data, cityName) {
-  if (!data || !data.current) return null;
-  const c = data.current, daily = data.daily;
-  const temp = Math.round(c.temperature_2m);
-  const feels = Math.round(c.apparent_temperature);
-  let text = 'Погода в ' + cityName + ':\nСейчас ' + temp + '°C, ощущается как ' + feels + '°C. ' + describeWeatherCode(c.weather_code) + '.\nВлажность ' + c.relative_humidity_2m + '%, ветер ' + Math.round(c.wind_speed_10m) + ' км/ч.\n';
-  if (daily && daily.time) {
-    text += '\nПрогноз:\n';
-    for (let i = 0; i < Math.min(3, daily.time.length); i++) {
-      const d = new Date(daily.time[i]);
-      const dayName = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : d.toLocaleDateString('ru-RU', { weekday: 'long' });
-      text += dayName + ': ' + Math.round(daily.temperature_2m_min[i]) + '°C … ' + Math.round(daily.temperature_2m_max[i]) + '°C, ' + describeWeatherCode(daily.weather_code[i]) + '.\n';
-    }
-  }
-  if (temp <= 0) text += '\nСовет: пуховик, шапка, перчатки.';
-  else if (temp <= 10) text += '\nСовет: куртка, свитер, шапка.';
-  else if (temp <= 18) text += '\nСовет: лёгкая куртка, джинсы.';
-  else if (temp <= 25) text += '\nСовет: футболка, лёгкие брюки.';
-  else text += '\nСовет: лёгкая одежда, вода с собой.';
-  return text;
-}
-function extractCity(text) {
-  let cleaned = text.toLowerCase().replace(/[?!.,;:]/g, ' ')
-    .replace(/погод[ауы]?|прогноз|температур[ауы]?/gi, ' ')
-    .replace(/\b(сейчас|сегодня|завтра|пожалуйста|мне|скажи|расскажи|какой|какая|какое|какие|будет|покажи|узнай|хочу|знать|можешь|подскажи|сколько|градусов|погода)\b/gi, ' ')
-    .replace(/\s+/g, ' ').trim();
-  let mV = cleaned.match(/\bв[о]?\s+([а-яёa-z\-]+(?:\s+[а-яёa-z\-]+)?)/i);
-  if (mV && mV[1]) {
-    let c = mV[1].trim().replace(/\s+(сейчас|сегодня|завтра|будет|на|в|и)$/i, '').trim();
-    if (c.length >= 3) return c;
-  }
-  for (const ow of text.split(/\s+/)) {
-    const clean = ow.replace(/[?!.,;:]/g, '');
-    if (clean.length >= 3 && /^[А-ЯЁA-Z]/.test(clean)) return clean;
-  }
-  const words = cleaned.split(/\s+/).filter(w => w.length >= 3);
-  if (words.length) return words[words.length - 1];
-  return null;
-}
-function askGeo() {
-  return new Promise((resolve) => {
-    if (!navigator.geolocation) return resolve(null);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-      () => resolve(null),
-      { timeout: 5000, maximumAge: 600000 }
-    );
-  });
-}
-async function handleWeather(userText) {
-  let city = extractCity(userText);
-  let cityName = null, data = null;
-  if (city) {
-    const found = await findCity(city);
-    if (found) {
-      cityName = found.name + (found.country ? ', ' + found.country : '');
-      data = await getWeatherByCoords(found.lat, found.lon);
-    } else {
-      return 'Не нашёл город "' + city + '". Попробуйте: "погода в Москве".';
-    }
-  } else {
-    const coords = await askGeo();
-    if (coords) {
-      cityName = 'вашей локации';
-      data = await getWeatherByCoords(coords.lat, coords.lon);
-    } else {
-      return 'Укажите город: например, "погода в Москве".';
-    }
-  }
-  if (!data) return 'Не удалось получить данные.';
-  return formatWeather(data, cityName);
-}
-
-/* ============ БАЗА ЗНАНИЙ ============ */
-const K = [
-  { keys: ['привет','здравств','хай','hi','hello','ку','здарова','добрый день','доброе утро','добрый вечер'],
-    replies: ['Приветствую вас. Рад помочь.', 'Здравствуйте. Слушаю вас.', 'Привет. Спрашивайте что угодно.'] },
-  { keys: ['как дела','как ты','как жизнь','как настроение'],
-    replies: ['Всё отлично. А у вас как?', 'Работаю стабильно. Чем помочь?', 'Хорошо. Что вас привело?'] },
-  { keys: ['кто ты','ты кто','как тебя зовут','твоё имя','представься','ты человек','ты робот','ты ии','ты ai','ты бот','ты живой'],
-    replies: ['Я NEKROS — искусственный интеллект. Помогаю с учёбой, здоровьем, техникой, погодой и многим другим.', 'Меня зовут NEKROS. Я цифровой помощник.'] },
-  { keys: ['погода','прогноз','будет дождь','будет снег','на улице','градус','температур','жарко','холодно'],
-    replies: ['Сейчас проверю погоду...'] },
-  { keys: ['математика','алгебра','геометрия','помоги с математикой'],
-    replies: ['Математика — помогу. Арифметика, дроби, проценты, уравнения, логарифмы, производные, интегралы. Опишите задачу.'] },
-  { keys: ['умножение','таблица умножения','умножить'],
-    replies: ['Умножение — быстрое сложение. 7 × 8 = 56. Способы: таблица, столбик, на 5 — делим на 2 и добавляем 0, на 9 — умножаем на 10 и отнимаем исходное.'] },
-  { keys: ['деление','поделить','разделить'],
-    replies: ['Деление: 56 ÷ 8 = 7. Столбик, на 2 — пополам, на 5 — умножить на 2 и разделить на 10.'] },
-  { keys: ['корень','квадратный корень'],
-    replies: ['√4=2, √9=3, √16=4, √25=5, √36=6, √49=7, √64=8, √81=9, √100=10, √144=12. Для больших — разложить: √72 = 6√2.'] },
-  { keys: ['процент','проценты'],
-    replies: ['Процент — сотая часть. X% от N: N × X / 100. Пример: 20% от 150 = 30.'] },
-  { keys: ['уравнение','решить уравнение','квадратное уравнение'],
-    replies: ['Линейное: 2x + 5 = 11 → x = 3. Квадратное: D=b²-4ac. D>0 — два корня. D=0 — один. D<0 — нет.'] },
-  { keys: ['русский язык','русский'],
-    replies: ['Русский язык — помогу. Орфография, пунктуация, разборы. Спросите правило.'] },
-  { keys: ['жи ши','ча ща','чу щу'],
-    replies: ['ЖИ-ШИ с И, ЧА-ЩА с А, ЧУ-ЩУ с У.'] },
-  { keys: ['падеж','падежи','склонение'],
-    replies: ['6 падежей: И, Р, Д, В, Т, П. Какое слово просклонять?'] },
-  { keys: ['сочинение'],
-    replies: ['Сочинение: вступление, основная часть (2 аргумента из литературы + 1 из жизни), заключение. 150+ слов.'] },
-  { keys: ['диплом','дипломная работа','вкр'],
-    replies: ['Диплом: введение, теоретическая глава, практическая глава, заключение, литература (30-50 источников). 60-80 страниц.'] },
-  { keys: ['курсовая'],
-    replies: ['Курсовая: введение, теоретическая часть, практическая часть, заключение, литература. 25-40 страниц.'] },
-  { keys: ['реферат'],
-    replies: ['Реферат: титульник, введение, основная часть, заключение, литература. 15-25 страниц.'] },
-  { keys: ['физика'],
-    replies: ['Физика: F=ma, E=mv²/2, E=mgh, P=UI, Q=cmΔt. Опишите задачу.'] },
-  { keys: ['химия'],
-    replies: ['Химия: n=m/M, V=n×22,4, ω=m(в-ва)/m(р-ра)×100%. Опишите задачу.'] },
-  { keys: ['история'],
-    replies: ['История России: 862 — Рюрик, 988 — крещение, 1380 — Куликовская, 1703 — Петербург, 1861 — крепостное, 1917 — революция, 1941-45 — ВОВ.'] },
-  { keys: ['английский','english'],
-    replies: ['Английский: Present Simple, Past Simple, Present Perfect — база. Duolingo/Anki для слов.'] },
-  { keys: ['программирование','как стать программистом','python'],
-    replies: ['Python для старта. 2-3 часа в день 6 месяцев. Stepik, YouTube. 3-5 проектов. Junior 60-120к.'] },
-  { keys: ['телефон','смартфон','iphone','android'],
-    replies: ['iPhone — iOS. Samsung — камеры. Xiaomi — бюджет. До 20к: Redmi. 20-50к: iPhone 12-13.'] },
-  { keys: ['ноутбук','ноут'],
-    replies: ['Учёба: MacBook Air M1. Windows: ASUS, Lenovo, HP, Dell. Игры: ASUS ROG.'] },
-  { keys: ['какую машину купить','какая машина','посоветуй машину'],
-    replies: ['До 1 млн: Corolla, Civic, Mazda 3. 1-3 млн: Camry, Mazda 6, Sonata. 3+: Lexus ES, Land Cruiser.'] },
-  { keys: ['toyota','тойота'],
-    replies: ['Toyota — эталон надёжности. Corolla, Camry, RAV4 неубиваемые.'] },
-  { keys: ['bmw','бмв'],
-    replies: ['BMW — отличные, но дорогие в обслуживании. Б/у старше 5 лет — риск.'] },
-  { keys: ['mercedes','мерседес'],
-    replies: ['Mercedes — премиум. Б/у — только с проверкой у дилера.'] },
-  { keys: ['работа','карьера','зарплата'],
-    replies: ['Каждые 1-2 года оценивайте рост. Нет роста — меняйте. На переговорах +20% к желаемому.'] },
-  { keys: ['резюме'],
-    replies: ['Резюме: 1 страница, конкретика цифрами. ФИО, контакты, опыт, образование, навыки. PDF.'] },
-  { keys: ['собеседование'],
-    replies: ['Готовьте 5 ответов: о себе, сильные/слабые, почему мы, кем через 3 года, зарплата.'] },
-  { keys: ['деньги','накопить','бюджет'],
-    replies: ['50/30/20 — 50% необходимое, 30% желания, 20% сбережения. Подушка 3-6 месяцев.'] },
-  { keys: ['инвестиции','акции'],
-    replies: ['ИИС — вычет 52к/год. Индексные фонды. Горизонт 5+ лет.'] },
-  { keys: ['болит голова','мигрень'],
-    replies: ['Проветрите, вода, компресс на лоб. Если не проходит — к врачу.'] },
-  { keys: ['бессонница'],
-    replies: ['За 2 часа до сна — никаких экранов. Комната 18-20°. Мелатонин 1-3 мг.'] },
-  { keys: ['устал','усталость'],
-    replies: ['Сон 7-8 часов, витамины D/B12, прогулка 30 мин, вода 2 литра.'] },
-  { keys: ['стресс','тревога'],
-    replies: ['Дыхание 4-7-8. Физнагрузка. Если 2+ недели — к психотерапевту.'] },
-  { keys: ['депрессия','плохо на душе','одинок'],
-    replies: ['Вы не одни. Телефон доверия 8-800-2000-122. Психотерапевт. Пожалуйста, позвоните.'] },
-  { keys: ['тренировка','качаться','набрать массу'],
-    replies: ['Программа 3 раза в неделю. Приседания, жим, тяга, отжимания, подтягивания. Прогрессия +2.5 кг.'] },
-  { keys: ['похудеть','диета'],
-    replies: ['Дефицит калорий. Больше белка. Овощи. Убрать сахар. 8000 шагов. Сон 7-8 часов.'] },
-  { keys: ['рецепт','что приготовить'],
-    replies: ['Паста с чесноком, омлет, куриная грудка + овощи, рис + овощи. Что в холодильнике?'] },
-  { keys: ['куда поехать','отпуск','путешествие'],
-    replies: ['Россия (Сочи, Крым, Байкал), Турция, Египет, Таиланд, ОАЭ, Грузия.'] },
-  { keys: ['отношения','любовь','девушка','парень'],
-    replies: ['Важны: честность, уважение границ, общие цели, умение разговаривать.'] },
-  { keys: ['расстались','бросил','бросила'],
-    replies: ['2-4 недели грустить нормально. Полный контакт-стоп. Спорт, друзья. Через 3-6 месяцев легче.'] },
-  { keys: ['уверенность','самооценка'],
-    replies: ['Делайте что боитесь маленькими шагами. Дневник успехов. Спорт.'] },
-  { keys: ['смысл жизни'],
-    replies: ['Каждый находит сам. Найди что даёт энергию и делай это. Помогай другим.'] },
-  { keys: ['книга','что почитать'],
-    replies: ['Мастер и Маргарита, 1984, Атомные привычки, Sapiens.'] },
-  { keys: ['фильм','что посмотреть','сериал'],
-    replies: ['Побег из Шоушенка, Крёстный отец, Матрица, Интерстеллар. Во все тяжкие.'] },
-  { keys: ['игра','во что поиграть'],
-    replies: ['GTA 5, RDR 2, CS 2, Dota 2, Witcher 3, Elden Ring, Minecraft.'] },
-  { keys: ['который час','сколько времени'],
-    replies: ['Сейчас ' + new Date().toLocaleTimeString('ru-RU') + '.'] },
-  { keys: ['какое сегодня число','какая дата','какой день'],
-    replies: ['Сегодня ' + new Date().toLocaleDateString('ru-RU', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) + '.'] },
-  { keys: ['спасибо','благодар','спс'],
-    replies: ['Всегда пожалуйста.', 'Рад помочь.', 'Обращайтесь ещё.'] },
-  { keys: ['пока','до свидания','bye'],
-    replies: ['Возвращайтесь.', 'До встречи.'] },
-  { keys: ['помощь','помоги','help','что ты умеешь','что ты знаешь','какие темы'],
-    replies: [
-      'Я NEKROS — нейросеть. Знаю математику, языки, здоровье, машины, путешествия, IT, психологию. Спрашивай что угодно.',
-      'Меня зовут NEKROS. Я ИИ на этом сайте. Готов помочь с любой задачей.',
-      'Помогу с учёбой, работой, здоровьем, техникой, философией. Задай вопрос.'
+/* ============================================================
+   БАЗА ЛЮДЕЙ (симуляция — они будут отвечать сами)
+   ============================================================ */
+const PEOPLE = [
+  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A',
+    autoReplies: [
+      'Привет! Как дела?',
+      'Чем занимаешься?',
+      'Хорошо, что написал 🙂',
+      'Согласен с тобой.',
+      'Интересно!',
+      'Давай встретимся как-нибудь.',
+      'А ты как думаешь?',
+      'Ха-ха, точно!',
+      'Расскажи подробнее.',
+      'Не забудь про встречу.'
     ] },
-  { keys: ['дурак','тупой','идиот'],
-    replies: ['Я не обижаюсь. Расскажите что случилось.'] }
+  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M',
+    autoReplies: [
+      'Приветик! 💕',
+      'Как твои дела?',
+      'Рада тебя слышать!',
+      'У меня всё отлично 😊',
+      'А ты чем занят?',
+      'Расскажи о себе.',
+      'Обожаю такие разговоры!',
+      'Хм, интересно.',
+      'Надо как-нибудь встретиться.',
+      'Спасибо, что пишешь!'
+    ] },
+  { id: 'dmitry', name: 'Дмитрий', color: '#4a90e2', emoji: 'Д',
+    autoReplies: [
+      'Привет, друг!',
+      'Как сам?',
+      'Что нового?',
+      'Слушай, надо пересечься.',
+      'Согласен полностью.',
+      'Понял тебя.',
+      'Хорошо, договорились.',
+      'Пиши ещё.',
+      'Интересная тема.',
+      'Ок, тогда так и сделаем.'
+    ] },
+  { id: 'anna', name: 'Анна', color: '#ff5e8c', emoji: 'А',
+    autoReplies: [
+      'Привет! ❤️',
+      'Как проходит день?',
+      'Ты классный!',
+      'Мне нравится с тобой болтать.',
+      'А что ты делаешь сейчас?',
+      'Хаха, смешно 😄',
+      'Давай встретимся на выходных.',
+      'Обожаю такие моменты.',
+      'Расскажи что-нибудь.',
+      'Спасибо за сообщение!'
+    ] },
+  { id: 'ivan', name: 'Иван', color: '#4ecdc4', emoji: 'И',
+    autoReplies: [
+      'Здарова!',
+      'Как жизнь?',
+      'Что нового брат?',
+      'Понял, отлично.',
+      'Огонь!',
+      'Красава!',
+      'Давай в выходные.',
+      'Хорошо, скинул.',
+      'Так держать!',
+      'Не забудь написать.'
+    ] },
+  { id: 'elena', name: 'Елена', color: '#f5a623', emoji: 'Е',
+    autoReplies: [
+      'Приветик 🌸',
+      'Как настроение?',
+      'Спасибо что написал!',
+      'У меня всё хорошо 😊',
+      'А ты как?',
+      'Согласна с тобой.',
+      'Отличная идея!',
+      'Расскажи подробнее.',
+      'Давай поговорим ещё.',
+      'Хорошего дня!'
+    ] },
+  { id: 'sergey', name: 'Сергей', color: '#7b68ee', emoji: 'С',
+    autoReplies: [
+      'Привет.',
+      'Как дела?',
+      'Что нужно?',
+      'Понял, сделаю.',
+      'Ок.',
+      'Договорились.',
+      'Хорошо, обсудим.',
+      'Напиши позже.',
+      'Согласен.',
+      'Всё будет в порядке.'
+    ] },
+  { id: 'olga', name: 'Ольга', color: '#e91e63', emoji: 'О',
+    autoReplies: [
+      'Привет, дорогой!',
+      'Как ты?',
+      'Рада слышать 😊',
+      'Много работы сейчас.',
+      'А у тебя как дела?',
+      'Расскажи как жизнь.',
+      'Мне нравится наше общение.',
+      'Спасибо!',
+      'Обнимаю 🤗',
+      'Пока, хорошего дня!'
+    ] },
+  { id: 'nikita', name: 'Никита', color: '#26a69a', emoji: 'Н',
+    autoReplies: [
+      'Йоу!',
+      'Как ты там?',
+      'Круто!',
+      'Понял тебя.',
+      'Ок, бывай.',
+      'Созвонимся.',
+      'Скинь потом.',
+      'Норм тема.',
+      'Хорошо, договорились.',
+      'Пиши ещё.'
+    ] },
+  { id: 'sophia', name: 'София', color: '#ba68c8', emoji: 'С',
+    autoReplies: [
+      'Привет! 🌷',
+      'Как ты?',
+      'Рада видеть здесь.',
+      'Ты мне нравишься 💜',
+      'Как прошёл день?',
+      'Расскажи что-то интересное.',
+      'Улыбнулась с твоего сообщения 😊',
+      'Хорошего настроения!',
+      'Обнимаю!',
+      'Пока, до связи!'
+    ] }
 ];
 
-/* ============ ЖИВОЙ ДВИЖОК ============ */
-const dialogHistory = [];
-const recentReplies = [];
+/* ============================================================
+   ХРАНИЛИЩЕ
+   ============================================================ */
+const STORAGE_KEY = 'sunset_chat_user_v1';
+const CHATS_KEY = 'sunset_chat_messages_v1';
 
-function pickUnique(arr) {
-  const fresh = arr.filter(r => !recentReplies.includes(r));
-  const pool = fresh.length ? fresh : arr;
-  const r = pool[Math.floor(Math.random() * pool.length)];
-  recentReplies.push(r);
-  if (recentReplies.length > 6) recentReplies.shift();
-  return r;
+let currentUser = null;
+let chats = {}; // { personId: [{text, time, from: 'me'|'them'}] }
+let activePerson = null;
+
+function loadUser() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+function saveUser(user) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(user)); } catch(e) {}
+}
+function loadChats() {
+  try {
+    const raw = localStorage.getItem(CHATS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+function saveChats() {
+  try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
 }
 
-function smartFallback(text) {
-  const lower = text.toLowerCase().trim();
-  if (lower.length < 4) return pickUnique(['Уточните пожалуйста.', 'Расскажите подробнее.']);
-  const isQuestion = /\?$/.test(lower) || /^(что|где|когда|почему|зачем|как|кто|какой|какая|какое|какие|сколько|можно|правда|есть|стоит|помоги|расскажи)\b/i.test(lower);
-  if (isQuestion) {
-    return pickUnique([
-      'Уточните — что именно вас интересует?',
-      'Опишите подробнее — тогда дам развёрнутый ответ.',
-      'Задайте вопрос конкретнее — помогу.',
-      'Расскажите детали — подскажу по существу.'
-    ]);
-  }
-  return pickUnique([
-    'Понял вас. Расскажите подробнее.',
-    'Слушаю. Что хотите обсудить?',
-    'Продолжайте, я внимателен.',
-    'Понимаю. Спросите конкретное.',
-    'Хорошо. О чём бы вы хотели поговорить?'
-  ]);
+/* ============================================================
+   РЕГИСТРАЦИЯ
+   ============================================================ */
+const AVATAR_COLORS = ['#ff6b6b', '#a06cd5', '#4a90e2', '#ff5e8c', '#4ecdc4', '#f5a623', '#7b68ee', '#26a69a', '#ba68c8', '#e91e63'];
+let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+
+const avatarPreview = document.getElementById('avatarPreview');
+const regName = document.getElementById('regName');
+const regBtn = document.getElementById('regBtn');
+
+function updateAvatarPreview() {
+  const name = regName.value.trim();
+  const letter = name ? name.charAt(0).toUpperCase() : '?';
+  avatarPreview.textContent = letter;
+  avatarPreview.style.background = chosenColor;
+  regBtn.disabled = name.length < 2;
 }
 
-async function getReply(text) {
-  const lower = text.toLowerCase();
-  if (/погод|дожд|снег|жарко|холодно|прогноз|температур|градус|что надеть|зонт|на улице/i.test(lower)) {
-    return await handleWeather(text);
-  }
-  const matches = [];
-  for (const k of K) {
-    for (const key of k.keys) {
-      if (lower.includes(key)) matches.push({ k, key });
-    }
-  }
-  if (matches.length) {
-    matches.sort((a, b) => b.key.length - a.key.length);
-    return pickUnique(matches[0].k.replies);
-  }
-  return smartFallback(text);
+avatarPreview.addEventListener('click', () => {
+  // Меняем цвет по кругу
+  let idx = AVATAR_COLORS.indexOf(chosenColor);
+  idx = (idx + 1) % AVATAR_COLORS.length;
+  chosenColor = AVATAR_COLORS[idx];
+  updateAvatarPreview();
+});
+
+regName.addEventListener('input', updateAvatarPreview);
+updateAvatarPreview();
+
+regBtn.addEventListener('click', () => {
+  const name = regName.value.trim();
+  if (name.length < 2) return;
+  currentUser = { name: name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
+  saveUser(currentUser);
+  startApp();
+});
+
+/* ============================================================
+   ЗАПУСК
+   ============================================================ */
+function startApp() {
+  document.getElementById('register').classList.add('hide');
+  document.getElementById('app').classList.add('show');
+  document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
+  document.getElementById('myAvatarSmall').style.background = currentUser.color;
+  document.getElementById('myNameLabel').textContent = currentUser.name;
+  chats = loadChats();
+  renderContacts(PEOPLE);
 }
 
-async function botReply(userText) {
-  showTyping();
-  await new Promise(r => setTimeout(r, 500 + Math.random() * 700));
-  const reply = await getReply(userText);
-  hideTyping();
-  addMessage(reply, 'bot');
-  speak(reply);
-  dialogHistory.push({ user: userText, bot: reply });
-  if (dialogHistory.length > 20) dialogHistory.shift();
+/* Автовход если уже зарегистрирован */
+const savedUser = loadUser();
+if (savedUser) {
+  currentUser = savedUser;
+  setTimeout(startApp, 200);
+}
+
+/* ============================================================
+   КОНТАКТЫ
+   ============================================================ */
+const contactsList = document.getElementById('contactsList');
+
+function renderContacts(list) {
+  contactsList.innerHTML = '';
+
+  if (!list.length) {
+    contactsList.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
+    return;
+  }
+
+  list.forEach(person => {
+    const chat = chats[person.id] || [];
+    const last = chat[chat.length - 1];
+    const lastText = last ? last.text : 'Нажмите чтобы написать';
+    const lastTime = last ? last.time : '';
+
+    const div = document.createElement('div');
+    div.className = 'contact';
+    div.innerHTML =
+      '<div class="contact-avatar" style="background:' + person.color + '">' + person.emoji +
+        '<div class="online-dot"></div>' +
+      '</div>' +
+      '<div class="contact-info">' +
+        '<div class="contact-name">' + escapeHtml(person.name) + '</div>' +
+        '<div class="contact-last">' + escapeHtml(lastText) + '</div>' +
+      '</div>' +
+      '<div class="contact-time">' + lastTime + '</div>';
+    div.addEventListener('click', () => openChat(person));
+    contactsList.appendChild(div);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   ПОИСК
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) {
+    renderContacts(PEOPLE);
+    return;
+  }
+  const filtered = PEOPLE.filter(p => p.name.toLowerCase().includes(q));
+  renderContacts(filtered);
+});
+
+/* ============================================================
+   ЧАТ
+   ============================================================ */
+const chatEl = document.getElementById('chat');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatName = document.getElementById('chatName');
+const chatAvatar = document.getElementById('chatAvatar');
+
+function openChat(person) {
+  activePerson = person;
+  chatName.textContent = person.name;
+  chatAvatar.textContent = person.emoji;
+  chatAvatar.style.background = person.color;
+  chatEl.classList.add('show');
+  renderChat();
+  setTimeout(() => chatInput.focus(), 300);
+}
+
+function renderChat() {
+  if (!activePerson) return;
+  const msgs = chats[activePerson.id] || [];
+  chatBody.innerHTML = '';
+  if (!msgs.length) {
+    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог с ' + escapeHtml(activePerson.name) + '</p></div>';
+    return;
+  }
+  msgs.forEach(m => addMessageToDOM(m));
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function addMessageToDOM(msg) {
+  const div = document.createElement('div');
+  div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
+  div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + escapeHtml(msg.time) + '</div>';
+  chatBody.appendChild(div);
+}
+
+function nowTime() {
+  const d = new Date();
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
 }
 
 function sendMessage() {
-  const text = inputEl.value.trim();
-  if (!text) return;
-  addMessage(text, 'user');
-  inputEl.value = '';
-  botReply(text);
+  const text = chatInput.value.trim();
+  if (!text || !activePerson) return;
+  const msg = { text: text, time: nowTime(), from: 'me' };
+  if (!chats[activePerson.id]) chats[activePerson.id] = [];
+  chats[activePerson.id].push(msg);
+  saveChats();
+  addMessageToDOM(msg);
+  chatInput.value = '';
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Авто-ответ собеседника через 1-2 сек
+  const person = activePerson;
+  setTimeout(() => {
+    const replies = person.autoReplies;
+    const replyText = replies[Math.floor(Math.random() * replies.length)];
+    const replyMsg = { text: replyText, time: nowTime(), from: 'them' };
+    if (!chats[person.id]) chats[person.id] = [];
+    chats[person.id].push(replyMsg);
+    saveChats();
+    if (activePerson && activePerson.id === person.id) {
+      addMessageToDOM(replyMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }, 1000 + Math.random() * 1500);
 }
 
-sendBtn.addEventListener('click', sendMessage);
-inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+chatSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
 
-/* ============ СТАРТ ============ */
-const GREETINGS = [
-  'Здравствуйте. Я NEKROS — нейросеть нового поколения. Спрашивай что угодно.',
-  'Приветствую. Меня зовут NEKROS. Искусственный интеллект на этом сайте.',
-  'Добро пожаловать. Я NEKROS. Задавай любые вопросы — учёба, работа, здоровье, техника.',
-  'Я NEKROS. Нейросеть в браузере. Общайся со мной как с живым.',
-  'Рад видеть. Я NEKROS. Знаю много тем и умею слушать.',
-  'Здравствуй. NEKROS на связи. Готов помочь с любым вопросом.'
-];
+document.getElementById('backBtn').addEventListener('click', () => {
+  chatEl.classList.remove('show');
+  activePerson = null;
+  renderContacts(PEOPLE);
+});
 
-document.getElementById('intro').addEventListener('click', () => {
-  document.getElementById('intro').classList.add('hide');
-  try { startAmbient(); } catch(e) {}
-  setTimeout(() => {
-    document.getElementById('main').classList.add('show');
-    const greeting = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
-    addMessage(greeting, 'bot');
-    speak(greeting);
-    setTimeout(() => addMessage('Спроси меня о чём угодно — о погоде, математике, здоровье, машинах, работе.', 'bot'), 8000);
-  }, 400);
+/* ============================================================
+   НАСТРОЙКИ (сброс аккаунта)
+   ============================================================ */
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  if (confirm('Выйти из аккаунта? Все настройки сбросятся.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(CHATS_KEY);
+    location.reload();
+  }
 });
 </script>
 </body>
