@@ -11,84 +11,93 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
+    background: #1a0a1e;
   }
 
-  /* ============ ЗАКАТ ============ */
-  .sunset-bg {
+  /* ============ ФОТО-ЗАКАТ (реальное фото с Unsplash) ============ */
+  .sunset-photo {
     position: fixed; inset: 0; z-index: 0;
-    background: linear-gradient(180deg,
-      #0a0616 0%,
-      #2d1b4e 15%,
-      #6b2d5c 30%,
-      #b8456b 45%,
-      #e86a4a 60%,
-      #ff9a56 72%,
-      #ffc46b 82%,
-      #ffd97d 90%,
-      #ffe89d 100%
-    );
-    overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90');
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.1s linear;
   }
-  /* Солнце */
-  .sun {
+  /* Лёгкое затемнение для читаемости текста */
+  .sunset-photo::after {
+    content: '';
     position: absolute;
-    bottom: 12%;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(20, 5, 30, 0.35) 0%,
+      rgba(30, 10, 40, 0.2) 40%,
+      rgba(40, 15, 30, 0.3) 70%,
+      rgba(15, 5, 20, 0.55) 100%
+    );
+  }
+
+  /* ============ ПРИВЕТСТВИЕ "ПЕРЕТАЩИ" ============ */
+  .drag-hint {
+    position: fixed;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 220px;
-    height: 220px;
-    background: radial-gradient(circle,
-      #fff8d0 0%,
-      #ffe66d 20%,
-      #ffb347 45%,
-      #ff6b35 70%,
-      transparent 80%
-    );
-    border-radius: 50%;
-    filter: blur(2px);
-    box-shadow:
-      0 0 60px 20px rgba(255, 180, 80, 0.7),
-      0 0 120px 60px rgba(255, 120, 60, 0.4);
-    animation: sunGlow 4s ease-in-out infinite;
+    z-index: 50;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(20px);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; gap: 8px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    white-space: nowrap;
   }
-  @keyframes sunGlow {
-    0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
-    50% { transform: translateX(-50%) scale(1.05); opacity: 0.95; }
+  .drag-hint.hide { opacity: 0; }
+  .drag-hint .arrow { font-size: 16px; }
+
+  /* ============ ПАНЕЛЬ МЕССЕНДЖЕРА (перетаскиваемая) ============ */
+  #panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 420px;
+    z-index: 20;
+    display: flex; flex-direction: column;
+    background: rgba(15, 10, 25, 0.55);
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border-right: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.3);
+    transition: none;
   }
-  /* Облака */
-  .cloud {
+  /* Ручка перетаскивания */
+  .drag-handle {
     position: absolute;
-    background: linear-gradient(180deg, rgba(255,180,150,0.6), rgba(255,220,180,0.3));
-    border-radius: 100px;
-    filter: blur(20px);
-    animation: cloudMove 40s linear infinite;
+    top: 0; bottom: 0;
+    right: -8px;
+    width: 24px;
+    cursor: grab;
+    z-index: 30;
+    display: flex; align-items: center; justify-content: center;
   }
-  .cloud1 { width: 400px; height: 80px; top: 25%; left: -20%; animation-duration: 60s; }
-  .cloud2 { width: 300px; height: 60px; top: 35%; left: -40%; animation-duration: 80s; animation-delay: -20s; opacity: 0.7; }
-  .cloud3 { width: 500px; height: 90px; top: 15%; left: -30%; animation-duration: 70s; animation-delay: -40s; opacity: 0.5; }
-  .cloud4 { width: 350px; height: 70px; top: 45%; left: -50%; animation-duration: 90s; animation-delay: -10s; opacity: 0.4; }
-  @keyframes cloudMove {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(150vw); }
+  .drag-handle:active { cursor: grabbing; }
+  .drag-handle::before {
+    content: '';
+    width: 4px;
+    height: 60px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.35);
+    transition: all 0.2s;
   }
-  /* Звёзды сверху */
-  .stars {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 40%;
-    background-image:
-      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.5px 1.5px at 80% 25%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1px 1px at 35% 8%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1.5px 1.5px at 50% 35%, rgba(255,255,255,0.7), transparent);
-    animation: twinkle 4s ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.5; }
+  .drag-handle:active::before {
+    background: rgba(255,255,255,0.9);
+    height: 80px;
   }
 
   /* ============ РЕГИСТРАЦИЯ ============ */
@@ -96,66 +105,58 @@
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
     padding: 20px;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(15px);
     transition: opacity 0.5s ease;
   }
   #register.hide { opacity: 0; pointer-events: none; }
   .reg-card {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 24px;
     padding: 32px 24px;
     width: 100%;
     max-width: 380px;
     color: #fff;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
   .reg-card h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 6px;
+    font-size: 28px; font-weight: 700; margin-bottom: 6px;
     letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
-  .reg-card p {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 28px;
-  }
+  .reg-card p { font-size: 14px; opacity: 0.85; margin-bottom: 28px; }
   .avatar-preview {
     width: 100px; height: 100px;
     border-radius: 50%;
     margin: 0 auto 20px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 40px;
-    font-weight: 700;
-    color: #fff;
-    cursor: pointer;
+    font-size: 40px; font-weight: 700;
+    color: #fff; cursor: pointer;
     transition: transform 0.2s ease;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    border: 3px solid rgba(255,255,255,0.4);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 3px solid rgba(255,255,255,0.5);
   }
   .avatar-preview:active { transform: scale(0.95); }
-
   .reg-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 14px;
     padding: 14px 18px;
     font-size: 16px;
     color: #fff;
     outline: none;
     margin-bottom: 16px;
-    transition: all 0.2s ease;
     font-family: inherit;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
-  .reg-input::placeholder { color: rgba(255,255,255,0.5); }
+  .reg-input::placeholder { color: rgba(255,255,255,0.6); }
   .reg-input:focus {
-    background: rgba(255,255,255,0.18);
-    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.6);
   }
   .reg-btn {
     width: 100%;
@@ -163,106 +164,78 @@
     border: none;
     border-radius: 14px;
     padding: 16px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
+    font-size: 16px; font-weight: 600;
+    color: #fff; cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 8px 24px rgba(255, 100, 80, 0.4);
+    box-shadow: 0 8px 24px rgba(255, 100, 80, 0.5);
     font-family: inherit;
   }
   .reg-btn:active { transform: scale(0.97); }
   .reg-btn:disabled { opacity: 0.5; }
 
-  /* ============ ГЛАВНЫЙ ЭКРАН ============ */
-  #app {
-    position: fixed; inset: 0; z-index: 10;
-    display: flex; flex-direction: column;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  #app.show { opacity: 1; pointer-events: all; }
-
-  /* Хедер */
+  /* ============ ХЕДЕР ============ */
   .header {
-    padding: 16px 20px 12px;
+    padding: 52px 20px 12px;
     display: flex; align-items: center; justify-content: space-between;
     color: #fff;
-    background: rgba(0,0,0,0.15);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
   }
-  .header-left {
-    display: flex; align-items: center; gap: 12px;
-  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
   .my-avatar {
-    width: 42px; height: 42px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; font-weight: 700;
     color: #fff;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
-  .my-name {
-    font-size: 17px; font-weight: 600;
-  }
-  .my-status {
-    font-size: 12px; opacity: 0.75;
-    margin-top: 2px;
-  }
+  .my-name { font-size: 17px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
   .settings-btn {
     background: rgba(255,255,255,0.15);
-    border: none;
+    border: 1px solid rgba(255,255,255,0.2);
     width: 40px; height: 40px;
     border-radius: 50%;
     color: #fff;
-    font-size: 18px;
-    cursor: pointer;
+    font-size: 18px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s;
   }
-  .settings-btn:active { background: rgba(255,255,255,0.25); }
+  .settings-btn:active { background: rgba(255,255,255,0.3); }
 
-  /* Поиск */
+  /* ============ ПОИСК ============ */
   .search-wrap {
-    padding: 12px 20px;
-    background: rgba(0,0,0,0.1);
-    backdrop-filter: blur(20px);
+    padding: 12px 16px;
   }
-  .search-box {
-    position: relative;
-    display: flex; align-items: center;
-  }
+  .search-box { position: relative; display: flex; align-items: center; }
   .search-box svg {
-    position: absolute;
-    left: 14px;
+    position: absolute; left: 14px;
     width: 18px; height: 18px;
-    fill: rgba(255,255,255,0.6);
+    fill: rgba(255,255,255,0.7);
     pointer-events: none;
   }
   .search-input {
     width: 100%;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 14px;
     padding: 12px 16px 12px 42px;
     font-size: 15px;
-    color: #fff;
-    outline: none;
+    color: #fff; outline: none;
     font-family: inherit;
-    transition: all 0.2s;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
-  .search-input::placeholder { color: rgba(255,255,255,0.55); }
+  .search-input::placeholder { color: rgba(255,255,255,0.65); }
   .search-input:focus {
-    background: rgba(255,255,255,0.22);
-    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
   }
 
-  /* Список контактов */
+  /* ============ КОНТАКТЫ ============ */
   .contacts {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 12px 100px;
+    flex: 1; overflow-y: auto;
+    padding: 4px 12px 100px;
     scrollbar-width: none;
   }
   .contacts::-webkit-scrollbar { display: none; }
@@ -273,17 +246,18 @@
     cursor: pointer;
     transition: background 0.2s;
     margin-bottom: 4px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
   }
-  .contact:active { background: rgba(255,255,255,0.15); }
+  .contact:active { background: rgba(255,255,255,0.18); }
   .contact-avatar {
     width: 52px; height: 52px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
+    color: #fff; flex-shrink: 0;
     position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   }
   .online-dot {
     position: absolute;
@@ -292,55 +266,45 @@
     background: #4ade80;
     border-radius: 50%;
     border: 2px solid rgba(30,20,50,0.9);
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
   }
   .contact-info { flex: 1; min-width: 0; }
   .contact-name {
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
+    color: #fff; font-size: 16px; font-weight: 600;
     margin-bottom: 3px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
   }
   .contact-last {
-    color: rgba(255,255,255,0.65);
-    font-size: 13px;
+    color: rgba(255,255,255,0.75); font-size: 13px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .contact-time {
-    color: rgba(255,255,255,0.5);
-    font-size: 12px;
+    color: rgba(255,255,255,0.6); font-size: 12px;
     flex-shrink: 0;
   }
-
   .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: rgba(255,255,255,0.6);
+    text-align: center; padding: 60px 20px;
+    color: rgba(255,255,255,0.7);
   }
-  .empty-state .emoji {
-    font-size: 60px;
-    margin-bottom: 16px;
-    opacity: 0.5;
-  }
+  .empty-state .emoji { font-size: 60px; margin-bottom: 16px; opacity: 0.6; }
   .empty-state p { font-size: 15px; }
 
   /* ============ ЧАТ ============ */
   #chat {
-    position: fixed; inset: 0; z-index: 200;
+    position: absolute; inset: 0;
+    z-index: 40;
     display: flex; flex-direction: column;
-    background: rgba(15, 10, 30, 0.75);
+    background: rgba(15, 10, 25, 0.75);
     backdrop-filter: blur(30px);
     transform: translateX(100%);
     transition: transform 0.3s ease;
   }
   #chat.show { transform: translateX(0); }
-
   .chat-header {
-    padding: 14px 16px;
+    padding: 52px 16px 14px;
     display: flex; align-items: center; gap: 12px;
-    background: rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
     color: #fff;
   }
   .back-btn {
@@ -352,24 +316,18 @@
     cursor: pointer;
     display: flex; align-items: center;
   }
-  .chat-header .contact-avatar {
-    width: 40px; height: 40px;
-    font-size: 16px;
-  }
+  .chat-header .contact-avatar { width: 40px; height: 40px; font-size: 16px; }
   .chat-title { flex: 1; }
-  .chat-title .name { font-size: 16px; font-weight: 600; }
-  .chat-title .status { font-size: 12px; opacity: 0.7; margin-top: 1px; }
-
+  .chat-title .name { font-size: 16px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+  .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
   .chat-body {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; overflow-y: auto;
     padding: 16px 14px 90px;
     display: flex; flex-direction: column;
     gap: 8px;
     scrollbar-width: none;
   }
   .chat-body::-webkit-scrollbar { display: none; }
-
   .message {
     max-width: 78%;
     padding: 10px 14px;
@@ -378,7 +336,6 @@
     line-height: 1.4;
     word-wrap: break-word;
     animation: msgPop 0.25s ease;
-    position: relative;
   }
   @keyframes msgPop {
     from { opacity: 0; transform: scale(0.95); }
@@ -389,22 +346,20 @@
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
     color: #fff;
     border-bottom-right-radius: 6px;
-    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.4);
   }
   .message.them {
     align-self: flex-start;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.2);
     color: #fff;
     border-bottom-left-radius: 6px;
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
   }
   .message .time {
-    font-size: 10px;
-    opacity: 0.7;
-    margin-top: 4px;
-    text-align: right;
+    font-size: 10px; opacity: 0.75;
+    margin-top: 4px; text-align: right;
   }
-
   .chat-input-bar {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -416,27 +371,25 @@
   }
   .chat-input {
     flex: 1;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 22px;
     padding: 12px 18px;
     font-size: 15px;
-    color: #fff;
-    outline: none;
+    color: #fff; outline: none;
     font-family: inherit;
   }
-  .chat-input::placeholder { color: rgba(255,255,255,0.5); }
-  .chat-input:focus { background: rgba(255,255,255,0.22); }
+  .chat-input::placeholder { color: rgba(255,255,255,0.6); }
+  .chat-input:focus { background: rgba(255,255,255,0.25); }
   .chat-send {
     width: 44px; height: 44px;
     border-radius: 50%;
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
     border: none;
     color: #fff;
-    font-size: 20px;
-    cursor: pointer;
+    font-size: 20px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.5);
     transition: transform 0.15s;
     flex-shrink: 0;
   }
@@ -445,14 +398,12 @@
 </head>
 <body>
 
-<!-- ФОН ЗАКАТ -->
-<div class="sunset-bg">
-  <div class="stars"></div>
-  <div class="sun"></div>
-  <div class="cloud cloud1"></div>
-  <div class="cloud cloud2"></div>
-  <div class="cloud cloud3"></div>
-  <div class="cloud cloud4"></div>
+<!-- ФОТО-ЗАКАТ НА ФОНЕ -->
+<div class="sunset-photo" id="sunsetPhoto"></div>
+
+<!-- ПОДСКАЗКА -->
+<div class="drag-hint" id="dragHint">
+  <span class="arrow">↔</span> Перетащи панель вправо, чтобы увидеть закат
 </div>
 
 <!-- РЕГИСТРАЦИЯ -->
@@ -466,8 +417,10 @@
   </div>
 </div>
 
-<!-- ОСНОВНОЙ ЭКРАН -->
-<div id="app">
+<!-- ПАНЕЛЬ МЕССЕНДЖЕРА -->
+<div id="panel">
+  <div class="drag-handle" id="dragHandle"></div>
+
   <div class="header">
     <div class="header-left">
       <div class="my-avatar" id="myAvatarSmall"></div>
@@ -487,190 +440,144 @@
   </div>
 
   <div class="contacts" id="contactsList"></div>
-</div>
 
-<!-- ЧАТ -->
-<div id="chat">
-  <div class="chat-header">
-    <button class="back-btn" id="backBtn">←</button>
-    <div class="contact-avatar" id="chatAvatar"></div>
-    <div class="chat-title">
-      <div class="name" id="chatName"></div>
-      <div class="status" id="chatStatus">в сети</div>
+  <!-- ЧАТ (открывается поверх) -->
+  <div id="chat">
+    <div class="chat-header">
+      <button class="back-btn" id="backBtn">←</button>
+      <div class="contact-avatar" id="chatAvatar"></div>
+      <div class="chat-title">
+        <div class="name" id="chatName"></div>
+        <div class="status">в сети</div>
+      </div>
     </div>
-  </div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-input-bar">
-    <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
-    <button class="chat-send" id="chatSend">➤</button>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input-bar">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
+      <button class="chat-send" id="chatSend">➤</button>
+    </div>
   </div>
 </div>
 
 <script>
 /* ============================================================
-   БАЗА ЛЮДЕЙ (симуляция — они будут отвечать сами)
+   ПЕРЕТАСКИВАНИЕ ПАНЕЛИ
+   ============================================================ */
+const panel = document.getElementById('panel');
+const dragHandle = document.getElementById('dragHandle');
+const dragHint = document.getElementById('dragHint');
+
+let isDragging = false;
+let startX = 0;
+let startLeft = 0;
+let panelLeft = 0;
+const MAX_LEFT = () => window.innerWidth - 60;
+let hintHidden = false;
+
+function hideHint() {
+  if (!hintHidden) {
+    dragHint.classList.add('hide');
+    hintHidden = true;
+  }
+}
+
+function startDrag(clientX) {
+  isDragging = true;
+  startX = clientX;
+  startLeft = panelLeft;
+  panel.style.transition = 'none';
+  hideHint();
+}
+
+function moveDrag(clientX) {
+  if (!isDragging) return;
+  const dx = clientX - startX;
+  let newLeft = startLeft + dx;
+  // Ограничения: от -60 до MAX_LEFT
+  newLeft = Math.max(-60, Math.min(MAX_LEFT(), newLeft));
+  panelLeft = newLeft;
+  panel.style.left = newLeft + 'px';
+  panel.style.right = 'auto';
+
+  // Параллакс заката — фото немного сдвигается
+  const photo = document.getElementById('sunsetPhoto');
+  const progress = newLeft / MAX_LEFT();
+  photo.style.transform = 'translateX(' + (-progress * 40) + 'px) scale(1.05)';
+}
+
+function endDrag() {
+  isDragging = false;
+  panel.style.transition = 'left 0.3s ease';
+}
+
+// Мышь
+dragHandle.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+  startDrag(e.clientX);
+});
+document.addEventListener('mousemove', (e) => moveDrag(e.clientX));
+document.addEventListener('mouseup', endDrag);
+
+// Тач (мобильный)
+dragHandle.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  startDrag(e.touches[0].clientX);
+}, { passive: false });
+document.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  moveDrag(e.touches[0].clientX);
+}, { passive: false });
+document.addEventListener('touchend', endDrag);
+
+// Двойной тап по ручке — сброс влево
+let lastTap = 0;
+dragHandle.addEventListener('click', () => {
+  const now = Date.now();
+  if (now - lastTap < 300) {
+    // Двойной тап — вернуть влево
+    panelLeft = 0;
+    panel.style.transition = 'left 0.4s cubic-bezier(0.4,0,0.2,1)';
+    panel.style.left = '0px';
+    hideHint();
+  }
+  lastTap = now;
+});
+
+/* ============================================================
+   БАЗА ЛЮДЕЙ
    ============================================================ */
 const PEOPLE = [
-  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A',
-    autoReplies: [
-      'Привет! Как дела?',
-      'Чем занимаешься?',
-      'Хорошо, что написал 🙂',
-      'Согласен с тобой.',
-      'Интересно!',
-      'Давай встретимся как-нибудь.',
-      'А ты как думаешь?',
-      'Ха-ха, точно!',
-      'Расскажи подробнее.',
-      'Не забудь про встречу.'
-    ] },
-  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M',
-    autoReplies: [
-      'Приветик! 💕',
-      'Как твои дела?',
-      'Рада тебя слышать!',
-      'У меня всё отлично 😊',
-      'А ты чем занят?',
-      'Расскажи о себе.',
-      'Обожаю такие разговоры!',
-      'Хм, интересно.',
-      'Надо как-нибудь встретиться.',
-      'Спасибо, что пишешь!'
-    ] },
-  { id: 'dmitry', name: 'Дмитрий', color: '#4a90e2', emoji: 'Д',
-    autoReplies: [
-      'Привет, друг!',
-      'Как сам?',
-      'Что нового?',
-      'Слушай, надо пересечься.',
-      'Согласен полностью.',
-      'Понял тебя.',
-      'Хорошо, договорились.',
-      'Пиши ещё.',
-      'Интересная тема.',
-      'Ок, тогда так и сделаем.'
-    ] },
-  { id: 'anna', name: 'Анна', color: '#ff5e8c', emoji: 'А',
-    autoReplies: [
-      'Привет! ❤️',
-      'Как проходит день?',
-      'Ты классный!',
-      'Мне нравится с тобой болтать.',
-      'А что ты делаешь сейчас?',
-      'Хаха, смешно 😄',
-      'Давай встретимся на выходных.',
-      'Обожаю такие моменты.',
-      'Расскажи что-нибудь.',
-      'Спасибо за сообщение!'
-    ] },
-  { id: 'ivan', name: 'Иван', color: '#4ecdc4', emoji: 'И',
-    autoReplies: [
-      'Здарова!',
-      'Как жизнь?',
-      'Что нового брат?',
-      'Понял, отлично.',
-      'Огонь!',
-      'Красава!',
-      'Давай в выходные.',
-      'Хорошо, скинул.',
-      'Так держать!',
-      'Не забудь написать.'
-    ] },
-  { id: 'elena', name: 'Елена', color: '#f5a623', emoji: 'Е',
-    autoReplies: [
-      'Приветик 🌸',
-      'Как настроение?',
-      'Спасибо что написал!',
-      'У меня всё хорошо 😊',
-      'А ты как?',
-      'Согласна с тобой.',
-      'Отличная идея!',
-      'Расскажи подробнее.',
-      'Давай поговорим ещё.',
-      'Хорошего дня!'
-    ] },
-  { id: 'sergey', name: 'Сергей', color: '#7b68ee', emoji: 'С',
-    autoReplies: [
-      'Привет.',
-      'Как дела?',
-      'Что нужно?',
-      'Понял, сделаю.',
-      'Ок.',
-      'Договорились.',
-      'Хорошо, обсудим.',
-      'Напиши позже.',
-      'Согласен.',
-      'Всё будет в порядке.'
-    ] },
-  { id: 'olga', name: 'Ольга', color: '#e91e63', emoji: 'О',
-    autoReplies: [
-      'Привет, дорогой!',
-      'Как ты?',
-      'Рада слышать 😊',
-      'Много работы сейчас.',
-      'А у тебя как дела?',
-      'Расскажи как жизнь.',
-      'Мне нравится наше общение.',
-      'Спасибо!',
-      'Обнимаю 🤗',
-      'Пока, хорошего дня!'
-    ] },
-  { id: 'nikita', name: 'Никита', color: '#26a69a', emoji: 'Н',
-    autoReplies: [
-      'Йоу!',
-      'Как ты там?',
-      'Круто!',
-      'Понял тебя.',
-      'Ок, бывай.',
-      'Созвонимся.',
-      'Скинь потом.',
-      'Норм тема.',
-      'Хорошо, договорились.',
-      'Пиши ещё.'
-    ] },
-  { id: 'sophia', name: 'София', color: '#ba68c8', emoji: 'С',
-    autoReplies: [
-      'Привет! 🌷',
-      'Как ты?',
-      'Рада видеть здесь.',
-      'Ты мне нравишься 💜',
-      'Как прошёл день?',
-      'Расскажи что-то интересное.',
-      'Улыбнулась с твоего сообщения 😊',
-      'Хорошего настроения!',
-      'Обнимаю!',
-      'Пока, до связи!'
-    ] }
+  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A', autoReplies: ['Привет! Как дела?','Чем занимаешься?','Хорошо, что написал 🙂','Согласен с тобой.','Интересно!','Давай встретимся как-нибудь.','А ты как думаешь?','Ха-ха, точно!','Расскажи подробнее.','Не забудь про встречу.'] },
+  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M', autoReplies: ['Приветик! 💕','Как твои дела?','Рада тебя слышать!','У меня всё отлично 😊','А ты чем занят?','Расскажи о себе.','Обожаю такие разговоры!','Хм, интересно.','Надо как-нибудь встретиться.','Спасибо, что пишешь!'] },
+  { id: 'dmitry', name: 'Дмитрий', color: '#4a90e2', emoji: 'Д', autoReplies: ['Привет, друг!','Как сам?','Что нового?','Слушай, надо пересечься.','Согласен полностью.','Понял тебя.','Хорошо, договорились.','Пиши ещё.','Интересная тема.','Ок, тогда так и сделаем.'] },
+  { id: 'anna', name: 'Анна', color: '#ff5e8c', emoji: 'А', autoReplies: ['Привет! ❤️','Как проходит день?','Ты классный!','Мне нравится с тобой болтать.','А что ты делаешь сейчас?','Хаха, смешно 😄','Давай встретимся на выходных.','Обожаю такие моменты.','Расскажи что-нибудь.','Спасибо за сообщение!'] },
+  { id: 'ivan', name: 'Иван', color: '#4ecdc4', emoji: 'И', autoReplies: ['Здарова!','Как жизнь?','Что нового брат?','Понял, отлично.','Огонь!','Красава!','Давай в выходные.','Хорошо, скинул.','Так держать!','Не забудь написать.'] },
+  { id: 'elena', name: 'Елена', color: '#f5a623', emoji: 'Е', autoReplies: ['Приветик 🌸','Как настроение?','Спасибо что написал!','У меня всё хорошо 😊','А ты как?','Согласна с тобой.','Отличная идея!','Расскажи подробнее.','Давай поговорим ещё.','Хорошего дня!'] },
+  { id: 'sergey', name: 'Сергей', color: '#7b68ee', emoji: 'С', autoReplies: ['Привет.','Как дела?','Что нужно?','Понял, сделаю.','Ок.','Договорились.','Хорошо, обсудим.','Напиши позже.','Согласен.','Всё будет в порядке.'] },
+  { id: 'olga', name: 'Ольга', color: '#e91e63', emoji: 'О', autoReplies: ['Привет, дорогой!','Как ты?','Рада слышать 😊','Много работы сейчас.','А у тебя как дела?','Расскажи как жизнь.','Мне нравится наше общение.','Спасибо!','Обнимаю 🤗','Пока, хорошего дня!'] },
+  { id: 'nikita', name: 'Никита', color: '#26a69a', emoji: 'Н', autoReplies: ['Йоу!','Как ты там?','Круто!','Понял тебя.','Ок, бывай.','Созвонимся.','Скинь потом.','Норм тема.','Хорошо, договорились.','Пиши ещё.'] },
+  { id: 'sophia', name: 'София', color: '#ba68c8', emoji: 'С', autoReplies: ['Привет! 🌷','Как ты?','Рада видеть здесь.','Ты мне нравишься 💜','Как прошёл день?','Расскажи что-то интересное.','Улыбнулась с твоего сообщения 😊','Хорошего настроения!','Обнимаю!','Пока, до связи!'] }
 ];
 
 /* ============================================================
    ХРАНИЛИЩЕ
    ============================================================ */
-const STORAGE_KEY = 'sunset_chat_user_v1';
-const CHATS_KEY = 'sunset_chat_messages_v1';
+const STORAGE_KEY = 'sunset_chat_user_v2';
+const CHATS_KEY = 'sunset_chat_messages_v2';
 
 let currentUser = null;
-let chats = {}; // { personId: [{text, time, from: 'me'|'them'}] }
+let chats = {};
 let activePerson = null;
 
 function loadUser() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch(e) { return null; }
+  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
 }
-function saveUser(user) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(user)); } catch(e) {}
-}
+function saveUser(u) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); } catch(e) {} }
 function loadChats() {
-  try {
-    const raw = localStorage.getItem(CHATS_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch(e) { return {}; }
+  try { const r = localStorage.getItem(CHATS_KEY); return r ? JSON.parse(r) : {}; } catch(e) { return {}; }
 }
-function saveChats() {
-  try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-}
+function saveChats() { try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {} }
 
 /* ============================================================
    РЕГИСТРАЦИЯ
@@ -691,13 +598,11 @@ function updateAvatarPreview() {
 }
 
 avatarPreview.addEventListener('click', () => {
-  // Меняем цвет по кругу
   let idx = AVATAR_COLORS.indexOf(chosenColor);
   idx = (idx + 1) % AVATAR_COLORS.length;
   chosenColor = AVATAR_COLORS[idx];
   updateAvatarPreview();
 });
-
 regName.addEventListener('input', updateAvatarPreview);
 updateAvatarPreview();
 
@@ -714,15 +619,16 @@ regBtn.addEventListener('click', () => {
    ============================================================ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
-  document.getElementById('app').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
   chats = loadChats();
   renderContacts(PEOPLE);
+
+  // Автоскрытие подсказки
+  setTimeout(hideHint, 4000);
 }
 
-/* Автовход если уже зарегистрирован */
 const savedUser = loadUser();
 if (savedUser) {
   currentUser = savedUser;
@@ -736,12 +642,10 @@ const contactsList = document.getElementById('contactsList');
 
 function renderContacts(list) {
   contactsList.innerHTML = '';
-
   if (!list.length) {
     contactsList.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
     return;
   }
-
   list.forEach(person => {
     const chat = chats[person.id] || [];
     const last = chat[chat.length - 1];
@@ -774,10 +678,7 @@ function escapeHtml(s) {
 const searchInput = document.getElementById('searchInput');
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
-  if (!q) {
-    renderContacts(PEOPLE);
-    return;
-  }
+  if (!q) { renderContacts(PEOPLE); return; }
   const filtered = PEOPLE.filter(p => p.name.toLowerCase().includes(q));
   renderContacts(filtered);
 });
@@ -837,7 +738,6 @@ function sendMessage() {
   chatInput.value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  // Авто-ответ собеседника через 1-2 сек
   const person = activePerson;
   setTimeout(() => {
     const replies = person.autoReplies;
@@ -854,9 +754,7 @@ function sendMessage() {
 }
 
 chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
+chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
 
 document.getElementById('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
@@ -864,11 +762,8 @@ document.getElementById('backBtn').addEventListener('click', () => {
   renderContacts(PEOPLE);
 });
 
-/* ============================================================
-   НАСТРОЙКИ (сброс аккаунта)
-   ============================================================ */
 document.getElementById('settingsBtn').addEventListener('click', () => {
-  if (confirm('Выйти из аккаунта? Все настройки сбросятся.')) {
+  if (confirm('Выйти из аккаунта? Все настройки и переписки сбросятся.')) {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(CHATS_KEY);
     location.reload();
