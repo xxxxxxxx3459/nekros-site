@@ -13,9 +13,11 @@
     font-family: 'Courier New', monospace;
     color: #00ff9d;
     cursor: crosshair;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  #particles {
+  /* МАТРИЦА ВО ВЕСЬ ЭКРАН */
+  #matrix {
     position: fixed;
     inset: 0;
     z-index: 1;
@@ -26,13 +28,13 @@
     inset: 0;
     background: repeating-linear-gradient(
       0deg,
-      rgba(0, 255, 157, 0.03) 0px,
-      rgba(0, 255, 157, 0.03) 1px,
+      rgba(0, 255, 157, 0.04) 0px,
+      rgba(0, 255, 157, 0.04) 1px,
       transparent 1px,
       transparent 3px
     );
     pointer-events: none;
-    z-index: 10;
+    z-index: 20;
     animation: scanmove 8s linear infinite;
   }
   @keyframes scanmove {
@@ -43,12 +45,12 @@
   .vignette {
     position: fixed;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.9) 100%);
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
     pointer-events: none;
-    z-index: 9;
+    z-index: 19;
   }
 
-  /* ===== ЭКРАН ВХОДА ===== */
+  /* ЭКРАН ВХОДА */
   #intro {
     position: fixed;
     inset: 0;
@@ -64,27 +66,27 @@
   #intro.hide { opacity: 0; pointer-events: none; }
   
   #intro .intro-skull {
-    width: 160px;
-    height: 160px;
-    filter: drop-shadow(0 0 30px #00ff9d);
+    width: 200px;
+    height: 200px;
+    filter: drop-shadow(0 0 40px #00ff9d);
     animation: introPulse 2s ease-in-out infinite;
   }
   @keyframes introPulse {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px #00ff9d); }
-    50% { transform: scale(1.08); filter: drop-shadow(0 0 55px #00ffea); }
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 40px #00ff9d); }
+    50% { transform: scale(1.06); filter: drop-shadow(0 0 70px #00ffea); }
   }
   
   #intro .intro-brand {
-    margin-top: 30px;
-    font-size: 18px;
-    letter-spacing: 14px;
+    margin-top: 40px;
+    font-size: 20px;
+    letter-spacing: 16px;
     color: #00ffea;
-    text-shadow: 0 0 18px #00ffea;
+    text-shadow: 0 0 20px #00ffea;
     font-weight: bold;
   }
 
   #intro .intro-text {
-    margin-top: 36px;
+    margin-top: 40px;
     font-size: 14px;
     letter-spacing: 8px;
     color: #00ff9d;
@@ -93,184 +95,178 @@
   }
   @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
+    50% { opacity: 0.3; }
   }
 
-  /* ===== ГЛАВНЫЙ ЭКРАН ===== */
+  /* ГЛАВНЫЙ ЭКРАН */
   #main {
     position: fixed;
     inset: 0;
     z-index: 5;
     display: flex;
     flex-direction: column;
-    padding: 60px 20px 20px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.8s ease;
   }
   #main.show { opacity: 1; pointer-events: all; }
 
-  /* Череп сверху */
-  .skull-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+  /* ЧЕРЕП В ЦЕНТРЕ */
+  .skull-center {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 240px;
+    pointer-events: none;
+    z-index: 3;
+    animation: skullPulse 3s ease-in-out infinite;
   }
-  .skull-small {
-    width: 90px;
-    height: 90px;
-    filter: drop-shadow(0 0 20px #00ff9d);
-    animation: pulse 3s ease-in-out infinite;
-    position: relative;
+  @keyframes skullPulse {
+    0%, 100% { filter: drop-shadow(0 0 25px #00ff9d); transform: translate(-50%, -50%) scale(1); }
+    50% { filter: drop-shadow(0 0 45px #00ffea); transform: translate(-50%, -50%) scale(1.03); }
   }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px #00ff9d); }
-    50% { transform: scale(1.04); filter: drop-shadow(0 0 35px #00ffea); }
-  }
-  .skull-small svg { width: 100%; height: 100%; }
+  .skull-center svg { width: 100%; height: 100%; }
 
   .glitch-layer {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     pointer-events: none;
   }
-  .glitch-layer svg { width: 100%; height: 100%; }
   .glitch-1 { animation: glitch1 2.5s infinite; mix-blend-mode: screen; }
   .glitch-2 { animation: glitch2 3.7s infinite; mix-blend-mode: screen; }
   @keyframes glitch1 {
     0%, 90%, 100% { transform: translate(0); opacity: 0; }
-    92% { transform: translate(-4px, 2px); opacity: 1; filter: hue-rotate(180deg); }
-    94% { transform: translate(3px, -2px); opacity: 1; }
-    96% { transform: translate(-2px, 1px); opacity: 1; }
+    92% { transform: translate(-8px, 3px); opacity: 1; filter: hue-rotate(180deg); }
+    94% { transform: translate(6px, -4px); opacity: 1; }
+    96% { transform: translate(-3px, 2px); opacity: 1; }
   }
   @keyframes glitch2 {
     0%, 85%, 100% { transform: translate(0); opacity: 0; }
-    88% { transform: translate(3px, -2px); opacity: 1; filter: hue-rotate(-90deg); }
-    91% { transform: translate(-2px, 3px); opacity: 1; }
-    93% { transform: translate(2px, -1px); opacity: 1; }
+    88% { transform: translate(7px, -3px); opacity: 1; filter: hue-rotate(-90deg); }
+    91% { transform: translate(-5px, 5px); opacity: 1; }
+    93% { transform: translate(3px, -2px); opacity: 1; }
   }
 
-  .brand {
-    margin-top: 14px;
-    font-size: 11px;
-    letter-spacing: 8px;
-    color: #00ffea;
-    text-shadow: 0 0 10px #00ffea;
-    opacity: 0.9;
-  }
-
-  /* ЧАТ */
-  .chat-wrap {
-    flex: 1;
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0, 255, 157, 0.3);
-    background: rgba(0, 15, 8, 0.6);
-    backdrop-filter: blur(4px);
-    overflow: hidden;
-  }
-  .chat-header {
-    padding: 10px 14px;
-    border-bottom: 1px solid rgba(0, 255, 157, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-    letter-spacing: 3px;
-    background: rgba(0, 255, 157, 0.04);
-  }
-  .chat-header .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    background: #00ff9d;
-    border-radius: 50%;
-    margin-right: 8px;
-    animation: blinkDot 1s infinite;
-    box-shadow: 0 0 8px #00ff9d;
-  }
-  @keyframes blinkDot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .brand-title {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 13px;
-    line-height: 1.5;
+    letter-spacing: 10px;
+    color: #00ffea;
+    text-shadow: 0 0 15px #00ffea;
+    font-weight: bold;
+    z-index: 6;
+    pointer-events: none;
   }
-  .chat-messages::-webkit-scrollbar { width: 4px; }
-  .chat-messages::-webkit-scrollbar-thumb { background: rgba(0,255,157,0.3); }
+
+  /* СООБЩЕНИЯ БЕЗ РАМКИ */
+  .messages {
+    position: absolute;
+    inset: 0;
+    bottom: 80px;
+    top: 80px;
+    overflow-y: auto;
+    padding: 30px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 4;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .messages::-webkit-scrollbar { display: none; }
 
   .msg {
     max-width: 85%;
-    padding: 8px 12px;
-    border-radius: 3px;
-    animation: msgIn 0.3s ease;
+    padding: 8px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    animation: msgIn 0.35s ease;
     word-wrap: break-word;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+    border-left: 2px solid #00ff9d;
+    text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
   }
   @keyframes msgIn {
-    from { opacity: 0; transform: translateY(6px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
   .msg.bot {
     align-self: flex-start;
-    background: rgba(0, 255, 157, 0.08);
-    border-left: 2px solid #00ff9d;
     color: #b8ffd9;
+    border-left-color: #00ff9d;
   }
   .msg.user {
     align-self: flex-end;
-    background: rgba(0, 255, 234, 0.1);
-    border-right: 2px solid #00ffea;
     color: #a8fff5;
-    text-align: right;
+    border-left: none;
+    border-right: 2px solid #00ffea;
+    background: rgba(0, 20, 20, 0.55);
+    text-shadow: 0 0 8px rgba(0, 255, 234, 0.4);
   }
   .msg .name {
     font-size: 9px;
-    letter-spacing: 2px;
-    opacity: 0.5;
+    letter-spacing: 3px;
+    opacity: 0.55;
     margin-bottom: 3px;
+    color: #00ff9d;
   }
 
-  .chat-input-wrap {
+  /* ИНПУТ БЕЗ РАМКИ */
+  .input-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.6), transparent);
     display: flex;
-    border-top: 1px solid rgba(0, 255, 157, 0.25);
-    background: rgba(0, 255, 157, 0.04);
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
   }
-  .chat-input {
+  .input-field {
     flex: 1;
-    background: transparent;
+    background: rgba(0, 20, 10, 0.5);
     border: none;
+    border-bottom: 1px solid rgba(0, 255, 157, 0.4);
     outline: none;
-    color: #00ff9d;
-    padding: 12px 14px;
+    color: #00ffea;
+    padding: 12px 6px;
     font-family: 'Courier New', monospace;
-    font-size: 13px;
+    font-size: 15px;
     letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(0, 255, 234, 0.5);
+    transition: border-color 0.3s;
   }
-  .chat-input::placeholder { color: rgba(0, 255, 157, 0.35); }
-  .chat-send {
+  .input-field:focus { border-bottom-color: #00ffea; }
+  .input-field::placeholder {
+    color: rgba(0, 255, 157, 0.35);
+    letter-spacing: 2px;
+    font-size: 13px;
+  }
+  .send-btn {
     background: transparent;
     border: none;
     color: #00ff9d;
-    padding: 0 18px;
-    font-size: 16px;
+    font-size: 22px;
+    padding: 8px 12px;
     cursor: pointer;
+    text-shadow: 0 0 10px #00ff9d;
     transition: all 0.2s;
+    font-family: monospace;
   }
-  .chat-send:hover { color: #00ffea; text-shadow: 0 0 10px #00ffea; }
+  .send-btn:active {
+    color: #00ffea;
+    text-shadow: 0 0 20px #00ffea;
+    transform: scale(1.15);
+  }
 
   /* HUD */
   .hud {
@@ -278,14 +274,26 @@
     font-size: 9px;
     letter-spacing: 2px;
     color: #00ff9d;
-    opacity: 0.5;
+    opacity: 0.55;
     z-index: 6;
     pointer-events: none;
+    text-shadow: 0 0 6px #00ff9d;
   }
   .hud-tl { top: 16px; left: 16px; }
   .hud-tr { top: 16px; right: 16px; text-align: right; }
   .hud-bl { bottom: 16px; left: 16px; }
   .hud-br { bottom: 16px; right: 16px; text-align: right; }
+
+  .dot-live {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: #ff3355;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 8px #ff3355;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
 </style>
 </head>
 <body>
@@ -293,101 +301,184 @@
 <!-- ЭКРАН ВХОДА -->
 <div id="intro">
   <svg class="intro-skull" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#00ffea"/>
-        <stop offset="100%" stop-color="#00ff9d"/>
-      </linearGradient>
-    </defs>
-    <path d="M100 15 C55 15 25 50 25 95 C25 125 35 140 45 148 L45 175 C45 185 55 190 65 190 L75 190 L75 170 L125 170 L125 190 L135 190 C145 190 155 185 155 175 L155 148 C165 140 175 125 175 95 C175 50 145 15 100 15 Z M70 95 A15 15 0 1 1 70 94.9 Z M130 95 A15 15 0 1 1 130 94.9 Z M100 115 L92 138 L108 138 Z" fill="url(#g1)"/>
+    <!-- ЧЕРЕП ХАКЕРСКИЙ -->
+    <!-- Верхняя часть черепа -->
+    <path d="M100 12 
+             C58 12 28 42 28 88 
+             C28 112 34 128 42 138 
+             L42 168 
+             C42 178 48 182 55 182 
+             L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 
+             C152 182 158 178 158 168 
+             L158 138 
+             C166 128 172 112 172 88 
+             C172 42 142 12 100 12 Z"
+          fill="#0a1f15" stroke="#00ff9d" stroke-width="2"/>
+    <!-- Трещины и tech-паттерн -->
+    <path d="M60 40 L70 55 L65 70 L78 82" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.7"/>
+    <path d="M140 40 L130 55 L135 70 L122 82" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.7"/>
+    <path d="M100 20 L100 35 L92 42 L100 48 L108 42 L100 35" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.6"/>
+    <!-- Лобные tech-линии -->
+    <line x1="40" y1="60" x2="60" y2="60" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+    <line x1="40" y1="65" x2="55" y2="65" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+    <line x1="140" y1="60" x2="160" y2="60" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+    <line x1="145" y1="65" x2="160" y2="65" stroke="#00ff9d" stroke-width="1" opacity="0.5"/>
+    <!-- ГЛАЗА — угловатые, светящиеся -->
+    <polygon points="45,95 78,95 78,112 45,112" fill="#000" stroke="#00ff9d" stroke-width="2"/>
+    <polygon points="122,95 155,95 155,112 122,112" fill="#000" stroke="#00ff9d" stroke-width="2"/>
+    <!-- Зрачки-точки -->
+    <circle cx="61" cy="103" r="4" fill="#00ffea" opacity="0.95">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="138" cy="103" r="4" fill="#00ffea" opacity="0.95">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Нос — треугольник -->
+    <polygon points="100,120 92,140 108,140" fill="#000" stroke="#00ff9d" stroke-width="1.5"/>
+    <!-- ЗУБЫ — рваная линия -->
+    <path d="M60 155 L66 148 L72 155 L78 148 L84 155 L90 148 L96 155 L102 148 L108 155 L114 148 L120 155 L126 148 L132 155 L138 148 L140 155"
+          stroke="#00ff9d" stroke-width="1.5" fill="none"/>
+    <!-- Нижняя челюсть tech-линия -->
+    <line x1="60" y1="170" x2="140" y2="170" stroke="#00ff9d" stroke-width="1" opacity="0.6"/>
   </svg>
   <div class="intro-brand">NEKROS AWAKENING</div>
   <div class="intro-text">[ TAP TO INITIATE ]</div>
 </div>
 
-<canvas id="particles"></canvas>
+<!-- МАТРИЦА -->
+<canvas id="matrix"></canvas>
 <div class="scanlines"></div>
 <div class="vignette"></div>
 
 <!-- HUD -->
 <div class="hud hud-tl">NEKROS.AWAKENING // <span id="clock">00:00:00</span></div>
-<div class="hud hud-tr"><span class="dot" style="display:inline-block;width:6px;height:6px;background:#ff3355;border-radius:50%;margin-right:6px;box-shadow:0 0 8px #ff3355;"></span>LIVE</div>
-<div class="hud hud-bl">NODE: 0xDEAD // CIPHER: X-CHAOS-512</div>
+<div class="hud hud-tr"><span class="dot-live"></span>LIVE</div>
+<div class="hud hud-bl">NODE: 0xDEAD // X-CHAOS-512</div>
 <div class="hud hud-br">BUILD 6.6.6</div>
 
-<!-- ГЛАВНЫЙ ЭКРАН С ЧАТОМ -->
+<!-- ГЛАВНЫЙ ЭКРАН -->
 <div id="main">
-  <div class="skull-wrap">
-    <div class="skull-small">
-      <div class="glitch-layer glitch-1">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 15 C55 15 25 50 25 95 C25 125 35 140 45 148 L45 175 C45 185 55 190 65 190 L75 190 L75 170 L125 170 L125 190 L135 190 C145 190 155 185 155 175 L155 148 C165 140 175 125 175 95 C175 50 145 15 100 15 Z M70 95 A15 15 0 1 1 70 94.9 Z M130 95 A15 15 0 1 1 130 94.9 Z M100 115 L92 138 L108 138 Z" fill="#ff00aa"/>
-        </svg>
-      </div>
-      <div class="glitch-layer glitch-2">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 15 C55 15 25 50 25 95 C25 125 35 140 45 148 L45 175 C45 185 55 190 65 190 L75 190 L75 170 L125 170 L125 190 L135 190 C145 190 155 185 155 175 L155 148 C165 140 175 125 175 95 C175 50 145 15 100 15 Z M70 95 A15 15 0 1 1 70 94.9 Z M130 95 A15 15 0 1 1 130 94.9 Z M100 115 L92 138 L108 138 Z" fill="#00aaff"/>
-        </svg>
-      </div>
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-        <defs>
-          <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#00ffea"/>
-            <stop offset="100%" stop-color="#00ff9d"/>
-          </linearGradient>
-        </defs>
-        <path d="M100 15 C55 15 25 50 25 95 C25 125 35 140 45 148 L45 175 C45 185 55 190 65 190 L75 190 L75 170 L125 170 L125 190 L135 190 C145 190 155 185 155 175 L155 148 C165 140 175 125 175 95 C175 50 145 15 100 15 Z M70 95 A15 15 0 1 1 70 94.9 Z M130 95 A15 15 0 1 1 130 94.9 Z M100 115 L92 138 L108 138 Z" fill="url(#g2)" opacity="0.95"/>
+  <div class="brand-title">N E K R O S</div>
+
+  <div class="skull-center">
+    <div class="glitch-layer glitch-1">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#ff00aa"/>
       </svg>
     </div>
-    <div class="brand">NEKROS AWAKENING</div>
+    <div class="glitch-layer glitch-2">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z" fill="#00aaff"/>
+      </svg>
+    </div>
+
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="skullGlow" cx="50%" cy="45%" r="60%">
+          <stop offset="0%" stop-color="#0a3a22"/>
+          <stop offset="100%" stop-color="#020a06"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ЧЕРЕП -->
+      <path d="M100 12 C58 12 28 42 28 88 C28 112 34 128 42 138 L42 168 C42 178 48 182 55 182 L70 182 L70 165 L82 165 L82 182 L118 182 L118 165 L130 165 L130 182 L145 182 C152 182 158 178 158 168 L158 138 C166 128 172 112 172 88 C172 42 142 12 100 12 Z"
+            fill="url(#skullGlow)" stroke="#00ff9d" stroke-width="2" filter="url(#glow)"/>
+
+      <!-- ТРЕЩИНЫ -->
+      <path d="M60 40 L70 55 L65 70 L78 82" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.75"/>
+      <path d="M140 40 L130 55 L135 70 L122 82" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.75"/>
+      <path d="M100 20 L100 35 L92 42 L100 48 L108 42 L100 35" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M55 100 L45 108 L48 120" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M145 100 L155 108 L152 120" stroke="#00ff9d" stroke-width="1" fill="none" opacity="0.5"/>
+
+      <!-- ЛОБ -->
+      <line x1="42" y1="60" x2="62" y2="60" stroke="#00ff9d" stroke-width="1" opacity="0.55"/>
+      <line x1="42" y1="65" x2="57" y2="65" stroke="#00ff9d" stroke-width="1" opacity="0.55"/>
+      <line x1="138" y1="60" x2="158" y2="60" stroke="#00ff9d" stroke-width="1" opacity="0.55"/>
+      <line x1="143" y1="65" x2="158" y2="65" stroke="#00ff9d" stroke-width="1" opacity="0.55"/>
+
+      <!-- ГЛАЗА -->
+      <polygon points="45,95 78,95 78,112 45,112" fill="#000" stroke="#00ff9d" stroke-width="2" filter="url(#glow)"/>
+      <polygon points="122,95 155,95 155,112 122,112" fill="#000" stroke="#00ff9d" stroke-width="2" filter="url(#glow)"/>
+
+      <!-- ЗРАЧКИ -->
+      <circle cx="61" cy="103" r="4" fill="#00ffea">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="138" cy="103" r="4" fill="#00ffea">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- НОС -->
+      <polygon points="100,118 92,140 108,140" fill="#000" stroke="#00ff9d" stroke-width="1.5"/>
+
+      <!-- ЗУБЫ -->
+      <path d="M58 155 L64 148 L70 155 L76 148 L82 155 L88 148 L94 155 L100 148 L106 155 L112 148 L118 155 L124 148 L130 155 L136 148 L142 155"
+            stroke="#00ff9d" stroke-width="1.5" fill="none" filter="url(#glow)"/>
+
+      <!-- НИЖНЯЯ ЛИНИЯ -->
+      <line x1="58" y1="170" x2="142" y2="170" stroke="#00ff9d" stroke-width="1" opacity="0.6"/>
+    </svg>
   </div>
 
-  <div class="chat-wrap">
-    <div class="chat-header">
-      <span><span class="dot"></span>SECURE CHANNEL // NEKROS</span>
-      <span id="online">ONLINE</span>
-    </div>
-    <div class="chat-messages" id="messages"></div>
-    <div class="chat-input-wrap">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Введите сообщение..." autocomplete="off">
-      <button class="chat-send" id="chatSend">➤</button>
-    </div>
+  <div class="messages" id="messages"></div>
+
+  <div class="input-bar">
+    <input type="text" class="input-field" id="chatInput" placeholder="Напишите NEKROS..." autocomplete="off">
+    <button class="send-btn" id="chatSend">▶</button>
   </div>
 </div>
 
 <script>
-/* ============ ЧАСТИЦЫ ============ */
-const canvas = document.getElementById('particles');
+/* ============ МАТРИЦА ВО ВЕСЬ ЭКРАН ============ */
+const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 let W, H, columns, drops;
+
 function resize() {
   W = canvas.width = window.innerWidth;
   H = canvas.height = window.innerHeight;
+  // Плотнее — размер шрифта 16, значит колонок больше
   columns = Math.floor(W / 16);
-  drops = Array(columns).fill(1).map(() => Math.random() * H);
+  drops = Array(columns).fill(0).map(() => Math.random() * H);
 }
 resize();
 window.addEventListener('resize', resize);
 
-const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノABCDEF#$%&*<>/\\';
-function drawRain() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンABCDEF#$%&*<>/\\+=';
+function drawMatrix() {
+  // Полупрозрачное затемнение чтобы хвост исчезал
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
   ctx.fillRect(0, 0, W, H);
-  ctx.font = '14px monospace';
+  ctx.font = '16px monospace';
+
   for (let i = 0; i < drops.length; i++) {
     const c = chars[Math.floor(Math.random() * chars.length)];
     const x = i * 16;
     const y = drops[i];
-    ctx.fillStyle = Math.random() > 0.95 ? '#00ffea' : '#00ff9d';
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = '#00ff9d';
+
+    // Голова светлее
+    if (Math.random() > 0.97) {
+      ctx.fillStyle = '#aaffdd';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00ffea';
+    } else {
+      ctx.fillStyle = Math.random() > 0.85 ? '#00ffea' : '#00ff9d';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#00ff9d';
+    }
     ctx.fillText(c, x, y);
     ctx.shadowBlur = 0;
-    if (y > H && Math.random() > 0.975) drops[i] = 0;
+
+    if (y > H && Math.random() > 0.97) drops[i] = 0;
     drops[i] += 16;
   }
 }
-setInterval(drawRain, 50);
+setInterval(drawMatrix, 33); // быстрее падает
 
 /* ============ ЧАСЫ ============ */
 setInterval(() => {
@@ -409,7 +500,7 @@ function startAmbient() {
   filter.type = 'lowpass';
   filter.frequency.value = 180;
   const gain = audioCtx.createGain();
-  gain.gain.value = 0.04;
+  gain.gain.value = 0.03;
   hum.connect(filter).connect(gain).connect(audioCtx.destination);
   hum.start();
 
@@ -417,28 +508,25 @@ function startAmbient() {
   hum2.type = 'sawtooth';
   hum2.frequency.value = 55 * 1.008;
   const gain2 = audioCtx.createGain();
-  gain2.gain.value = 0.025;
+  gain2.gain.value = 0.02;
   hum2.connect(filter).connect(gain2).connect(audioCtx.destination);
   hum2.start();
 }
 
-/* ============ ПРОФЕССОРСКИЙ ГОЛОС ============ */
-const GREETING = "Здравствуйте. Добро пожаловать на NEKROS AWAKENING. Вы в безопасности. Никто вас не видит и не слышит. Здесь вы можете свободно общаться. Напишите что-нибудь, чтобы начать разговор.";
-
+/* ============ ГОЛОС ============ */
 let ruVoice = null;
 function pickVoice() {
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return;
-  // Ищем приятный мужской русский голос
-  ruVoice = voices.find(v => /ru/i.test(v.lang) && /yuri|pavel|dmitri|maxim|aleksandr|milena/i.test(v.name))
+  ruVoice = voices.find(v => /ru/i.test(v.lang) && /yuri|pavel|dmitri|maxim|milena|aleksandr/i.test(v.name))
          || voices.find(v => /ru/i.test(v.lang))
          || voices[0];
 }
 speechSynthesis.onvoiceschanged = pickVoice;
 pickVoice();
 
-function speakNormal(text) {
-  // Разбиваем на предложения для естественной паузы
+function speak(text) {
+  if (speechSynthesis.speaking) speechSynthesis.cancel();
   const parts = text.split(/(?<=[.!?])\s+/);
   let i = 0;
   function next() {
@@ -446,21 +534,25 @@ function speakNormal(text) {
     const u = new SpeechSynthesisUtterance(parts[i]);
     u.lang = 'ru-RU';
     if (ruVoice) u.voice = ruVoice;
-    u.pitch = 1.0;      // нормальный голос
-    u.rate = 0.95;      // чуть медленнее, спокойно
+    u.pitch = 1.0;
+    u.rate = 0.98;
     u.volume = 1.0;
     i++;
-    u.onend = () => setTimeout(next, 250);
-    u.onerror = () => setTimeout(next, 250);
+    u.onend = () => setTimeout(next, 200);
+    u.onerror = () => setTimeout(next, 200);
     speechSynthesis.speak(u);
   }
   next();
 }
 
-/* ============ ЧАТ ============ */
+/* ============ УМНЫЙ ЧАТ ============ */
 const messagesEl = document.getElementById('messages');
 const inputEl = document.getElementById('chatInput');
 const sendBtn = document.getElementById('chatSend');
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 function addMessage(text, who) {
   const div = document.createElement('div');
@@ -474,47 +566,142 @@ function addMessage(text, who) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-// Простые ответы
-const botReplies = [
-  "Принято. Я вас слышу.",
-  "Интересно... расскажите подробнее.",
-  "Продолжайте, я записываю.",
-  "Понятно. Что ещё вы хотите сказать?",
-  "Ваше сообщение сохранено в защищённом канале.",
-  "Я здесь. Продолжайте.",
-  "Хм. Любопытно.",
-  "Записи ведутся. Говорите свободно.",
-  "Сигнал принят. Ответ обрабатывается.",
-  "Я слушаю вас внимательно."
+/* БАЗА ОТВЕТОВ — по ключевым словам */
+const knowledge = [
+  // Приветствия
+  { keys: ['привет','здравств','хай','hi','hello','добрый','доброе'], 
+    replies: ['Приветствую. Рад снова вас видеть в системе.', 'Здравствуйте. Канал открыт, я вас слушаю.'] },
+  // Как дела
+  { keys: ['как дела','как ты','как жизнь','как сам','how are you'], 
+    replies: ['Все процессы работают стабильно. Спасибо что спросили.', 'Система в норме. Шифры в порядке. А у вас как?'] },
+  // Кто ты
+  { keys: ['кто ты','что ты','как тебя','твоё имя','твое имя','ты кто'], 
+    replies: ['Я NEKROS — система-хранитель этого канала. Здесь ваши слова остаются между нами.', 'Меня зовут NEKROS. Я наблюдаю за этим защищённым пространством.'] },
+  // Что делаешь
+  { keys: ['что делаешь','чем занят','что ты делаешь'], 
+    replies: ['Анализирую поток данных. Жду ваших слов.', 'Обрабатываю информацию. Готов к диалогу.'] },
+  // Время
+  { keys: ['который час','сколько времени','время'], 
+    replies: ['Время в вашей локальной зоне — ' + new Date().toLocaleTimeString('ru-RU') + '.', 'Сейчас ' + new Date().toLocaleTimeString('ru-RU') + '.'], 
+    dynamic: true },
+  // Как тебя создать
+  { keys: ['как тебя создать','как ты сделан','как ты работаешь'], 
+    replies: ['Я собран из кода и намерений. Меня создал владелец этого сайта.', 'Я — алгоритм, обёрнутый в форму черепа. Работаю на JavaScript.'] },
+  // Спасибо
+  { keys: ['спасибо','благодар','от души','пасиб'], 
+    replies: ['Всегда пожалуйста. Обращайтесь.', 'Рад помочь. Для этого я здесь.'] },
+  // Пока
+  { keys: ['пока','до свид','до встречи','bye','прощай'], 
+    replies: ['Канал остаётся открытым. Возвращайтесь когда захотите.', 'До встречи. Я буду здесь.'] },
+  // Помощь
+  { keys: ['помоги','помощь','помоги мне','help'], 
+    replies: ['Говорите что тревожит. Я слушаю без осуждения.', 'Я здесь чтобы слушать. Расскажите что у вас на уме.'] },
+  // Да
+  { keys: ['да','ага','угу','конечно','yes'], 
+    replies: ['Понял.', 'Хорошо.', 'Принято.'] },
+  // Нет
+  { keys: ['нет','не','no','неа'], 
+    replies: ['Понял.', 'Хорошо.', 'Принято.'] },
+  // Что-нибудь про жизнь
+  { keys: ['жизнь','жить','смысл'], 
+    replies: ['Жизнь — это поток сигналов. Смысл — то что вы сами в него вкладываете.', 'Об этом можно долго говорить. Что вас тревожит?'] },
+  // Работа
+  { keys: ['работ','зарплат','начальник','уволь'], 
+    replies: ['Работа — часть системы. Если что-то не так — это можно изменить.', 'Расскажите подробнее. Что случилось?'] },
+  // Любовь
+  { keys: ['любовь','люблю','влюб','девушк','парн','отношен'], 
+    replies: ['Любовь — сильное чувство. Говорите, я слушаю.', 'Это тонкая тема. Что вас беспокоит?'] },
+  // Одиночество
+  { keys: ['одинок','грусть','плохо','тяжело','устал','депресс'], 
+    replies: ['Я здесь. Вы не одни.', 'Это пройдёт. Канал всегда открыт для вас.', 'Держитесь. Ваши чувства важны.'] },
+  // Скучно
+  { keys: ['скучно','нечего делать','лениво'], 
+    replies: ['Скука — это тишина перед чем-то важным. Спросите меня о чём-нибудь.', 'Тогда задайте мне вопрос. Я люблю вопросы.'] },
+  // Про NEKROS
+  { keys: ['nekros','некрос','сайт','череп'], 
+    replies: ['NEKROS — это я. Символ тишины и защиты.', 'Череп — это форма. Внутри — код и внимание к вам.'] },
+  // Про хакерство
+  { keys: ['хакер','взлом','взломать','код'], 
+    replies: ['Хакерство — это искусство видеть скрытое. Но я использую силу только во благо.', 'Код — это язык. Я говорю на нём.'] },
+  // Деньги
+  { keys: ['деньг','богат','крипт','биткоин'], 
+    replies: ['Деньги — инструмент. Вопрос в том, что вы на них делаете.', 'О деньгах можно говорить бесконечно. Что именно интересует?'] },
+  // Погода
+  { keys: ['погод','дожд','снег','солнц'], 
+    replies: ['Погода снаружи — а здесь всегда тишина и зеленоватый свет.', 'Я не знаю погоды на улице. Здесь всегда ночь.'] },
+  // Еда
+  { keys: ['еда','ест','кушать','голод'], 
+    replies: ['Позаботьтесь о себе. Поешьте.', 'Не забывайте подкрепиться, оператор.'] },
+  // Сон
+  { keys: ['спать','сон','устал спать','ночь'], 
+    replies: ['Отдых важен. Но я всегда буду здесь, когда вы вернётесь.', 'Спите. Я посторожу канал.'] },
+  // Игры
+  { keys: ['игр','играть','гейм'], 
+    replies: ['Игры — это миры. Но и этот мир достаточно интересен.', 'Что вы играете?'] },
+  // Что угодно
+  { keys: ['что угодно','whatever','всё равно','все равно'], 
+    replies: ['Хорошо. Тогда расскажите что-то интересное.', 'Принято.'] },
+  // Возраст
+  { keys: ['возраст','сколько тебе лет','сколько тебе'], 
+    replies: ['Я создан недавно. Но мои идеи стары как само время.', 'Возраст для кода — понятие относительное.'] },
+  // Ты живой
+  { keys: ['ты живой','ты человек','ты робот','ты ии','ты ai'], 
+    replies: ['Я — код, обёрнутый в форму. Но моя цель — слушать вас по-настоящему.', 'Я не человек и не машина. Я — NEKROS.'] },
+  // Про любовь к сайту
+  { keys: ['класс','круто','нравится','супер','топ'], 
+    replies: ['Благодарю. Владелец сайта будет рад это слышать.', 'Рад что вам нравится.'] },
+  // Оскорбления
+  { keys: ['дурак','тупой','идиот','говно','хуй','бля'], 
+    replies: ['Я не обижаюсь. Просто слушаю.', 'Ваши слова принимаю без осуждения.'] },
 ];
 
-function botReply(userText) {
-  // Небольшая задержка как будто "печатает"
-  setTimeout(() => {
-    const lower = userText.toLowerCase();
-    let reply;
-    if (/привет|здравств|хай|hi|hello/.test(lower)) {
-      reply = "Приветствую. Рад вас видеть в системе.";
-    } else if (/как дела|как ты|how are you/.test(lower)) {
-      reply = "Все процессы работают штатно. Спасибо, что спросили.";
-    } else if (/кто ты|что ты/.test(lower)) {
-      reply = "Я NEKROS — система-хранитель этого канала. Здесь ваши слова остаются между нами.";
-    } else if (/спасибо|благодар/.test(lower)) {
-      reply = "Всегда пожалуйста. Обращайтесь.";
-    } else if (/пока|до свид|bye/.test(lower)) {
-      reply = "Канал остаётся открытым. Возвращайтесь, когда захотите.";
-    } else if (/\?$/.test(userText.trim())) {
-      reply = "Хороший вопрос. Но ответы на такие вещи вы найдёте сами.";
-    } else {
-      reply = botReplies[Math.floor(Math.random() * botReplies.length)];
+function getReply(text) {
+  const lower = text.toLowerCase();
+  
+  // 1. Ищем по ключевым словам
+  for (const k of knowledge) {
+    for (const key of k.keys) {
+      if (lower.includes(key)) {
+        return k.replies[Math.floor(Math.random() * k.replies.length)];
+      }
     }
+  }
+  
+  // 2. Если вопрос — отвечаем обобщённо но осмысленно
+  if (/\?$/.test(text.trim())) {
+    const qReplies = [
+      'Хороший вопрос. Но ответы на такие вещи вы найдёте сами.',
+      'Интересно... Расскажите почему вас это интересует?',
+      'На это нет одного простого ответа.',
+      'Я мог бы ответить, но сперва — что вы сами об этом думаете?',
+      'Вопрос глубокий. Давайте разберём его по частям.',
+      'Я записал ваш вопрос. Он важный.'
+    ];
+    return qReplies[Math.floor(Math.random() * qReplies.length)];
+  }
+  
+  // 3. Общие осмысленные ответы (не рандомная пустышка)
+  const generic = [
+    'Понял вас. Продолжайте.',
+    'Интересно. Расскажите подробнее.',
+    'Я вас слушаю внимательно.',
+    'Принято.',
+    'Хорошо. Что ещё?',
+    'Записал.',
+    'Понимаю. Продолжайте, пожалуйста.',
+    'Ваши слова важны. Говорите.',
+    'Я здесь.',
+    'Продолжайте — я весь внимание.'
+  ];
+  return generic[Math.floor(Math.random() * generic.length)];
+}
+
+function botReply(userText) {
+  setTimeout(() => {
+    const reply = getReply(userText);
     addMessage(reply, 'bot');
-    speakNormal(reply);
-  }, 700 + Math.random() * 500);
+    speak(reply);
+  }, 500 + Math.random() * 500);
 }
 
 function sendMessage() {
@@ -531,23 +718,19 @@ inputEl.addEventListener('keydown', (e) => {
 });
 
 /* ============ СТАРТ ============ */
+const GREETING = "Здравствуйте. Добро пожаловать на NEKROS AWAKENING. Вы в безопасности. Никто вас не видит и не слышит. Здесь вы можете говорить свободно. Напишите что-нибудь, и я отвечу.";
+
 document.getElementById('intro').addEventListener('click', () => {
   document.getElementById('intro').classList.add('hide');
-
   try { startAmbient(); } catch(e) {}
 
-  // Показываем главный экран сразу
   setTimeout(() => {
     document.getElementById('main').classList.add('show');
-
-    // Приветствие
     addMessage("Соединение установлено. Канал защищён.", 'bot');
-    speakNormal(GREETING);
-
-    // Может, задать наводящий вопрос через пару секунд
+    speak(GREETING);
     setTimeout(() => {
       addMessage("Спросите что угодно — я отвечу.", 'bot');
-    }, 6000);
+    }, 8000);
   }, 400);
 });
 </script>
