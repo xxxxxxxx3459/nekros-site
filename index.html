@@ -876,45 +876,68 @@ document.getElementById('settingsBtn').addEventListener('click', () => {
     location.reload();
   }
 });
-
-/* ============================================================
-   НОВОСТИ
-   ============================================================ */
+/* ============ НОВОСТИ ============ */
 async function loadNews() {
   const el = document.getElementById('newsList');
   
-  // Проверяем кэш
   let cached = cacheGet('news');
-  if (cached) {
+  if (cached && cached.length) {
     renderNews(cached);
     return;
   }
   
   el.innerHTML = '<div class="loading">Загружаю новости</div>';
-  try {
-    const feeds = [
-      { url: 'https://lenta.ru/rss/news', source: 'Lenta' },
-      { url: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss', source: 'RBC' },
-      { url: 'https://tass.ru/rss/v2.xml', source: 'TASS' }
-    ];
-    const allNews = [];
-    for (const feed of feeds) {
-      try {
-        const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url) + '&count=15');
-        const data = await r.json();
-        if (data.items) {
-          data.items.forEach(item => allNews.push({ ...item, source: feed.source }));
-        }
-      } catch(e) {}
+  
+  const feeds = [
+    { url: 'https://lenta.ru/rss/news', source: 'Lenta' },
+    { url: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss', source: 'RBC' },
+    { url: 'https://tass.ru/rss/v2.xml', source: 'TASS' }
+  ];
+  
+  const allNews = [];
+  
+  for (const feed of feeds) {
+    try {
+      const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(feed.url);
+      const r = await fetch(proxyUrl);
+      const xmlText = await r.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, 'text/xml');
+      const items = xml.querySelectorAll('item');
+      
+      items.forEach((item, idx) => {
+        if (idx >= 15) return;
+        const titleEl = item.querySelector('title');
+        const linkEl = item.querySelector('link');
+        const pubDateEl = item.querySelector('pubDate');
+        const enclosureEl = item.querySelector('enclosure');
+        const mediaEl = item.getElementsByTagName('media:content')[0];
+        
+        allNews.push({
+          title: titleEl ? titleEl.textContent : '',
+          link: linkEl ? linkEl.textContent : '',
+          pubDate: pubDateEl ? pubDateEl.textContent : '',
+          img: (enclosureEl ? enclosureEl.getAttribute('url') : '') || (mediaEl ? mediaEl.getAttribute('url') : ''),
+          source: feed.source
+        });
+      });
+    } catch(e) {
+      console.log('Ошибка', feed.source, e);
     }
-    allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-    
-    if (allNews.length) cacheSet('news', allNews.slice(0, 40));
-    renderNews(allNews.slice(0, 40));
-  } catch (e) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Ошибка загрузки</p></div>';
   }
+  
+  allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  
+  if (!allNews.length) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Не удалось загрузить новости</p></div>';
+    return;
+  }
+  
+  cacheSet('news', allNews.slice(0, 40));
+  renderNews(allNews.slice(0, 40));
 }
+
+
 function renderNews(list) {
   const el = document.getElementById('newsList');
   if (!list.length) {
@@ -925,11 +948,10 @@ function renderNews(list) {
   list.forEach(item => {
     const div = document.createElement('div');
     div.className = 'news-item';
-    const img = item.enclosure && item.enclosure.link ? item.enclosure.link : '';
-    const time = new Date(item.pubDate);
-    const timeStr = time.getHours() + ':' + String(time.getMinutes()).padStart(2,'0');
+    const time = item.pubDate ? new Date(item.pubDate) : null;
+    const timeStr = time ? (time.getHours() + ':' + String(time.getMinutes()).padStart(2,'0')) : '';
     div.innerHTML =
-      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
+      '<div class="news-img" style="' + (item.img ? 'background-image:url(' + item.img + ')' : '') + '"></div>' +
       '<div class="news-info">' +
         '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
         '<div class="news-meta">' +
@@ -941,6 +963,7 @@ function renderNews(list) {
     el.appendChild(div);
   });
 }
+
 
 /* ============================================================
    МУЗЫКА
@@ -1067,16 +1090,27 @@ async function loadFeed() {
   }
   
   try {
-    const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://lenta.ru/rss/news') + '&count=10');
-    const data = await r.json();
+    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://lenta.ru/rss/news');
+    const r = await fetch(proxyUrl);
+    const xmlText = await r.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, 'text/xml');
+    const items = Array.from(xml.querySelectorAll('item')).slice(0, 5);
+    
+    const news = items.map(item => ({
+      title: item.querySelector('title')?.textContent || '',
+      link: item.querySelector('link')?.textContent || '',
+      img: item.querySelector('enclosure')?.getAttribute('url') || ''
+    }));
+    
     const feedData = {
-      news: data.items ? data.items.slice(0, 5) : [],
+      news: news,
       fact: FACTS[Math.floor(Math.random() * FACTS.length)]
     };
     cacheSet('feed', feedData);
     renderFeed(feedData);
   } catch(e) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">📱</div><p>Ошибка</p></div>';
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📱</div><p>Ошибка загрузки ленты</p></div>';
   }
 }
 function renderFeed(data) {
