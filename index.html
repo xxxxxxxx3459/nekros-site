@@ -877,15 +877,22 @@ document.getElementById('settingsBtn').addEventListener('click', () => {
   }
 });
 /* ============ НОВОСТИ ============ */
-async function loadFeed() {
-  const el = document.getElementById('feedContent');
-  el.innerHTML = '<div class="loading">Загружаю ленту</div>';
+async function loadNews() {
+  const el = document.getElementById('newsList');
   
-  let cached = cacheGet('feed');
-  if (cached) {
-    renderFeed(cached);
+  let cached = cacheGet('news');
+  if (cached && cached.length) {
+    renderNews(cached);
     return;
   }
+  
+  el.innerHTML = '<div class="loading">Загружаю новости</div>';
+  
+  const feeds = [
+    { url: 'https://lenta.ru/rss/news', source: 'Lenta' },
+    { url: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss', source: 'RBC' },
+    { url: 'https://tass.ru/rss/v2.xml', source: 'TASS' }
+  ];
   
   const proxies = [
     'https://corsproxy.io/?url=',
@@ -910,29 +917,47 @@ async function loadFeed() {
     return null;
   }
   
-  try {
-    const xmlText = await fetchRSS('https://lenta.ru/rss/news');
-    if (!xmlText) throw new Error('Нет данных');
-    
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlText, 'text/xml');
-    const items = Array.from(xml.querySelectorAll('item')).slice(0, 5);
-    
-    const news = items.map(item => ({
-      title: item.querySelector('title') ? item.querySelector('title').textContent : '',
-      link: item.querySelector('link') ? item.querySelector('link').textContent : '',
-      img: item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : ''
-    }));
-    
-    const feedData = {
-      news: news,
-      fact: FACTS[Math.floor(Math.random() * FACTS.length)]
-    };
-    cacheSet('feed', feedData);
-    renderFeed(feedData);
-  } catch(e) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">📱</div><p>Ошибка загрузки ленты</p></div>';
+  const allNews = [];
+  const parser = new DOMParser();
+  
+  for (const feed of feeds) {
+    try {
+      const xmlText = await fetchRSS(feed.url);
+      if (!xmlText) continue;
+      
+      const xml = parser.parseFromString(xmlText, 'text/xml');
+      const items = xml.querySelectorAll('item');
+      
+      items.forEach((item, idx) => {
+        if (idx >= 15) return;
+        const titleEl = item.querySelector('title');
+        const linkEl = item.querySelector('link');
+        const pubDateEl = item.querySelector('pubDate');
+        const enclosureEl = item.querySelector('enclosure');
+        const mediaEl = item.getElementsByTagName('media:content')[0];
+        
+        allNews.push({
+          title: titleEl ? titleEl.textContent : '',
+          link: linkEl ? linkEl.textContent : '',
+          pubDate: pubDateEl ? pubDateEl.textContent : '',
+          img: (enclosureEl ? enclosureEl.getAttribute('url') : '') || (mediaEl ? mediaEl.getAttribute('url') : ''),
+          source: feed.source
+        });
+      });
+    } catch(e) {
+      console.log('Ошибка', feed.source, e);
+    }
   }
+  
+  allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  
+  if (!allNews.length) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Не удалось загрузить новости. Проверьте интернет.</p></div>';
+    return;
+  }
+  
+  cacheSet('news', allNews.slice(0, 40));
+  renderNews(allNews.slice(0, 40));
 }
 
 
