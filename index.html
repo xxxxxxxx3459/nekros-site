@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sunset Chat</title>
+<title>Sunset</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -13,167 +13,91 @@
     -webkit-font-smoothing: antialiased;
     background: #1a0a1e;
   }
-
-  /* ============ ФОТО-ЗАКАТ (реальное фото с Unsplash) ============ */
   .sunset-photo {
     position: fixed; inset: 0; z-index: 0;
     background-image: url('https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90');
-    background-size: cover;
-    background-position: center;
+    background-size: cover; background-position: center;
     transition: transform 0.1s linear;
   }
-  /* Лёгкое затемнение для читаемости текста */
   .sunset-photo::after {
     content: '';
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: linear-gradient(180deg,
-      rgba(20, 5, 30, 0.35) 0%,
-      rgba(30, 10, 40, 0.2) 40%,
-      rgba(40, 15, 30, 0.3) 70%,
-      rgba(15, 5, 20, 0.55) 100%
-    );
+      rgba(20, 5, 30, 0.4) 0%,
+      rgba(30, 10, 40, 0.25) 40%,
+      rgba(40, 15, 30, 0.35) 70%,
+      rgba(15, 5, 20, 0.75) 100%);
   }
-
-  /* ============ ПРИВЕТСТВИЕ "ПЕРЕТАЩИ" ============ */
   .drag-hint {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(20px);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-size: 13px;
-    letter-spacing: 1px;
-    border: 1px solid rgba(255,255,255,0.2);
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%); z-index: 50;
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(20px);
+    color: #fff; padding: 10px 20px; border-radius: 30px;
+    font-size: 12px; border: 1px solid rgba(255,255,255,0.2);
     display: flex; align-items: center; gap: 8px;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-    white-space: nowrap;
+    opacity: 1; transition: opacity 0.5s ease;
+    pointer-events: none; white-space: nowrap;
   }
   .drag-hint.hide { opacity: 0; }
-  .drag-hint .arrow { font-size: 16px; }
 
-  /* ============ ПАНЕЛЬ МЕССЕНДЖЕРА (перетаскиваемая) ============ */
-  #panel {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-width: 420px;
-    z-index: 20;
-    display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.55);
-    backdrop-filter: blur(30px) saturate(150%);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
-    border-right: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 10px 0 40px rgba(0,0,0,0.3);
-    transition: none;
-  }
-  /* Ручка перетаскивания */
-  .drag-handle {
-    position: absolute;
-    top: 0; bottom: 0;
-    right: -8px;
-    width: 24px;
-    cursor: grab;
-    z-index: 30;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .drag-handle:active { cursor: grabbing; }
-  .drag-handle::before {
-    content: '';
-    width: 4px;
-    height: 60px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.35);
-    transition: all 0.2s;
-  }
-  .drag-handle:active::before {
-    background: rgba(255,255,255,0.9);
-    height: 80px;
-  }
-
-  /* ============ РЕГИСТРАЦИЯ ============ */
   #register {
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
     padding: 20px;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(15px);
+    background: rgba(0,0,0,0.35); backdrop-filter: blur(15px);
     transition: opacity 0.5s ease;
   }
   #register.hide { opacity: 0; pointer-events: none; }
   .reg-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 24px;
-    padding: 32px 24px;
-    width: 100%;
-    max-width: 380px;
-    color: #fff;
-    text-align: center;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 24px;
+    padding: 32px 24px; width: 100%; max-width: 380px;
+    color: #fff; text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
-  .reg-card h1 {
-    font-size: 28px; font-weight: 700; margin-bottom: 6px;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
+  .reg-card h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
   .reg-card p { font-size: 14px; opacity: 0.85; margin-bottom: 28px; }
   .avatar-preview {
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 40px; font-weight: 700;
-    color: #fff; cursor: pointer;
-    transition: transform 0.2s ease;
+    width: 100px; height: 100px; border-radius: 50%;
+    margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+    font-size: 40px; font-weight: 700; color: #fff; cursor: pointer;
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     border: 3px solid rgba(255,255,255,0.5);
   }
-  .avatar-preview:active { transform: scale(0.95); }
   .reg-input {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 14px;
-    padding: 14px 18px;
-    font-size: 16px;
-    color: #fff;
-    outline: none;
-    margin-bottom: 16px;
-    font-family: inherit;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    width: 100%; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 14px;
+    padding: 14px 18px; font-size: 16px; color: #fff; outline: none;
+    margin-bottom: 16px; font-family: inherit;
   }
   .reg-input::placeholder { color: rgba(255,255,255,0.6); }
-  .reg-input:focus {
-    background: rgba(255,255,255,0.22);
-    border-color: rgba(255,255,255,0.6);
-  }
   .reg-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none;
-    border-radius: 14px;
-    padding: 16px;
-    font-size: 16px; font-weight: 600;
-    color: #fff; cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 8px 24px rgba(255, 100, 80, 0.5);
-    font-family: inherit;
+    width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none; border-radius: 14px; padding: 16px;
+    font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(255,100,80,0.5); font-family: inherit;
   }
-  .reg-btn:active { transform: scale(0.97); }
   .reg-btn:disabled { opacity: 0.5; }
 
-  /* ============ ХЕДЕР ============ */
+  #panel {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 100%; max-width: 420px; z-index: 20;
+    display: flex; flex-direction: column;
+    background: rgba(15, 10, 25, 0.62);
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border-right: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.3);
+  }
+  .drag-handle {
+    position: absolute; top: 0; bottom: 0; right: -8px;
+    width: 24px; cursor: grab; z-index: 30;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .drag-handle::before {
+    content: ''; width: 4px; height: 60px; border-radius: 4px;
+    background: rgba(255,255,255,0.35); transition: all 0.2s;
+  }
   .header {
     padding: 52px 20px 12px;
     display: flex; align-items: center; justify-content: space-between;
@@ -182,32 +106,153 @@
   }
   .header-left { display: flex; align-items: center; gap: 12px; }
   .my-avatar {
-    width: 44px; height: 44px;
-    border-radius: 50%;
+    width: 44px; height: 44px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700;
-    color: #fff;
+    font-size: 18px; font-weight: 700; color: #fff;
     border: 2px solid rgba(255,255,255,0.5);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
-  .my-name { font-size: 17px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .my-name { font-size: 17px; font-weight: 600; }
   .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
   .settings-btn {
     background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.2);
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 18px; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 50%;
+    color: #fff; font-size: 18px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
+  }
+
+  .content {
+    flex: 1; overflow-y: auto; overflow-x: hidden;
+    padding-bottom: 90px;
+    scrollbar-width: none;
+  }
+  .content::-webkit-scrollbar { display: none; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Новости */
+  .news-item {
+    display: flex; gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
     transition: background 0.2s;
   }
-  .settings-btn:active { background: rgba(255,255,255,0.3); }
-
-  /* ============ ПОИСК ============ */
-  .search-wrap {
-    padding: 12px 16px;
+  .news-item:active { background: rgba(255,255,255,0.08); }
+  .news-img {
+    width: 80px; height: 80px; border-radius: 12px;
+    background: rgba(255,255,255,0.1);
+    background-size: cover; background-position: center;
+    flex-shrink: 0;
   }
+  .news-info { flex: 1; min-width: 0; }
+  .news-title {
+    color: #fff; font-size: 14px; font-weight: 600;
+    line-height: 1.35; margin-bottom: 6px;
+    display: -webkit-box; -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .news-meta {
+    color: rgba(255,255,255,0.6); font-size: 11px;
+    display: flex; gap: 8px;
+  }
+  .news-source {
+    background: rgba(255,140,66,0.2);
+    padding: 2px 8px; border-radius: 6px;
+    color: #ffb380;
+  }
+
+  /* Музыка */
+  .music-search { padding: 12px 16px; display: flex; gap: 8px; }
+  .music-search input {
+    flex: 1; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px; padding: 12px 16px;
+    font-size: 15px; color: #fff; outline: none;
+    font-family: inherit;
+  }
+  .music-search input::placeholder { color: rgba(255,255,255,0.6); }
+  .music-search button {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none; border-radius: 14px;
+    padding: 0 18px; color: #fff; font-size: 16px;
+    cursor: pointer;
+  }
+  .track {
+    display: flex; gap: 12px; align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .track:active { background: rgba(255,255,255,0.08); }
+  .track-cover {
+    width: 52px; height: 52px; border-radius: 10px;
+    background-size: cover; background-position: center;
+    background-color: rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+  .track-info { flex: 1; min-width: 0; }
+  .track-name {
+    color: #fff; font-size: 14px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .track-artist {
+    color: rgba(255,255,255,0.65); font-size: 12px;
+    margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .track-play { color: #ff8c42; font-size: 18px; flex-shrink: 0; }
+
+  .player-bar {
+    position: absolute; bottom: 72px; left: 0; right: 0;
+    background: rgba(20, 10, 30, 0.95);
+    backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding: 10px 16px;
+    display: none;
+    align-items: center; gap: 12px;
+    z-index: 15;
+  }
+  .player-bar.show { display: flex; }
+  .player-cover {
+    width: 42px; height: 42px; border-radius: 8px;
+    background-size: cover; background-position: center;
+    background-color: rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-name {
+    color: #fff; font-size: 13px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .player-artist { color: rgba(255,255,255,0.65); font-size: 11px; }
+  .player-btn {
+    background: transparent; border: none;
+    color: #ff8c42; font-size: 22px;
+    cursor: pointer; padding: 6px 10px;
+  }
+  audio { display: none; }
+
+  /* Лента */
+  .feed-section-title {
+    color: rgba(255,255,255,0.6);
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 16px 8px;
+    font-weight: 600;
+  }
+  .fact-card {
+    margin: 8px 16px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(255,140,66,0.2), rgba(255,94,98,0.2));
+    border: 1px solid rgba(255,140,66,0.3);
+    border-radius: 16px;
+    color: #fff; font-size: 14px; line-height: 1.5;
+  }
+  .fact-emoji { font-size: 24px; display: block; margin-bottom: 8px; }
+
+  /* Контакты */
+  .search-wrap { padding: 12px 16px; }
   .search-box { position: relative; display: flex; align-items: center; }
   .search-box svg {
     position: absolute; left: 14px;
@@ -216,86 +261,46 @@
     pointer-events: none;
   }
   .search-input {
-    width: 100%;
-    background: rgba(255,255,255,0.18);
+    width: 100%; background: rgba(255,255,255,0.18);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px;
-    padding: 12px 16px 12px 42px;
-    font-size: 15px;
-    color: #fff; outline: none;
+    border-radius: 14px; padding: 12px 16px 12px 42px;
+    font-size: 15px; color: #fff; outline: none;
     font-family: inherit;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
   .search-input::placeholder { color: rgba(255,255,255,0.65); }
-  .search-input:focus {
-    background: rgba(255,255,255,0.25);
-    border-color: rgba(255,255,255,0.5);
-  }
-
-  /* ============ КОНТАКТЫ ============ */
-  .contacts {
-    flex: 1; overflow-y: auto;
-    padding: 4px 12px 100px;
-    scrollbar-width: none;
-  }
-  .contacts::-webkit-scrollbar { display: none; }
   .contact {
     display: flex; align-items: center; gap: 14px;
-    padding: 12px 14px;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 4px;
+    padding: 12px 14px; border-radius: 16px;
+    cursor: pointer; transition: background 0.2s;
+    margin: 4px 12px;
     background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
   }
-  .contact:active { background: rgba(255,255,255,0.18); }
   .contact-avatar {
-    width: 52px; height: 52px;
-    border-radius: 50%;
+    width: 52px; height: 52px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 700;
-    color: #fff; flex-shrink: 0;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    font-size: 22px; font-weight: 700; color: #fff;
+    flex-shrink: 0; position: relative;
   }
   .online-dot {
-    position: absolute;
-    bottom: 2px; right: 2px;
-    width: 12px; height: 12px;
-    background: #4ade80;
-    border-radius: 50%;
-    border: 2px solid rgba(30,20,50,0.9);
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
+    position: absolute; bottom: 2px; right: 2px;
+    width: 12px; height: 12px; background: #4ade80;
+    border-radius: 50%; border: 2px solid rgba(30,20,50,0.9);
   }
   .contact-info { flex: 1; min-width: 0; }
   .contact-name {
     color: #fff; font-size: 16px; font-weight: 600;
     margin-bottom: 3px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
   }
   .contact-last {
     color: rgba(255,255,255,0.75); font-size: 13px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .contact-time {
-    color: rgba(255,255,255,0.6); font-size: 12px;
-    flex-shrink: 0;
-  }
-  .empty-state {
-    text-align: center; padding: 60px 20px;
-    color: rgba(255,255,255,0.7);
-  }
-  .empty-state .emoji { font-size: 60px; margin-bottom: 16px; opacity: 0.6; }
-  .empty-state p { font-size: 15px; }
 
-  /* ============ ЧАТ ============ */
   #chat {
-    position: absolute; inset: 0;
-    z-index: 40;
+    position: absolute; inset: 0; z-index: 40;
     display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.75);
+    background: rgba(15, 10, 25, 0.85);
     backdrop-filter: blur(30px);
     transform: translateX(100%);
     transition: transform 0.3s ease;
@@ -304,37 +309,27 @@
   .chat-header {
     padding: 52px 16px 14px;
     display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.12); color: #fff;
   }
   .back-btn {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    padding: 4px 8px;
-    cursor: pointer;
-    display: flex; align-items: center;
+    background: transparent; border: none; color: #fff;
+    font-size: 24px; padding: 4px 8px; cursor: pointer;
   }
   .chat-header .contact-avatar { width: 40px; height: 40px; font-size: 16px; }
   .chat-title { flex: 1; }
-  .chat-title .name { font-size: 16px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+  .chat-title .name { font-size: 16px; font-weight: 600; }
   .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
   .chat-body {
     flex: 1; overflow-y: auto;
     padding: 16px 14px 90px;
-    display: flex; flex-direction: column;
-    gap: 8px;
+    display: flex; flex-direction: column; gap: 8px;
     scrollbar-width: none;
   }
   .chat-body::-webkit-scrollbar { display: none; }
   .message {
-    max-width: 78%;
-    padding: 10px 14px;
-    border-radius: 18px;
-    font-size: 15px;
-    line-height: 1.4;
-    word-wrap: break-word;
+    max-width: 78%; padding: 10px 14px;
+    border-radius: 18px; font-size: 15px;
+    line-height: 1.4; word-wrap: break-word;
     animation: msgPop 0.25s ease;
   }
   @keyframes msgPop {
@@ -344,80 +339,101 @@
   .message.me {
     align-self: flex-end;
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    color: #fff;
-    border-bottom-right-radius: 6px;
-    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.4);
+    color: #fff; border-bottom-right-radius: 6px;
   }
   .message.them {
     align-self: flex-start;
     background: rgba(255,255,255,0.2);
-    color: #fff;
-    border-bottom-left-radius: 6px;
+    color: #fff; border-bottom-left-radius: 6px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
   }
   .message .time {
     font-size: 10px; opacity: 0.75;
     margin-top: 4px; text-align: right;
   }
   .chat-input-bar {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 12px 14px 20px;
+    position: absolute; bottom: 72px; left: 0; right: 0;
+    padding: 12px 14px 16px;
     display: flex; align-items: center; gap: 8px;
     background: rgba(0,0,0,0.35);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255,255,255,0.1);
   }
   .chat-input {
-    flex: 1;
-    background: rgba(255,255,255,0.18);
+    flex: 1; background: rgba(255,255,255,0.18);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 22px;
-    padding: 12px 18px;
-    font-size: 15px;
-    color: #fff; outline: none;
+    border-radius: 22px; padding: 12px 18px;
+    font-size: 15px; color: #fff; outline: none;
     font-family: inherit;
   }
   .chat-input::placeholder { color: rgba(255,255,255,0.6); }
-  .chat-input:focus { background: rgba(255,255,255,0.25); }
   .chat-send {
-    width: 44px; height: 44px;
-    border-radius: 50%;
+    width: 44px; height: 44px; border-radius: 50%;
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none;
-    color: #fff;
-    font-size: 20px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 12px rgba(255, 100, 80, 0.5);
-    transition: transform 0.15s;
-    flex-shrink: 0;
+    border: none; color: #fff; font-size: 20px;
+    cursor: pointer; flex-shrink: 0;
   }
-  .chat-send:active { transform: scale(0.9); }
+
+  .bottom-nav {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 72px; z-index: 25;
+    display: flex; align-items: center; justify-content: space-around;
+    background: rgba(15, 10, 25, 0.85);
+    backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .nav-btn {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 4px;
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 11px; cursor: pointer;
+    padding: 8px 0;
+    transition: color 0.2s;
+    font-family: inherit;
+  }
+  .nav-btn.active { color: #ff8c42; }
+  .nav-icon { font-size: 22px; }
+
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: rgba(255,255,255,0.7);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
+  .loading {
+    text-align: center; padding: 40px;
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+  }
+  .loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 16px;
+    margin-left: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #ff8c42;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- ФОТО-ЗАКАТ НА ФОНЕ -->
 <div class="sunset-photo" id="sunsetPhoto"></div>
+<div class="drag-hint" id="dragHint">↔ Перетащи панель вправо</div>
 
-<!-- ПОДСКАЗКА -->
-<div class="drag-hint" id="dragHint">
-  <span class="arrow">↔</span> Перетащи панель вправо, чтобы увидеть закат
-</div>
-
-<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
-    <h1>Sunset Chat</h1>
+    <h1>Sunset</h1>
     <p>Добро пожаловать 👋</p>
     <div class="avatar-preview" id="avatarPreview"></div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваше имя" maxlength="20">
-    <button class="reg-btn" id="regBtn" disabled>Начать общение</button>
+    <button class="reg-btn" id="regBtn" disabled>Начать</button>
   </div>
 </div>
 
-<!-- ПАНЕЛЬ МЕССЕНДЖЕРА -->
 <div id="panel">
   <div class="drag-handle" id="dragHandle"></div>
 
@@ -432,16 +448,51 @@
     <button class="settings-btn" id="settingsBtn">⚙️</button>
   </div>
 
-  <div class="search-wrap">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
-      <input type="text" class="search-input" id="searchInput" placeholder="Поиск людей...">
+  <div class="content" id="content">
+    <div class="tab-content active" id="tab-chats">
+      <div class="search-wrap">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="Поиск людей...">
+        </div>
+      </div>
+      <div id="contactsList"></div>
+    </div>
+
+    <div class="tab-content" id="tab-news">
+      <div id="newsList" class="loading">Загружаю новости</div>
+    </div>
+
+    <div class="tab-content" id="tab-music">
+      <div class="music-search">
+        <input type="text" id="musicSearch" placeholder="Поиск музыки...">
+        <button id="musicSearchBtn">🔍</button>
+      </div>
+      <div id="tracksList" class="loading">Загружаю топ</div>
+    </div>
+
+    <div class="tab-content" id="tab-feed">
+      <div id="feedContent"></div>
     </div>
   </div>
 
-  <div class="contacts" id="contactsList"></div>
+  <div class="player-bar" id="playerBar">
+    <div class="player-cover" id="playerCover"></div>
+    <div class="player-info">
+      <div class="player-name" id="playerName">—</div>
+      <div class="player-artist" id="playerArtist">—</div>
+    </div>
+    <button class="player-btn" id="playerPlay">⏸</button>
+    <button class="player-btn" id="playerClose">✕</button>
+  </div>
 
-  <!-- ЧАТ (открывается поверх) -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
+    <button class="nav-btn" data-tab="news"><span class="nav-icon">📰</span><span>Новости</span></button>
+    <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
+    <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
+  </div>
+
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -459,187 +510,268 @@
   </div>
 </div>
 
+<audio id="audioPlayer"></audio>
+
 <script>
 /* ============================================================
-   ПЕРЕТАСКИВАНИЕ ПАНЕЛИ
+   АВТОКЭШ — обновление данных раз в сутки
+   ============================================================ */
+function getToday() {
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+function cacheGet(key) {
+  try {
+    const raw = localStorage.getItem('cache_' + key);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    if (obj.date !== getToday()) return null; // устарело
+    return obj.data;
+  } catch(e) { return null; }
+}
+function cacheSet(key, data) {
+  try {
+    localStorage.setItem('cache_' + key, JSON.stringify({ date: getToday(), data }));
+  } catch(e) {}
+}
+
+/* ============================================================
+   ПЕРЕТАСКИВАНИЕ
    ============================================================ */
 const panel = document.getElementById('panel');
 const dragHandle = document.getElementById('dragHandle');
 const dragHint = document.getElementById('dragHint');
-
-let isDragging = false;
-let startX = 0;
-let startLeft = 0;
-let panelLeft = 0;
+let isDragging = false, startX = 0, startLeft = 0, panelLeft = 0;
 const MAX_LEFT = () => window.innerWidth - 60;
 let hintHidden = false;
-
-function hideHint() {
-  if (!hintHidden) {
-    dragHint.classList.add('hide');
-    hintHidden = true;
-  }
-}
-
-function startDrag(clientX) {
-  isDragging = true;
-  startX = clientX;
-  startLeft = panelLeft;
-  panel.style.transition = 'none';
-  hideHint();
-}
-
-function moveDrag(clientX) {
+function hideHint() { if (!hintHidden) { dragHint.classList.add('hide'); hintHidden = true; } }
+function startDrag(x) { isDragging = true; startX = x; startLeft = panelLeft; panel.style.transition = 'none'; hideHint(); }
+function moveDrag(x) {
   if (!isDragging) return;
-  const dx = clientX - startX;
-  let newLeft = startLeft + dx;
-  // Ограничения: от -60 до MAX_LEFT
-  newLeft = Math.max(-60, Math.min(MAX_LEFT(), newLeft));
-  panelLeft = newLeft;
-  panel.style.left = newLeft + 'px';
-  panel.style.right = 'auto';
-
-  // Параллакс заката — фото немного сдвигается
-  const photo = document.getElementById('sunsetPhoto');
-  const progress = newLeft / MAX_LEFT();
-  photo.style.transform = 'translateX(' + (-progress * 40) + 'px) scale(1.05)';
+  const dx = x - startX;
+  let nl = Math.max(-60, Math.min(MAX_LEFT(), startLeft + dx));
+  panelLeft = nl;
+  panel.style.left = nl + 'px';
+  const p = nl / MAX_LEFT();
+  document.getElementById('sunsetPhoto').style.transform = 'translateX(' + (-p * 40) + 'px) scale(1.05)';
 }
-
-function endDrag() {
-  isDragging = false;
-  panel.style.transition = 'left 0.3s ease';
-}
-
-// Мышь
-dragHandle.addEventListener('mousedown', (e) => {
-  e.preventDefault();
-  startDrag(e.clientX);
-});
-document.addEventListener('mousemove', (e) => moveDrag(e.clientX));
+function endDrag() { isDragging = false; panel.style.transition = 'left 0.3s ease'; }
+dragHandle.addEventListener('mousedown', e => { e.preventDefault(); startDrag(e.clientX); });
+document.addEventListener('mousemove', e => moveDrag(e.clientX));
 document.addEventListener('mouseup', endDrag);
-
-// Тач (мобильный)
-dragHandle.addEventListener('touchstart', (e) => {
-  e.preventDefault();
-  startDrag(e.touches[0].clientX);
-}, { passive: false });
-document.addEventListener('touchmove', (e) => {
-  if (!isDragging) return;
-  e.preventDefault();
-  moveDrag(e.touches[0].clientX);
-}, { passive: false });
+dragHandle.addEventListener('touchstart', e => { e.preventDefault(); startDrag(e.touches[0].clientX); }, { passive: false });
+document.addEventListener('touchmove', e => { if (isDragging) { e.preventDefault(); moveDrag(e.touches[0].clientX); } }, { passive: false });
 document.addEventListener('touchend', endDrag);
-
-// Двойной тап по ручке — сброс влево
 let lastTap = 0;
 dragHandle.addEventListener('click', () => {
-  const now = Date.now();
-  if (now - lastTap < 300) {
-    // Двойной тап — вернуть влево
-    panelLeft = 0;
-    panel.style.transition = 'left 0.4s cubic-bezier(0.4,0,0.2,1)';
-    panel.style.left = '0px';
-    hideHint();
-  }
-  lastTap = now;
+  const n = Date.now();
+  if (n - lastTap < 300) { panelLeft = 0; panel.style.transition = 'left 0.4s'; panel.style.left = '0px'; hideHint(); }
+  lastTap = n;
 });
-
-/* ============================================================
-   БАЗА ЛЮДЕЙ
-   ============================================================ */
-const PEOPLE = [
-  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A', autoReplies: ['Привет! Как дела?','Чем занимаешься?','Хорошо, что написал 🙂','Согласен с тобой.','Интересно!','Давай встретимся как-нибудь.','А ты как думаешь?','Ха-ха, точно!','Расскажи подробнее.','Не забудь про встречу.'] },
-  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M', autoReplies: ['Приветик! 💕','Как твои дела?','Рада тебя слышать!','У меня всё отлично 😊','А ты чем занят?','Расскажи о себе.','Обожаю такие разговоры!','Хм, интересно.','Надо как-нибудь встретиться.','Спасибо, что пишешь!'] },
-  { id: 'dmitry', name: 'Дмитрий', color: '#4a90e2', emoji: 'Д', autoReplies: ['Привет, друг!','Как сам?','Что нового?','Слушай, надо пересечься.','Согласен полностью.','Понял тебя.','Хорошо, договорились.','Пиши ещё.','Интересная тема.','Ок, тогда так и сделаем.'] },
-  { id: 'anna', name: 'Анна', color: '#ff5e8c', emoji: 'А', autoReplies: ['Привет! ❤️','Как проходит день?','Ты классный!','Мне нравится с тобой болтать.','А что ты делаешь сейчас?','Хаха, смешно 😄','Давай встретимся на выходных.','Обожаю такие моменты.','Расскажи что-нибудь.','Спасибо за сообщение!'] },
-  { id: 'ivan', name: 'Иван', color: '#4ecdc4', emoji: 'И', autoReplies: ['Здарова!','Как жизнь?','Что нового брат?','Понял, отлично.','Огонь!','Красава!','Давай в выходные.','Хорошо, скинул.','Так держать!','Не забудь написать.'] },
-  { id: 'elena', name: 'Елена', color: '#f5a623', emoji: 'Е', autoReplies: ['Приветик 🌸','Как настроение?','Спасибо что написал!','У меня всё хорошо 😊','А ты как?','Согласна с тобой.','Отличная идея!','Расскажи подробнее.','Давай поговорим ещё.','Хорошего дня!'] },
-  { id: 'sergey', name: 'Сергей', color: '#7b68ee', emoji: 'С', autoReplies: ['Привет.','Как дела?','Что нужно?','Понял, сделаю.','Ок.','Договорились.','Хорошо, обсудим.','Напиши позже.','Согласен.','Всё будет в порядке.'] },
-  { id: 'olga', name: 'Ольга', color: '#e91e63', emoji: 'О', autoReplies: ['Привет, дорогой!','Как ты?','Рада слышать 😊','Много работы сейчас.','А у тебя как дела?','Расскажи как жизнь.','Мне нравится наше общение.','Спасибо!','Обнимаю 🤗','Пока, хорошего дня!'] },
-  { id: 'nikita', name: 'Никита', color: '#26a69a', emoji: 'Н', autoReplies: ['Йоу!','Как ты там?','Круто!','Понял тебя.','Ок, бывай.','Созвонимся.','Скинь потом.','Норм тема.','Хорошо, договорились.','Пиши ещё.'] },
-  { id: 'sophia', name: 'София', color: '#ba68c8', emoji: 'С', autoReplies: ['Привет! 🌷','Как ты?','Рада видеть здесь.','Ты мне нравишься 💜','Как прошёл день?','Расскажи что-то интересное.','Улыбнулась с твоего сообщения 😊','Хорошего настроения!','Обнимаю!','Пока, до связи!'] }
-];
 
 /* ============================================================
    ХРАНИЛИЩЕ
    ============================================================ */
-const STORAGE_KEY = 'sunset_chat_user_v2';
-const CHATS_KEY = 'sunset_chat_messages_v2';
+const STORAGE_KEY = 'sunset_user_v4';
+const CHATS_KEY = 'sunset_chats_v4';
+let currentUser = null, chats = {}, activePerson = null;
 
-let currentUser = null;
-let chats = {};
-let activePerson = null;
+/* ============================================================
+   БОТЫ С РАСШИРЕННОЙ БАЗОЙ (обновляется каждый день)
+   ============================================================ */
+const DAY_SEED = Math.floor(Date.now() / 86400000); // номер дня
 
-function loadUser() {
-  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
+// База шаблонов — очень много комбинаций
+const BOT_TEMPLATES = {
+  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
+  question: ['как дела', 'как жизнь', 'что нового', 'чем занят', 'как настроение', 'что делаешь', 'как сам', 'чем занимаешься'],
+  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Ничего себе!', 'Кайф!', 'Норм!', 'Топ!'],
+  agree: ['Согласен', 'Точно', 'Абсолютно', 'Именно так', 'Вот-вот', 'Согласна', 'Однозначно', 'Согласен с тобой', 'Да, это так'],
+  surprise: ['Серьёзно?', 'Да ладно!', 'Не может быть!', 'Ты шутишь?', 'Правда?', 'Серьёзно говоришь?', 'Ничего себе!', 'Круто, не знал'],
+  emoji_love: ['❤️', '💕', '😘', '🤗', '💖', '💜', '💗', '🥰', '😻', '🌸'],
+  emoji_fun: ['😄', '😁', '🤣', '😊', '😜', '😂', '😎', '🤪', '🤩', '😆'],
+  emoji_ok: ['👌', '👍', '✌️', '💪', '👏', '🤝', '✅', '🔥', '⚡', '🎯'],
+  ask: ['А ты что думаешь?', 'Как ты?', 'А у тебя как?', 'Что нового у тебя?', 'Расскажи что-нибудь', 'Как сам?', 'Что делаешь сейчас?', 'Чем занимаешься?'],
+  time: ['Кстати, сегодня отличный день', 'Скоро выходные!', 'Как погода у тебя?', 'Скучно без тебя', 'Думаю о тебе', 'Надо встретиться', 'Соскучился', 'Давай погуляем'],
+  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Принято', 'Норм', 'Бывает'],
+  topic: ['Работа задолбала', 'Хочу спать', 'Есть вкусно хочу', 'Хочу отдохнуть', 'Что смотришь?', 'Что слушаешь?', 'Читал новости?', 'Играешь во что-нибудь?', 'Какой фильм посоветуешь?', 'Кофе пью', 'Чай пью']
+};
+
+// Умная генерация фразы из шаблонов
+function generateBotPhrase() {
+  const r = Math.random();
+  // Выбираем категорию
+  let cat;
+  if (r < 0.10) cat = 'greeting';
+  else if (r < 0.22) cat = 'question';
+  else if (r < 0.35) cat = 'reaction';
+  else if (r < 0.45) cat = 'agree';
+  else if (r < 0.52) cat = 'surprise';
+  else if (r < 0.60) cat = 'emoji_love';
+  else if (r < 0.68) cat = 'emoji_fun';
+  else if (r < 0.76) cat = 'emoji_ok';
+  else if (r < 0.85) cat = 'ask';
+  else if (r < 0.92) cat = 'time';
+  else if (r < 0.96) cat = 'short';
+  else cat = 'topic';
+
+  const pool = BOT_TEMPLATES[cat];
+
+  // Для эмодзи-категорий иногда добавляем несколько
+  if (cat.startsWith('emoji_')) {
+    const emoji = pool[Math.floor(Math.random() * pool.length)];
+    if (Math.random() > 0.6) {
+      const emoji2 = pool[Math.floor(Math.random() * pool.length)];
+      return emoji + emoji2;
+    }
+    return emoji;
+  }
+
+  // Иногда комбинируем приветствие + реакцию + смайлик
+  if (Math.random() > 0.7 && cat !== 'short') {
+    const greeting = BOT_TEMPLATES.greeting[Math.floor(Math.random() * BOT_TEMPLATES.greeting.length)];
+    const reaction = BOT_TEMPLATES.reaction[Math.floor(Math.random() * BOT_TEMPLATES.reaction.length)];
+    const emoji = BOT_TEMPLATES.emoji_fun[Math.floor(Math.random() * BOT_TEMPLATES.emoji_fun.length)];
+    return greeting + '! ' + reaction + ' ' + emoji;
+  }
+
+  return pool[Math.floor(Math.random() * pool.length)];
 }
-function saveUser(u) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); } catch(e) {} }
-function loadChats() {
-  try { const r = localStorage.getItem(CHATS_KEY); return r ? JSON.parse(r) : {}; } catch(e) { return {}; }
+
+// Генерация уникального ответа с учётом контекста
+function generateReply(userText) {
+  const lower = userText.toLowerCase();
+  
+  // Реакция на приветствие
+  if (/привет|здравств|хай|hi|hello|ку/i.test(lower)) {
+    const r = ['Привет!', 'Приветик!', 'Хай!', 'Здравствуй!', 'Ку!', 'Йо!', 'Салют!'];
+    const e = BOT_TEMPLATES.emoji_fun;
+    return r[Math.floor(Math.random() * r.length)] + ' ' + e[Math.floor(Math.random() * e.length)];
+  }
+  
+  // Реакция на вопрос как дела
+  if (/как дела|как ты|как жизнь|как сам/i.test(lower)) {
+    const r = ['Всё отлично!', 'Хорошо!', 'Отлично!', 'Норм!', 'Супер!', 'Класс!'];
+    return r[Math.floor(Math.random() * r.length)] + ' А у тебя как?';
+  }
+  
+  // Реакция на вопрос
+  if (/\?$/.test(userText.trim())) {
+    const r = ['Хороший вопрос', 'Интересно', 'Дай подумать', 'Хм', 'Ого', 'Слушай'];
+    const r2 = ['а что ты сам думаешь?', 'не знаю если честно', 'давай обсудим', 'расскажи подробнее', 'интересно послушать'];
+    return r[Math.floor(Math.random() * r.length)] + ', ' + r2[Math.floor(Math.random() * r2.length)];
+  }
+  
+  // Реакция на эмоции
+  if (/люблю|скучал|соскучил|скучаю/i.test(lower)) {
+    return BOT_TEMPLATES.emoji_love[Math.floor(Math.random() * BOT_TEMPLATES.emoji_love.length)];
+  }
+  
+  if (/устал|плохо|груст|тяжел/i.test(lower)) {
+    return 'Держись 💪 Всё будет хорошо!';
+  }
+  
+  if (/круто|класс|супер|отлично|кайф/i.test(lower)) {
+    return generateBotPhrase();
+  }
+  
+  // Обычный ответ
+  return generateBotPhrase();
 }
-function saveChats() { try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {} }
+
+/* ============================================================
+   ЛЮДИ
+   ============================================================ */
+const PEOPLE_NAMES = [
+  ['alex', 'Алекс', '#ff6b6b', 'A'],
+  ['maria', 'Мария', '#a06cd5', 'M'],
+  ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],
+  ['anna', 'Анна', '#ff5e8c', 'А'],
+  ['ivan', 'Иван', '#4ecdc4', 'И'],
+  ['elena', 'Елена', '#f5a623', 'Е'],
+  ['sergey', 'Сергей', '#7b68ee', 'С'],
+  ['olga', 'Ольга', '#e91e63', 'О'],
+  ['nikita', 'Никита', '#26a69a', 'Н'],
+  ['sophia', 'София', '#ba68c8', 'С'],
+  ['pavel', 'Павел', '#5c6bc0', 'П'],
+  ['victoria', 'Виктория', '#ff7043', 'В'],
+  ['andrey', 'Андрей', '#66bb6a', 'А'],
+  ['irina', 'Ирина', '#ab47bc', 'И'],
+  ['maxim', 'Максим', '#29b6f6', 'М'],
+  ['kate', 'Катя', '#ec407a', 'К'],
+  ['roman', 'Роман', '#8d6e63', 'Р'],
+  ['liza', 'Лиза', '#26c6da', 'Л'],
+  ['artem', 'Артём', '#ffa726', 'А'],
+  ['yana', 'Яна', '#ef5350', 'Я']
+];
+const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3] }));
 
 /* ============================================================
    РЕГИСТРАЦИЯ
    ============================================================ */
-const AVATAR_COLORS = ['#ff6b6b', '#a06cd5', '#4a90e2', '#ff5e8c', '#4ecdc4', '#f5a623', '#7b68ee', '#26a69a', '#ba68c8', '#e91e63'];
+const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-
 const avatarPreview = document.getElementById('avatarPreview');
 const regName = document.getElementById('regName');
 const regBtn = document.getElementById('regBtn');
 
-function updateAvatarPreview() {
+function updateAvatar() {
   const name = regName.value.trim();
-  const letter = name ? name.charAt(0).toUpperCase() : '?';
-  avatarPreview.textContent = letter;
+  avatarPreview.textContent = name ? name.charAt(0).toUpperCase() : '?';
   avatarPreview.style.background = chosenColor;
   regBtn.disabled = name.length < 2;
 }
-
 avatarPreview.addEventListener('click', () => {
-  let idx = AVATAR_COLORS.indexOf(chosenColor);
-  idx = (idx + 1) % AVATAR_COLORS.length;
-  chosenColor = AVATAR_COLORS[idx];
-  updateAvatarPreview();
+  let i = AVATAR_COLORS.indexOf(chosenColor);
+  i = (i + 1) % AVATAR_COLORS.length;
+  chosenColor = AVATAR_COLORS[i];
+  updateAvatar();
 });
-regName.addEventListener('input', updateAvatarPreview);
-updateAvatarPreview();
+regName.addEventListener('input', updateAvatar);
+updateAvatar();
 
 regBtn.addEventListener('click', () => {
   const name = regName.value.trim();
   if (name.length < 2) return;
-  currentUser = { name: name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
-  saveUser(currentUser);
+  currentUser = { name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
   startApp();
 });
 
-/* ============================================================
-   ЗАПУСК
-   ============================================================ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
-  chats = loadChats();
+  chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
   renderContacts(PEOPLE);
-
-  // Автоскрытие подсказки
   setTimeout(hideHint, 4000);
+  loadNews();
+  loadMusic();
+  loadFeed();
 }
 
-const savedUser = loadUser();
-if (savedUser) {
-  currentUser = savedUser;
-  setTimeout(startApp, 200);
-}
+const savedUser = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+if (savedUser) { currentUser = savedUser; setTimeout(startApp, 200); }
+
+/* ============================================================
+   НАВИГАЦИЯ
+   ============================================================ */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('content').scrollTop = 0;
+  });
+});
 
 /* ============================================================
    КОНТАКТЫ
    ============================================================ */
 const contactsList = document.getElementById('contactsList');
-
 function renderContacts(list) {
   contactsList.innerHTML = '';
   if (!list.length) {
@@ -649,38 +781,25 @@ function renderContacts(list) {
   list.forEach(person => {
     const chat = chats[person.id] || [];
     const last = chat[chat.length - 1];
-    const lastText = last ? last.text : 'Нажмите чтобы написать';
-    const lastTime = last ? last.time : '';
-
     const div = document.createElement('div');
     div.className = 'contact';
     div.innerHTML =
-      '<div class="contact-avatar" style="background:' + person.color + '">' + person.emoji +
-        '<div class="online-dot"></div>' +
-      '</div>' +
+      '<div class="contact-avatar" style="background:' + person.color + '">' + person.emoji + '<div class="online-dot"></div></div>' +
       '<div class="contact-info">' +
         '<div class="contact-name">' + escapeHtml(person.name) + '</div>' +
-        '<div class="contact-last">' + escapeHtml(lastText) + '</div>' +
-      '</div>' +
-      '<div class="contact-time">' + lastTime + '</div>';
+        '<div class="contact-last">' + (last ? escapeHtml(last.text) : 'Написать') + '</div>' +
+      '</div>';
     div.addEventListener('click', () => openChat(person));
     contactsList.appendChild(div);
   });
 }
-
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-
-/* ============================================================
-   ПОИСК
-   ============================================================ */
-const searchInput = document.getElementById('searchInput');
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
+document.getElementById('searchInput').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
   if (!q) { renderContacts(PEOPLE); return; }
-  const filtered = PEOPLE.filter(p => p.name.toLowerCase().includes(q));
-  renderContacts(filtered);
+  renderContacts(PEOPLE.filter(p => p.name.toLowerCase().includes(q)));
 });
 
 /* ============================================================
@@ -690,85 +809,376 @@ const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
-const chatName = document.getElementById('chatName');
-const chatAvatar = document.getElementById('chatAvatar');
-
 function openChat(person) {
   activePerson = person;
-  chatName.textContent = person.name;
-  chatAvatar.textContent = person.emoji;
-  chatAvatar.style.background = person.color;
+  document.getElementById('chatName').textContent = person.name;
+  const av = document.getElementById('chatAvatar');
+  av.textContent = person.emoji;
+  av.style.background = person.color;
   chatEl.classList.add('show');
   renderChat();
   setTimeout(() => chatInput.focus(), 300);
 }
-
 function renderChat() {
   if (!activePerson) return;
   const msgs = chats[activePerson.id] || [];
   chatBody.innerHTML = '';
   if (!msgs.length) {
-    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог с ' + escapeHtml(activePerson.name) + '</p></div>';
+    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
     return;
   }
-  msgs.forEach(m => addMessageToDOM(m));
+  msgs.forEach(m => addMsgToDOM(m));
   chatBody.scrollTop = chatBody.scrollHeight;
 }
-
-function addMessageToDOM(msg) {
+function addMsgToDOM(msg) {
   const div = document.createElement('div');
   div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
-  div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + escapeHtml(msg.time) + '</div>';
+  div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + msg.time + '</div>';
   chatBody.appendChild(div);
 }
-
 function nowTime() {
   const d = new Date();
   return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
 }
-
-function sendMessage() {
+function sendMsg() {
   const text = chatInput.value.trim();
   if (!text || !activePerson) return;
-  const msg = { text: text, time: nowTime(), from: 'me' };
+  const msg = { text, time: nowTime(), from: 'me' };
   if (!chats[activePerson.id]) chats[activePerson.id] = [];
   chats[activePerson.id].push(msg);
-  saveChats();
-  addMessageToDOM(msg);
+  localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+  addMsgToDOM(msg);
   chatInput.value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
-
   const person = activePerson;
   setTimeout(() => {
-    const replies = person.autoReplies;
-    const replyText = replies[Math.floor(Math.random() * replies.length)];
-    const replyMsg = { text: replyText, time: nowTime(), from: 'them' };
-    if (!chats[person.id]) chats[person.id] = [];
-    chats[person.id].push(replyMsg);
-    saveChats();
+    const replyText = generateReply(text);
+    const reply = { text: replyText, time: nowTime(), from: 'them' };
+    chats[person.id].push(reply);
+    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
     if (activePerson && activePerson.id === person.id) {
-      addMessageToDOM(replyMsg);
+      addMsgToDOM(reply);
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   }, 1000 + Math.random() * 1500);
 }
-
-chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
-
+chatSend.addEventListener('click', sendMsg);
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
 document.getElementById('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
   activePerson = null;
   renderContacts(PEOPLE);
 });
-
 document.getElementById('settingsBtn').addEventListener('click', () => {
-  if (confirm('Выйти из аккаунта? Все настройки и переписки сбросятся.')) {
+  if (confirm('Выйти из аккаунта?')) {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(CHATS_KEY);
     location.reload();
   }
 });
+
+/* ============================================================
+   НОВОСТИ
+   ============================================================ */
+async function loadNews() {
+  const el = document.getElementById('newsList');
+  
+  // Проверяем кэш
+  let cached = cacheGet('news');
+  if (cached) {
+    renderNews(cached);
+    return;
+  }
+  
+  el.innerHTML = '<div class="loading">Загружаю новости</div>';
+  try {
+    const feeds = [
+      { url: 'https://lenta.ru/rss/news', source: 'Lenta' },
+      { url: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss', source: 'RBC' },
+      { url: 'https://tass.ru/rss/v2.xml', source: 'TASS' }
+    ];
+    const allNews = [];
+    for (const feed of feeds) {
+      try {
+        const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url) + '&count=15');
+        const data = await r.json();
+        if (data.items) {
+          data.items.forEach(item => allNews.push({ ...item, source: feed.source }));
+        }
+      } catch(e) {}
+    }
+    allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    
+    if (allNews.length) cacheSet('news', allNews.slice(0, 40));
+    renderNews(allNews.slice(0, 40));
+  } catch (e) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Ошибка загрузки</p></div>';
+  }
+}
+function renderNews(list) {
+  const el = document.getElementById('newsList');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📰</div><p>Нет новостей</p></div>';
+    return;
+  }
+  el.innerHTML = '';
+  list.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'news-item';
+    const img = item.enclosure && item.enclosure.link ? item.enclosure.link : '';
+    const time = new Date(item.pubDate);
+    const timeStr = time.getHours() + ':' + String(time.getMinutes()).padStart(2,'0');
+    div.innerHTML =
+      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
+      '<div class="news-info">' +
+        '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
+        '<div class="news-meta">' +
+          '<span class="news-source">' + item.source + '</span>' +
+          '<span>' + timeStr + '</span>' +
+        '</div>' +
+      '</div>';
+    div.addEventListener('click', () => window.open(item.link, '_blank'));
+    el.appendChild(div);
+  });
+}
+
+/* ============================================================
+   МУЗЫКА
+   ============================================================ */
+let currentTrack = null;
+async function loadMusic(query) {
+  const el = document.getElementById('tracksList');
+  
+  // Если это поиск — не кэшируем
+  if (query) {
+    el.innerHTML = '<div class="loading">Поиск</div>';
+    try {
+      const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/search?q=' + encodeURIComponent(query) + '&limit=30'));
+      const data = await r.json();
+      renderTracks(data.data || []);
+    } catch(e) {
+      el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
+    }
+    return;
+  }
+  
+  // Проверяем кэш
+  let cached = cacheGet('music');
+  if (cached) {
+    renderTracks(cached);
+    return;
+  }
+  
+  el.innerHTML = '<div class="loading">Загружаю топ</div>';
+  try {
+    const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/chart/0/tracks?limit=40'));
+    const data = await r.json();
+    if (data.data) {
+      cacheSet('music', data.data);
+      renderTracks(data.data);
+    } else {
+      el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
+    }
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ошибка</p></div>';
+  }
+}
+function renderTracks(tracks) {
+  const el = document.getElementById('tracksList');
+  if (!tracks.length) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ничего не найдено</p></div>';
+    return;
+  }
+  el.innerHTML = '';
+  tracks.forEach(track => {
+    const div = document.createElement('div');
+    div.className = 'track';
+    div.innerHTML =
+      '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
+      '<div class="track-info">' +
+        '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
+        '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
+      '</div>' +
+      '<div class="track-play">▶</div>';
+    div.addEventListener('click', () => playTrack(track));
+    el.appendChild(div);
+  });
+}
+function playTrack(track) {
+  const audio = document.getElementById('audioPlayer');
+  audio.src = track.preview;
+  audio.play();
+  currentTrack = track;
+  document.getElementById('playerBar').classList.add('show');
+  document.getElementById('playerCover').style.backgroundImage = 'url(' + track.album.cover_small + ')';
+  document.getElementById('playerName').textContent = track.title;
+  document.getElementById('playerArtist').textContent = track.artist.name;
+  document.getElementById('playerPlay').textContent = '⏸';
+}
+document.getElementById('musicSearchBtn').addEventListener('click', () => {
+  const q = document.getElementById('musicSearch').value.trim();
+  if (q) loadMusic(q);
+});
+document.getElementById('musicSearch').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) loadMusic(q);
+  }
+});
+document.getElementById('playerPlay').addEventListener('click', () => {
+  const audio = document.getElementById('audioPlayer');
+  if (audio.paused) { audio.play(); document.getElementById('playerPlay').textContent = '⏸'; }
+  else { audio.pause(); document.getElementById('playerPlay').textContent = '▶'; }
+});
+document.getElementById('playerClose').addEventListener('click', () => {
+  document.getElementById('audioPlayer').pause();
+  document.getElementById('playerBar').classList.remove('show');
+});
+
+/* ============================================================
+   ЛЕНТА
+   ============================================================ */
+const FACTS = [
+  { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов — больше, чем звёзд в Млечном Пути.' },
+  { emoji: '🌍', text: 'Земля вращается вокруг Солнца со скоростью ~107 000 км/ч.' },
+  { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно — при 0,01°C и 611 Па.' },
+  { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина — как от вкусной еды.' },
+  { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день = 35 000 в год.' },
+  { emoji: '🐙', text: 'У осьминога 3 сердца и голубая кровь.' },
+  { emoji: '🌟', text: 'Свет от Солнца идёт до Земли 8 минут 20 секунд.' },
+  { emoji: '🍯', text: 'Мёд может храниться тысячи лет и не портиться.' },
+  { emoji: '🌙', text: 'Следы астронавтов на Луне останутся миллионы лет — нет атмосферы.' },
+  { emoji: '🔥', text: 'Внутри Земли горячее, чем на поверхности Солнца — ~6000°C.' },
+  { emoji: '🐘', text: 'Слоны — единственные животные, которые не могут прыгать.' },
+  { emoji: '🌊', text: '95% океана до сих пор не исследовано.' },
+  { emoji: '⚡', text: 'Молния разогревает воздух до 30 000°C — в 5 раз горячее Солнца.' },
+  { emoji: '🦈', text: 'Акулы старше деревьев — им 450 млн лет, деревьям 350 млн.' },
+  { emoji: '🎨', text: 'Красный — первый цвет, который видят младенцы.' }
+];
+
+async function loadFeed() {
+  const el = document.getElementById('feedContent');
+  el.innerHTML = '<div class="loading">Загружаю ленту</div>';
+  
+  let cached = cacheGet('feed');
+  if (cached) {
+    renderFeed(cached);
+    return;
+  }
+  
+  try {
+    const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://lenta.ru/rss/news') + '&count=10');
+    const data = await r.json();
+    const feedData = {
+      news: data.items ? data.items.slice(0, 5) : [],
+      fact: FACTS[Math.floor(Math.random() * FACTS.length)]
+    };
+    cacheSet('feed', feedData);
+    renderFeed(feedData);
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="emoji">📱</div><p>Ошибка</p></div>';
+  }
+}
+function renderFeed(data) {
+  const el = document.getElementById('feedContent');
+  el.innerHTML = '';
+  
+  const t1 = document.createElement('div');
+  t1.className = 'feed-section-title';
+  t1.textContent = '🔥 Сейчас в мире';
+  el.appendChild(t1);
+  
+  data.news.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'news-item';
+    const img = item.enclosure && item.enclosure.link ? item.enclosure.link : '';
+    div.innerHTML =
+      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
+      '<div class="news-info">' +
+        '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
+        '<div class="news-meta"><span class="news-source">Lenta</span></div>' +
+      '</div>';
+    div.addEventListener('click', () => window.open(item.link, '_blank'));
+    el.appendChild(div);
+  });
+  
+  const t2 = document.createElement('div');
+  t2.className = 'feed-section-title';
+  t2.textContent = '💡 Факт дня';
+  el.appendChild(t2);
+  
+  const factDiv = document.createElement('div');
+  factDiv.className = 'fact-card';
+  factDiv.innerHTML = '<span class="fact-emoji">' + data.fact.emoji + '</span>' + data.fact.text;
+  el.appendChild(factDiv);
+  
+  const t3 = document.createElement('div');
+  t3.className = 'feed-section-title';
+  t3.textContent = '🎵 Топ музыка';
+  el.appendChild(t3);
+  
+  const musicEl = document.createElement('div');
+  musicEl.id = 'feedMusic';
+  el.appendChild(musicEl);
+  
+  // Берём из кэша музыки если есть
+  let musicCached = cacheGet('music');
+  if (musicCached) {
+    musicCached.slice(0, 5).forEach(track => {
+      const div = document.createElement('div');
+      div.className = 'track';
+      div.innerHTML =
+        '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
+        '<div class="track-info">' +
+          '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
+          '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
+        '</div>' +
+        '<div class="track-play">▶</div>';
+      div.addEventListener('click', () => playTrack(track));
+      musicEl.appendChild(div);
+    });
+  } else {
+    fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/chart/0/tracks?limit=5'))
+      .then(r => r.json())
+      .then(mData => {
+        if (mData.data) {
+          cacheSet('music', mData.data);
+          mData.data.forEach(track => {
+            const div = document.createElement('div');
+            div.className = 'track';
+            div.innerHTML =
+              '<div class="track-cover" style="background-image:url(' + track.album.cover_medium + ')"></div>' +
+              '<div class="track-info">' +
+                '<div class="track-name">' + escapeHtml(track.title) + '</div>' +
+                '<div class="track-artist">' + escapeHtml(track.artist.name) + '</div>' +
+              '</div>' +
+              '<div class="track-play">▶</div>';
+            div.addEventListener('click', () => playTrack(track));
+            musicEl.appendChild(div);
+          });
+        }
+      })
+      .catch(() => {});
+  }
+}
+
+/* ============================================================
+   ЕЖЕДНЕВНАЯ ОЧИСТКА КЭША (в 00:00)
+   ============================================================ */
+function scheduleDailyCacheClear() {
+  const now = new Date();
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
+  const msUntilMidnight = tomorrow - now;
+  setTimeout(() => {
+    // Чистим весь кэш
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('cache_')) localStorage.removeItem(k);
+    });
+    console.log('Кэш очищен — загружаем свежие данные');
+    location.reload();
+  }, msUntilMidnight);
+}
+if (currentUser) scheduleDailyCacheClear();
 </script>
 </body>
 </html>
