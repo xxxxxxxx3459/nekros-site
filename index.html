@@ -803,14 +803,192 @@ async function getReply(text) {
   return smartFallback(text);
 }
 
+/* ============ ЖИВОЙ ДВИЖОК ============ */
+const dialogHistory = []; // история диалога
+
+const liveIntros = [
+  '', '', '', '', '',
+  'Слушай, ',
+  'Знаешь, ',
+  'Смотри, ',
+  'Понимаю. ',
+  'Хорошо. ',
+  'Ок, ',
+  'Так, '
+];
+
+const liveOutros = [
+  '', '', '', '',
+  ' Спроси если что.',
+  ' Если ещё что-то — говори.',
+  ' Как тебе?',
+  ' Что скажешь?',
+  ' Надеюсь поможет.',
+  ' Спрашивай ещё.'
+];
+
+const addresses = ['друг', 'брат', 'собеседник', 'человек', 'оператор'];
+
+// Ответы "я бы поступил так"
+const advices = {
+  работа: [
+    'Я бы на твоём месте сначала оценил ситуацию спокойно, потом действовал.',
+    'Я бы поговорил с руководителем напрямую и честно, без эмоций.',
+    'Я бы поискал альтернативы прежде чем что-то менять.'
+  ],
+  отношения: [
+    'Я бы поговорил с ней или с ним открыто. Молчание убивает больше, чем слова.',
+    'Я бы дал время, но не пропадал полностью. Иногда достаточно просто быть рядом.',
+    'Я бы сначала разобрался в своих чувствах, а потом уже действовал.'
+  ],
+  учеба: [
+    'Я бы разбил задачу на маленькие шаги и делал по одному каждый день.',
+    'Я бы начал с самого простого, чтобы войти в ритм.',
+    'Я бы убрал телефон на время работы — это работает.'
+  ],
+  деньги: [
+    'Я бы сначала посчитал все доходы и расходы честно.',
+    'Я бы откладывал 10% с каждой зарплаты — понемногу, но регулярно.',
+    'Я бы не брал кредит, если можно подождать и накопить.'
+  ],
+  здоровье: [
+    'Я бы начал с режима — сон, вода, прогулки. Это база.',
+    'Я бы не занимался самолечением, если не помогает 3 дня.',
+    'Я бы снизил нагрузку и дал организму восстановиться.'
+  ],
+  машина: [
+    'Я бы выбрал надёжность, а не внешний вид. Ремонт дороже.',
+    'Я бы взял с собой знакомого мастера на осмотр.',
+    'Я бы не спешил с покупкой — рынок большой.'
+  ],
+  default: [
+    'Я бы на твоём месте начал с малого шага. Дальше будет видно.',
+    'Я бы не торопился. Спокойно обдумал бы всё.',
+    'Я бы посмотрел на ситуацию со стороны — это помогает.',
+    'Я бы сделал то, что боишься. Обычно страх преувеличен.',
+    'Я бы сначала разобрался в себе, а потом уже действовал.'
+  ]
+};
+
+// Определяем тему для "совета от себя"
+function detectTopic(text) {
+  const l = text.toLowerCase();
+  if (/работ|карьер|увольн|начальник|зарплат|собеседован|резюме/.test(l)) return 'работа';
+  if (/отношен|любов|девушк|парн|свидан|расстав|бросил|развод/.test(l)) return 'отношения';
+  if (/учёб|учеб|дз|экзамен|сессия|диплом|курсов|контрольн|задач|школа|универ/.test(l)) return 'учеба';
+  if (/деньг|кредит|накопит|инвест|ипотек|финанс|бюджет/.test(l)) return 'деньги';
+  if (/болит|здоровь|температур|простуда|врач|давлен|бессонн|устал|депресс/.test(l)) return 'здоровье';
+  if (/машин|авто|тачк|покупк.*авто|toyota|bmw|mercedes|audi|lexus|kia|hyundai/.test(l)) return 'машина';
+  return 'default';
+}
+
+// Живое оформление ответа
+function addLiveFlavor(reply, userText) {
+  if (Math.random() < 0.35) return reply; // 35% ответов без изменений
+
+  const rand = Math.random();
+  const intro = liveIntros[Math.floor(Math.random() * liveIntros.length)];
+  const outro = liveOutros[Math.floor(Math.random() * liveOutros.length)];
+
+  // Иногда обращение
+  if (rand < 0.15) {
+    const addr = addresses[Math.floor(Math.random() * addresses.length)];
+    return intro + addr.charAt(0).toUpperCase() + addr.slice(1) + ', ' + reply.charAt(0).toLowerCase() + reply.slice(1) + outro;
+  }
+
+  return intro + reply + outro;
+}
+
+// Совет от первого лица
+function addAdvice(text) {
+  const topic = detectTopic(text);
+  const pool = advices[topic] || advices.default;
+  const advice = pool[Math.floor(Math.random() * pool.length)];
+
+  // Иногда добавляем совет
+  if (Math.random() < 0.35) {
+    return '\n\n' + advice;
+  }
+  return '';
+}
+
+// Учёт контекста — реакция на прошлое сообщение
+function addContext(text) {
+  if (dialogHistory.length === 0) return '';
+
+  const last = dialogHistory[dialogHistory.length - 1].user.toLowerCase();
+  const cur = text.toLowerCase();
+
+  // Если 3+ раз обращается с короткими фразами
+  if (dialogHistory.length >= 3 && text.length < 15) {
+    if (Math.random() < 0.2) {
+      return 'Ты сегодня немногословен. Расскажи что случилось? ';
+    }
+  }
+
+  // Если повторяет тему
+  if (last.includes('работ') && cur.includes('работ') && Math.random() < 0.3) {
+    return 'Опять про работу... Вижу, что тема беспокоит. ';
+  }
+
+  // Если сменил тему резко
+  if (dialogHistory.length >= 2) {
+    const prev = dialogHistory[dialogHistory.length - 2].user.toLowerCase();
+    if (/привет|здравств/.test(prev) && !/привет|здравств/.test(cur)) {
+      return ''; // обычный ответ после приветствия
+    }
+  }
+
+  return '';
+}
+
+// Спросить у пользователя в ответ
+function addFollowUp(text) {
+  const l = text.toLowerCase();
+  // Не задаём вопрос если это уже вопрос
+  if (/\?$/.test(text.trim())) return '';
+
+  // 25% случаев задаём уточняющий вопрос
+  if (Math.random() > 0.25) return '';
+
+  const questions = [
+    ' А ты сам что думаешь?',
+    ' Как ты сам это видишь?',
+    ' Что тебя больше всего беспокоит в этом?',
+    ' Что уже пробовал делать?',
+    ' Расскажи подробнее?',
+    ' Что для тебя самое важное тут?'
+  ];
+  return questions[Math.floor(Math.random() * questions.length)];
+}
+
 async function botReply(userText) {
   showTyping();
-  await new Promise(r => setTimeout(r, 400 + Math.random() * 400));
-  const reply = await getReply(userText);
+  await new Promise(r => setTimeout(r, 500 + Math.random() * 700));
+
+  // Получаем базовый ответ
+  let reply = await getReply(userText);
+
+  // Обогащаем — живой движок
+  const contextPrefix = addContext(userText);
+  const adviceSuffix = addAdvice(userText);
+  const followUp = addFollowUp(userText);
+
+  // Собираем финальный ответ
+  let finalReply = contextPrefix + reply + adviceSuffix + followUp;
+
+  // Добавляем "живые" связки
+  finalReply = addLiveFlavor(finalReply, userText);
+
+  // Записываем в историю
+  dialogHistory.push({ user: userText, bot: finalReply, time: Date.now() });
+  if (dialogHistory.length > 20) dialogHistory.shift();
+
   hideTyping();
-  addMessage(reply, 'bot');
-  speak(reply);
+  addMessage(finalReply, 'bot');
+  speak(finalReply);
 }
+
 
 function sendMessage() {
   const text = inputEl.value.trim();
