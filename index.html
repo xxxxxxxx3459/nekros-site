@@ -59,8 +59,8 @@
     border: none; border-radius: 14px; padding: 16px;
     font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
     font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
+    opacity: 0.6; transition: opacity 0.2s;
   }
-  .reg-btn:disabled { opacity: 0.5; }
 
   #panel {
     position: fixed; inset: 0; z-index: 20;
@@ -96,7 +96,6 @@
   .icon-btn:active { background: rgba(255,255,255,0.3); }
   .icon-btn.plus { font-size: 24px; font-weight: 300; }
 
-  /* Поиск с табами */
   .search-section { padding: 12px 16px 0; }
   .search-input-wrap { position: relative; display: flex; align-items: center; }
   .search-input-wrap svg {
@@ -111,9 +110,7 @@
   }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
 
-  .search-tabs {
-    display: flex; gap: 6px; padding: 10px 16px 0;
-  }
+  .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
   .search-tab {
     flex: 1; background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.12);
@@ -128,13 +125,11 @@
     box-shadow: 0 4px 12px rgba(255,100,80,0.4);
   }
 
-  /* Контент */
   .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
   .content::-webkit-scrollbar { display: none; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* Карточки */
   .card-item {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 14px; border-radius: 16px;
@@ -147,10 +142,8 @@
     width: 52px; height: 52px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; font-weight: 700; color: #fff;
-    flex-shrink: 0; position: relative;
-    overflow: hidden;
+    flex-shrink: 0; position: relative; overflow: hidden;
   }
-  .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .card-avatar.group { border-radius: 14px; }
   .card-avatar.channel { border-radius: 50%; }
   .online-dot {
@@ -176,15 +169,6 @@
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
-  /* Поиск — результат */
-  .search-result-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .search-result-item .card-avatar { width: 44px; height: 44px; font-size: 18px; }
-  .search-result-item .card-info { flex: 1; }
-
-  /* Пустое состояние */
   .empty-state {
     text-align: center; padding: 60px 20px;
     color: rgba(255,255,255,0.7);
@@ -203,7 +187,6 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Новости */
   .news-item {
     display: flex; gap: 12px; padding: 14px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -231,7 +214,6 @@
     padding: 2px 8px; border-radius: 6px; color: #ffb380;
   }
 
-  /* Мемы */
   .memes-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 8px; padding: 8px 12px;
@@ -243,7 +225,6 @@
   }
   .meme-card img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* Истории */
   .story-card {
     margin: 8px 16px; padding: 16px;
     background: linear-gradient(135deg, rgba(255,140,66,0.15), rgba(168,85,247,0.15));
@@ -263,7 +244,6 @@
   .story-time { font-size: 11px; opacity: 0.6; }
   .story-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
 
-  /* Секция заголовок */
   .section-title {
     color: rgba(255,255,255,0.6);
     font-size: 11px; letter-spacing: 2px;
@@ -271,7 +251,6 @@
     font-weight: 600;
   }
 
-  /* Музыка */
   .music-search { padding: 12px 16px; display: flex; gap: 8px; }
   .music-search input {
     flex: 1; background: rgba(255,255,255,0.15);
@@ -308,7 +287,6 @@
   }
   .track-play { color: #ff8c42; font-size: 18px; flex-shrink: 0; }
 
-  /* Плеер */
   .player-bar {
     position: absolute; bottom: 72px; left: 0; right: 0;
     background: rgba(20, 10, 30, 0.95);
@@ -337,7 +315,6 @@
   }
   audio { display: none; }
 
-  /* Чат */
   #chat {
     position: absolute; inset: 0; z-index: 40;
     display: flex; flex-direction: column;
@@ -420,7 +397,6 @@
     cursor: pointer;
   }
 
-  /* Нижняя навигация */
   .bottom-nav {
     position: absolute; bottom: 0; left: 0; right: 0;
     height: 72px; z-index: 25;
@@ -441,7 +417,6 @@
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 22px; }
 
-  /* Модальные окна */
   .modal {
     position: fixed; inset: 0; z-index: 200;
     display: flex; align-items: flex-end; justify-content: center;
@@ -521,18 +496,16 @@
 
 <div class="sunset-photo"></div>
 
-<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
     <p>Добро пожаловать 👋</p>
-    <div class="avatar-preview" id="avatarPreview"></div>
+    <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваше имя" maxlength="20">
-    <button class="reg-btn" id="regBtn" disabled>Начать</button>
+    <button class="reg-btn" id="regBtn">Начать</button>
   </div>
 </div>
 
-<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left">
@@ -550,7 +523,6 @@
 
   <div class="content" id="content">
 
-    <!-- ЧАТЫ -->
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
         <div class="search-input-wrap">
@@ -566,12 +538,10 @@
       <div id="chatsList"></div>
     </div>
 
-    <!-- ЛЕНТА -->
     <div class="tab-content" id="tab-feed">
       <div id="feedContent"></div>
     </div>
 
-    <!-- МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="music-search">
         <input type="text" id="musicSearch" placeholder="Поиск музыки...">
@@ -580,14 +550,12 @@
       <div id="tracksList"></div>
     </div>
 
-    <!-- КАНАЛЫ -->
     <div class="tab-content" id="tab-channels">
       <div class="section-title">📢 Каналы о жизни</div>
       <div id="channelsList"></div>
     </div>
   </div>
 
-  <!-- ПЛЕЕР -->
   <div class="player-bar" id="playerBar">
     <div class="player-cover" id="playerCover"></div>
     <div class="player-info">
@@ -598,7 +566,6 @@
     <button class="player-btn" id="playerClose">✕</button>
   </div>
 
-  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
@@ -606,7 +573,6 @@
     <button class="nav-btn" data-tab="channels"><span class="nav-icon">📢</span><span>Каналы</span></button>
   </div>
 
-  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -627,7 +593,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА: Плюсик -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -652,7 +617,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА: Создание группы/канала -->
 <div class="modal" id="formModal">
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новая группа</div>
@@ -692,15 +656,15 @@ function cacheSet(key, data) {
 /* ============================================================
    ХРАНИЛИЩЕ
    ============================================================ */
-const STORAGE_KEY = 'sunset_user_v6';
-const CHATS_KEY = 'sunset_chats_v6';
-const GROUPS_KEY = 'sunset_groups_v6';
-const CHANNELS_KEY = 'sunset_channels_v6';
+const STORAGE_KEY = 'sunset_user_v7';
+const CHATS_KEY = 'sunset_chats_v7';
+const GROUPS_KEY = 'sunset_groups_v7';
+const CHANNELS_KEY = 'sunset_channels_v7';
 let currentUser = null;
 let chats = {};
 let groups = [];
 let channels = [];
-let activeChat = null; // { id, name, type: 'person'|'group'|'channel', color, emoji, closed? }
+let activeChat = null;
 
 /* ============================================================
    ЛЮДИ
@@ -729,7 +693,6 @@ const PEOPLE_NAMES = [
 ];
 const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person' }));
 
-/* Сообщества (публичные группы) */
 const COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
   { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры и геймеры', type: 'community' },
@@ -740,7 +703,7 @@ const COMMUNITIES = [
 ];
 
 /* ============================================================
-   БОТЫ — шаблоны ответов
+   БОТЫ
    ============================================================ */
 const BOT_TEMPLATES = {
   greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
@@ -774,7 +737,6 @@ function generateReply(userText) {
   return rnd(all);
 }
 
-/* Боты для проверки ссылок */
 function botJoinCheck(link, groupName) {
   setTimeout(() => {
     const botNames = ['Алекс', 'Мария', 'Дмитрий', 'Иван', 'София', 'Никита'];
@@ -792,7 +754,7 @@ function botJoinCheck(link, groupName) {
 }
 
 /* ============================================================
-   МУЗЫКА — 100 треков
+   МУЗЫКА
    ============================================================ */
 const SONGS = [
   ['Imagine Dragons', 'Believer'], ['Ed Sheeran', 'Shape of You'], ['The Weeknd', 'Blinding Lights'],
@@ -812,7 +774,7 @@ const SONGS = [
   ['Bruno Mars', 'Uptown Funk'], ['Bruno Mars', 'Locked Out of Heaven'], ['Justin Bieber', 'Sorry'],
   ['Justin Bieber', 'Love Yourself'], ['Justin Bieber', 'Peaches'], ['Taylor Swift', 'Love Story'],
   ['Taylor Swift', 'Shake It Off'], ['Taylor Swift', 'Blank Space'], ['Taylor Swift', 'Anti-Hero'],
-  ['Dua Lipa', 'Don\'t Start Now'], ['Dua Lipa', 'New Rules'], ['Doja Cat', 'Say So'],
+  ['Dua Lipa', "Don't Start Now"], ['Dua Lipa', 'New Rules'], ['Doja Cat', 'Say So'],
   ['Doja Cat', 'Kiss Me More'], ['Sia', 'Chandelier'], ['Sia', 'Cheap Thrills'],
   ['Sia', 'Snowman'], ['Ava Max', 'Sweet But Psycho'], ['Ava Max', 'Kings & Queens'],
   ['Meduza', 'Piece of Your Heart'], ['Regard', 'Ride It'], ['Tones and I', 'Dance Monkey'],
@@ -820,11 +782,11 @@ const SONGS = [
   ['Billie Eilish', 'Happier Than Ever'], ['Olivia Rodrigo', 'Good 4 U'],
   ['Imagine Dragons', 'Thunder'], ['Imagine Dragons', 'Radioactive'], ['Imagine Dragons', 'Demons'],
   ['OneRepublic', 'Counting Stars'], ['OneRepublic', 'Apologize'], ['OneRepublic', 'Secrets'],
-  ['Passenger', 'Let Her Go'], ['James Arthur', 'Say You Won\'t Let Go'],
+  ['Passenger', 'Let Her Go'], ['James Arthur', "Say You Won't Let Go"],
   ['Sam Smith', 'Stay With Me'], ['Lewis Capaldi', 'Someone You Loved'], ['Ruth B', 'Lost Boy'],
   ['Adele', 'Hello'], ['Adele', 'Rolling in the Deep'], ['Adele', 'Someone Like You'],
   ['Lana Del Rey', 'Summertime Sadness'], ['Lana Del Rey', 'Young and Beautiful'],
-  ['Lorde', 'Royals'], ['Hozier', 'Take Me to Church'], ['Rag\'n\'Bone Man', 'Human'],
+  ['Lorde', 'Royals'], ['Hozier', 'Take Me to Church'], ["Rag'n'Bone Man", 'Human'],
   ['Tom Odell', 'Another Love'], ['Keane', 'Somewhere Only We Know'],
   ['Linkin Park', 'Numb'], ['Linkin Park', 'In the End'], ['System of a Down', 'Chop Suey!'],
   ['Green Day', 'Boulevard of Broken Dreams'], ['Red Hot Chili Peppers', 'Californication'],
@@ -833,7 +795,6 @@ const SONGS = [
 ];
 
 let currentTrack = null;
-let musicCache = [];
 
 /* ============================================================
    МЕМЫ
@@ -848,27 +809,27 @@ const MEMES = [
   'https://i.imgflip.com/1e7ql7.jpg', 'https://i.imgflip.com/1ihzfe.jpg', 'https://i.imgflip.com/20cylt.jpg',
   'https://i.imgflip.com/1jwhww.jpg', 'https://i.imgflip.com/1yx9e5.jpg', 'https://i.imgflip.com/20y95f.jpg',
   'https://i.imgflip.com/1h7in3.jpg', 'https://i.imgflip.com/345v97.jpg', 'https://i.imgflip.com/2wifvo.jpg',
-  'https://i.imgflip.com/1o00in.jpg', 'https://i.imgflip.com/1q9v36.jpg', 'https://i.imgflip.com/1otk96.jpg'
+  'https://i.imgflip.com/1o00in.jpg', 'https://i.imgflip.com/1q9v36.jpg'
 ];
 
 /* ============================================================
-   ИСТОРИИ (обновляются каждые сутки)
+   ИСТОРИИ
    ============================================================ */
 const STORIES = [
-  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода была идеальная, солнечно, но не жарко. Нашла уютное кафе рядом — провела там 2 часа с книгой. Иногда нужно просто остановиться и вдохнуть.' },
-  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения HTML, CSS и JS — и вот оно работает. Ощущение непередаваемое. Не бойтесь начинать.' },
-  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному итальянскому рецепту. Секрет — гуанчале и яйца комнатной температуры. Получилось лучше чем в ресторане!' },
-  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Думал не смогу, но дошёл. Организм удивительная штука. Начинайте с малого — 5 минут в день.' },
-  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Каждый раз нахожу что-то новое. Книги, как люди — меняются с тобой. Что у вас в списке на осень?' },
-  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой. Теперь ищу пластинки на блошиных рынках. Это стало моим хобби.' },
+  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода идеальная. Нашла уютное кафе рядом — провела 2 часа с книгой. Иногда нужно просто остановиться.' },
+  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения HTML, CSS и JS — и вот оно работает. Не бойтесь начинать.' },
+  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному рецепту. Секрет — гуанчале и яйца комнатной температуры. Получилось лучше чем в ресторане!' },
+  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Думал не смогу, но дошёл. Начинайте с малого — 5 минут в день.' },
+  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Каждый раз нахожу что-то новое. Книги меняются с тобой. Что у вас в списке?' },
+  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой. Теперь ищу пластинки на блошиных рынках.' },
   { author: 'Елена', color: '#f5a623', text: 'Начала рисовать акварелью. Пока получается криво, но это так расслабляет! Через месяц покажу прогресс.' },
-  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. RTX 4080, 32 ГБ RAM. Работает как часы. Следующая цель — собрать домашний сервер.' },
-  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной. Просто сидела и смотрела 40 минут. Никаких телефонов. Рекомендую всем — попробуйте раз в неделю.' },
-  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 новых английских слов за месяц. Метод: 20 карточек утром, 20 вечером. Через полгода — буду свободно говорить.' }
+  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. RTX 4080, 32 ГБ RAM. Следующая цель — домашний сервер.' },
+  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной 40 минут без телефона. Рекомендую всем — попробуйте раз в неделю.' },
+  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 новых английских слов за месяц. Метод: 20 карточек утром, 20 вечером. Через полгода буду свободно говорить.' }
 ];
 
 /* ============================================================
-   ЗАПУСК
+   РЕГИСТРАЦИЯ — ИСПРАВЛЕНО
    ============================================================ */
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
@@ -880,20 +841,38 @@ function updateAvatar() {
   const name = regName.value.trim();
   avatarPreview.textContent = name ? name.charAt(0).toUpperCase() : '?';
   avatarPreview.style.background = chosenColor;
-  regBtn.disabled = name.length < 2;
+  if (name.length >= 2) {
+    regBtn.style.opacity = '1';
+  } else {
+    regBtn.style.opacity = '0.6';
+  }
 }
+
 avatarPreview.addEventListener('click', () => {
   let i = AVATAR_COLORS.indexOf(chosenColor);
   i = (i + 1) % AVATAR_COLORS.length;
   chosenColor = AVATAR_COLORS[i];
   updateAvatar();
 });
+
 regName.addEventListener('input', updateAvatar);
+regName.addEventListener('change', updateAvatar);
+regName.addEventListener('keyup', updateAvatar);
+regName.addEventListener('paste', () => setTimeout(updateAvatar, 50));
+
+// Автопроверка каждые 300 мс
+setInterval(updateAvatar, 300);
+
+// Начальный цвет
+avatarPreview.style.background = chosenColor;
 updateAvatar();
 
 regBtn.addEventListener('click', () => {
   const name = regName.value.trim();
-  if (name.length < 2) return;
+  if (name.length < 2) {
+    alert('Введите имя (минимум 2 символа)');
+    return;
+  }
   currentUser = { name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
   startApp();
@@ -933,7 +912,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 });
 
 /* ============================================================
-   ТАБЫ ПОИСКА (Люди / Группы / Сообщества)
+   ТАБЫ ПОИСКА
    ============================================================ */
 let currentSearchTab = 'people';
 document.querySelectorAll('.search-tab').forEach(tab => {
@@ -952,7 +931,7 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
 });
 
 /* ============================================================
-   СПИСОК ЧАТОВ (Люди/Группы/Сообщества)
+   СПИСОК ЧАТОВ
    ============================================================ */
 function renderChatsList(tab, query) {
   const list = document.getElementById('chatsList');
@@ -1034,7 +1013,6 @@ function openChat(item) {
   if (item.type === 'group') av.classList.add('group');
   if (item.type === 'channel') av.classList.add('channel');
 
-  // Показать ссылку-приглашение для закрытых групп
   const inviteBar = document.getElementById('inviteBar');
   if (item.type === 'group' && item.closed && item.link) {
     inviteBar.style.display = 'flex';
@@ -1096,96 +1074,83 @@ function sendMsg() {
   chatInput.value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  // Ответы от ботов
   const item = activeChat;
   if (item.type === 'person' || item.type === 'group' || item.type === 'community') {
     const repliesCount = item.type === 'group' || item.type === 'community' ? 2 : 1;
     for (let i = 0; i < repliesCount; i++) {
       setTimeout(() => {
         const replyText = generateReply(text);
-        const senderName = item.type === 'person' ? item.name : r);
-nd(PEOPLE).name;
-        const reply  = {
-          text: item.type === 'person' ? replyText });
- : senderName + ': ' + replyText});
-
-,
+        const senderName = item.type === 'person' ? item.name : rnd(PEOPLE).name;
+        const reply = {
+          text: item.type === 'person' ? replyText : senderName + ': ' + replyText,
           time: nowTime(),
-          from:document 'them'
+          from: 'them'
         };
-        chats[.getElementByIditem.id].push(reply);
-       (' localStorage.setItem(CHATS_KEY,form JSON.stringify(chats));
-        ifCancel (activeChat && activeChat.id === item')..id) {
-          addMsgToDOM(readdply);
-          chatBody.scrollTop =EventListener chatBody.scrollHeight;
-('        }
-      }, 100click0 + i * 1500', + Math.random() * 1000 ());
+        chats[item.id].push(reply);
+        localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+        if (activeChat && activeChat.id === item.id) {
+          addMsgToDOM(reply);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+      }, 1000 + i * 1500 + Math.random() * 1000);
     }
-  } else if => (item.type === 'channel') {
-    {
- // В канале ты автор, б оты-подписчики не отвечают
- document  }
+  }
 }
 
-chatSend.addEventListener('click', sendMsg.getElementById);
-chatInput.addEventListener('keydown',(' e => { if (e.keyform === 'Enter') sendMsg(); });
+chatSend.addEventListener('click', sendMsg);
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
 
-document.getElementByIdModal('backBtn').addEventListener('click', () => {
+document.getElementById('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
- '). activeChat = null;
-  renderChatsList(currentSearchclassTab, document.getElementById('mainSearchInput').value.trimList().toLowerCase());
+  activeChat = null;
+  renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
 });
 
-document.getElementById('settingsBtn.remove').addEventListener('click', () =>(' {
-  if (confirm('Выйshowти из аккаунта? Все данные сбросятся.')) {
-   ');
- localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem});
-
-(CHATS_KEY);
-    localStorage.removeItem(GROdocumentUPS_KEY);
-    localStorage.removeItem(CH.getElementByIdANNELS_KEY);
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  if (confirm('Выйти из аккаунта? Все данные сбросятся.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(CHATS_KEY);
+    localStorage.removeItem(GROUPS_KEY);
+    localStorage.removeItem(CHANNELS_KEY);
     location.reload();
-('  }
+  }
 });
 
 /* ============================================================
-form   МОДАЛКАSubmit ПЛЮСИК').
-   ============================================================add */
-document.getElementById('plusBtn').EventListeneraddEventListener('click', () => {
- (' document.getElementById('createModal').classList.addclick('show');
+   МОДАЛКА ПЛЮСИК
+   ============================================================ */
+document.getElementById('plusBtn').addEventListener('click', () => {
+  document.getElementById('createModal').classList.add('show');
 });
-document.querySelector',All('[data-close]'). ()forEach(b => {
-  b.addEventListener('click', => () => {
-    document.getElementById(b.dataset.close).classList.remove {
-('show');
+document.querySelectorAll('[data-close]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.getElementById(b.dataset.close).classList.remove('show');
   });
 });
-document.querySelector All('.modal').forEach(m => {
- const  m.addEventListener('click', e => {
-    if (e.target === name m) m.classList.remove('show');
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.classList.remove('show');
   });
- =});
+});
 
 let pendingAction = null;
-document.querySelector documentAll('.modal-option').forEach(opt.getElementById => {
+document.querySelectorAll('.modal-option').forEach(opt => {
   opt.addEventListener('click', () => {
-    const action(' = opt.dataset.action;
-    document.getElementById('createformModal').classList.remove('show');
-    pendingActionName = action;
+    const action = opt.dataset.action;
+    document.getElementById('createModal').classList.remove('show');
+    pendingAction = action;
 
-    const formTitle = document.getElementById('').formTitle');
-    const formSub = document.getElementByIdvalue('formSub');
-    const nameInput = document.getElementById.trim('formName');
-    nameInput.value();
- = '';
-    document.getElementById('linkResult').style .display = 'none';
+    const formTitle = document.getElementById('formTitle');
+    const formSub = document.getElementById('formSub');
+    const nameInput = document.getElementById('formName');
+    nameInput.value = '';
+    document.getElementById('linkResult').style.display = 'none';
 
-    if if (action === 'group-open (') {
-      formTitle.textContent =name '🌍 Открытая группа';
-      form.lengthSub.textContent = 'Любой сможет < найти и зайти';
-    } else  if2 (action === 'group-closed')) {
-      formTitle.textContent = '🔒 { Закрытая группа';
+    if (action === 'group-open') {
+      formTitle.textContent = '🌍 Открытая группа';
+      formSub.textContent = 'Любой сможет найти и зайти';
+    } else if (action === 'group-closed') {
+      formTitle.textContent = '🔒 Закрытая группа';
       formSub.textContent = 'Только по ссылке-приглашению';
     } else if (action === 'channel') {
       formTitle.textContent = '📢 Канал';
@@ -1193,7 +1158,17 @@ document.querySelector documentAll('.modal-option').forEach(opt.getElementById =
     }
 
     document.getElementById('formModal').classList.add('show');
-    setTimeout(() => nameInput.focus(), 300 alert('Введите название'); return; }
+    setTimeout(() => nameInput.focus(), 300);
+  });
+});
+
+document.getElementById('formCancel').addEventListener('click', () => {
+  document.getElementById('formModal').classList.remove('show');
+});
+
+document.getElementById('formSubmit').addEventListener('click', function() {
+  const name = document.getElementById('formName').value.trim();
+  if (name.length < 2) { alert('Введите название'); return; }
 
   const id = 'x' + Date.now();
   const colors = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee'];
@@ -1207,26 +1182,18 @@ document.querySelector documentAll('.modal-option').forEach(opt.getElementById =
     groups.push(g);
     localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
 
-    // Бот заходит для проверки ссылки (закрытая группа)
     if (closed) {
       botJoinCheck(link, name);
-    }
-
-    // Если закрытая — покажем ссылку
-    if (closed) {
       document.getElementById('linkResult').style.display = 'block';
       document.getElementById('linkBox').textContent = link;
-      // Меняем кнопку на "Готово"
-      document.getElementById('formSubmit').textContent = 'Готово';
-      document.getElementById('formSubmit').onclick = () => {
+      const btn = document.getElementById('formSubmit');
+      btn.textContent = 'Готово';
+      const oldOnclick = btn.onclick;
+      btn.onclick = () => {
         document.getElementById('formModal').classList.remove('show');
-        document.getElementById('formSubmit').textContent = 'Создать';
-        document.getElementById('formSubmit').onclick = null;
+        btn.textContent = 'Создать';
+        btn.onclick = null;
       };
-      // Восстанавливаем через 10 сек если не нажали
-      setTimeout(() => {
-        document.getElementById('formSubmit').textContent = 'Создать';
-      }, 10000);
     } else {
       document.getElementById('formModal').classList.remove('show');
     }
@@ -1271,35 +1238,36 @@ function renderChannelsList() {
 }
 
 /* ============================================================
-   ЛЕНТА — мемы + новости + истории
+   ЛЕНТА
    ============================================================ */
 async function loadFeed() {
   const el = document.getElementById('feedContent');
   el.innerHTML = '<div class="loading">Загружаю ленту</div>';
 
-  let cached = cacheGet('feed_v6');
+  let cached = cacheGet('feed_v7');
   if (cached) { renderFeed(cached); return; }
 
-  // Готовим данные
   const memesForToday = pickDailyItems(MEMES, 8);
   const storiesForToday = pickDailyItems(STORIES, 5);
   const fact = rnd([
     { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов — больше, чем звёзд в Млечном Пути.' },
     { emoji: '🌍', text: 'Земля вращается вокруг Солнца со скоростью ~107 000 км/ч.' },
-    { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно — при 0,01°C и 611 Па.' },
-    { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина — как от вкусной еды.' },
+    { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно.' },
+    { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина.' },
     { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день.' },
     { emoji: '🐙', text: 'У осьминога 3 сердца и голубая кровь.' },
     { emoji: '🌟', text: 'Свет от Солнца идёт до Земли 8 минут 20 секунд.' }
   ]);
 
-  // Новости — пробуем загрузить
   let news = [];
   try {
     const proxies = ['https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy/?quest=', 'https://api.allorigins.win/raw?url='];
     for (const proxy of proxies) {
       try {
-        const r = await fetch(proxy + encodeURIComponent('https://lenta.ru/rss/news'));
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 4000);
+        const r = await fetch(proxy + encodeURIComponent('https://lenta.ru/rss/news'), { signal: controller.signal });
+        clearTimeout(tid);
         const xmlText = await r.text();
         if (xmlText.indexOf('<item') !== -1) {
           const parser = new DOMParser();
@@ -1326,11 +1294,10 @@ async function loadFeed() {
   }
 
   const data = { news, memes: memesForToday, stories: storiesForToday, fact };
-  cacheSet('feed_v6', data);
+  cacheSet('feed_v7', data);
   renderFeed(data);
 }
 
-/* Берём стабильно одинаковые в течение дня */
 function pickDailyItems(arr, count) {
   const day = Math.floor(Date.now() / 86400000);
   const result = [];
@@ -1345,7 +1312,6 @@ function renderFeed(data) {
   const el = document.getElementById('feedContent');
   el.innerHTML = '';
 
-  // 1. Факт дня
   const t1 = document.createElement('div');
   t1.className = 'section-title';
   t1.textContent = '💡 Факт дня';
@@ -1355,7 +1321,6 @@ function renderFeed(data) {
   factDiv.innerHTML = '<span style="font-size:24px;display:block;margin-bottom:8px;">' + data.fact.emoji + '</span>' + data.fact.text;
   el.appendChild(factDiv);
 
-  // 2. Истории
   const t2 = document.createElement('div');
   t2.className = 'section-title';
   t2.textContent = '📖 Истории дня';
@@ -1374,7 +1339,6 @@ function renderFeed(data) {
     el.appendChild(div);
   });
 
-  // 3. Мемы
   const t3 = document.createElement('div');
   t3.className = 'section-title';
   t3.textContent = '😂 Мемы дня';
@@ -1393,7 +1357,6 @@ function renderFeed(data) {
   });
   el.appendChild(grid);
 
-  // 4. Новости
   const t4 = document.createElement('div');
   t4.className = 'section-title';
   t4.textContent = '📰 Новости';
@@ -1447,7 +1410,6 @@ function loadMusicList(query) {
 }
 
 async function playSong(artist, title) {
-  // Ищем через Deezer (быстрее и без ключа)
   try {
     const q = artist + ' ' + title;
     const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/search?q=' + encodeURIComponent(q) + '&limit=1'));
@@ -1487,12 +1449,12 @@ document.getElementById('playerClose').addEventListener('click', () => {
 });
 
 /* ============================================================
-   АВТООБНОВЛЕНИЕ КАЖДЫЙ ЧАС
+   АВТООБНОВЛЕНИЕ
    ============================================================ */
 function scheduleHourlyRefresh() {
   setInterval(() => {
-    console.log('Час прошёл — обновляю');
-    loadFeed(true);
+    localStorage.removeItem('cache_feed_v7');
+    loadFeed();
   }, 3600000);
 }
 
@@ -1501,7 +1463,7 @@ document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     const now = Date.now();
     if (now - lastActiveTime > 3600000) {
-      localStorage.removeItem('cache_feed_v6');
+      localStorage.removeItem('cache_feed_v7');
       loadFeed();
     }
     lastActiveTime = now;
@@ -1509,18 +1471,16 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ============================================================
-   ОБРАБОТКА ХЭША #join=... для закрытых групп
+   ХЭШ #join=...
    ============================================================ */
 window.addEventListener('load', () => {
   const hash = location.hash;
   if (hash && hash.startsWith('#join=')) {
     const groupId = hash.substring(6);
-    const g = groups.find(x => x.id === groupId);
-    if (g) {
-      setTimeout(() => alert('Вы вошли в группу "' + g.name + '" по ссылке!'), 500);
-    } else {
-      setTimeout(() => alert('Группа не найдена (возможно другой пользователь создал)'), 500);
-    }
+    setTimeout(() => {
+      const g = groups.find(x => x.id === groupId);
+      if (g) alert('Вы вошли в группу "' + g.name + '" по ссылке!');
+    }, 1500);
   }
 });
 </script>
