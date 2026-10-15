@@ -898,7 +898,7 @@ async function loadNews() {
   
   for (const feed of feeds) {
     try {
-      const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(feed.url);
+      const proxyUrl = 'https://corsproxy.io/?url=' + encodeURIComponent(feed.url);
       const r = await fetch(proxyUrl);
       const xmlText = await r.text();
       const parser = new DOMParser();
@@ -1090,7 +1090,7 @@ async function loadFeed() {
   }
   
   try {
-    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://lenta.ru/rss/news');
+    const proxyUrl = 'https://corsproxy.io/?url=' + encodeURIComponent('https://lenta.ru/rss/news');
     const r = await fetch(proxyUrl);
     const xmlText = await r.text();
     const parser = new DOMParser();
