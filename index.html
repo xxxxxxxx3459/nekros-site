@@ -20,9 +20,7 @@
   }
   .sunset-photo::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg,
-      rgba(20,5,30,0.4) 0%, rgba(30,10,40,0.25) 40%,
-      rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75) 100%);
+    background: linear-gradient(180deg, rgba(20,5,30,0.4) 0%, rgba(30,10,40,0.25) 40%, rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75) 100%);
   }
 
   #register {
@@ -46,7 +44,6 @@
     font-size: 40px; font-weight: 700; color: #fff; cursor: pointer;
     border: 3px solid rgba(255,255,255,0.5); transition: transform 0.15s;
   }
-  .avatar-preview:active { transform: scale(0.95); }
   .reg-input {
     width: 100%; background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.25); border-radius: 14px;
@@ -67,7 +64,6 @@
     display: flex; flex-direction: column;
     background: rgba(15, 10, 25, 0.72);
     backdrop-filter: blur(30px) saturate(150%);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
     opacity: 0; pointer-events: none; transition: opacity 0.4s;
   }
   #panel.show { opacity: 1; pointer-events: all; }
@@ -77,12 +73,24 @@
     display: flex; align-items: center; justify-content: space-between;
     color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12);
   }
-  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .my-avatar {
     width: 44px; height: 44px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; font-weight: 700; color: #fff;
-    border: 2px solid rgba(255,255,255,0.5);
+    border: 2px solid rgba(255,255,255,0.5); position: relative;
+  }
+  .premium-badge {
+    position: absolute; bottom: -4px; right: -4px;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+  .premium-badge.prime {
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    color: #fff;
   }
   .my-name { font-size: 17px; font-weight: 600; }
   .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
@@ -93,19 +101,23 @@
     color: #fff; font-size: 18px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
-  .icon-btn:active { background: rgba(255,255,255,0.3); }
   .icon-btn.plus { font-size: 24px; font-weight: 300; }
 
-  .search-section { padding: 12px 16px 0; }
-  .search-input-wrap { position: relative; display: flex; align-items: center; }
-  .search-input-wrap svg {
-    position: absolute; left: 14px; width: 18px; height: 18px;
-    fill: rgba(255,255,255,0.7); pointer-events: none;
+  .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
+  .content::-webkit-scrollbar { display: none; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section-title {
+    color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 18px 16px 8px; font-weight: 600;
   }
+
+  .search-section { padding: 12px 16px 0; }
   .search-input {
     width: 100%; background: rgba(255,255,255,0.18);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 12px 16px 12px 42px;
+    border-radius: 14px; padding: 12px 16px;
     font-size: 15px; color: #fff; outline: none; font-family: inherit;
   }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
@@ -117,25 +129,17 @@
     border-radius: 10px; padding: 8px 6px;
     color: rgba(255,255,255,0.7); font-size: 12px;
     cursor: pointer; font-family: inherit; text-align: center;
-    transition: all 0.2s;
   }
   .search-tab.active {
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
     color: #fff; border-color: transparent;
-    box-shadow: 0 4px 12px rgba(255,100,80,0.4);
   }
-
-  .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
-  .content::-webkit-scrollbar { display: none; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
 
   .card-item {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 14px; border-radius: 16px;
     margin: 4px 12px; cursor: pointer;
     background: rgba(255,255,255,0.06);
-    transition: background 0.15s;
   }
   .card-item:active { background: rgba(255,255,255,0.15); }
   .card-avatar {
@@ -145,176 +149,185 @@
     flex-shrink: 0; position: relative; overflow: hidden;
   }
   .card-avatar.group { border-radius: 14px; }
-  .card-avatar.channel { border-radius: 50%; }
-  .online-dot {
-    position: absolute; bottom: 2px; right: 2px;
-    width: 12px; height: 12px; background: #4ade80;
-    border-radius: 50%; border: 2px solid rgba(30,20,50,0.9);
-  }
   .card-info { flex: 1; min-width: 0; }
   .card-name {
     color: #fff; font-size: 15px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;
   }
   .card-sub {
     color: rgba(255,255,255,0.7); font-size: 12px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .badge {
-    display: inline-block; font-size: 10px; padding: 2px 6px;
-    border-radius: 6px; margin-left: 4px;
-  }
+  .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-left: 4px; }
   .badge.open { background: rgba(74, 222, 128, 0.25); color: #86efac; }
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
-  .empty-state {
-    text-align: center; padding: 60px 20px;
-    color: rgba(255,255,255,0.7);
+  /* СТОРИС */
+  .stories-row {
+    display: flex; gap: 10px; padding: 12px 16px;
+    overflow-x: auto; scrollbar-width: none;
   }
-  .empty-state .emoji { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
-  .loading {
-    text-align: center; padding: 40px;
-    color: rgba(255,255,255,0.6); font-size: 14px;
+  .stories-row::-webkit-scrollbar { display: none; }
+  .story-circle {
+    flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; width: 68px;
   }
-  .loading::after {
-    content: ''; display: inline-block;
-    width: 16px; height: 16px; margin-left: 10px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #ff8c42; border-radius: 50%;
-    animation: spin 0.8s linear infinite; vertical-align: middle;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .news-item {
-    display: flex; gap: 12px; padding: 14px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    cursor: pointer;
-  }
-  .news-item:active { background: rgba(255,255,255,0.06); }
-  .news-img {
-    width: 80px; height: 80px; border-radius: 12px;
-    background: rgba(255,255,255,0.1); background-size: cover;
-    background-position: center; flex-shrink: 0;
-  }
-  .news-info { flex: 1; min-width: 0; }
-  .news-title {
-    color: #fff; font-size: 14px; font-weight: 600;
-    line-height: 1.35; margin-bottom: 6px;
-    display: -webkit-box; -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .news-meta {
-    color: rgba(255,255,255,0.6); font-size: 11px;
-    display: flex; gap: 8px;
-  }
-  .news-source {
-    background: rgba(255,140,66,0.2);
-    padding: 2px 8px; border-radius: 6px; color: #ffb380;
-  }
-
-  .memes-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 8px; padding: 8px 12px;
-  }
-  .meme-card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px; overflow: hidden;
-    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-  }
-  .meme-card img { width: 100%; height: 100%; object-fit: cover; }
-
-  .story-card {
-    margin: 8px 16px; padding: 16px;
-    background: linear-gradient(135deg, rgba(255,140,66,0.15), rgba(168,85,247,0.15));
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 16px; color: #fff;
-  }
-  .story-header {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 10px;
-  }
-  .story-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
+  .story-ring {
+    width: 64px; height: 64px; border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #ff8c42, #ff5e62, #a06cd5);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; color: #fff;
   }
-  .story-author { font-size: 13px; font-weight: 600; }
-  .story-time { font-size: 11px; opacity: 0.6; }
-  .story-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
-
-  .section-title {
-    color: rgba(255,255,255,0.6);
-    font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase; padding: 18px 16px 8px;
-    font-weight: 600;
+  .story-ring.viewed { background: rgba(255,255,255,0.2); }
+  .story-img {
+    width: 100%; height: 100%; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: #fff;
+    border: 2px solid rgba(15,10,25,0.9);
+  }
+  .story-label {
+    font-size: 10px; color: rgba(255,255,255,0.85);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 68px;
+  }
+  .story-ring.my-add {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+  }
+  .story-ring.my-add .story-img {
+    background: rgba(15,10,25,0.6); font-size: 26px;
   }
 
+  /* ПОСТЫ */
+  .post {
+    margin: 8px 12px; padding: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+  }
+  .post-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .post-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff;
+  }
+  .post-meta { flex: 1; }
+  .post-author { color: #fff; font-size: 14px; font-weight: 600; }
+  .post-time { color: rgba(255,255,255,0.55); font-size: 11px; margin-top: 1px; }
+  .post-text { color: #fff; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
+  .post-actions {
+    display: flex; gap: 16px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .post-action {
+    display: flex; align-items: center; gap: 5px;
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.7); font-size: 13px;
+    cursor: pointer; font-family: inherit; padding: 4px 0;
+  }
+  .post-action.liked { color: #ff5e8c; }
+  .post-action.reposted { color: #4ade80; }
+
+  .post-comments {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .comment {
+    display: flex; gap: 8px; padding: 6px 0;
+    font-size: 13px; color: #fff;
+  }
+  .comment-author { font-weight: 600; color: #ffb380; }
+  .comment-input-row {
+    display: flex; gap: 8px; margin-top: 8px;
+  }
+  .comment-input {
+    flex: 1; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px; padding: 8px 14px;
+    color: #fff; font-size: 13px; outline: none;
+    font-family: inherit;
+  }
+  .comment-send {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    border: none; border-radius: 50%;
+    width: 36px; height: 36px; color: #fff;
+    font-size: 14px; cursor: pointer;
+  }
+
+  /* СТИКЕРЫ В ЧАТЕ */
+  .sticker-row {
+    display: flex; gap: 8px; padding: 6px 14px;
+    overflow-x: auto; background: rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    scrollbar-width: none;
+  }
+  .sticker-row::-webkit-scrollbar { display: none; }
+  .sticker-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    width: 42px; height: 42px;
+    font-size: 22px; cursor: pointer;
+    flex-shrink: 0; padding: 0;
+  }
+  .sticker-btn.locked {
+    opacity: 0.4;
+    position: relative;
+  }
+  .sticker-btn.locked::after {
+    content: '🔒'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; background: rgba(0,0,0,0.5); border-radius: 10px;
+  }
+
+  /* МУЗЫКА */
   .music-search { padding: 12px 16px; display: flex; gap: 8px; }
   .music-search input {
     flex: 1; background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 14px; padding: 12px 16px;
     font-size: 15px; color: #fff; outline: none;
-    font-family: inherit;
   }
-  .music-search input::placeholder { color: rgba(255,255,255,0.6); }
   .music-search button {
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 14px;
-    padding: 0 18px; color: #fff; font-size: 16px; cursor: pointer;
+    border: none; border-radius: 14px; padding: 0 18px;
+    color: #fff; font-size: 16px; cursor: pointer;
   }
   .track {
     display: flex; gap: 12px; align-items: center;
     padding: 10px 16px; cursor: pointer;
   }
-  .track:active { background: rgba(255,255,255,0.06); }
-  .track-num {
-    width: 26px; text-align: center;
-    color: rgba(255,255,255,0.5); font-size: 13px;
-    flex-shrink: 0;
-  }
+  .track-num { width: 26px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
   .track-info { flex: 1; min-width: 0; }
-  .track-name {
-    color: #fff; font-size: 14px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .track-artist {
-    color: rgba(255,255,255,0.65); font-size: 12px;
-    margin-top: 2px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .track-play { color: #ff8c42; font-size: 18px; flex-shrink: 0; }
+  .track-name { color: #fff; font-size: 14px; font-weight: 600; }
+  .track-artist { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 2px; }
+  .track-play { color: #ff8c42; font-size: 18px; }
 
   .player-bar {
     position: absolute; bottom: 72px; left: 0; right: 0;
     background: rgba(20, 10, 30, 0.95);
     backdrop-filter: blur(30px);
     border-top: 1px solid rgba(255,255,255,0.15);
-    padding: 10px 16px;
-    display: none; align-items: center; gap: 12px;
+    padding: 10px 16px; display: none; align-items: center; gap: 12px;
     z-index: 15;
   }
   .player-bar.show { display: flex; }
   .player-cover {
     width: 42px; height: 42px; border-radius: 8px;
-    background-size: cover; background-position: center;
-    background-color: rgba(255,255,255,0.1); flex-shrink: 0;
+    background-size: cover; background-color: rgba(255,255,255,0.1);
   }
   .player-info { flex: 1; min-width: 0; }
-  .player-name {
-    color: #fff; font-size: 13px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  .player-name { color: #fff; font-size: 13px; font-weight: 600; }
   .player-artist { color: rgba(255,255,255,0.65); font-size: 11px; }
   .player-btn {
     background: transparent; border: none;
-    color: #ff8c42; font-size: 22px;
-    cursor: pointer; padding: 6px 10px;
+    color: #ff8c42; font-size: 22px; cursor: pointer; padding: 6px 10px;
   }
-  audio { display: none; }
 
+  /* ЧАТ */
   #chat {
     position: absolute; inset: 0; z-index: 40;
     display: flex; flex-direction: column;
@@ -336,9 +349,13 @@
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
   .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
+  .chat-menu {
+    background: transparent; border: none; color: #fff;
+    font-size: 20px; padding: 4px 8px; cursor: pointer;
+  }
   .chat-body {
     flex: 1; overflow-y: auto;
-    padding: 16px 14px 90px;
+    padding: 16px 14px 20px;
     display: flex; flex-direction: column; gap: 8px;
     scrollbar-width: none;
   }
@@ -348,6 +365,7 @@
     border-radius: 18px; font-size: 15px;
     line-height: 1.4; word-wrap: break-word;
     animation: msgPop 0.25s ease;
+    position: relative;
   }
   @keyframes msgPop {
     from { opacity: 0; transform: scale(0.95); }
@@ -362,39 +380,37 @@
     align-self: flex-start;
     background: rgba(255,255,255,0.2);
     color: #fff; border-bottom-left-radius: 6px;
-    backdrop-filter: blur(10px);
   }
-  .message .time {
-    font-size: 10px; opacity: 0.75;
-    margin-top: 4px; text-align: right;
+  .message.sticker {
+    background: transparent !important;
+    font-size: 60px; padding: 0;
+    line-height: 1;
   }
+  .message .time { font-size: 10px; opacity: 0.75; margin-top: 4px; text-align: right; }
+
   .chat-input-bar {
-    position: absolute; bottom: 72px; left: 0; right: 0;
-    padding: 12px 14px 16px;
+    padding: 8px 14px 16px;
     display: flex; align-items: center; gap: 8px;
     background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255,255,255,0.1);
   }
   .chat-input {
     flex: 1; background: rgba(255,255,255,0.18);
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 22px; padding: 12px 18px;
-    font-size: 15px; color: #fff; outline: none; font-family: inherit;
+    font-size: 15px; color: #fff; outline: none;
   }
   .chat-input::placeholder { color: rgba(255,255,255,0.6); }
   .chat-send {
     width: 44px; height: 44px; border-radius: 50%;
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; color: #fff; font-size: 20px;
-    cursor: pointer; flex-shrink: 0;
+    border: none; color: #fff; font-size: 20px; cursor: pointer;
   }
   .invite-bar {
     padding: 8px 14px; background: rgba(255,140,66,0.15);
     border-bottom: 1px solid rgba(255,140,66,0.25);
     color: #ffb380; font-size: 12px;
-    display: flex; align-items: center; gap: 8px;
-    cursor: pointer;
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
   }
 
   .bottom-nav {
@@ -409,14 +425,13 @@
     flex: 1; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 4px;
     background: transparent; border: none;
-    color: rgba(255,255,255,0.5);
-    font-size: 10px; cursor: pointer;
-    padding: 8px 0; transition: color 0.2s;
-    font-family: inherit;
+    color: rgba(255,255,255,0.5); font-size: 10px;
+    cursor: pointer; padding: 8px 0; font-family: inherit;
   }
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 20px; }
 
+  /* МОДАЛКИ */
   .modal {
     position: fixed; inset: 0; z-index: 200;
     display: flex; align-items: flex-end; justify-content: center;
@@ -436,35 +451,24 @@
     max-height: 85vh; overflow-y: auto;
   }
   .modal.show .modal-card { transform: translateY(0); }
-  .modal-title {
-    font-size: 20px; font-weight: 700;
-    margin-bottom: 4px; text-align: center;
-  }
-  .modal-sub {
-    font-size: 13px; opacity: 0.7;
-    text-align: center; margin-bottom: 20px;
-  }
+  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+  .modal-sub { font-size: 13px; opacity: 0.7; text-align: center; margin-bottom: 20px; }
   .modal-option {
     padding: 14px; border-radius: 14px;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.1);
     margin-bottom: 10px; cursor: pointer;
-    transition: background 0.15s;
   }
   .modal-option:active { background: rgba(255,255,255,0.15); }
   .modal-option .opt-title {
     font-size: 15px; font-weight: 600;
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
   }
-  .modal-option .opt-desc {
-    font-size: 12px; opacity: 0.65; line-height: 1.4;
-  }
+  .modal-option .opt-desc { font-size: 12px; opacity: 0.65; line-height: 1.4; }
   .modal-close {
-    background: rgba(255,255,255,0.1);
-    border: none; border-radius: 12px;
-    padding: 12px; width: 100%; color: #fff;
-    font-size: 14px; cursor: pointer;
+    background: rgba(255,255,255,0.1); border: none;
+    border-radius: 12px; padding: 12px; width: 100%;
+    color: #fff; font-size: 14px; cursor: pointer;
     font-family: inherit; margin-top: 8px;
   }
   .modal-input {
@@ -475,6 +479,14 @@
     margin-bottom: 12px; font-family: inherit;
   }
   .modal-input::placeholder { color: rgba(255,255,255,0.5); }
+  .modal-textarea {
+    width: 100%; min-height: 100px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px; padding: 14px 18px;
+    font-size: 15px; color: #fff; outline: none;
+    margin-bottom: 12px; font-family: inherit; resize: none;
+  }
   .modal-primary {
     width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
     border: none; border-radius: 14px; padding: 14px;
@@ -483,81 +495,90 @@
     box-shadow: 0 8px 24px rgba(255,100,80,0.5);
   }
   .link-box {
-    background: rgba(0,0,0,0.4);
-    padding: 12px; border-radius: 12px;
+    background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;
     font-size: 12px; word-break: break-all;
     color: #ffb380; margin-bottom: 12px;
-    border: 1px solid rgba(255,140,66,0.3);
-    text-align: center;
+    border: 1px solid rgba(255,140,66,0.3); text-align: center;
   }
 
   /* ПРОДВИЖЕНИЕ */
   .promo-card {
-    margin: 8px 16px 14px;
-    padding: 16px;
+    margin: 8px 16px 14px; padding: 16px;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 16px;
   }
-  .promo-card.premium {
+  .promo-card.prime {
+    background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,247,0.15));
+    border-color: rgba(0,212,255,0.35);
+  }
+  .promo-card.sunset {
     background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,66,0.15));
     border-color: rgba(255,215,0,0.35);
   }
-  .promo-head {
-    display: flex; align-items: flex-start; gap: 12px;
-    margin-bottom: 14px;
-  }
+  .promo-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
   .promo-emoji { font-size: 32px; line-height: 1; }
-  .promo-name {
-    color: #fff; font-size: 15px; font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .promo-desc {
-    color: rgba(255,255,255,0.65); font-size: 12px;
-    line-height: 1.4;
-  }
-  .promo-prices {
-    display: flex; gap: 8px; flex-wrap: wrap;
-  }
+  .promo-name { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .promo-desc { color: rgba(255,255,255,0.65); font-size: 12px; line-height: 1.4; }
+  .promo-prices { display: flex; gap: 8px; flex-wrap: wrap; }
   .promo-price {
-    flex: 1;
-    min-width: 120px;
-    padding: 12px 14px;
+    flex: 1; min-width: 120px; padding: 12px 14px;
     border-radius: 12px;
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none;
-    color: #fff;
-    font-size: 14px; font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
+    border: none; color: #fff; font-size: 14px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
     box-shadow: 0 4px 12px rgba(255,100,80,0.35);
-    position: relative;
     text-align: center;
   }
   .promo-price:active { transform: scale(0.97); }
   .promo-price small {
-    display: block;
-    font-size: 10px; font-weight: 500;
-    opacity: 0.9;
-    margin-top: 2px;
+    display: block; font-size: 10px; font-weight: 500;
+    opacity: 0.9; margin-top: 2px;
   }
-  .promo-price.best {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+  .promo-price.prime-btn {
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    box-shadow: 0 4px 12px rgba(0,212,255,0.35);
+  }
+  .promo-price.sunset-btn {
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    color: #000;
+    box-shadow: 0 4px 12px rgba(255,215,0,0.35);
   }
   .promo-note {
-    text-align: center;
-    color: rgba(255,255,255,0.55);
-    font-size: 11px;
-    padding: 16px 20px 30px;
-    line-height: 1.5;
+    text-align: center; color: rgba(255,255,255,0.55);
+    font-size: 11px; padding: 16px 20px 30px; line-height: 1.5;
   }
+
+  /* СТИКЕР-ПАКИ */
+  .sticker-packs {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px; padding: 8px 16px;
+  }
+  .pack-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 14px;
+    text-align: center; cursor: pointer;
+  }
+  .pack-card.locked {
+    opacity: 0.6; position: relative;
+  }
+  .pack-card .pack-emoji { font-size: 32px; margin-bottom: 8px; }
+  .pack-card .pack-name { color: #fff; font-size: 13px; font-weight: 600; }
+  .pack-card .pack-status {
+    font-size: 10px; margin-top: 4px;
+    color: rgba(255,255,255,0.6);
+  }
+  .pack-card.owned { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.1); }
+  .pack-card.prime-pack { border-color: rgba(0,212,255,0.4); }
+  .pack-card.sunset-pack { border-color: rgba(255,215,0,0.4); }
 </style>
 </head>
 <body>
 
 <div class="sunset-photo"></div>
 
+<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -568,13 +589,14 @@
   </div>
 </div>
 
+<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
-    <div class="header-left">
+    <div class="header-left" id="myProfileBtn">
       <div class="my-avatar" id="myAvatarSmall"></div>
       <div>
         <div class="my-name" id="myNameLabel"></div>
-        <div class="my-status">в сети</div>
+        <div class="my-status" id="myStatusLabel">в сети</div>
       </div>
     </div>
     <div class="header-right">
@@ -585,12 +607,10 @@
 
   <div class="content" id="content">
 
+    <!-- ЧАТЫ -->
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
-        <div class="search-input-wrap">
-          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
-          <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
-        </div>
+        <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
         <div class="search-tabs">
           <button class="search-tab active" data-stab="people">👤 Люди</button>
           <button class="search-tab" data-stab="groups">👥 Группы</button>
@@ -600,10 +620,14 @@
       <div id="chatsList"></div>
     </div>
 
+    <!-- ЛЕНТА (посты + истории) -->
     <div class="tab-content" id="tab-feed">
-      <div id="feedContent"></div>
+      <div class="stories-row" id="storiesRow"></div>
+      <div class="section-title" style="padding-top:6px;">📝 Посты</div>
+      <div id="postsList"></div>
     </div>
 
+    <!-- МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="music-search">
         <input type="text" id="musicSearch" placeholder="Поиск музыки...">
@@ -612,25 +636,61 @@
       <div id="tracksList"></div>
     </div>
 
+    <!-- КАНАЛЫ -->
     <div class="tab-content" id="tab-channels">
       <div class="section-title">📢 Каналы о жизни</div>
       <div id="channelsList"></div>
     </div>
 
+    <!-- СТИКЕРЫ -->
+    <div class="tab-content" id="tab-stickers">
+      <div class="section-title">🎨 Пакеты стикеров</div>
+      <div class="sticker-packs" id="stickerPacks"></div>
+    </div>
+
+    <!-- ПРОМО -->
     <div class="tab-content" id="tab-promo">
-      <div class="section-title">💰 Услуги продвижения</div>
+      <div class="section-title">👑 Premium подписки</div>
+
+      <div class="promo-card sunset">
+        <div class="promo-head">
+          <span class="promo-emoji">⭐</span>
+          <div>
+            <div class="promo-name">Sunset Premium</div>
+            <div class="promo-desc">Галочка ✅ · без рекламы · эксклюзивный пак стикеров Sunset · приоритет в поддержке</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="3200">3 200 ₽ / год</button>
+        </div>
+      </div>
+
+      <div class="promo-card prime">
+        <div class="promo-head">
+          <span class="promo-emoji">💎</span>
+          <div>
+            <div class="promo-name">Prime Premium</div>
+            <div class="promo-desc">Всё из Sunset + 1000 постов/мес · эксклюзивный Prime пак стикеров · приоритетный показ · значок 💎</div>
+          </div>
+        </div>
+        <div class="promo-prices">
+          <button class="promo-price prime-btn" data-buy="prime_year" data-price="4000">4 000 ₽ / год</button>
+        </div>
+      </div>
+
+      <div class="section-title">📢 Продвижение</div>
 
       <div class="promo-card">
         <div class="promo-head">
           <span class="promo-emoji">🌍</span>
           <div>
             <div class="promo-name">Продвижение сообщества</div>
-            <div class="promo-desc">В топе поиска + показ в ленте всем</div>
+            <div class="promo-desc">В топе поиска + показ в ленте</div>
           </div>
         </div>
         <div class="promo-prices">
           <button class="promo-price" data-buy="community_month" data-price="400">400 ₽ / мес</button>
-          <button class="promo-price best" data-buy="community_year" data-price="3500">3 500 ₽ / год <small>−27%</small></button>
+          <button class="promo-price" data-buy="community_year" data-price="3500">3 500 ₽ / год</button>
         </div>
       </div>
 
@@ -639,76 +699,36 @@
           <span class="promo-emoji">📢</span>
           <div>
             <div class="promo-name">Продвижение канала</div>
-            <div class="promo-desc">В топе каналов + рекомендации подписчикам</div>
+            <div class="promo-desc">В топе каналов + рекомендации</div>
           </div>
         </div>
         <div class="promo-prices">
           <button class="promo-price" data-buy="channel_month" data-price="400">400 ₽ / мес</button>
-          <button class="promo-price best" data-buy="channel_year" data-price="3500">3 500 ₽ / год <small>−27%</small></button>
+          <button class="promo-price" data-buy="channel_year" data-price="3500">3 500 ₽ / год</button>
         </div>
       </div>
 
       <div class="promo-card">
         <div class="promo-head">
-          <span class="promo-emoji">🥇</span>
+          <span class="promo-emoji">👥</span>
           <div>
-            <div class="promo-name">Топ-1 в поиске</div>
-            <div class="promo-desc">Первая позиция по вашему запросу</div>
+            <div class="promo-name">Продвижение группы</div>
+            <div class="promo-desc">Показ в поиске и рекомендациях</div>
           </div>
         </div>
         <div class="promo-prices">
-          <button class="promo-price" data-buy="top1" data-price="800">800 ₽ / мес</button>
-        </div>
-      </div>
-
-      <div class="promo-card">
-        <div class="promo-head">
-          <span class="promo-emoji">🖼️</span>
-          <div>
-            <div class="promo-name">Баннер в ленте</div>
-            <div class="promo-desc">Ваш баннер видят все пользователи</div>
-          </div>
-        </div>
-        <div class="promo-prices">
-          <button class="promo-price" data-buy="banner_week" data-price="300">300 ₽ / нед</button>
-        </div>
-      </div>
-
-      <div class="promo-card">
-        <div class="promo-head">
-          <span class="promo-emoji">📝</span>
-          <div>
-            <div class="promo-name">Свой канал в ленте</div>
-            <div class="promo-desc">Посты автоматически в ленте всех</div>
-          </div>
-        </div>
-        <div class="promo-prices">
-          <button class="promo-price" data-buy="autopost" data-price="500">500 ₽ / мес</button>
-        </div>
-      </div>
-
-      <div class="section-title">⭐ Premium для себя</div>
-
-      <div class="promo-card premium">
-        <div class="promo-head">
-          <span class="promo-emoji">👑</span>
-          <div>
-            <div class="promo-name">Sunset Premium</div>
-            <div class="promo-desc">Галочка ✅ · без рекламы · эксклюзивные стикеры · 2 ГБ загрузки</div>
-          </div>
-        </div>
-        <div class="promo-prices">
-          <button class="promo-price" data-buy="premium_month" data-price="199">199 ₽ / мес</button>
-          <button class="promo-price best" data-buy="premium_year" data-price="1900">1 900 ₽ / год <small>−20%</small></button>
+          <button class="promo-price" data-buy="group_month" data-price="400">400 ₽ / мес</button>
+          <button class="promo-price" data-buy="group_year" data-price="3500">3 500 ₽ / год</button>
         </div>
       </div>
 
       <div class="promo-note">
-        💳 Оплата: СБП · Карта · Крипта. Возврат в течение 7 дней.
+        💳 Оплата только рублями: СБП · Карта. Возврат в течение 7 дней.
       </div>
     </div>
   </div>
 
+  <!-- ПЛЕЕР -->
   <div class="player-bar" id="playerBar">
     <div class="player-cover" id="playerCover"></div>
     <div class="player-info">
@@ -719,14 +739,17 @@
     <button class="player-btn" id="playerClose">✕</button>
   </div>
 
+  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
     <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
     <button class="nav-btn" data-tab="channels"><span class="nav-icon">📢</span><span>Каналы</span></button>
+    <button class="nav-btn" data-tab="stickers"><span class="nav-icon">🎨</span><span>Стикеры</span></button>
     <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
+  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -735,11 +758,13 @@
         <div class="name" id="chatName"></div>
         <div class="status" id="chatStatus">в сети</div>
       </div>
+      <button class="chat-menu" id="chatMenuBtn">⋯</button>
     </div>
     <div class="invite-bar" id="inviteBar" style="display:none;">
       🔗 Пригласить по ссылке
     </div>
     <div class="chat-body" id="chatBody"></div>
+    <div class="sticker-row" id="stickerRow"></div>
     <div class="chat-input-bar">
       <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
       <button class="chat-send" id="chatSend">➤</button>
@@ -747,35 +772,48 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ПЛЮСИК -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
     <div class="modal-sub">Выбери что хочешь сделать</div>
 
+    <div class="modal-option" data-action="post">
+      <div class="opt-title">📝 Пост</div>
+      <div class="opt-desc">Опубликовать в ленте. Обычные: видят 2%, Prime: до 1000/мес всем</div>
+    </div>
+
+    <div class="modal-option" data-action="story">
+      <div class="opt-title">📸 История</div>
+      <div class="opt-desc">Кружок вверху ленты, 24 часа</div>
+    </div>
+
     <div class="modal-option" data-action="group-open">
       <div class="opt-title">🌍 Открытая группа</div>
-      <div class="opt-desc">Любой может найти и зайти. Общайся со всеми.</div>
+      <div class="opt-desc">Любой может найти и зайти</div>
     </div>
 
     <div class="modal-option" data-action="group-closed">
       <div class="opt-title">🔒 Закрытая группа</div>
-      <div class="opt-desc">Только по ссылке-приглашению.</div>
+      <div class="opt-desc">Только по ссылке-приглашению</div>
     </div>
 
     <div class="modal-option" data-action="channel">
       <div class="opt-title">📢 Канал</div>
-      <div class="opt-desc">Ты публикуешь посты о жизни, подписчики читают.</div>
+      <div class="opt-desc">Публикуешь посты о жизни</div>
     </div>
 
     <button class="modal-close" data-close="createModal">Отмена</button>
   </div>
 </div>
 
+<!-- МОДАЛКА ФОРМЫ -->
 <div class="modal" id="formModal">
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новая группа</div>
     <div class="modal-sub" id="formSub">Опиши коротко</div>
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40">
+    <textarea class="modal-textarea" id="formText" placeholder="Текст поста / истории..." style="display:none;"></textarea>
     <div id="linkResult" style="display:none;">
       <div style="font-size:12px;opacity:0.7;margin-bottom:8px;">Ссылка для приглашения:</div>
       <div class="link-box" id="linkBox"></div>
@@ -785,65 +823,88 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ПРОФИЛЯ -->
+<div class="modal" id="profileModal">
+  <div class="modal-card">
+    <div class="modal-title" id="profileTitle">Профиль</div>
+    <div class="modal-sub" id="profileStatus"></div>
+    <div id="profilePosts"></div>
+    <button class="modal-close" data-close="profileModal">Закрыть</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА МЕНЮ ЧАТА -->
+<div class="modal" id="chatMenuModal">
+  <div class="modal-card">
+    <div class="modal-title">Действия</div>
+    <div class="modal-option" id="clearChatBtn">
+      <div class="opt-title">🗑️ Удалить переписку</div>
+      <div class="opt-desc">Удалить все сообщения из этого чата</div>
+    </div>
+    <div class="modal-option" id="deleteChatBtn">
+      <div class="opt-title">❌ Удалить чат</div>
+      <div class="opt-desc">Полное удаление чата (для групп/каналов — если ты владелец)</div>
+    </div>
+    <button class="modal-close" data-close="chatMenuModal">Отмена</button>
+  </div>
+</div>
+
 <audio id="audioPlayer"></audio>
 
 <script>
-/* ============================================================
-   КЭШ — 1 час
-   ============================================================ */
-function cacheGet(key, maxAgeMs) {
-  try {
-    const raw = localStorage.getItem('cache_' + key);
-    if (!raw) return null;
-    const obj = JSON.parse(raw);
-    const age = maxAgeMs || 3600000;
-    if (Date.now() - obj.timestamp > age) return null;
-    return obj.data;
+/* ============ КЭШ 1 ЧАС ============ */
+function cacheGet(k, a) {
+  try { const r = localStorage.getItem('cache_' + k); if (!r) return null;
+    const o = JSON.parse(r); if (Date.now() - o.timestamp > (a || 3600000)) return null;
+    return o.data;
   } catch(e) { return null; }
 }
-function cacheSet(key, data) {
-  try {
-    localStorage.setItem('cache_' + key, JSON.stringify({ timestamp: Date.now(), data }));
-  } catch(e) {}
+function cacheSet(k, d) {
+  try { localStorage.setItem('cache_' + k, JSON.stringify({ timestamp: Date.now(), data: d })); } catch(e) {}
 }
 
-/* ============================================================
-   ХРАНИЛИЩЕ
-   ============================================================ */
-const STORAGE_KEY = 'sunset_user_v8';
-const CHATS_KEY = 'sunset_chats_v8';
-const GROUPS_KEY = 'sunset_groups_v8';
-const CHANNELS_KEY = 'sunset_channels_v8';
+/* ============ ХРАНИЛИЩЕ ============ */
+const STORAGE_KEY = 'sunset_user_v9';
+const CHATS_KEY = 'sunset_chats_v9';
+const GROUPS_KEY = 'sunset_groups_v9';
+const CHANNELS_KEY = 'sunset_channels_v9';
+const POSTS_KEY = 'sunset_posts_v9';
+const STORIES_KEY = 'sunset_stories_v9';
+
 let currentUser = null;
 let chats = {};
 let groups = [];
 let channels = [];
+let posts = [];
+let userStories = [];
 let activeChat = null;
+let currentSearchTab = 'people';
+let pendingAction = null;
 
-/* ============================================================
-   ЛЮДИ
-   ============================================================ */
+/* ============ ПАКЕТЫ СТИКЕРОВ ============ */
+const STICKER_PACKS = {
+  free_smileys: { name: 'Смайлики', emoji: '😀', emojis: ['😀','😂','🥰','😎','🤔','😴','🤗','😭','😡','🤯','🥳','😇'], price: 0 },
+  free_animals: { name: 'Животные', emoji: '🐶', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮'], price: 0 },
+  free_food: { name: 'Еда', emoji: '🍕', emojis: ['🍕','🍔','🍟','🌭','🍿','🍩','🍪','🍰','🍫','🍬','🍎','🍇'], price: 0 },
+  free_emoji: { name: 'Эмоции', emoji: '❤️', emojis: ['❤️','💔','💕','💖','💗','😍','😘','🥺','🙈','💜','🧡','💚'], price: 0 },
+  free_symbols: { name: 'Знаки', emoji: '⭐', emojis: ['⭐','🌟','✨','⚡','💫','🔥','❄️','💧','🌈','☀️','🌙','☁️'], price: 0 },
+  free_actions: { name: 'Действия', emoji: '👍', emojis: ['👍','👎','👏','🙏','💪','🤝','✌️','👌','🤙','🖐️','👋','✋'], price: 0 },
+  sunset_pack: { name: 'Sunset Exclusive', emoji: '⭐', emojis: ['🌅','🌇','🌄','🎇','🎆','✨','💫','⭐','🌟','🪐','🌠','🔮'], price: 0, requirePremium: 'sunset' },
+  prime_pack: { name: 'Prime Diamond', emoji: '💎', emojis: ['💎','👑','🏆','🥇','🎖️','🏅','⚜️','🔱','💠','🔷','💠','🆒'], price: 0, requirePremium: 'prime' }
+};
+
+/* ============ ЛЮДИ ============ */
 const PEOPLE_NAMES = [
-  ['alex', 'Алекс', '#ff6b6b', 'A'],
-  ['maria', 'Мария', '#a06cd5', 'M'],
-  ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],
-  ['anna', 'Анна', '#ff5e8c', 'А'],
-  ['ivan', 'Иван', '#4ecdc4', 'И'],
-  ['elena', 'Елена', '#f5a623', 'Е'],
-  ['sergey', 'Сергей', '#7b68ee', 'С'],
-  ['olga', 'Ольга', '#e91e63', 'О'],
-  ['nikita', 'Никита', '#26a69a', 'Н'],
-  ['sophia', 'София', '#ba68c8', 'С'],
-  ['pavel', 'Павел', '#5c6bc0', 'П'],
-  ['victoria', 'Виктория', '#ff7043', 'В'],
-  ['andrey', 'Андрей', '#66bb6a', 'А'],
-  ['irina', 'Ирина', '#ab47bc', 'И'],
-  ['maxim', 'Максим', '#29b6f6', 'М'],
-  ['kate', 'Катя', '#ec407a', 'К'],
-  ['roman', 'Роман', '#8d6e63', 'Р'],
-  ['liza', 'Лиза', '#26c6da', 'Л'],
-  ['artem', 'Артём', '#ffa726', 'А'],
-  ['yana', 'Яна', '#ef5350', 'Я']
+  ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
+  ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
+  ['ivan', 'Иван', '#4ecdc4', 'И'],['elena', 'Елена', '#f5a623', 'Е'],
+  ['sergey', 'Сергей', '#7b68ee', 'С'],['olga', 'Ольга', '#e91e63', 'О'],
+  ['nikita', 'Никита', '#26a69a', 'Н'],['sophia', 'София', '#ba68c8', 'С'],
+  ['pavel', 'Павел', '#5c6bc0', 'П'],['victoria', 'Виктория', '#ff7043', 'В'],
+  ['andrey', 'Андрей', '#66bb6a', 'А'],['irina', 'Ирина', '#ab47bc', 'И'],
+  ['maxim', 'Максим', '#29b6f6', 'М'],['kate', 'Катя', '#ec407a', 'К'],
+  ['roman', 'Роман', '#8d6e63', 'Р'],['liza', 'Лиза', '#26c6da', 'Л'],
+  ['artem', 'Артём', '#ffa726', 'А'],['yana', 'Яна', '#ef5350', 'Я']
 ];
 const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person' }));
 
@@ -851,122 +912,78 @@ const COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
   { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры и геймеры', type: 'community' },
   { id: 'comm_tech', name: 'Технологии', color: '#06b6d4', emoji: '💻', desc: 'IT и гаджеты', type: 'community' },
-  { id: 'comm_sport', name: 'Спорт и ЗОЖ', color: '#f59e0b', emoji: '💪', desc: 'Тренировки и здоровье', type: 'community' },
+  { id: 'comm_sport', name: 'Спорт и ЗОЖ', color: '#f59e0b', emoji: '💪', desc: 'Тренировки', type: 'community' },
   { id: 'comm_art', name: 'Искусство', color: '#ec4899', emoji: '🎨', desc: 'Творчество', type: 'community' },
-  { id: 'comm_memes', name: 'Мемы 24/7', color: '#ef4444', emoji: '😂', desc: 'Юмор и мемы', type: 'community' }
+  { id: 'comm_memes', name: 'Мемы 24/7', color: '#ef4444', emoji: '😂', desc: 'Юмор', type: 'community' }
 ];
 
-/* ============================================================
-   БОТЫ
-   ============================================================ */
+/* ============ БОТЫ ============ */
 const BOT_TEMPLATES = {
-  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют', 'Добрый день', 'Доброе утро', 'Как ты'],
-  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Ничего себе!', 'Кайф!', 'Норм!', 'Топ!'],
-  agree: ['Согласен', 'Точно', 'Абсолютно', 'Именно так', 'Вот-вот', 'Однозначно', 'Да, это так'],
-  emoji_love: ['❤️', '💕', '😘', '🤗', '💖', '💜', '💗', '🥰', '🌸'],
-  emoji_fun: ['😄', '😁', '🤣', '😊', '😜', '😂', '😎', '🤪', '🤩'],
-  emoji_ok: ['👌', '👍', '✌️', '💪', '👏', '✅', '🔥', '⚡'],
-  short: ['Угу', 'Ага', 'Ок', 'Понял', 'Ясно', 'Хорошо', 'Ладно', 'Норм']
+  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют'],
+  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Норм!', 'Топ!'],
+  agree: ['Согласен', 'Точно', 'Именно так', 'Однозначно', 'Да, это так'],
+  emoji_fun: ['😄','😁','🤣','😊','😜','😂','😎','🤩'],
+  emoji_ok: ['👌','👍','✌️','💪','👏','✅','🔥','⚡'],
+  short: ['Угу','Ага','Ок','Понял','Ясно','Хорошо','Ладно','Норм']
 };
-
-function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function generateReply(userText) {
-  const lower = userText.toLowerCase();
-  if (/привет|здравств|хай|hi|hello|ку/i.test(lower)) {
-    return rnd(['Привет!', 'Приветик!', 'Хай!', 'Здравствуй!', 'Ку!', 'Салют!']) + ' ' + rnd(BOT_TEMPLATES.emoji_fun);
-  }
-  if (/как дела|как ты|как жизнь|как сам/i.test(lower)) {
-    return rnd(['Всё отлично!', 'Хорошо!', 'Отлично!', 'Норм!']) + ' А у тебя как?';
-  }
-  if (/\?$/.test(userText.trim())) {
-    return rnd(['Хороший вопрос', 'Интересно', 'Дай подумать', 'Хм']) + ', ' + rnd(['а ты что думаешь?', 'расскажи подробнее', 'интересно послушать']);
-  }
-  if (/люблю|скучал|скучаю/i.test(lower)) return rnd(BOT_TEMPLATES.emoji_love);
-  if (/устал|плохо|груст/i.test(lower)) return 'Держись 💪 Всё будет хорошо!';
+function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function generateReply(t) {
+  const l = t.toLowerCase();
+  if (/привет|здравств|хай|hi|hello|ку/i.test(l)) return rnd(['Привет!','Приветик!','Хай!','Ку!']) + ' ' + rnd(BOT_TEMPLATES.emoji_fun);
+  if (/как дела|как ты|как жизнь|как сам/i.test(l)) return rnd(['Всё отлично!','Хорошо!','Отлично!']) + ' А у тебя как?';
+  if (/\?$/.test(t.trim())) return rnd(['Хороший вопрос','Интересно','Хм']) + ', а ты что думаешь?';
   const all = [...BOT_TEMPLATES.reaction, ...BOT_TEMPLATES.agree, ...BOT_TEMPLATES.short, ...BOT_TEMPLATES.emoji_ok];
   return rnd(all);
 }
-
 function botJoinCheck(link, groupName) {
   setTimeout(() => {
-    const botNames = ['Алекс', 'Мария', 'Дмитрий', 'Иван', 'София', 'Никита'];
-    const bot = rnd(botNames);
-    const msg = {
-      text: '🔗 ' + bot + ' присоединился по вашей ссылке в "' + groupName + '"',
-      time: nowTime(),
-      from: 'system'
-    };
+    const bot = rnd(['Алекс','Мария','Дмитрий','Иван','София']);
     if (activeChat && activeChat.name === groupName) {
-      addMsgToDOM(msg);
+      addMsgToDOM({ text: '🔗 ' + bot + ' присоединился по ссылке', time: nowTime(), from: 'system' });
       chatBody.scrollTop = chatBody.scrollHeight;
     }
-  }, 3000 + Math.random() * 4000);
+  }, 3000);
 }
 
-/* ============================================================
-   МУЗЫКА
-   ============================================================ */
+/* ============ МУЗЫКА ============ */
 const SONGS = [
-  ['Imagine Dragons', 'Believer'], ['Ed Sheeran', 'Shape of You'], ['The Weeknd', 'Blinding Lights'],
-  ['Dua Lipa', 'Levitating'], ['Billie Eilish', 'Bad Guy'], ['Post Malone', 'Circles'],
-  ['Harry Styles', 'As It Was'], ['The Kid LAROI', 'Stay'], ['Glass Animals', 'Heat Waves'],
-  ['Lil Nas X', 'Montero'], ['Olivia Rodrigo', 'Drivers License'], ['Adele', 'Easy On Me'],
-  ['Coldplay', 'Yellow'], ['Coldplay', 'Viva La Vida'], ['Maroon 5', 'Sugar'],
-  ['The Chainsmokers', 'Closer'], ['Avicii', 'Wake Me Up'], ['Alan Walker', 'Faded'],
-  ['Marshmello', 'Happier'], ['DJ Snake', 'Let Me Love You'], ['Ed Sheeran', 'Perfect'],
-  ['Shawn Mendes', 'Senorita'], ['Camila Cabello', 'Havana'], ['Ariana Grande', '7 Rings'],
-  ['Katy Perry', 'Roar'], ['Rihanna', 'Diamonds'], ['Beyoncé', 'Halo'],
-  ['Lady Gaga', 'Bad Romance'], ['Bruno Mars', 'Uptown Funk'], ['Justin Bieber', 'Sorry'],
-  ['Taylor Swift', 'Shake It Off'], ['Taylor Swift', 'Anti-Hero'], ['Dua Lipa', "Don't Start Now"],
-  ['Doja Cat', 'Say So'], ['Sia', 'Chandelier'], ['Sia', 'Snowman'],
-  ['Ava Max', 'Sweet But Psycho'], ['Meduza', 'Piece of Your Heart'], ['Tones and I', 'Dance Monkey'],
-  ['Harry Styles', 'Watermelon Sugar'], ['Billie Eilish', 'Lovely'], ['Olivia Rodrigo', 'Good 4 U'],
-  ['Imagine Dragons', 'Thunder'], ['Imagine Dragons', 'Radioactive'], ['OneRepublic', 'Counting Stars'],
-  ['Passenger', 'Let Her Go'], ['Sam Smith', 'Stay With Me'], ['Lewis Capaldi', 'Someone You Loved'],
-  ['Adele', 'Hello'], ['Adele', 'Rolling in the Deep'], ['Lana Del Rey', 'Summertime Sadness'],
-  ['Hozier', 'Take Me to Church'], ['Tom Odell', 'Another Love'],
-  ['Linkin Park', 'Numb'], ['Linkin Park', 'In the End'], ['Green Day', 'Boulevard of Broken Dreams'],
-  ['Red Hot Chili Peppers', 'Californication'], ['Nirvana', 'Smells Like Teen Spirit'],
-  ['Queen', 'Bohemian Rhapsody'], ['AC/DC', 'Thunderstruck'], ['Muse', 'Supermassive Black Hole'],
-  ['Arctic Monkeys', 'Do I Wanna Know?']
+  ['Imagine Dragons', 'Believer'],['Ed Sheeran', 'Shape of You'],['The Weeknd', 'Blinding Lights'],
+  ['Dua Lipa', 'Levitating'],['Billie Eilish', 'Bad Guy'],['Post Malone', 'Circles'],
+  ['Harry Styles', 'As It Was'],['The Kid LAROI', 'Stay'],['Glass Animals', 'Heat Waves'],
+  ['Lil Nas X', 'Montero'],['Olivia Rodrigo', 'Drivers License'],['Adele', 'Easy On Me'],
+  ['Coldplay', 'Yellow'],['Coldplay', 'Viva La Vida'],['Maroon 5', 'Sugar'],
+  ['The Chainsmokers', 'Closer'],['Avicii', 'Wake Me Up'],['Alan Walker', 'Faded'],
+  ['Marshmello', 'Happier'],['DJ Snake', 'Let Me Love You'],['Ed Sheeran', 'Perfect'],
+  ['Shawn Mendes', 'Senorita'],['Camila Cabello', 'Havana'],['Ariana Grande', '7 Rings'],
+  ['Katy Perry', 'Roar'],['Rihanna', 'Diamonds'],['Beyoncé', 'Halo'],
+  ['Lady Gaga', 'Bad Romance'],['Bruno Mars', 'Uptown Funk'],['Justin Bieber', 'Sorry'],
+  ['Taylor Swift', 'Shake It Off'],['Taylor Swift', 'Anti-Hero'],['Dua Lipa', "Don't Start Now"],
+  ['Doja Cat', 'Say So'],['Sia', 'Chandelier'],['Sia', 'Snowman'],
+  ['Ava Max', 'Sweet But Psycho'],['Tones and I', 'Dance Monkey'],
+  ['Harry Styles', 'Watermelon Sugar'],['Billie Eilish', 'Lovely'],['Olivia Rodrigo', 'Good 4 U'],
+  ['Imagine Dragons', 'Thunder'],['Imagine Dragons', 'Radioactive'],['OneRepublic', 'Counting Stars'],
+  ['Passenger', 'Let Her Go'],['Sam Smith', 'Stay With Me'],['Lewis Capaldi', 'Someone You Loved'],
+  ['Adele', 'Hello'],['Adele', 'Rolling in the Deep'],['Lana Del Rey', 'Summertime Sadness'],
+  ['Hozier', 'Take Me to Church'],['Tom Odell', 'Another Love'],
+  ['Linkin Park', 'Numb'],['Linkin Park', 'In the End'],
+  ['Nirvana', 'Smells Like Teen Spirit'],['Queen', 'Bohemian Rhapsody'],
+  ['AC/DC', 'Thunderstruck'],['Arctic Monkeys', 'Do I Wanna Know?']
 ];
-
 let currentTrack = null;
 
-/* ============================================================
-   МЕМЫ
-   ============================================================ */
-const MEMES = [
-  'https://i.imgflip.com/1bij.jpg', 'https://i.imgflip.com/1bip.jpg', 'https://i.imgflip.com/1bgw.jpg',
-  'https://i.imgflip.com/1bhk.jpg', 'https://i.imgflip.com/1bhm.jpg', 'https://i.imgflip.com/1bhf.jpg',
-  'https://i.imgflip.com/1bik.jpg', 'https://i.imgflip.com/1bil.jpg', 'https://i.imgflip.com/1biq.jpg',
-  'https://i.imgflip.com/1bit.jpg', 'https://i.imgflip.com/1biy.jpg', 'https://i.imgflip.com/1biz.jpg',
-  'https://i.imgflip.com/26am.jpg', 'https://i.imgflip.com/9ehk.jpg', 'https://i.imgflip.com/1otk96.jpg',
-  'https://i.imgflip.com/24y43o.jpg', 'https://i.imgflip.com/1ur9b0.jpg', 'https://i.imgflip.com/261o3j.jpg',
-  'https://i.imgflip.com/1e7ql7.jpg', 'https://i.imgflip.com/1ihzfe.jpg', 'https://i.imgflip.com/20cylt.jpg',
-  'https://i.imgflip.com/1jwhww.jpg', 'https://i.imgflip.com/1yx9e5.jpg', 'https://i.imgflip.com/20y95f.jpg'
+/* ============ ИСТОРИИ (шаблоны) ============ */
+const STORY_TEMPLATES = [
+  { author: 'Мария', color: '#a06cd5', text: 'Погуляла в парке — идеальный закат 🌅' },
+  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой сайт! Ура 🎉' },
+  { author: 'Анна', color: '#ff5e8c', text: 'Сделала пасту карбонару 🍝' },
+  { author: 'Иван', color: '#4ecdc4', text: 'Пробежал 10 км 💪' },
+  { author: 'София', color: '#ba68c8', text: 'Читаю Мастера и Маргариту 📖' },
+  { author: 'Никита', color: '#26a69a', text: 'Купил винил 🎵' },
+  { author: 'Елена', color: '#f5a623', text: 'Рисую акварелью 🎨' },
+  { author: 'Сергей', color: '#7b68ee', text: 'Собрал новый ПК 💻' }
 ];
 
-/* ============================================================
-   ИСТОРИИ
-   ============================================================ */
-const STORIES = [
-  { author: 'Мария', color: '#a06cd5', text: 'Сегодня ходила в парк с собакой. Погода идеальная. Нашла уютное кафе рядом.' },
-  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой первый сайт! Три месяца изучения — и вот оно работает. Не бойтесь начинать.' },
-  { author: 'Анна', color: '#ff5e8c', text: 'Приготовила пасту карбонара по оригинальному рецепту. Получилось лучше чем в ресторане!' },
-  { author: 'Иван', color: '#4ecdc4', text: 'Вчера пробежал 10 км впервые за год. Начинайте с малого — 5 минут в день.' },
-  { author: 'София', color: '#ba68c8', text: 'Перечитала "Мастера и Маргариту". Книги меняются с тобой.' },
-  { author: 'Никита', color: '#26a69a', text: 'Купил виниловый проигрыватель. Звук совершенно другой, живой.' },
-  { author: 'Елена', color: '#f5a623', text: 'Начала рисовать акварелью. Пока криво, но так расслабляет!' },
-  { author: 'Сергей', color: '#7b68ee', text: 'Собрал компьютер мечты. Следующая цель — домашний сервер.' },
-  { author: 'Ольга', color: '#e91e63', text: 'Смотрела закат на набережной 40 минут без телефона.' },
-  { author: 'Максим', color: '#29b6f6', text: 'Выучил 500 английских слов за месяц. Метод: 20 карточек утром, 20 вечером.' }
-];
-
-/* ============================================================
-   РЕГИСТРАЦИЯ
-   ============================================================ */
+/* ============ РЕГИСТРАЦИЯ ============ */
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 const avatarPreview = document.getElementById('avatarPreview');
@@ -974,10 +991,10 @@ const regName = document.getElementById('regName');
 const regBtn = document.getElementById('regBtn');
 
 function updateAvatar() {
-  const name = regName.value.trim();
-  avatarPreview.textContent = name ? name.charAt(0).toUpperCase() : '?';
+  const n = regName.value.trim();
+  avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
   avatarPreview.style.background = chosenColor;
-  regBtn.style.opacity = name.length >= 2 ? '1' : '0.6';
+  regBtn.style.opacity = n.length >= 2 ? '1' : '0.6';
 }
 avatarPreview.addEventListener('click', () => {
   let i = AVATAR_COLORS.indexOf(chosenColor);
@@ -987,137 +1004,272 @@ avatarPreview.addEventListener('click', () => {
 });
 regName.addEventListener('input', updateAvatar);
 regName.addEventListener('change', updateAvatar);
-regName.addEventListener('keyup', updateAvatar);
 regName.addEventListener('paste', () => setTimeout(updateAvatar, 50));
 setInterval(updateAvatar, 300);
 avatarPreview.style.background = chosenColor;
-updateAvatar();
 
 regBtn.addEventListener('click', () => {
-  const name = regName.value.trim();
-  if (name.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
-  currentUser = { name, color: chosenColor, emoji: name.charAt(0).toUpperCase() };
+  const n = regName.value.trim();
+  if (n.length < 2) { alert('Имя от 2 символов'); return; }
+  currentUser = { name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), premium: null };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
   startApp();
 });
 
+/* ============ ЗАПУСК ============ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
+
+  // Загружаем
   chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
   groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
   channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
+  posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
+  userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+
+  updatePremiumBadge();
   renderChatsList('people');
-  loadFeed();
+  renderStories();
+  renderPosts();
   loadMusicList();
   renderChannelsList();
+  renderStickerPacks();
+  renderStickerRow();
   scheduleHourlyRefresh();
+}
+
+function updatePremiumBadge() {
+  const av = document.getElementById('myAvatarSmall');
+  const old = av.querySelector('.premium-badge');
+  if (old) old.remove();
+  const st = document.getElementById('myStatusLabel');
+  if (currentUser.premium === 'prime') {
+    const b = document.createElement('div');
+    b.className = 'premium-badge prime';
+    b.textContent = '💎';
+    av.appendChild(b);
+    st.textContent = '💎 Prime Premium';
+  } else if (currentUser.premium === 'sunset') {
+    const b = document.createElement('div');
+    b.className = 'premium-badge';
+    b.textContent = '⭐';
+    av.appendChild(b);
+    st.textContent = '⭐ Sunset Premium';
+  } else {
+    st.textContent = 'в сети';
+  }
 }
 
 const savedUser = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
 if (savedUser) { currentUser = savedUser; setTimeout(startApp, 200); }
 
-/* ============================================================
-   НАВИГАЦИЯ
-   ============================================================ */
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tab = btn.dataset.tab;
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
+/* ============ НАВИГАЦИЯ ============ */
+document.querySelectorAll('.nav-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    const tab = b.dataset.tab;
+    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
     document.getElementById('tab-' + tab).classList.add('active');
     document.getElementById('content').scrollTop = 0;
   });
 });
 
-/* ============================================================
-   ТАБЫ ПОИСКА
-   ============================================================ */
-let currentSearchTab = 'people';
-document.querySelectorAll('.search-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentSearchTab = tab.dataset.stab;
-    const q = document.getElementById('mainSearchInput').value.trim().toLowerCase();
-    renderChatsList(currentSearchTab, q);
+/* ============ ТАБЫ ПОИСКА ============ */
+document.querySelectorAll('.search-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentSearchTab = t.dataset.stab;
+    renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
   });
 });
-
 document.getElementById('mainSearchInput').addEventListener('input', e => {
-  const q = e.target.value.trim().toLowerCase();
-  renderChatsList(currentSearchTab, q);
+  renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
-/* ============================================================
-   СПИСОК ЧАТОВ
-   ============================================================ */
-function renderChatsList(tab, query) {
+/* ============ СПИСОК ЧАТОВ ============ */
+function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   list.innerHTML = '';
-
   let items = [];
-
-  if (tab === 'people') {
-    items = PEOPLE.map(p => ({ ...p, type: 'person' }));
-  } else if (tab === 'groups') {
+  if (tab === 'people') items = PEOPLE.map(p => ({ ...p, type: 'person' }));
+  else if (tab === 'groups') {
     items = groups.map(g => ({ ...g, type: 'group' }));
     if (!items.length) {
-      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>У вас пока нет групп.<br>Нажмите <b>+</b> справа вверху чтобы создать.</p></div>';
+      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>Нет групп. Нажмите <b>+</b> сверху.</p></div>';
       return;
     }
-  } else if (tab === 'communities') {
-    items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
-  }
-
-  if (query) items = items.filter(i => i.name.toLowerCase().includes(query));
-
+  } else if (tab === 'communities') items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
+  if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
   if (!items.length) {
-    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
+    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Не найдено</p></div>';
     return;
   }
-
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'card-item';
-
     let badge = '';
-    if (item.type === 'group') {
-      badge = item.closed ? '<span class="badge closed">🔒 Закрытая</span>' : '<span class="badge open">🌍 Открытая</span>';
-    } else if (item.type === 'community') {
-      badge = '<span class="badge open">🌍 Сообщество</span>';
-    }
-
+    if (item.type === 'group') badge = item.closed ? '<span class="badge closed">🔒</span>' : '<span class="badge open">🌍</span>';
+    else if (item.type === 'community') badge = '<span class="badge open">🌍</span>';
     const lastMsg = chats[item.id] && chats[item.id].length ? chats[item.id][chats[item.id].length-1].text : (item.desc || 'Написать');
-
-    let avatarClass = 'card-avatar';
-    if (item.type === 'group') avatarClass += ' group';
-    if (item.type === 'channel') avatarClass += ' channel';
-
-    div.innerHTML =
-      '<div class="' + avatarClass + '" style="background:' + item.color + '">' + item.emoji +
-        (item.type === 'person' ? '<div class="online-dot"></div>' : '') +
-      '</div>' +
-      '<div class="card-info">' +
-        '<div class="card-name">' + escapeHtml(item.name) + badge + '</div>' +
-        '<div class="card-sub">' + escapeHtml(lastMsg) + '</div>' +
-      '</div>';
+    let cls = 'card-avatar';
+    if (item.type === 'group') cls += ' group';
+    div.innerHTML = '<div class="' + cls + '" style="background:' + item.color + '">' + item.emoji + '</div>' +
+      '<div class="card-info"><div class="card-name">' + esc(item.name) + badge + '</div>' +
+      '<div class="card-sub">' + esc(lastMsg) + '</div></div>';
     div.addEventListener('click', () => openChat(item));
     list.appendChild(div);
   });
 }
 
-function escapeHtml(s) {
+function esc(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-/* ============================================================
-   ЧАТ
-   ============================================================ */
+/* ============ СТОРИС ============ */
+function renderStories() {
+  const row = document.getElementById('storiesRow');
+  row.innerHTML = '';
+
+  // Моя история (добавить)
+  const mine = document.createElement('div');
+  mine.className = 'story-circle';
+  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div>' +
+    '<div class="story-label">Моя история</div>';
+  mine.addEventListener('click', () => {
+    pendingAction = 'story';
+    document.getElementById('formTitle').textContent = '📸 Новая история';
+    document.getElementById('formSub').textContent = 'Текст истории (24ч)';
+    document.getElementById('formName').style.display = 'none';
+    document.getElementById('formText').style.display = 'block';
+    document.getElementById('formText').value = '';
+    document.getElementById('linkResult').style.display = 'none';
+    document.getElementById('formModal').classList.add('show');
+  });
+  row.appendChild(mine);
+
+  // Мои истории
+  userStories.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'story-circle';
+    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.emoji + '</div></div>' +
+      '<div class="story-label">' + esc(s.author) + '</div>';
+    row.appendChild(d);
+  });
+
+  // Истории других
+  STORY_TEMPLATES.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'story-circle';
+    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.author.charAt(0) + '</div></div>' +
+      '<div class="story-label">' + esc(s.author) + '</div>';
+    d.addEventListener('click', () => alert('📸 История от ' + s.author + '\n\n' + s.text));
+    row.appendChild(d);
+  });
+}
+
+/* ============ ПОСТЫ ============ */
+function renderPosts() {
+  const el = document.getElementById('postsList');
+  el.innerHTML = '';
+
+  // Мои посты
+  posts.forEach(p => {
+    el.appendChild(buildPostEl(p, false));
+  });
+
+  // Посты других (только некоторые видны)
+  const seed = Math.floor(Date.now() / 3600000);
+  const extra = [
+    { id: 'p1_' + seed, author: 'Мария', color: '#a06cd5', text: 'Закат сегодня был невероятный 🌅 Кто видел?', time: '2 ч', likes: 12, reposts: 3, comments: [] },
+    { id: 'p2_' + seed, author: 'Дмитрий', color: '#4a90e2', text: 'Начал учить React Native. Кто-нибудь делал на нём приложение?', time: '3 ч', likes: 8, reposts: 1, comments: [] },
+    { id: 'p3_' + seed, author: 'Анна', color: '#ff5e8c', text: 'Сделала тако 🌮 Пальчики оближешь!', time: '5 ч', likes: 23, reposts: 5, comments: [] }
+  ];
+  extra.forEach(p => el.appendChild(buildPostEl(p, false, true)));
+}
+
+function buildPostEl(p, isMine, isOther) {
+  const div = document.createElement('div');
+  div.className = 'post';
+  const liked = p.likedByMe;
+  const reposted = p.repostedByMe;
+  div.innerHTML =
+    '<div class="post-header">' +
+      '<div class="post-avatar" style="background:' + p.color + '">' + p.author.charAt(0) + '</div>' +
+      '<div class="post-meta"><div class="post-author">' + esc(p.author) + (isMine ? ' <span style="font-size:10px;opacity:0.6">— ваш пост</span>' : '') + '</div>' +
+      '<div class="post-time">' + p.time + '</div></div>' +
+    '</div>' +
+    '<div class="post-text">' + esc(p.text) + '</div>' +
+    '<div class="post-actions">' +
+      '<button class="post-action like-btn ' + (liked ? 'liked' : '') + '">' + (liked ? '❤️' : '🤍') + ' ' + (p.likes || 0) + '</button>' +
+      '<button class="post-action repost-btn ' + (reposted ? 'reposted' : '') + '">🔄 ' + (p.reposts || 0) + '</button>' +
+      '<button class="post-action comment-btn">💬 Комментировать</button>' +
+    '</div>' +
+    '<div class="post-comments" style="display:none">' +
+      (p.comments || []).map(c => '<div class="comment"><span class="comment-author">' + esc(c.author) + ':</span> ' + esc(c.text) + '</div>').join('') +
+      '<div class="comment-input-row">' +
+        '<input type="text" class="comment-input" placeholder="Комментарий...">' +
+        '<button class="comment-send">➤</button>' +
+      '</div>' +
+    '</div>';
+
+  const likeBtn = div.querySelector('.like-btn');
+  const repostBtn = div.querySelector('.repost-btn');
+  const commentBtn = div.querySelector('.comment-btn');
+  const commentsBlock = div.querySelector('.post-comments');
+
+  likeBtn.addEventListener('click', () => {
+    if (liked) { p.likes--; p.likedByMe = false; likeBtn.classList.remove('liked'); likeBtn.innerHTML = '🤍 ' + p.likes; }
+    else { p.likes = (p.likes || 0) + 1; p.likedByMe = true; likeBtn.classList.add('liked'); likeBtn.innerHTML = '❤️ ' + p.likes; }
+    savePostsIfMine(p);
+  });
+
+  repostBtn.addEventListener('click', () => {
+    if (reposted) { p.reposts--; p.repostedByMe = false; repostBtn.classList.remove('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
+    else { p.reposts = (p.reposts || 0) + 1; p.repostedByMe = true; repostBtn.classList.add('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
+    savePostsIfMine(p);
+  });
+
+  commentBtn.addEventListener('click', () => {
+    commentsBlock.style.display = commentsBlock.style.display === 'none' ? 'block' : 'none';
+  });
+
+  const input = div.querySelector('.comment-input');
+  const send = div.querySelector('.comment-send');
+  const sendComment = () => {
+    const t = input.value.trim();
+    if (!t) return;
+    if (!p.comments) p.comments = [];
+    p.comments.push({ author: currentUser.name, text: t });
+    input.value = '';
+    commentsBlock.innerHTML = (p.comments || []).map(c => '<div class="comment"><span class="comment-author">' + esc(c.author) + ':</span> ' + esc(c.text) + '</div>').join('') +
+      '<div class="comment-input-row">' +
+        '<input type="text" class="comment-input" placeholder="Комментарий...">' +
+        '<button class="comment-send">➤</button>' +
+      '</div>';
+    // Перепривязываем
+    const ni = commentsBlock.querySelector('.comment-input');
+    const ns = commentsBlock.querySelector('.comment-send');
+    ns.addEventListener('click', () => { const t2 = ni.value.trim(); if (!t2) return; p.comments.push({author: currentUser.name, text: t2}); ni.value=''; renderPosts(); });
+    savePostsIfMine(p);
+  };
+  send.addEventListener('click', sendComment);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendComment(); });
+
+  return div;
+}
+
+function savePostsIfMine(p) {
+  const idx = posts.findIndex(x => x.id === p.id);
+  if (idx !== -1) { posts[idx] = p; localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
+}
+
+/* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
@@ -1131,24 +1283,19 @@ function openChat(item) {
   av.style.background = item.color;
   av.className = 'card-avatar';
   if (item.type === 'group') av.classList.add('group');
-  if (item.type === 'channel') av.classList.add('channel');
 
-  const inviteBar = document.getElementById('inviteBar');
+  const inv = document.getElementById('inviteBar');
   if (item.type === 'group' && item.closed && item.link) {
-    inviteBar.style.display = 'flex';
-    inviteBar.onclick = () => {
-      if (navigator.clipboard) navigator.clipboard.writeText(item.link);
-      alert('Ссылка скопирована: ' + item.link);
-    };
-  } else {
-    inviteBar.style.display = 'none';
-  }
+    inv.style.display = 'flex';
+    inv.onclick = () => { if (navigator.clipboard) navigator.clipboard.writeText(item.link); alert('Ссылка скопирована:\n' + item.link); };
+  } else inv.style.display = 'none';
 
   document.getElementById('chatStatus').textContent =
-    item.type === 'channel' ? 'канал' :
     item.type === 'group' ? (item.closed ? 'закрытая группа' : 'открытая группа') :
-    item.type === 'community' ? 'сообщество' : 'в сети';
+    item.type === 'community' ? 'сообщество' :
+    item.type === 'channel' ? 'канал' : 'в сети';
 
+  renderStickerRow();
   chatEl.classList.add('show');
   renderChat();
   setTimeout(() => chatInput.focus(), 300);
@@ -1162,20 +1309,51 @@ function renderChat() {
     chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
     return;
   }
-  msgs.forEach(m => addMsgToDOM(m));
+  msgs.forEach((m, idx) => addMsgToDOM(m, idx));
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-function addMsgToDOM(msg) {
+function addMsgToDOM(msg, idx) {
   const div = document.createElement('div');
   if (msg.from === 'system') {
     div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
     div.textContent = msg.text;
   } else {
-    div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
-    div.innerHTML = escapeHtml(msg.text) + '<div class="time">' + msg.time + '</div>';
+    div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them') + (msg.isSticker ? ' sticker' : '');
+    if (msg.isSticker) {
+      div.textContent = msg.text;
+    } else {
+      div.innerHTML = esc(msg.text) + '<div class="time">' + msg.time + '</div>';
+    }
+    // Долгий тап на сообщении для удаления
+    let pressTimer;
+    const startPress = () => {
+      pressTimer = setTimeout(() => {
+        if (confirm('Удалить это сообщение?')) {
+          deleteMessage(msg);
+        }
+      }, 800);
+    };
+    const cancelPress = () => clearTimeout(pressTimer);
+    div.addEventListener('touchstart', startPress);
+    div.addEventListener('touchend', cancelPress);
+    div.addEventListener('touchmove', cancelPress);
+    div.addEventListener('mousedown', startPress);
+    div.addEventListener('mouseup', cancelPress);
+    div.addEventListener('mouseleave', cancelPress);
   }
   chatBody.appendChild(div);
+}
+
+function deleteMessage(msg) {
+  if (!activeChat) return;
+  const arr = chats[activeChat.id] || [];
+  const i = arr.indexOf(msg);
+  if (i !== -1) {
+    arr.splice(i, 1);
+    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+    renderChat();
+  }
 }
 
 function nowTime() {
@@ -1184,25 +1362,28 @@ function nowTime() {
 }
 
 function sendMsg() {
-  const text = chatInput.value.trim();
-  if (!text || !activeChat) return;
-  const msg = { text, time: nowTime(), from: 'me' };
+  const t = chatInput.value.trim();
+  if (!t || !activeChat) return;
+  pushMessage({ text: t, time: nowTime(), from: 'me' });
+  chatInput.value = '';
+}
+
+function pushMessage(msg) {
   if (!chats[activeChat.id]) chats[activeChat.id] = [];
   chats[activeChat.id].push(msg);
   localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
   addMsgToDOM(msg);
-  chatInput.value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const item = activeChat;
   if (item.type === 'person' || item.type === 'group' || item.type === 'community') {
-    const repliesCount = item.type === 'group' || item.type === 'community' ? 2 : 1;
-    for (let i = 0; i < repliesCount; i++) {
+    const cnt = (item.type === 'group' || item.type === 'community') ? 2 : 1;
+    for (let i = 0; i < cnt; i++) {
       setTimeout(() => {
-        const replyText = generateReply(text);
-        const senderName = item.type === 'person' ? item.name : rnd(PEOPLE).name;
+        const rt = generateReply(msg.text);
+        const sn = item.type === 'person' ? item.name : rnd(PEOPLE).name;
         const reply = {
-          text: item.type === 'person' ? replyText : senderName + ': ' + replyText,
+          text: item.type === 'person' ? rt : sn + ': ' + rt,
           time: nowTime(),
           from: 'them'
         };
@@ -1224,307 +1405,79 @@ document.getElementById('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
   activeChat = null;
   renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
+  renderPosts();
 });
 
 document.getElementById('settingsBtn').addEventListener('click', () => {
-  if (confirm('Выйти из аккаунта? Все данные сбросятся.')) {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(CHATS_KEY);
-    localStorage.removeItem(GROUPS_KEY);
-    localStorage.removeItem(CHANNELS_KEY);
+  if (confirm('Выйти из аккаунта?')) {
+    localStorage.clear();
     location.reload();
   }
 });
 
-/* ============================================================
-   МОДАЛКА ПЛЮСИК
-   ============================================================ */
-document.getElementById('plusBtn').addEventListener('click', () => {
-  document.getElementById('createModal').classList.add('show');
-});
-document.querySelectorAll('[data-close]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.getElementById(b.dataset.close).classList.remove('show');
+/* ============ СТИКЕР-РЯД В ЧАТЕ ============ */
+function renderStickerRow() {
+  const row = document.getElementById('stickerRow');
+  row.innerHTML = '';
+  const owned = [];
+  Object.keys(STICKER_PACKS).forEach(k => {
+    const p = STICKER_PACKS[k];
+    if (!p.requirePremium) owned.push(p);
+    else if (p.requirePremium === 'sunset' && (currentUser.premium === 'sunset' || currentUser.premium === 'prime')) owned.push(p);
+    else if (p.requirePremium === 'prime' && currentUser.premium === 'prime') owned.push(p);
   });
-});
-document.querySelectorAll('.modal').forEach(m => {
-  m.addEventListener('click', e => {
-    if (e.target === m) m.classList.remove('show');
-  });
-});
-
-let pendingAction = null;
-document.querySelectorAll('.modal-option').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const action = opt.dataset.action;
-    document.getElementById('createModal').classList.remove('show');
-    pendingAction = action;
-
-    const formTitle = document.getElementById('formTitle');
-    const formSub = document.getElementById('formSub');
-    const nameInput = document.getElementById('formName');
-    nameInput.value = '';
-    document.getElementById('linkResult').style.display = 'none';
-
-    if (action === 'group-open') {
-      formTitle.textContent = '🌍 Открытая группа';
-      formSub.textContent = 'Любой сможет найти и зайти';
-    } else if (action === 'group-closed') {
-      formTitle.textContent = '🔒 Закрытая группа';
-      formSub.textContent = 'Только по ссылке-приглашению';
-    } else if (action === 'channel') {
-      formTitle.textContent = '📢 Канал';
-      formSub.textContent = 'Вы публикуете посты о жизни';
-    }
-
-    document.getElementById('formModal').classList.add('show');
-    setTimeout(() => nameInput.focus(), 300);
-  });
-});
-
-document.getElementById('formCancel').addEventListener('click', () => {
-  document.getElementById('formModal').classList.remove('show');
-});
-
-document.getElementById('formSubmit').addEventListener('click', function() {
-  const name = document.getElementById('formName').value.trim();
-  if (name.length < 2) { alert('Введите название'); return; }
-
-  const id = 'x' + Date.now();
-  const colors = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee'];
-  const color = rnd(colors);
-  const emoji = name.charAt(0).toUpperCase();
-
-  if (pendingAction === 'group-open' || pendingAction === 'group-closed') {
-    const closed = pendingAction === 'group-closed';
-    const link = closed ? ('https://xxxxxxxx3459.github.io/nekros-site/#join=' + id) : null;
-    const g = { id, name, color, emoji, closed, link, type: 'group' };
-    groups.push(g);
-    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
-
-    if (closed) {
-      botJoinCheck(link, name);
-      document.getElementById('linkResult').style.display = 'block';
-      document.getElementById('linkBox').textContent = link;
-      const btn = document.getElementById('formSubmit');
-      btn.textContent = 'Готово';
-      btn.onclick = () => {
-        document.getElementById('formModal').classList.remove('show');
-        btn.textContent = 'Создать';
-        btn.onclick = null;
-      };
-    } else {
-      document.getElementById('formModal').classList.remove('show');
-    }
-    renderChatsList('groups', '');
-  } else if (pendingAction === 'channel') {
-    const c = { id, name, color, emoji, desc: 'Мой канал', type: 'channel' };
-    channels.push(c);
-    localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
-    document.getElementById('formModal').classList.remove('show');
-    renderChannelsList();
-  }
-});
-
-/* ============================================================
-   КАНАЛЫ
-   ============================================================ */
-function renderChannelsList() {
-  const list = document.getElementById('channelsList');
-  if (!list) return;
-  list.innerHTML = '';
-
-  const all = [
-    { id: 'life_maria', name: 'Мария о жизни', color: '#a06cd5', emoji: 'М', desc: 'Канал о быте и мыслях', type: 'channel' },
-    { id: 'life_dmitry', name: 'Дмитрий пишет', color: '#4a90e2', emoji: 'Д', desc: 'О работе и хобби', type: 'channel' },
-    { id: 'life_anna', name: 'Анна делится', color: '#ff5e8c', emoji: 'А', desc: 'Кулинария и семья', type: 'channel' },
-    { id: 'life_ivan', name: 'Иван везде', color: '#4ecdc4', emoji: 'И', desc: 'Спорт и здоровье', type: 'channel' },
-    ...channels
-  ];
-
-  all.forEach(ch => {
-    const div = document.createElement('div');
-    div.className = 'card-item';
-    div.innerHTML =
-      '<div class="card-avatar channel" style="background:' + ch.color + '">' + ch.emoji + '</div>' +
-      '<div class="card-info">' +
-        '<div class="card-name">' + escapeHtml(ch.name) + '<span class="badge channel-badge">📢 Канал</span></div>' +
-        '<div class="card-sub">' + escapeHtml(ch.desc || '') + '</div>' +
-      '</div>';
-    div.addEventListener('click', () => openChat(ch));
-    list.appendChild(div);
+  const allEmojis = owned.flatMap(p => p.emojis);
+  // показываем 10 случайных
+  const shuffled = allEmojis.sort(() => 0.5 - Math.random()).slice(0, 12);
+  shuffled.forEach(e => {
+    const b = document.createElement('button');
+    b.className = 'sticker-btn';
+    b.textContent = e;
+    b.addEventListener('click', () => {
+      if (!activeChat) return;
+      pushMessage({ text: e, time: nowTime(), from: 'me', isSticker: true });
+    });
+    row.appendChild(b);
   });
 }
 
-/* ============================================================
-   ЛЕНТА
-   ============================================================ */
-async function loadFeed() {
-  const el = document.getElementById('feedContent');
-  el.innerHTML = '<div class="loading">Загружаю ленту</div>';
-
-  let cached = cacheGet('feed_v8');
-  if (cached) { renderFeed(cached); return; }
-
-  const memesForToday = pickDailyItems(MEMES, 8);
-  const storiesForToday = pickDailyItems(STORIES, 5);
-  const fact = rnd([
-    { emoji: '🧠', text: 'Мозг содержит 86 миллиардов нейронов.' },
-    { emoji: '🌍', text: 'Земля вращается вокруг Солнца ~107 000 км/ч.' },
-    { emoji: '💧', text: 'Вода может кипеть и замерзать одновременно.' },
-    { emoji: '🎵', text: 'Любимая музыка вызывает выброс дофамина.' },
-    { emoji: '📱', text: 'Средний человек проверяет телефон 96 раз в день.' },
-    { emoji: '🐙', text: 'У осьминога 3 сердца и голубая кровь.' },
-    { emoji: '🌟', text: 'Свет от Солнца идёт до Земли 8 минут 20 секунд.' }
-  ]);
-
-  let news = [];
-  try {
-    const proxies = ['https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy/?quest='];
-    for (const proxy of proxies) {
-      try {
-        const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 4000);
-        const r = await fetch(proxy + encodeURIComponent('https://lenta.ru/rss/news'), { signal: controller.signal });
-        clearTimeout(tid);
-        const xmlText = await r.text();
-        if (xmlText.indexOf('<item') !== -1) {
-          const parser = new DOMParser();
-          const xml = parser.parseFromString(xmlText, 'text/xml');
-          news = Array.from(xml.querySelectorAll('item')).slice(0, 5).map(item => ({
-            title: item.querySelector('title') ? item.querySelector('title').textContent : '',
-            link: item.querySelector('link') ? item.querySelector('link').textContent : '',
-            img: item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : ''
-          }));
-          break;
-        }
-      } catch(e) {}
-    }
-  } catch(e) {}
-
-  if (news.length < 3) {
-    news = [
-      { title: 'Россия и Китай обсудили расширение торгового сотрудничества', link: 'https://lenta.ru/' },
-      { title: 'Учёные нашли новый способ борьбы с изменением климата', link: 'https://lenta.ru/' },
-      { title: 'Apple представила обновление iOS с новыми функциями', link: 'https://lenta.ru/' },
-      { title: 'Центробанк сохранил ключевую ставку', link: 'https://www.rbc.ru/' },
-      { title: 'SpaceX запустила новую партию спутников Starlink', link: 'https://www.rbc.ru/' }
-    ];
-  }
-
-  const data = { news, memes: memesForToday, stories: storiesForToday, fact };
-  cacheSet('feed_v8', data);
-  renderFeed(data);
-}
-
-function pickDailyItems(arr, count) {
-  const day = Math.floor(Date.now() / 86400000);
-  const result = [];
-  for (let i = 0; i < count && i < arr.length; i++) {
-    const idx = (day * 7 + i * 13) % arr.length;
-    result.push(arr[idx]);
-  }
-  return result;
-}
-
-function renderFeed(data) {
-  const el = document.getElementById('feedContent');
+/* ============ СТИКЕР-ПАКИ (раздел) ============ */
+function renderStickerPacks() {
+  const el = document.getElementById('stickerPacks');
   el.innerHTML = '';
-
-  const t1 = document.createElement('div');
-  t1.className = 'section-title';
-  t1.textContent = '💡 Факт дня';
-  el.appendChild(t1);
-  const factDiv = document.createElement('div');
-  factDiv.style.cssText = 'margin:8px 16px;padding:16px;background:linear-gradient(135deg,rgba(255,140,66,0.2),rgba(255,94,98,0.2));border:1px solid rgba(255,140,66,0.3);border-radius:16px;color:#fff;font-size:14px;line-height:1.5;';
-  factDiv.innerHTML = '<span style="font-size:24px;display:block;margin-bottom:8px;">' + data.fact.emoji + '</span>' + data.fact.text;
-  el.appendChild(factDiv);
-
-  const t2 = document.createElement('div');
-  t2.className = 'section-title';
-  t2.textContent = '📖 Истории дня';
-  el.appendChild(t2);
-  data.stories.forEach(s => {
+  Object.keys(STICKER_PACKS).forEach(k => {
+    const p = STICKER_PACKS[k];
+    const owned = !p.requirePremium ||
+      (p.requirePremium === 'sunset' && (currentUser.premium === 'sunset' || currentUser.premium === 'prime')) ||
+      (p.requirePremium === 'prime' && currentUser.premium === 'prime');
     const div = document.createElement('div');
-    div.className = 'story-card';
-    const timeAgo = Math.floor(Math.random() * 12) + 1;
+    div.className = 'pack-card ' + (owned ? 'owned' : 'locked') +
+      (p.requirePremium === 'prime' ? ' prime-pack' : '') +
+      (p.requirePremium === 'sunset' ? ' sunset-pack' : '');
     div.innerHTML =
-      '<div class="story-header">' +
-        '<div class="story-avatar" style="background:' + s.color + '">' + s.author.charAt(0) + '</div>' +
-        '<div><div class="story-author">' + s.author + '</div>' +
-        '<div class="story-time">' + timeAgo + ' ч. назад</div></div>' +
-      '</div>' +
-      '<div class="story-text">' + escapeHtml(s.text) + '</div>';
-    el.appendChild(div);
-  });
-
-  const t3 = document.createElement('div');
-  t3.className = 'section-title';
-  t3.textContent = '😂 Мемы дня';
-  el.appendChild(t3);
-  const grid = document.createElement('div');
-  grid.className = 'memes-grid';
-  data.memes.forEach(url => {
-    const div = document.createElement('div');
-    div.className = 'meme-card';
-    const img = document.createElement('img');
-    img.src = url;
-    img.loading = 'lazy';
-    img.onerror = () => { div.style.opacity = '0.3'; };
-    div.appendChild(img);
-    grid.appendChild(div);
-  });
-  el.appendChild(grid);
-
-  const t4 = document.createElement('div');
-  t4.className = 'section-title';
-  t4.textContent = '📰 Новости';
-  el.appendChild(t4);
-  data.news.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'news-item';
-    const img = item.img || '';
-    div.innerHTML =
-      '<div class="news-img" style="' + (img ? 'background-image:url(' + img + ')' : '') + '"></div>' +
-      '<div class="news-info">' +
-        '<div class="news-title">' + escapeHtml(item.title) + '</div>' +
-        '<div class="news-meta"><span class="news-source">Lenta</span></div>' +
-      '</div>';
-    div.addEventListener('click', () => window.open(item.link, '_blank'));
+      '<div class="pack-emoji">' + p.emoji + '</div>' +
+      '<div class="pack-name">' + p.name + '</div>' +
+      '<div class="pack-status">' + (owned ? '✅ Доступен' : (p.requirePremium === 'prime' ? '💎 Prime Premium' : '⭐ Sunset Premium')) + '</div>';
     el.appendChild(div);
   });
 }
 
-/* ============================================================
-   МУЗЫКА
-   ============================================================ */
-function loadMusicList(query) {
+/* ============ МУЗЫКА ============ */
+function loadMusicList(q) {
   const el = document.getElementById('tracksList');
   el.innerHTML = '';
-
   let list = SONGS;
-  if (query) {
-    const q = query.toLowerCase();
-    list = SONGS.filter(s => (s[0] + ' ' + s[1]).toLowerCase().includes(q));
-  }
-
-  if (!list.length) {
-    el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Ничего не найдено</p></div>';
-    return;
-  }
-
-  list.forEach((song, idx) => {
-    const div = document.createElement('div');
-    div.className = 'track';
-    div.innerHTML =
-      '<div class="track-num">' + (idx + 1) + '</div>' +
-      '<div class="track-info">' +
-        '<div class="track-name">' + escapeHtml(song[1]) + '</div>' +
-        '<div class="track-artist">' + escapeHtml(song[0]) + '</div>' +
-      '</div>' +
+  if (q) list = SONGS.filter(s => (s[0] + ' ' + s[1]).toLowerCase().includes(q.toLowerCase()));
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">🎵</div><p>Не найдено</p></div>'; return; }
+  list.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'track';
+    d.innerHTML = '<div class="track-num">' + (i + 1) + '</div>' +
+      '<div class="track-info"><div class="track-name">' + esc(s[1]) + '</div>' +
+      '<div class="track-artist">' + esc(s[0]) + '</div></div>' +
       '<div class="track-play">▶</div>';
-    div.addEventListener('click', () => playSong(song[0], song[1]));
-    el.appendChild(div);
+    d.addEventListener('click', () => playSong(s[0], s[1]));
+    el.appendChild(d);
   });
 }
 
@@ -1534,47 +1487,249 @@ async function playSong(artist, title) {
     const r = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://api.deezer.com/search?q=' + encodeURIComponent(q) + '&limit=1'));
     const data = await r.json();
     if (data.data && data.data[0]) {
-      const track = data.data[0];
-      const audio = document.getElementById('audioPlayer');
-      audio.src = track.preview;
-      audio.play();
-      currentTrack = track;
+      const t = data.data[0];
+      const a = document.getElementById('audioPlayer');
+      a.src = t.preview;
+      a.play();
       document.getElementById('playerBar').classList.add('show');
-      document.getElementById('playerCover').style.backgroundImage = 'url(' + track.album.cover_small + ')';
-      document.getElementById('playerName').textContent = track.title;
-      document.getElementById('playerArtist').textContent = track.artist.name;
+      document.getElementById('playerCover').style.backgroundImage = 'url(' + t.album.cover_small + ')';
+      document.getElementById('playerName').textContent = t.title;
+      document.getElementById('playerArtist').textContent = t.artist.name;
       document.getElementById('playerPlay').textContent = '⏸';
-    } else {
-      alert('Трек не найден');
     }
-  } catch(e) {
-    alert('Не удалось загрузить. Проверьте интернет.');
-  }
+  } catch(e) { alert('Ошибка загрузки'); }
 }
 
-document.getElementById('musicSearchBtn').addEventListener('click', () => {
-  loadMusicList(document.getElementById('musicSearch').value.trim());
-});
-document.getElementById('musicSearch').addEventListener('input', e => {
-  loadMusicList(e.target.value.trim());
-});
+document.getElementById('musicSearchBtn').addEventListener('click', () => loadMusicList(document.getElementById('musicSearch').value.trim()));
+document.getElementById('musicSearch').addEventListener('input', e => loadMusicList(e.target.value.trim()));
 document.getElementById('playerPlay').addEventListener('click', () => {
-  const audio = document.getElementById('audioPlayer');
-  if (audio.paused) { audio.play(); document.getElementById('playerPlay').textContent = '⏸'; }
-  else { audio.pause(); document.getElementById('playerPlay').textContent = '▶'; }
+  const a = document.getElementById('audioPlayer');
+  if (a.paused) { a.play(); document.getElementById('playerPlay').textContent = '⏸'; }
+  else { a.pause(); document.getElementById('playerPlay').textContent = '▶'; }
 });
 document.getElementById('playerClose').addEventListener('click', () => {
   document.getElementById('audioPlayer').pause();
   document.getElementById('playerBar').classList.remove('show');
 });
 
-/* ============================================================
-   АВТООБНОВЛЕНИЕ
-   ============================================================ */
+/* ============ КАНАЛЫ ============ */
+function renderChannelsList() {
+  const list = document.getElementById('channelsList');
+  list.innerHTML = '';
+  const all = [
+    { id: 'life_maria', name: 'Мария о жизни', color: '#a06cd5', emoji: 'М', desc: 'О быте', type: 'channel', owner: 'system' },
+    { id: 'life_dmitry', name: 'Дмитрий пишет', color: '#4a90e2', emoji: 'Д', desc: 'О работе', type: 'channel', owner: 'system' },
+    { id: 'life_anna', name: 'Анна делится', color: '#ff5e8c', emoji: 'А', desc: 'О кулинарии', type: 'channel', owner: 'system' },
+    ...channels
+  ];
+  all.forEach(ch => {
+    const d = document.createElement('div');
+    d.className = 'card-item';
+    d.innerHTML = '<div class="card-avatar" style="background:' + ch.color + '">' + ch.emoji + '</div>' +
+      '<div class="card-info"><div class="card-name">' + esc(ch.name) + '<span class="badge channel-badge">📢</span></div>' +
+      '<div class="card-sub">' + esc(ch.desc || '') + '</div></div>';
+    d.addEventListener('click', () => openChat(ch));
+    list.appendChild(d);
+  });
+}
+
+/* ============ МОДАЛКА + ============ */
+document.getElementById('plusBtn').addEventListener('click', () => {
+  document.getElementById('createModal').classList.add('show');
+});
+document.querySelectorAll('[data-close]').forEach(b => {
+  b.addEventListener('click', () => document.getElementById(b.dataset.close).classList.remove('show'));
+});
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
+});
+
+document.querySelectorAll('.modal-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const a = opt.dataset.action;
+    document.getElementById('createModal').classList.remove('show');
+    pendingAction = a;
+    const ft = document.getElementById('formTitle');
+    const fs = document.getElementById('formSub');
+    const fn = document.getElementById('formName');
+    const fx = document.getElementById('formText');
+    fn.value = ''; fx.value = '';
+    fn.style.display = 'block'; fx.style.display = 'none';
+    document.getElementById('linkResult').style.display = 'none';
+
+    if (a === 'post') {
+      ft.textContent = '📝 Новый пост';
+      fs.textContent = currentUser.premium === 'prime' ? 'Prime: до 1000 постов/мес всем' : 'Обычные посты видят только 2% людей';
+      fn.style.display = 'none'; fx.style.display = 'block';
+    } else if (a === 'story') {
+      ft.textContent = '📸 Новая история';
+      fs.textContent = 'Текст истории (24 часа)';
+      fn.style.display = 'none'; fx.style.display = 'block';
+    } else if (a === 'group-open') {
+      ft.textContent = '🌍 Открытая группа';
+      fs.textContent = 'Любой может найти и зайти';
+    } else if (a === 'group-closed') {
+      ft.textContent = '🔒 Закрытая группа';
+      fs.textContent = 'Только по ссылке-приглашению';
+    } else if (a === 'channel') {
+      ft.textContent = '📢 Канал';
+      fs.textContent = 'Вы публикуете посты о жизни';
+    }
+    document.getElementById('formModal').classList.add('show');
+    setTimeout(() => { (fn.style.display === 'none' ? fx : fn).focus(); }, 300);
+  });
+});
+
+document.getElementById('formCancel').addEventListener('click', () => {
+  document.getElementById('formModal').classList.remove('show');
+});
+
+document.getElementById('formSubmit').addEventListener('click', function() {
+  if (pendingAction === 'post') {
+    const text = document.getElementById('formText').value.trim();
+    if (text.length < 3) { alert('Пост минимум 3 символа'); return; }
+    const p = {
+      id: 'p_' + Date.now(),
+      author: currentUser.name,
+      color: currentUser.color,
+      text: text,
+      time: 'сейчас',
+      likes: 0, reposts: 0, comments: [],
+      likedByMe: false, repostedByMe: false
+    };
+    posts.unshift(p);
+    localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+    document.getElementById('formModal').classList.remove('show');
+    renderPosts();
+    alert(currentUser.premium === 'prime' ? '✅ Пост опубликован и виден всем!' : '📝 Пост создан. Обычные посты видят только 2% пользователей. Купите Prime Premium чтобы видели все.');
+    return;
+  }
+
+  if (pendingAction === 'story') {
+    const text = document.getElementById('formText').value.trim();
+    if (text.length < 2) { alert('Минимум 2 символа'); return; }
+    userStories.unshift({
+      id: 's_' + Date.now(),
+      author: currentUser.name,
+      color: currentUser.color,
+      emoji: currentUser.emoji,
+      text: text
+    });
+    if (userStories.length > 10) userStories = userStories.slice(0, 10);
+    localStorage.setItem(STORIES_KEY, JSON.stringify(userStories));
+    document.getElementById('formModal').classList.remove('show');
+    renderStories();
+    return;
+  }
+
+  const name = document.getElementById('formName').value.trim();
+  if (name.length < 2) { alert('Название минимум 2 символа'); return; }
+  const id = 'x' + Date.now();
+  const color = rnd(['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee']);
+  const emoji = name.charAt(0).toUpperCase();
+
+  if (pendingAction === 'group-open' || pendingAction === 'group-closed') {
+    const closed = pendingAction === 'group-closed';
+    const link = closed ? ('https://xxxxxxxx3459.github.io/nekros-site/#join=' + id) : null;
+    groups.push({ id, name, color, emoji, closed, link, type: 'group', owner: currentUser.name });
+    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
+    if (closed) {
+      botJoinCheck(link, name);
+      document.getElementById('linkResult').style.display = 'block';
+      document.getElementById('linkBox').textContent = link;
+      const btn = document.getElementById('formSubmit');
+      btn.textContent = 'Готово';
+      btn.onclick = () => { document.getElementById('formModal').classList.remove('show'); btn.textContent = 'Создать'; btn.onclick = null; };
+    } else document.getElementById('formModal').classList.remove('show');
+    renderChatsList('groups', '');
+  } else if (pendingAction === 'channel') {
+    channels.push({ id, name, color, emoji, desc: 'Мой канал', type: 'channel', owner: currentUser.name });
+    localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
+    document.getElementById('formModal').classList.remove('show');
+    renderChannelsList();
+  }
+});
+
+/* ============ МЕНЮ ЧАТА ============ */
+document.getElementById('chatMenuBtn').addEventListener('click', () => {
+  document.getElementById('chatMenuModal').classList.add('show');
+});
+
+document.getElementById('clearChatBtn').addEventListener('click', () => {
+  if (!activeChat) return;
+  if (confirm('Удалить все сообщения?')) {
+    chats[activeChat.id] = [];
+    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+    renderChat();
+    document.getElementById('chatMenuModal').classList.remove('show');
+  }
+});
+
+document.getElementById('deleteChatBtn').addEventListener('click', () => {
+  if (!activeChat) return;
+  if (confirm('Удалить чат целиком?')) {
+    delete chats[activeChat.id];
+    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+    if (activeChat.type === 'group') { groups = groups.filter(g => g.id !== activeChat.id); localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); }
+    if (activeChat.type === 'channel') { channels = channels.filter(c => c.id !== activeChat.id); localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); renderChannelsList(); }
+    document.getElementById('chatMenuModal').classList.remove('show');
+    chatEl.classList.remove('show');
+    activeChat = null;
+    renderChatsList(currentSearchTab, '');
+  }
+});
+
+/* ============ ПРОФИЛЬ ============ */
+document.getElementById('myProfileBtn').addEventListener('click', () => {
+  const md = document.getElementById('profileModal');
+  document.getElementById('profileTitle').textContent = currentUser.name;
+  document.getElementById('profileStatus').textContent =
+    currentUser.premium === 'prime' ? '💎 Prime Premium' :
+    currentUser.premium === 'sunset' ? '⭐ Sunset Premium' : 'Обычный аккаунт';
+  const pp = document.getElementById('profilePosts');
+  pp.innerHTML = '';
+  if (!posts.length) pp.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>Пока нет постов</p></div>';
+  else posts.forEach(p => pp.appendChild(buildPostEl(p, true)));
+  md.classList.add('show');
+});
+
+/* ============ ПОКУПКИ ============ */
+document.querySelectorAll('.promo-price').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.dataset.buy;
+    const price = btn.dataset.price;
+    const names = {
+      sunset_year: 'Sunset Premium (год)',
+      prime_year: 'Prime Premium (год)',
+      community_month: 'Продвижение сообщества (мес)',
+      community_year: 'Продвижение сообщества (год)',
+      channel_month: 'Продвижение канала (мес)',
+      channel_year: 'Продвижение канала (год)',
+      group_month: 'Продвижение группы (мес)',
+      group_year: 'Продвижение группы (год)'
+    };
+    const name = names[item] || item;
+
+    if (item === 'sunset_year' || item === 'prime_year') {
+      if (confirm('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\nПодтвердить покупку?')) {
+        currentUser.premium = item === 'sunset_year' ? 'sunset' : 'prime';
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+        updatePremiumBadge();
+        renderStickerPacks();
+        renderStickerRow();
+        alert('✅ ' + name + ' активирован!');
+      }
+    } else {
+      alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Свяжитесь с администратором для оплаты\n(СБП или карта)');
+    }
+  });
+});
+
+/* ============ АВТООБНОВЛЕНИЕ ============ */
 function scheduleHourlyRefresh() {
   setInterval(() => {
-    localStorage.removeItem('cache_feed_v8');
-    loadFeed();
+    // Обновляем ленту каждый час
+    renderPosts();
   }, 3600000);
 }
 
@@ -1582,49 +1737,21 @@ let lastActiveTime = Date.now();
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     const now = Date.now();
-    if (now - lastActiveTime > 3600000) {
-      localStorage.removeItem('cache_feed_v8');
-      loadFeed();
-    }
+    if (now - lastActiveTime > 3600000) { renderPosts(); }
     lastActiveTime = now;
   }
 });
 
-/* ============================================================
-   ХЭШ #join=
-   ============================================================ */
+/* ============ ХЭШ JOIN ============ */
 window.addEventListener('load', () => {
-  const hash = location.hash;
-  if (hash && hash.startsWith('#join=')) {
-    const groupId = hash.substring(6);
+  const h = location.hash;
+  if (h && h.startsWith('#join=')) {
+    const gid = h.substring(6);
     setTimeout(() => {
-      const g = groups.find(x => x.id === groupId);
+      const g = groups.find(x => x.id === gid);
       if (g) alert('Вы вошли в группу "' + g.name + '" по ссылке!');
     }, 1500);
   }
-});
-
-/* ============================================================
-   ПОКУПКИ ПРОДВИЖЕНИЯ
-   ============================================================ */
-document.querySelectorAll('.promo-price').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.dataset.buy;
-    const price = btn.dataset.price;
-    const names = {
-      community_month: 'Продвижение сообщества на 1 месяц',
-      community_year: 'Продвижение сообщества на 1 год',
-      channel_month: 'Продвижение канала на 1 месяц',
-      channel_year: 'Продвижение канала на 1 год',
-      top1: 'Топ-1 в поиске на 1 месяц',
-      banner_week: 'Баннер в ленте на 1 неделю',
-      autopost: 'Автопостинг в ленту на 1 месяц',
-      premium_month: 'Sunset Premium на 1 месяц',
-      premium_year: 'Sunset Premium на 1 год'
-    };
-    const name = names[item] || item;
-    alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Обратитесь к администратору\n(СБП, карта или крипта)');
-  });
 });
 </script>
 </body>
