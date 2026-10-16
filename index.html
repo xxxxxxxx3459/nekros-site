@@ -10,7 +10,6 @@
     width: 100%; height: 100%; overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-tap-highlight-color: transparent;
-    -webkit-font-smoothing: antialiased;
     background: #1a0a1e;
   }
   .sunset-photo {
@@ -20,16 +19,16 @@
   }
   .sunset-photo::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(20,5,30,0.4) 0%, rgba(30,10,40,0.25) 40%, rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75) 100%);
+    background: linear-gradient(180deg, rgba(20,5,30,0.4), rgba(30,10,40,0.25) 40%, rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75));
   }
 
+  /* РЕГИСТРАЦИЯ */
   #register {
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
     padding: 20px; background: rgba(0,0,0,0.35); backdrop-filter: blur(15px);
-    transition: opacity 0.5s;
   }
-  #register.hide { opacity: 0; pointer-events: none; }
+  #register.hide { display: none; }
   .reg-card {
     background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
     border: 1px solid rgba(255,255,255,0.3); border-radius: 24px;
@@ -42,62 +41,39 @@
     width: 100px; height: 100px; border-radius: 50%;
     margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
     font-size: 40px; font-weight: 700; color: #fff; cursor: pointer;
-    border: 3px solid rgba(255,255,255,0.5); transition: transform 0.15s;
+    border: 3px solid rgba(255,255,255,0.5);
   }
   .reg-input {
     width: 100%; background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.25); border-radius: 14px;
-    padding: 14px 18px; font-size: 16px; color: #fff; outline: none;
+    padding: 16px 18px; font-size: 16px; color: #fff; outline: none;
     margin-bottom: 16px; font-family: inherit;
+    -webkit-appearance: none;
   }
   .reg-input::placeholder { color: rgba(255,255,255,0.6); }
   .reg-btn {
     width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 14px; padding: 16px;
-    font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
+    border: none; border-radius: 14px; padding: 18px;
+    font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
     font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
-    opacity: 0.6; transition: opacity 0.2s;
+    -webkit-appearance: none;
+    min-height: 56px;
   }
+  .reg-btn:active { transform: scale(0.98); }
 
-  #panel {
-    position: fixed; inset: 0; z-index: 20;
-    display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.72);
-    backdrop-filter: blur(30px) saturate(150%);
-    opacity: 0; pointer-events: none; transition: opacity 0.4s;
-  }
-  #panel.show { opacity: 1; pointer-events: all; }
+  /* ПАНЕЛЬ */
+  #panel { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; background: rgba(15,10,25,0.72); backdrop-filter: blur(30px); }
+  #panel.show { display: flex; }
 
-  .header {
-    padding: 52px 20px 12px;
-    display: flex; align-items: center; justify-content: space-between;
-    color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
+  .header { padding: 52px 20px 12px; display: flex; align-items: center; justify-content: space-between; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.12); }
   .header-left { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .my-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; color: #fff;
-    border: 2px solid rgba(255,255,255,0.5); position: relative;
-  }
-  .premium-badge {
-    position: absolute; bottom: -4px; right: -4px;
-    width: 18px; height: 18px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px;
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-  }
+  .my-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; border: 2px solid rgba(255,255,255,0.5); position: relative; }
+  .premium-badge { position: absolute; bottom: -4px; right: -4px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
   .premium-badge.prime { background: linear-gradient(135deg, #00d4ff, #7b2ff7); color: #fff; }
   .my-name { font-size: 17px; font-weight: 600; }
   .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
   .header-right { display: flex; gap: 8px; }
-  .icon-btn {
-    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
-    width: 40px; height: 40px; border-radius: 50%;
-    color: #fff; font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .icon-btn.plus { font-size: 24px; font-weight: 300; }
 
   .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
@@ -105,505 +81,146 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  .section-title {
-    color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase; padding: 18px 16px 8px; font-weight: 600;
-  }
+  .section-title { color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 18px 16px 8px; font-weight: 600; }
 
   .search-section { padding: 12px 16px 0; }
-  .search-input {
-    width: 100%; background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 12px 16px;
-    font-size: 15px; color: #fff; outline: none; font-family: inherit;
-  }
+  .search-input { width: 100%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit; }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
-
   .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
-  .search-tab {
-    flex: 1; background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px; padding: 8px 6px;
-    color: rgba(255,255,255,0.7); font-size: 12px;
-    cursor: pointer; font-family: inherit; text-align: center;
-  }
-  .search-tab.active {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    color: #fff; border-color: transparent;
-  }
+  .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 6px; color: rgba(255,255,255,0.7); font-size: 12px; cursor: pointer; font-family: inherit; text-align: center; }
+  .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
 
   #chatsList { padding: 4px 0; }
 
-  /* Обычный вид — 1 колонка (группы, сообщества) */
-  .card-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 14px; border-radius: 16px;
-    margin: 4px 12px; cursor: pointer;
-    background: rgba(255,255,255,0.06);
-  }
+  .card-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; margin: 4px 12px; cursor: pointer; background: rgba(255,255,255,0.06); }
   .card-item:active { background: rgba(255,255,255,0.15); }
-  .card-avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 700; color: #fff;
-    flex-shrink: 0; position: relative; overflow: hidden;
-  }
+  .card-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #fff; flex-shrink: 0; position: relative; overflow: hidden; }
   .card-avatar.group { border-radius: 14px; }
   .card-info { flex: 1; min-width: 0; }
-  .card-name {
-    color: #fff; font-size: 15px; font-weight: 600;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;
-  }
-  .card-sub {
-    color: rgba(255,255,255,0.7); font-size: 12px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  .card-name { color: #fff; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+  .card-sub { color: rgba(255,255,255,0.7); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-left: 4px; }
   .badge.open { background: rgba(74, 222, 128, 0.25); color: #86efac; }
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
-  /* СЕТКА 2 КОЛОНКИ для людей */
-  .chats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 8px 12px;
-  }
-  .chats-grid .card-item {
-    flex-direction: column;
-    text-align: center;
-    padding: 16px 10px;
-    gap: 10px;
-    margin: 0;
-    background: rgba(255,255,255,0.06);
-  }
-  .chats-grid .card-item .card-avatar {
-    width: 64px;
-    height: 64px;
-    font-size: 26px;
-    margin: 0 auto;
-  }
-  .chats-grid .card-item .card-info {
-    text-align: center;
-    width: 100%;
-  }
-  .chats-grid .card-item .card-name {
-    font-size: 14px;
-    white-space: normal;
-  }
-  .chats-grid .card-item .card-sub {
-    font-size: 11px;
-  }
+  .empty-state { text-align: center; padding: 50px 20px; color: #fff; margin: 20px 16px; background: linear-gradient(135deg, rgba(255,140,66,0.18), rgba(255,94,98,0.18)); border: 2px dashed rgba(255,140,66,0.5); border-radius: 20px; }
+  .empty-state .emoji { font-size: 56px; margin-bottom: 14px; }
+  .empty-state p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.95); }
+  .empty-state b { color: #ffb380; }
 
-  /* Пустое состояние — ВЫДЕЛЕНО */
-  .empty-state {
-    text-align: center;
-    padding: 50px 20px;
-    color: #fff;
-    margin: 20px 16px;
-    background: linear-gradient(135deg, rgba(255,140,66,0.18), rgba(255,94,98,0.18));
-    border: 2px dashed rgba(255,140,66,0.5);
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(255,100,80,0.15);
-  }
-  .empty-state .emoji {
-    font-size: 56px;
-    margin-bottom: 14px;
-    opacity: 1;
-    filter: drop-shadow(0 4px 12px rgba(255,140,66,0.5));
-  }
-  .empty-state p {
-    font-size: 15px;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.95);
-    font-weight: 500;
-  }
-  .empty-state b { color: #ffb380; font-weight: 700; }
-
-  /* СТОРИС */
-  .stories-row {
-    display: flex; gap: 10px; padding: 12px 16px;
-    overflow-x: auto; scrollbar-width: none;
-  }
+  .stories-row { display: flex; gap: 10px; padding: 12px 16px; overflow-x: auto; scrollbar-width: none; }
   .stories-row::-webkit-scrollbar { display: none; }
-  .story-circle {
-    flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; width: 68px;
-  }
-  .story-ring {
-    width: 64px; height: 64px; border-radius: 50%;
-    padding: 3px;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62, #a06cd5);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .story-img {
-    width: 100%; height: 100%; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 700; color: #fff;
-    border: 2px solid rgba(15,10,25,0.9);
-  }
-  .story-label {
-    font-size: 10px; color: rgba(255,255,255,0.85);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    max-width: 68px;
-  }
+  .story-circle { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; width: 68px; }
+  .story-ring { width: 64px; height: 64px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ff8c42, #ff5e62, #a06cd5); display: flex; align-items: center; justify-content: center; }
+  .story-img { width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #fff; border: 2px solid rgba(15,10,25,0.9); }
+  .story-label { font-size: 10px; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 68px; }
   .story-ring.my-add { background: linear-gradient(135deg, #ff8c42, #ff5e62); }
   .story-ring.my-add .story-img { background: rgba(15,10,25,0.6); font-size: 26px; }
 
-  /* ПОСТЫ */
-  .post {
-    margin: 8px 12px; padding: 16px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-  }
+  .post { margin: 8px 12px; padding: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; }
   .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .post-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 700; color: #fff;
-  }
+  .post-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: #fff; }
   .post-meta { flex: 1; }
   .post-author { color: #fff; font-size: 14px; font-weight: 600; }
   .post-time { color: rgba(255,255,255,0.55); font-size: 11px; margin-top: 1px; }
   .post-text { color: #fff; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
-  .post-actions {
-    display: flex; gap: 16px; padding-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .post-action {
-    display: flex; align-items: center; gap: 5px;
-    background: transparent; border: none;
-    color: rgba(255,255,255,0.7); font-size: 13px;
-    cursor: pointer; font-family: inherit; padding: 4px 0;
-  }
+  .post-actions { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .post-action { display: flex; align-items: center; gap: 5px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 13px; cursor: pointer; font-family: inherit; padding: 4px 0; }
   .post-action.liked { color: #ff5e8c; }
   .post-action.reposted { color: #4ade80; }
   .post-comments { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
-  .comment { display: flex; gap: 8px; padding: 6px 0; font-size: 13px; color: #fff; }
+  .comment { padding: 6px 0; font-size: 13px; color: #fff; }
   .comment-author { font-weight: 600; color: #ffb380; }
   .comment-input-row { display: flex; gap: 8px; margin-top: 8px; }
-  .comment-input {
-    flex: 1; background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px; padding: 8px 14px;
-    color: #fff; font-size: 13px; outline: none; font-family: inherit;
-  }
-  .comment-send {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 50%;
-    width: 36px; height: 36px; color: #fff;
-    font-size: 14px; cursor: pointer;
-  }
+  .comment-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 8px 14px; color: #fff; font-size: 13px; outline: none; font-family: inherit; }
+  .comment-send { background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 50%; width: 36px; height: 36px; color: #fff; font-size: 14px; cursor: pointer; }
 
-  .sticker-row {
-    display: flex; gap: 8px; padding: 6px 14px;
-    overflow-x: auto; background: rgba(0,0,0,0.3);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    scrollbar-width: none;
-  }
+  .sticker-row { display: flex; gap: 8px; padding: 6px 14px; overflow-x: auto; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.08); scrollbar-width: none; }
   .sticker-row::-webkit-scrollbar { display: none; }
-  .sticker-btn {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    width: 42px; height: 42px;
-    font-size: 22px; cursor: pointer;
-    flex-shrink: 0; padding: 0;
-  }
+  .sticker-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; width: 42px; height: 42px; font-size: 22px; cursor: pointer; flex-shrink: 0; padding: 0; }
 
   .music-search { padding: 12px 16px; display: flex; gap: 8px; }
-  .music-search input {
-    flex: 1; background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 12px 16px;
-    font-size: 15px; color: #fff; outline: none;
-  }
-  .music-search button {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 14px; padding: 0 18px;
-    color: #fff; font-size: 16px; cursor: pointer;
-  }
-  .track {
-    display: flex; gap: 12px; align-items: center;
-    padding: 10px 16px; cursor: pointer;
-  }
+  .music-search input { flex: 1; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; }
+  .music-search button { background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 0 18px; color: #fff; font-size: 16px; cursor: pointer; }
+  .track { display: flex; gap: 12px; align-items: center; padding: 10px 16px; cursor: pointer; }
   .track-num { width: 26px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
   .track-info { flex: 1; min-width: 0; }
   .track-name { color: #fff; font-size: 14px; font-weight: 600; }
   .track-artist { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 2px; }
   .track-play { color: #ff8c42; font-size: 18px; }
 
-  .player-bar {
-    position: absolute; bottom: 72px; left: 0; right: 0;
-    background: rgba(20, 10, 30, 0.95);
-    backdrop-filter: blur(30px);
-    border-top: 1px solid rgba(255,255,255,0.15);
-    padding: 10px 16px; display: none; align-items: center; gap: 12px;
-    z-index: 15;
-  }
+  .player-bar { position: absolute; bottom: 72px; left: 0; right: 0; background: rgba(20, 10, 30, 0.95); backdrop-filter: blur(30px); border-top: 1px solid rgba(255,255,255,0.15); padding: 10px 16px; display: none; align-items: center; gap: 12px; z-index: 15; }
   .player-bar.show { display: flex; }
-  .player-cover {
-    width: 42px; height: 42px; border-radius: 8px;
-    background-size: cover; background-color: rgba(255,255,255,0.1);
-  }
+  .player-cover { width: 42px; height: 42px; border-radius: 8px; background-size: cover; background-color: rgba(255,255,255,0.1); }
   .player-info { flex: 1; min-width: 0; }
   .player-name { color: #fff; font-size: 13px; font-weight: 600; }
   .player-artist { color: rgba(255,255,255,0.65); font-size: 11px; }
-  .player-btn {
-    background: transparent; border: none;
-    color: #ff8c42; font-size: 22px; cursor: pointer; padding: 6px 10px;
-  }
+  .player-btn { background: transparent; border: none; color: #ff8c42; font-size: 22px; cursor: pointer; padding: 6px 10px; }
 
-  #chat {
-    position: absolute; inset: 0; z-index: 40;
-    display: flex; flex-direction: column;
-    background: rgba(15, 10, 25, 0.95);
-    backdrop-filter: blur(30px);
-    transform: translateX(100%); transition: transform 0.3s ease;
-  }
+  #chat { position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column; background: rgba(15, 10, 25, 0.95); backdrop-filter: blur(30px); transform: translateX(100%); transition: transform 0.3s ease; }
   #chat.show { transform: translateX(0); }
-  .chat-header {
-    padding: 52px 16px 14px;
-    display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.12); color: #fff;
-  }
-  .back-btn {
-    background: transparent; border: none; color: #fff;
-    font-size: 24px; padding: 4px 8px; cursor: pointer;
-  }
+  .chat-header { padding: 52px 16px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.12); color: #fff; }
+  .back-btn { background: transparent; border: none; color: #fff; font-size: 24px; padding: 4px 8px; cursor: pointer; }
   .chat-header .card-avatar { width: 40px; height: 40px; font-size: 16px; }
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
   .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
-  .chat-menu {
-    background: transparent; border: none; color: #fff;
-    font-size: 20px; padding: 4px 8px; cursor: pointer;
-  }
-  .chat-body {
-    flex: 1; overflow-y: auto;
-    padding: 16px 14px 20px;
-    display: flex; flex-direction: column; gap: 8px;
-    scrollbar-width: none;
-  }
+  .chat-menu { background: transparent; border: none; color: #fff; font-size: 20px; padding: 4px 8px; cursor: pointer; }
+  .chat-body { flex: 1; overflow-y: auto; padding: 16px 14px 20px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
   .chat-body::-webkit-scrollbar { display: none; }
-  .message {
-    max-width: 78%; padding: 10px 14px;
-    border-radius: 18px; font-size: 15px;
-    line-height: 1.4; word-wrap: break-word;
-    animation: msgPop 0.25s ease;
-    position: relative;
-  }
-  @keyframes msgPop {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  .message.me {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    color: #fff; border-bottom-right-radius: 6px;
-  }
-  .message.them {
-    align-self: flex-start;
-    background: rgba(255,255,255,0.2);
-    color: #fff; border-bottom-left-radius: 6px;
-  }
-  .message.sticker {
-    background: transparent !important;
-    font-size: 60px; padding: 0;
-    line-height: 1;
-  }
+  .message { max-width: 78%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-wrap: break-word; position: relative; }
+  .message.me { align-self: flex-end; background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-bottom-right-radius: 6px; }
+  .message.them { align-self: flex-start; background: rgba(255,255,255,0.2); color: #fff; border-bottom-left-radius: 6px; }
+  .message.sticker { background: transparent !important; font-size: 60px; padding: 0; line-height: 1; }
   .message .time { font-size: 10px; opacity: 0.75; margin-top: 4px; text-align: right; }
 
-  .chat-input-bar {
-    padding: 8px 14px 16px;
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(0,0,0,0.35);
-    border-top: 1px solid rgba(255,255,255,0.1);
-  }
-  .chat-input {
-    flex: 1; background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 22px; padding: 12px 18px;
-    font-size: 15px; color: #fff; outline: none;
-  }
+  .chat-input-bar { padding: 8px 14px 16px; display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.35); border-top: 1px solid rgba(255,255,255,0.1); }
+  .chat-input { flex: 1; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 22px; padding: 12px 18px; font-size: 15px; color: #fff; outline: none; }
   .chat-input::placeholder { color: rgba(255,255,255,0.6); }
-  .chat-send {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; color: #fff; font-size: 20px; cursor: pointer;
-  }
-  .invite-bar {
-    padding: 8px 14px; background: rgba(255,140,66,0.15);
-    border-bottom: 1px solid rgba(255,140,66,0.25);
-    color: #ffb380; font-size: 12px;
-    display: flex; align-items: center; gap: 8px; cursor: pointer;
-  }
+  .chat-send { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; color: #fff; font-size: 20px; cursor: pointer; }
+  .invite-bar { padding: 8px 14px; background: rgba(255,140,66,0.15); border-bottom: 1px solid rgba(255,140,66,0.25); color: #ffb380; font-size: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
 
-  .bottom-nav {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 72px; z-index: 25;
-    display: flex; align-items: center; justify-content: space-around;
-    background: rgba(15, 10, 25, 0.9);
-    backdrop-filter: blur(30px);
-    border-top: 1px solid rgba(255,255,255,0.12);
-  }
-  .nav-btn {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 4px;
-    background: transparent; border: none;
-    color: rgba(255,255,255,0.5); font-size: 10px;
-    cursor: pointer; padding: 8px 0; font-family: inherit;
-  }
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 72px; z-index: 25; display: flex; align-items: center; justify-content: space-around; background: rgba(15, 10, 25, 0.9); backdrop-filter: blur(30px); border-top: 1px solid rgba(255,255,255,0.12); }
+  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 10px; cursor: pointer; padding: 8px 0; font-family: inherit; }
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 20px; }
 
-  .modal {
-    position: fixed; inset: 0; z-index: 200;
-    display: flex; align-items: flex-end; justify-content: center;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-    opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  }
+  .modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .modal.show { opacity: 1; pointer-events: all; }
-  .modal-card {
-    background: rgba(25, 15, 35, 0.98);
-    backdrop-filter: blur(30px);
-    border-radius: 24px 24px 0 0;
-    padding: 24px 20px 32px;
-    width: 100%; max-width: 500px;
-    color: #fff;
-    transform: translateY(100%); transition: transform 0.3s ease;
-    border-top: 1px solid rgba(255,255,255,0.15);
-    max-height: 85vh; overflow-y: auto;
-  }
+  .modal-card { background: rgba(25, 15, 35, 0.98); backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; padding: 24px 20px 32px; width: 100%; max-width: 500px; color: #fff; transform: translateY(100%); transition: transform 0.3s ease; border-top: 1px solid rgba(255,255,255,0.15); max-height: 85vh; overflow-y: auto; }
   .modal.show .modal-card { transform: translateY(0); }
   .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; text-align: center; }
   .modal-sub { font-size: 13px; opacity: 0.7; text-align: center; margin-bottom: 20px; }
-  .modal-option {
-    padding: 14px; border-radius: 14px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 10px; cursor: pointer;
-  }
-  .modal-option:active { background: rgba(255,255,255,0.15); }
-  .modal-option .opt-title {
-    font-size: 15px; font-weight: 600;
-    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
-  }
+  .modal-option { padding: 14px; border-radius: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; cursor: pointer; }
+  .modal-option .opt-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
   .modal-option .opt-desc { font-size: 12px; opacity: 0.65; line-height: 1.4; }
-  .modal-close {
-    background: rgba(255,255,255,0.1); border: none;
-    border-radius: 12px; padding: 12px; width: 100%;
-    color: #fff; font-size: 14px; cursor: pointer;
-    font-family: inherit; margin-top: 8px;
-  }
-  .modal-input {
-    width: 100%; background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 14px 18px;
-    font-size: 15px; color: #fff; outline: none;
-    margin-bottom: 12px; font-family: inherit;
-  }
-  .modal-input::placeholder { color: rgba(255,255,255,0.5); }
-  .modal-textarea {
-    width: 100%; min-height: 100px;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px; padding: 14px 18px;
-    font-size: 15px; color: #fff; outline: none;
-    margin-bottom: 12px; font-family: inherit; resize: none;
-  }
-  .modal-primary {
-    width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 14px; padding: 14px;
-    font-size: 15px; font-weight: 600; color: #fff;
-    cursor: pointer; font-family: inherit;
-    box-shadow: 0 8px 24px rgba(255,100,80,0.5);
-  }
-  .link-box {
-    background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;
-    font-size: 12px; word-break: break-all;
-    color: #ffb380; margin-bottom: 12px;
-    border: 1px solid rgba(255,140,66,0.3); text-align: center;
-  }
+  .modal-close { background: rgba(255,255,255,0.1); border: none; border-radius: 12px; padding: 12px; width: 100%; color: #fff; font-size: 14px; cursor: pointer; font-family: inherit; margin-top: 8px; }
+  .modal-input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; }
+  .modal-textarea { width: 100%; min-height: 100px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; resize: none; }
+  .modal-primary { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+  .link-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; font-size: 12px; word-break: break-all; color: #ffb380; margin-bottom: 12px; border: 1px solid rgba(255,140,66,0.3); text-align: center; }
 
-  .promo-card {
-    margin: 8px 16px 14px; padding: 16px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-  }
-  .promo-card.prime {
-    background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,247,0.15));
-    border-color: rgba(0,212,255,0.35);
-  }
-  .promo-card.sunset {
-    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,66,0.15));
-    border-color: rgba(255,215,0,0.35);
-  }
+  .promo-card { margin: 8px 16px 14px; padding: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; }
+  .promo-card.prime { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,247,0.15)); border-color: rgba(0,212,255,0.35); }
+  .promo-card.sunset { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,66,0.15)); border-color: rgba(255,215,0,0.35); }
   .promo-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
-  .promo-emoji { font-size: 32px; line-height: 1; }
+  .promo-emoji { font-size: 32px; }
   .promo-name { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .promo-desc { color: rgba(255,255,255,0.65); font-size: 12px; line-height: 1.4; }
   .promo-prices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-  .promo-price {
-    flex: 1; min-width: 120px; padding: 12px 14px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; color: #fff; font-size: 14px; font-weight: 700;
-    cursor: pointer; font-family: inherit;
-    box-shadow: 0 4px 12px rgba(255,100,80,0.35);
-    text-align: center;
-  }
-  .promo-price.prime-btn {
-    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-    box-shadow: 0 4px 12px rgba(0,212,255,0.35);
-  }
-  .promo-price.sunset-btn {
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #000;
-    box-shadow: 0 4px 12px rgba(255,215,0,0.35);
-  }
-  .promo-note {
-    text-align: center; color: rgba(255,255,255,0.55);
-    font-size: 11px; padding: 16px 20px 30px; line-height: 1.5;
-  }
+  .promo-price { flex: 1; min-width: 120px; padding: 12px 14px; border-radius: 12px; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; text-align: center; }
+  .promo-price.prime-btn { background: linear-gradient(135deg, #00d4ff, #7b2ff7); }
+  .promo-price.sunset-btn { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
+  .promo-note { text-align: center; color: rgba(255,255,255,0.55); font-size: 11px; padding: 16px 20px 30px; }
 
-  /* ПРЕМИУМ СПИСКИ */
-  .premium-features {
-    margin: 12px 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .feat {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    color: rgba(255,255,255,0.9);
-    font-size: 13px;
-    line-height: 1.4;
-    padding: 4px 0;
-  }
+  .premium-features { margin: 12px 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .feat { display: flex; align-items: flex-start; gap: 10px; color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.4; padding: 4px 0; }
   .feat b { color: #fff; }
-  .feat-icon {
-    flex-shrink: 0;
-    font-size: 16px;
-    width: 22px;
-    text-align: center;
-  }
+  .feat-icon { flex-shrink: 0; font-size: 16px; width: 22px; text-align: center; }
 
-  .sticker-packs {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px; padding: 8px 16px;
-  }
-  .pack-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px; padding: 14px;
-    text-align: center; cursor: pointer;
-  }
+  .sticker-packs { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; padding: 8px 16px; }
+  .pack-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; text-align: center; cursor: pointer; }
   .pack-card.locked { opacity: 0.6; }
   .pack-card .pack-emoji { font-size: 32px; margin-bottom: 8px; }
   .pack-card .pack-name { color: #fff; font-size: 13px; font-weight: 600; }
@@ -617,16 +234,18 @@
 
 <div class="sunset-photo"></div>
 
+<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
-    <p>Добро пожаловать 👋</p>
+    <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
-    <input type="text" class="reg-input" id="regName" placeholder="Ваше имя" maxlength="20">
-    <button class="reg-btn" id="regBtn">Начать</button>
+    <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
+    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
   </div>
 </div>
 
+<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left" id="myProfileBtn">
@@ -643,7 +262,6 @@
   </div>
 
   <div class="content" id="content">
-
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
@@ -658,7 +276,7 @@
 
     <div class="tab-content" id="tab-feed">
       <div class="stories-row" id="storiesRow"></div>
-      <div class="section-title" style="padding-top:6px;">📝 Посты</div>
+      <div class="section-title">📝 Посты</div>
       <div id="postsList"></div>
     </div>
 
@@ -693,15 +311,15 @@
         </div>
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">✅</span><span><b>Галочка ⭐</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">🚫</span><span><b>Без рекламы</b> других пользователей</span></div>
-          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак стикеров Sunset</b> — 12 эксклюзивных</span></div>
+          <div class="feat"><span class="feat-icon">🚫</span><span><b>Без рекламы</b> других</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак стикеров Sunset</b></span></div>
           <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>без лимита</b></span></div>
           <div class="feat"><span class="feat-icon">📊</span><span><b>Кто смотрел профиль</b></span></div>
-          <div class="feat"><span class="feat-icon">🎨</span><span><b>5 эксклюзивных тем</b> оформления</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>5 эксклюзивных тем</b></span></div>
           <div class="feat"><span class="feat-icon">📝</span><span>До <b>500 постов/мес</b></span></div>
           <div class="feat"><span class="feat-icon">📎</span><span>Файлы до <b>500 МБ</b></span></div>
           <div class="feat"><span class="feat-icon">⚡</span><span>Поддержка <b>за 24 часа</b></span></div>
-          <div class="feat"><span class="feat-icon">👥</span><span>Создавать <b>группы и каналы</b> без ограничений</span></div>
+          <div class="feat"><span class="feat-icon">👥</span><span><b>Группы и каналы</b> без ограничений</span></div>
         </div>
         <div class="promo-prices">
           <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="3200">Купить за 3 200 ₽ / год</button>
@@ -717,16 +335,16 @@
           </div>
         </div>
         <div class="premium-features">
-          <div class="feat"><span class="feat-icon">💎</span><span><b>Значок Prime 💎</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак стикеров Prime</b> — Sunset не может им пользоваться</span></div>
+          <div class="feat"><span class="feat-icon">💎</span><span><b>Значок Prime 💎</b></span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак Prime</b> — Sunset не может</span></div>
           <div class="feat"><span class="feat-icon">📝</span><span>До <b>1 000 постов/мес</b></span></div>
-          <div class="feat"><span class="feat-icon">👁️</span><span>Твои посты видят <b>ВСЕ 100%</b> (у обычных только 2%)</span></div>
-          <div class="feat"><span class="feat-icon">⭐</span><span><b>Приоритетный показ</b> — посты и комменты наверху</span></div>
+          <div class="feat"><span class="feat-icon">👁️</span><span>Посты видят <b>ВСЕ 100%</b></span></div>
+          <div class="feat"><span class="feat-icon">⭐</span><span><b>Приоритетный показ</b></span></div>
           <div class="feat"><span class="feat-icon">📎</span><span>Файлы до <b>2 ГБ</b></span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>всегда первыми</b> в ленте</span></div>
-          <div class="feat"><span class="feat-icon">🎵</span><span>Свой трек <b>в топ</b> музыки</span></div>
-          <div class="feat"><span class="feat-icon">👑</span><span><b>1 мес продвижения канала</b> в подарок</span></div>
-          <div class="feat"><span class="feat-icon">🎨</span><span><b>15 эксклюзивных тем</b> оформления</span></div>
+          <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>первыми</b></span></div>
+          <div class="feat"><span class="feat-icon">🎵</span><span>Свой трек <b>в топ</b></span></div>
+          <div class="feat"><span class="feat-icon">👑</span><span><b>1 мес продвижения</b> канала</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>15 эксклюзивных тем</b></span></div>
           <div class="feat"><span class="feat-icon">💬</span><span>Посты до <b>5 000 символов</b></span></div>
           <div class="feat"><span class="feat-icon">⚡</span><span>Поддержка <b>за 6 часов</b></span></div>
         </div>
@@ -779,9 +397,7 @@
         </div>
       </div>
 
-      <div class="promo-note">
-        💳 Оплата только рублями: СБП · Карта.
-      </div>
+      <div class="promo-note">💳 Оплата только рублями: СБП · Карта.</div>
     </div>
   </div>
 
@@ -814,9 +430,7 @@
       </div>
       <button class="chat-menu" id="chatMenuBtn">⋯</button>
     </div>
-    <div class="invite-bar" id="inviteBar" style="display:none;">
-      🔗 Пригласить по ссылке
-    </div>
+    <div class="invite-bar" id="inviteBar" style="display:none;">🔗 Пригласить по ссылке</div>
     <div class="chat-body" id="chatBody"></div>
     <div class="sticker-row" id="stickerRow"></div>
     <div class="chat-input-bar">
@@ -830,32 +444,11 @@
   <div class="modal-card">
     <div class="modal-title">Создать</div>
     <div class="modal-sub">Выбери что хочешь сделать</div>
-
-    <div class="modal-option" data-action="post">
-      <div class="opt-title">📝 Пост</div>
-      <div class="opt-desc">Опубликовать в ленте. Обычные: видят 2%, Prime: до 1000/мес всем</div>
-    </div>
-
-    <div class="modal-option" data-action="story">
-      <div class="opt-title">📸 История</div>
-      <div class="opt-desc">Кружок вверху ленты, 24 часа</div>
-    </div>
-
-    <div class="modal-option" data-action="group-open">
-      <div class="opt-title">🌍 Открытая группа</div>
-      <div class="opt-desc">Любой может найти и зайти</div>
-    </div>
-
-    <div class="modal-option" data-action="group-closed">
-      <div class="opt-title">🔒 Закрытая группа</div>
-      <div class="opt-desc">Только по ссылке-приглашению</div>
-    </div>
-
-    <div class="modal-option" data-action="channel">
-      <div class="opt-title">📢 Канал</div>
-      <div class="opt-desc">Публикуешь посты о жизни</div>
-    </div>
-
+    <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Опубликовать в ленте</div></div>
+    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты, 24 часа</div></div>
+    <div class="modal-option" data-action="group-open"><div class="opt-title">🌍 Открытая группа</div><div class="opt-desc">Любой может найти и зайти</div></div>
+    <div class="modal-option" data-action="group-closed"><div class="opt-title">🔒 Закрытая группа</div><div class="opt-desc">Только по ссылке</div></div>
+    <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Посты о жизни</div></div>
     <button class="modal-close" data-close="createModal">Отмена</button>
   </div>
 </div>
@@ -865,7 +458,7 @@
     <div class="modal-title" id="formTitle">Новая группа</div>
     <div class="modal-sub" id="formSub">Опиши коротко</div>
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40">
-    <textarea class="modal-textarea" id="formText" placeholder="Текст поста / истории..." style="display:none;"></textarea>
+    <textarea class="modal-textarea" id="formText" placeholder="Текст..." style="display:none;"></textarea>
     <div id="linkResult" style="display:none;">
       <div style="font-size:12px;opacity:0.7;margin-bottom:8px;">Ссылка для приглашения:</div>
       <div class="link-box" id="linkBox"></div>
@@ -887,14 +480,8 @@
 <div class="modal" id="chatMenuModal">
   <div class="modal-card">
     <div class="modal-title">Действия</div>
-    <div class="modal-option" id="clearChatBtn">
-      <div class="opt-title">🗑️ Удалить переписку</div>
-      <div class="opt-desc">Удалить все сообщения из этого чата</div>
-    </div>
-    <div class="modal-option" id="deleteChatBtn">
-      <div class="opt-title">❌ Удалить чат</div>
-      <div class="opt-desc">Полное удаление чата</div>
-    </div>
+    <div class="modal-option" id="clearChatBtn"><div class="opt-title">🗑️ Удалить переписку</div><div class="opt-desc">Все сообщения</div></div>
+    <div class="modal-option" id="deleteChatBtn"><div class="opt-title">❌ Удалить чат</div><div class="opt-desc">Полное удаление</div></div>
     <button class="modal-close" data-close="chatMenuModal">Отмена</button>
   </div>
 </div>
@@ -902,22 +489,68 @@
 <audio id="audioPlayer"></audio>
 
 <script>
-function cacheGet(k, a) {
-  try { const r = localStorage.getItem('cache_' + k); if (!r) return null;
-    const o = JSON.parse(r); if (Date.now() - o.timestamp > (a || 3600000)) return null;
-    return o.data;
-  } catch(e) { return null; }
+/* ============ РЕГИСТРАЦИЯ — РАБОТАЕТ 100% ============ */
+const STORAGE_KEY = 'sunset_user_v12';
+const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
+let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+
+const avatarPreview = document.getElementById('avatarPreview');
+const regName = document.getElementById('regName');
+const regBtn = document.getElementById('regBtn');
+
+// Устанавливаем цвет сразу
+avatarPreview.style.background = chosenColor;
+avatarPreview.textContent = '?';
+
+// Клик по аватару — меняем цвет
+avatarPreview.addEventListener('click', function() {
+  let i = AVATAR_COLORS.indexOf(chosenColor);
+  i = (i + 1) % AVATAR_COLORS.length;
+  chosenColor = AVATAR_COLORS[i];
+  avatarPreview.style.background = chosenColor;
+});
+
+// Обновление буквы аватара
+function updateAvatarLetter() {
+  const n = (regName.value || '').trim();
+  avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
 }
-function cacheSet(k, d) {
-  try { localStorage.setItem('cache_' + k, JSON.stringify({ timestamp: Date.now(), data: d })); } catch(e) {}
+regName.addEventListener('input', updateAvatarLetter);
+regName.addEventListener('change', updateAvatarLetter);
+regName.addEventListener('keyup', updateAvatarLetter);
+regName.addEventListener('paste', () => setTimeout(updateAvatarLetter, 50));
+
+// Главное — кнопка продолжения
+function continueToApp() {
+  const n = (regName.value || '').trim();
+  if (n.length < 2) {
+    alert('Введите имя (минимум 2 символа)');
+    regName.focus();
+    return;
+  }
+  currentUser = { name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), premium: null };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+  startApp();
 }
 
-const STORAGE_KEY = 'sunset_user_v11';
-const CHATS_KEY = 'sunset_chats_v11';
-const GROUPS_KEY = 'sunset_groups_v11';
-const CHANNELS_KEY = 'sunset_channels_v11';
-const POSTS_KEY = 'sunset_posts_v11';
-const STORIES_KEY = 'sunset_stories_v11';
+// Дублируем обработчики чтобы точно сработало
+regBtn.addEventListener('click', continueToApp);
+regBtn.addEventListener('touchend', function(e) { e.preventDefault(); continueToApp(); });
+regBtn.onclick = continueToApp;
+
+// Enter в поле имени
+regName.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    continueToApp();
+  }
+});
+
+/* ============ ОБЩИЕ ДАННЫЕ ============ */
+const CHATS_KEY = 'sunset_chats_v12';
+const GROUPS_KEY = 'sunset_groups_v12';
+const CHANNELS_KEY = 'sunset_channels_v12';
+const POSTS_KEY = 'sunset_posts_v12';
+const STORIES_KEY = 'sunset_stories_v12';
 
 let currentUser = null;
 let chats = {};
@@ -929,17 +562,19 @@ let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
 
+/* ============ СТИКЕРЫ ============ */
 const STICKER_PACKS = {
-  free_smileys: { name: 'Смайлики', emoji: '😀', emojis: ['😀','😂','🥰','😎','🤔','😴','🤗','😭','😡','🤯','🥳','😇'], price: 0 },
-  free_animals: { name: 'Животные', emoji: '🐶', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮'], price: 0 },
-  free_food: { name: 'Еда', emoji: '🍕', emojis: ['🍕','🍔','🍟','🌭','🍿','🍩','🍪','🍰','🍫','🍬','🍎','🍇'], price: 0 },
-  free_emoji: { name: 'Эмоции', emoji: '❤️', emojis: ['❤️','💔','💕','💖','💗','😍','😘','🥺','🙈','💜','🧡','💚'], price: 0 },
-  free_symbols: { name: 'Знаки', emoji: '⭐', emojis: ['⭐','🌟','✨','⚡','💫','🔥','❄️','💧','🌈','☀️','🌙','☁️'], price: 0 },
-  free_actions: { name: 'Действия', emoji: '👍', emojis: ['👍','👎','👏','🙏','💪','🤝','✌️','👌','🤙','🖐️','👋','✋'], price: 0 },
-  sunset_pack: { name: 'Sunset Exclusive', emoji: '⭐', emojis: ['🌅','🌇','🌄','🎇','🎆','✨','💫','⭐','🌟','🪐','🌠','🔮'], price: 0, requirePremium: 'sunset' },
-  prime_pack: { name: 'Prime Diamond', emoji: '💎', emojis: ['💎','👑','🏆','🥇','🎖️','🏅','⚜️','🔱','💠','🔷','💠','🆒'], price: 0, requirePremium: 'prime' }
+  free_smileys: { name: 'Смайлики', emoji: '😀', emojis: ['😀','😂','🥰','😎','🤔','😴','🤗','😭','😡','🤯','🥳','😇'] },
+  free_animals: { name: 'Животные', emoji: '🐶', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮'] },
+  free_food: { name: 'Еда', emoji: '🍕', emojis: ['🍕','🍔','🍟','🌭','🍿','🍩','🍪','🍰','🍫','🍬','🍎','🍇'] },
+  free_emoji: { name: 'Эмоции', emoji: '❤️', emojis: ['❤️','💔','💕','💖','💗','😍','😘','🥺','🙈','💜','🧡','💚'] },
+  free_symbols: { name: 'Знаки', emoji: '⭐', emojis: ['⭐','🌟','✨','⚡','💫','🔥','❄️','💧','🌈','☀️','🌙','☁️'] },
+  free_actions: { name: 'Действия', emoji: '👍', emojis: ['👍','👎','👏','🙏','💪','🤝','✌️','👌','🤙','🖐️','👋','✋'] },
+  sunset_pack: { name: 'Sunset Exclusive', emoji: '⭐', emojis: ['🌅','🌇','🌄','🎇','🎆','✨','💫','⭐','🌟','🪐','🌠','🔮'], requirePremium: 'sunset' },
+  prime_pack: { name: 'Prime Diamond', emoji: '💎', emojis: ['💎','👑','🏆','🥇','🎖️','🏅','⚜️','🔱','💠','🔷','💠','🆒'], requirePremium: 'prime' }
 };
 
+/* ============ ЛЮДИ ============ */
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
   ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
@@ -956,40 +591,32 @@ const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji
 
 const COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
-  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры и геймеры', type: 'community' },
-  { id: 'comm_tech', name: 'Технологии', color: '#06b6d4', emoji: '💻', desc: 'IT и гаджеты', type: 'community' },
+  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community' },
+  { id: 'comm_tech', name: 'Технологии', color: '#06b6d4', emoji: '💻', desc: 'IT', type: 'community' },
   { id: 'comm_sport', name: 'Спорт и ЗОЖ', color: '#f59e0b', emoji: '💪', desc: 'Тренировки', type: 'community' },
   { id: 'comm_art', name: 'Искусство', color: '#ec4899', emoji: '🎨', desc: 'Творчество', type: 'community' },
   { id: 'comm_memes', name: 'Мемы 24/7', color: '#ef4444', emoji: '😂', desc: 'Юмор', type: 'community' }
 ];
 
-const BOT_TEMPLATES = {
-  greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют'],
-  reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Норм!', 'Топ!'],
-  agree: ['Согласен', 'Точно', 'Именно так', 'Однозначно', 'Да, это так'],
-  emoji_fun: ['😄','😁','🤣','😊','😜','😂','😎','🤩'],
-  emoji_ok: ['👌','👍','✌️','💪','👏','✅','🔥','⚡'],
-  short: ['Угу','Ага','Ок','Понял','Ясно','Хорошо','Ладно','Норм']
-};
+/* ============ БОТЫ ============ */
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function generateReply(t) {
   const l = t.toLowerCase();
-  if (/привет|здравств|хай|hi|hello|ку/i.test(l)) return rnd(['Привет!','Приветик!','Хай!','Ку!']) + ' ' + rnd(BOT_TEMPLATES.emoji_fun);
-  if (/как дела|как ты|как жизнь|как сам/i.test(l)) return rnd(['Всё отлично!','Хорошо!','Отлично!']) + ' А у тебя как?';
+  if (/привет|здравств|хай|hi|hello|ку/i.test(l)) return rnd(['Привет!','Приветик!','Хай!','Ку!','Салют!']) + ' ' + rnd(['😄','😁','🤣','😊','😎']);
+  if (/как дела|как ты|как жизнь/i.test(l)) return rnd(['Всё отлично!','Хорошо!','Отлично!']) + ' А у тебя как?';
   if (/\?$/.test(t.trim())) return rnd(['Хороший вопрос','Интересно','Хм']) + ', а ты что думаешь?';
-  const all = [...BOT_TEMPLATES.reaction, ...BOT_TEMPLATES.agree, ...BOT_TEMPLATES.short, ...BOT_TEMPLATES.emoji_ok];
-  return rnd(all);
+  return rnd(['Классно!','Круто!','Огонь!','Супер!','Отлично!','Вау!','Норм!','Топ!','Согласен','Точно','Именно так','👍','👌','🔥']);
 }
 function botJoinCheck(link, groupName) {
   setTimeout(() => {
-    const bot = rnd(['Алекс','Мария','Дмитрий','Иван','София']);
     if (activeChat && activeChat.name === groupName) {
-      addMsgToDOM({ text: '🔗 ' + bot + ' присоединился по ссылке', time: nowTime(), from: 'system' });
+      addMsgToDOM({ text: '🔗 ' + rnd(['Алекс','Мария','Дмитрий']) + ' присоединился по ссылке', time: nowTime(), from: 'system' });
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   }, 3000);
 }
 
+/* ============ МУЗЫКА ============ */
 const SONGS = [
   ['Imagine Dragons', 'Believer'],['Ed Sheeran', 'Shape of You'],['The Weeknd', 'Blinding Lights'],
   ['Dua Lipa', 'Levitating'],['Billie Eilish', 'Bad Guy'],['Post Malone', 'Circles'],
@@ -1016,48 +643,17 @@ const SONGS = [
 let currentTrack = null;
 
 const STORY_TEMPLATES = [
-  { author: 'Мария', color: '#a06cd5', text: 'Погуляла в парке — идеальный закат 🌅' },
-  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой сайт! Ура 🎉' },
-  { author: 'Анна', color: '#ff5e8c', text: 'Сделала пасту карбонару 🍝' },
+  { author: 'Мария', color: '#a06cd5', text: 'Погуляла в парке 🌅' },
+  { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил сайт! 🎉' },
+  { author: 'Анна', color: '#ff5e8c', text: 'Сделала пасту 🍝' },
   { author: 'Иван', color: '#4ecdc4', text: 'Пробежал 10 км 💪' },
-  { author: 'София', color: '#ba68c8', text: 'Читаю Мастера и Маргариту 📖' },
+  { author: 'София', color: '#ba68c8', text: 'Читаю книгу 📖' },
   { author: 'Никита', color: '#26a69a', text: 'Купил винил 🎵' },
-  { author: 'Елена', color: '#f5a623', text: 'Рисую акварелью 🎨' },
-  { author: 'Сергей', color: '#7b68ee', text: 'Собрал новый ПК 💻' }
+  { author: 'Елена', color: '#f5a623', text: 'Рисую 🎨' },
+  { author: 'Сергей', color: '#7b68ee', text: 'Собрал ПК 💻' }
 ];
 
-const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
-let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-const avatarPreview = document.getElementById('avatarPreview');
-const regName = document.getElementById('regName');
-const regBtn = document.getElementById('regBtn');
-
-function updateAvatar() {
-  const n = regName.value.trim();
-  avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
-  avatarPreview.style.background = chosenColor;
-  regBtn.style.opacity = n.length >= 2 ? '1' : '0.6';
-}
-avatarPreview.addEventListener('click', () => {
-  let i = AVATAR_COLORS.indexOf(chosenColor);
-  i = (i + 1) % AVATAR_COLORS.length;
-  chosenColor = AVATAR_COLORS[i];
-  updateAvatar();
-});
-regName.addEventListener('input', updateAvatar);
-regName.addEventListener('change', updateAvatar);
-regName.addEventListener('paste', () => setTimeout(updateAvatar, 50));
-setInterval(updateAvatar, 300);
-avatarPreview.style.background = chosenColor;
-
-regBtn.addEventListener('click', () => {
-  const n = regName.value.trim();
-  if (n.length < 2) { alert('Имя от 2 символов'); return; }
-  currentUser = { name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), premium: null };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-  startApp();
-});
-
+/* ============ СТАРТ ============ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
@@ -1065,11 +661,13 @@ function startApp() {
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
 
-  chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
-  groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
-  channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
-  posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
-  userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+  try {
+    chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
+    groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
+    channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
+    posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
+    userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+  } catch(e) {}
 
   updatePremiumBadge();
   renderChatsList('people');
@@ -1079,7 +677,6 @@ function startApp() {
   renderChannelsList();
   renderStickerPacks();
   renderStickerRow();
-  scheduleHourlyRefresh();
 }
 
 function updatePremiumBadge() {
@@ -1104,9 +701,16 @@ function updatePremiumBadge() {
   }
 }
 
-const savedUser = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-if (savedUser) { currentUser = savedUser; setTimeout(startApp, 200); }
+// Автозаход если уже зарегистрирован
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+  if (saved && saved.name) {
+    currentUser = saved;
+    setTimeout(startApp, 100);
+  }
+} catch(e) {}
 
+/* ============ НАВИГАЦИЯ ============ */
 document.querySelectorAll('.nav-btn').forEach(b => {
   b.addEventListener('click', () => {
     const tab = b.dataset.tab;
@@ -1130,45 +734,26 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
   renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
+/* ============ СПИСОК ЧАТОВ ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   list.innerHTML = '';
-  list.className = '';
 
   let items = [];
   if (tab === 'people') items = PEOPLE.map(p => ({ ...p, type: 'person' }));
   else if (tab === 'groups') {
     items = groups.map(g => ({ ...g, type: 'group' }));
     if (!items.length) {
-      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>У вас пока нет групп.<br>Нажмите <b>+</b> справа вверху,<br>чтобы создать первую!</p></div>';
+      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>У вас пока нет групп.<br>Нажмите <b>+</b> сверху.</p></div>';
       return;
     }
   } else if (tab === 'communities') items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
+
   if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
   if (!items.length) {
-    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
+    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Не найдено</p></div>';
     return;
   }
-
-  items.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'card-item';
-    let badge = '';
-    if (item.type === 'group') badge = item.closed ? '<span class="badge closed">🔒</span>' : '<span class="badge open">🌍</span>';
-    else if (item.type === 'community') badge = '<span class="badge open">🌍</span>';
-    const lastMsg = chats[item.id] && chats[item.id].length ? chats[item.id][chats[item.id].length-1].text : (item.desc || 'Написать');
-    let cls = 'card-avatar';
-    if (item.type === 'group') cls += ' group';
-    div.innerHTML = '<div class="' + cls + '" style="background:' + item.color + '">' + item.emoji + '</div>' +
-      '<div class="card-info"><div class="card-name">' + esc(item.name) + badge + '</div>' +
-      '<div class="card-sub">' + esc(lastMsg) + '</div></div>';
-    div.addEventListener('click', () => openChat(item));
-    list.appendChild(div);
-  });
-}
-
-  // Люди — сетка 2 колонки. Группы/сообщества — обычный список
-  if (tab === 'people') list.classList.add('chats-grid');
 
   items.forEach(item => {
     const div = document.createElement('div');
@@ -1191,16 +776,17 @@ function esc(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+/* ============ СТОРИС ============ */
 function renderStories() {
   const row = document.getElementById('storiesRow');
   row.innerHTML = '';
   const mine = document.createElement('div');
   mine.className = 'story-circle';
-  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Моя история</div>';
+  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Моя</div>';
   mine.addEventListener('click', () => {
     pendingAction = 'story';
-    document.getElementById('formTitle').textContent = '📸 Новая история';
-    document.getElementById('formSub').textContent = 'Текст истории (24ч)';
+    document.getElementById('formTitle').textContent = '📸 История';
+    document.getElementById('formSub').textContent = 'Текст (24ч)';
     document.getElementById('formName').style.display = 'none';
     document.getElementById('formText').style.display = 'block';
     document.getElementById('formText').value = '';
@@ -1208,7 +794,7 @@ function renderStories() {
     document.getElementById('formModal').classList.add('show');
   });
   row.appendChild(mine);
-  userStories.forEach((s) => {
+  userStories.forEach(s => {
     const d = document.createElement('div');
     d.className = 'story-circle';
     d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.emoji + '</div></div><div class="story-label">' + esc(s.author) + '</div>';
@@ -1218,36 +804,34 @@ function renderStories() {
     const d = document.createElement('div');
     d.className = 'story-circle';
     d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.author.charAt(0) + '</div></div><div class="story-label">' + esc(s.author) + '</div>';
-    d.addEventListener('click', () => alert('📸 История от ' + s.author + '\n\n' + s.text));
+    d.addEventListener('click', () => alert('📸 ' + s.author + '\n\n' + s.text));
     row.appendChild(d);
   });
 }
 
+/* ============ ПОСТЫ ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   el.innerHTML = '';
   posts.forEach(p => el.appendChild(buildPostEl(p, false)));
-  const seed = Math.floor(Date.now() / 3600000);
   const extra = [
-    { id: 'p1_' + seed, author: 'Мария', color: '#a06cd5', text: 'Закат сегодня был невероятный 🌅 Кто видел?', time: '2 ч', likes: 12, reposts: 3, comments: [] },
-    { id: 'p2_' + seed, author: 'Дмитрий', color: '#4a90e2', text: 'Начал учить React Native. Кто-нибудь делал на нём приложение?', time: '3 ч', likes: 8, reposts: 1, comments: [] },
-    { id: 'p3_' + seed, author: 'Анна', color: '#ff5e8c', text: 'Сделала тако 🌮 Пальчики оближешь!', time: '5 ч', likes: 23, reposts: 5, comments: [] }
+    { id: 'e1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅', time: '2 ч', likes: 12, reposts: 3, comments: [] },
+    { id: 'e2', author: 'Дмитрий', color: '#4a90e2', text: 'Начал учить React Native', time: '3 ч', likes: 8, reposts: 1, comments: [] },
+    { id: 'e3', author: 'Анна', color: '#ff5e8c', text: 'Сделала тако 🌮', time: '5 ч', likes: 23, reposts: 5, comments: [] }
   ];
-  extra.forEach(p => el.appendChild(buildPostEl(p, false, true)));
+  extra.forEach(p => el.appendChild(buildPostEl(p, false)));
 }
 
-function buildPostEl(p, isMine, isOther) {
+function buildPostEl(p, isMine) {
   const div = document.createElement('div');
   div.className = 'post';
-  const liked = p.likedByMe;
-  const reposted = p.repostedByMe;
   div.innerHTML =
     '<div class="post-header"><div class="post-avatar" style="background:' + p.color + '">' + p.author.charAt(0) + '</div>' +
-      '<div class="post-meta"><div class="post-author">' + esc(p.author) + (isMine ? ' <span style="font-size:10px;opacity:0.6">— ваш пост</span>' : '') + '</div><div class="post-time">' + p.time + '</div></div></div>' +
+      '<div class="post-meta"><div class="post-author">' + esc(p.author) + '</div><div class="post-time">' + p.time + '</div></div></div>' +
     '<div class="post-text">' + esc(p.text) + '</div>' +
     '<div class="post-actions">' +
-      '<button class="post-action like-btn ' + (liked ? 'liked' : '') + '">' + (liked ? '❤️' : '🤍') + ' ' + (p.likes || 0) + '</button>' +
-      '<button class="post-action repost-btn ' + (reposted ? 'reposted' : '') + '">🔄 ' + (p.reposts || 0) + '</button>' +
+      '<button class="post-action like-btn">🤍 ' + (p.likes || 0) + '</button>' +
+      '<button class="post-action repost-btn">🔄 ' + (p.reposts || 0) + '</button>' +
       '<button class="post-action comment-btn">💬 Комментировать</button>' +
     '</div>' +
     '<div class="post-comments" style="display:none">' +
@@ -1255,23 +839,21 @@ function buildPostEl(p, isMine, isOther) {
       '<div class="comment-input-row"><input type="text" class="comment-input" placeholder="Комментарий..."><button class="comment-send">➤</button></div>' +
     '</div>';
 
-  const likeBtn = div.querySelector('.like-btn');
-  const repostBtn = div.querySelector('.repost-btn');
-  const commentBtn = div.querySelector('.comment-btn');
-  const commentsBlock = div.querySelector('.post-comments');
-
-  likeBtn.addEventListener('click', () => {
-    if (liked) { p.likes--; p.likedByMe = false; likeBtn.classList.remove('liked'); likeBtn.innerHTML = '🤍 ' + p.likes; }
-    else { p.likes = (p.likes || 0) + 1; p.likedByMe = true; likeBtn.classList.add('liked'); likeBtn.innerHTML = '❤️ ' + p.likes; }
+  div.querySelector('.like-btn').addEventListener('click', function() {
+    p.likes = (p.likes || 0) + 1;
+    this.innerHTML = '❤️ ' + p.likes;
+    this.classList.add('liked');
     savePostsIfMine(p);
   });
-  repostBtn.addEventListener('click', () => {
-    if (reposted) { p.reposts--; p.repostedByMe = false; repostBtn.classList.remove('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
-    else { p.reposts = (p.reposts || 0) + 1; p.repostedByMe = true; repostBtn.classList.add('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
+  div.querySelector('.repost-btn').addEventListener('click', function() {
+    p.reposts = (p.reposts || 0) + 1;
+    this.innerHTML = '🔄 ' + p.reposts;
+    this.classList.add('reposted');
     savePostsIfMine(p);
   });
-  commentBtn.addEventListener('click', () => {
-    commentsBlock.style.display = commentsBlock.style.display === 'none' ? 'block' : 'none';
+  const cb = div.querySelector('.post-comments');
+  div.querySelector('.comment-btn').addEventListener('click', () => {
+    cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
   });
   const input = div.querySelector('.comment-input');
   const send = div.querySelector('.comment-send');
@@ -1281,11 +863,7 @@ function buildPostEl(p, isMine, isOther) {
     if (!p.comments) p.comments = [];
     p.comments.push({ author: currentUser.name, text: t });
     input.value = '';
-    commentsBlock.innerHTML = (p.comments || []).map(c => '<div class="comment"><span class="comment-author">' + esc(c.author) + ':</span> ' + esc(c.text) + '</div>').join('') +
-      '<div class="comment-input-row"><input type="text" class="comment-input" placeholder="Комментарий..."><button class="comment-send">➤</button></div>';
-    const ni = commentsBlock.querySelector('.comment-input');
-    const ns = commentsBlock.querySelector('.comment-send');
-    ns.addEventListener('click', () => { const t2 = ni.value.trim(); if (!t2) return; p.comments.push({author: currentUser.name, text: t2}); ni.value=''; renderPosts(); });
+    cb.querySelector('.comment-input-row').insertAdjacentHTML('beforebegin', '<div class="comment"><span class="comment-author">' + esc(currentUser.name) + ':</span> ' + esc(t) + '</div>');
     savePostsIfMine(p);
   };
   send.addEventListener('click', sendComment);
@@ -1295,9 +873,10 @@ function buildPostEl(p, isMine, isOther) {
 
 function savePostsIfMine(p) {
   const idx = posts.findIndex(x => x.id === p.id);
-  if (idx !== -1) { posts[idx] = p; localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
+  if (idx !== -1) { posts[idx] = p; try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {} }
 }
 
+/* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
@@ -1315,11 +894,11 @@ function openChat(item) {
   const inv = document.getElementById('inviteBar');
   if (item.type === 'group' && item.closed && item.link) {
     inv.style.display = 'flex';
-    inv.onclick = () => { if (navigator.clipboard) navigator.clipboard.writeText(item.link); alert('Ссылка скопирована:\n' + item.link); };
+    inv.onclick = () => { if (navigator.clipboard) navigator.clipboard.writeText(item.link); alert('Ссылка:\n' + item.link); };
   } else inv.style.display = 'none';
 
   document.getElementById('chatStatus').textContent =
-    item.type === 'group' ? (item.closed ? 'закрытая группа' : 'открытая группа') :
+    item.type === 'group' ? (item.closed ? 'закрытая' : 'открытая') :
     item.type === 'community' ? 'сообщество' :
     item.type === 'channel' ? 'канал' : 'в сети';
 
@@ -1337,11 +916,11 @@ function renderChat() {
     chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
     return;
   }
-  msgs.forEach((m, idx) => addMsgToDOM(m, idx));
+  msgs.forEach(m => addMsgToDOM(m));
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-function addMsgToDOM(msg, idx) {
+function addMsgToDOM(msg) {
   const div = document.createElement('div');
   if (msg.from === 'system') {
     div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
@@ -1350,28 +929,8 @@ function addMsgToDOM(msg, idx) {
     div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them') + (msg.isSticker ? ' sticker' : '');
     if (msg.isSticker) div.textContent = msg.text;
     else div.innerHTML = esc(msg.text) + '<div class="time">' + msg.time + '</div>';
-    let pressTimer;
-    const startPress = () => { pressTimer = setTimeout(() => { if (confirm('Удалить это сообщение?')) deleteMessage(msg); }, 800); };
-    const cancelPress = () => clearTimeout(pressTimer);
-    div.addEventListener('touchstart', startPress);
-    div.addEventListener('touchend', cancelPress);
-    div.addEventListener('touchmove', cancelPress);
-    div.addEventListener('mousedown', startPress);
-    div.addEventListener('mouseup', cancelPress);
-    div.addEventListener('mouseleave', cancelPress);
   }
   chatBody.appendChild(div);
-}
-
-function deleteMessage(msg) {
-  if (!activeChat) return;
-  const arr = chats[activeChat.id] || [];
-  const i = arr.indexOf(msg);
-  if (i !== -1) {
-    arr.splice(i, 1);
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-    renderChat();
-  }
 }
 
 function nowTime() {
@@ -1389,7 +948,7 @@ function sendMsg() {
 function pushMessage(msg) {
   if (!chats[activeChat.id]) chats[activeChat.id] = [];
   chats[activeChat.id].push(msg);
-  localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+  try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
   addMsgToDOM(msg);
   chatBody.scrollTop = chatBody.scrollHeight;
   const item = activeChat;
@@ -1401,7 +960,7 @@ function pushMessage(msg) {
         const sn = item.type === 'person' ? item.name : rnd(PEOPLE).name;
         const reply = { text: item.type === 'person' ? rt : sn + ': ' + rt, time: nowTime(), from: 'them' };
         chats[item.id].push(reply);
-        localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+        try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
         if (activeChat && activeChat.id === item.id) {
           addMsgToDOM(reply);
           chatBody.scrollTop = chatBody.scrollHeight;
@@ -1417,14 +976,14 @@ chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); }
 document.getElementById('backBtn').addEventListener('click', () => {
   chatEl.classList.remove('show');
   activeChat = null;
-  renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
-  renderPosts();
+  renderChatsList(currentSearchTab, '');
 });
 
 document.getElementById('settingsBtn').addEventListener('click', () => {
   if (confirm('Выйти из аккаунта?')) { localStorage.clear(); location.reload(); }
 });
 
+/* ============ СТИКЕРЫ ============ */
 function renderStickerRow() {
   const row = document.getElementById('stickerRow');
   row.innerHTML = '';
@@ -1435,16 +994,13 @@ function renderStickerRow() {
     else if (p.requirePremium === 'sunset' && (currentUser.premium === 'sunset' || currentUser.premium === 'prime')) owned.push(p);
     else if (p.requirePremium === 'prime' && currentUser.premium === 'prime') owned.push(p);
   });
-  const allEmojis = owned.flatMap(p => p.emojis);
-  const shuffled = allEmojis.sort(() => 0.5 - Math.random()).slice(0, 12);
+  const all = owned.flatMap(p => p.emojis);
+  const shuffled = all.sort(() => 0.5 - Math.random()).slice(0, 12);
   shuffled.forEach(e => {
     const b = document.createElement('button');
     b.className = 'sticker-btn';
     b.textContent = e;
-    b.addEventListener('click', () => {
-      if (!activeChat) return;
-      pushMessage({ text: e, time: nowTime(), from: 'me', isSticker: true });
-    });
+    b.addEventListener('click', () => { if (activeChat) pushMessage({ text: e, time: nowTime(), from: 'me', isSticker: true }); });
     row.appendChild(b);
   });
 }
@@ -1463,11 +1019,12 @@ function renderStickerPacks() {
       (p.requirePremium === 'sunset' ? ' sunset-pack' : '');
     div.innerHTML = '<div class="pack-emoji">' + p.emoji + '</div>' +
       '<div class="pack-name">' + p.name + '</div>' +
-      '<div class="pack-status">' + (owned ? '✅ Доступен' : (p.requirePremium === 'prime' ? '💎 Prime Premium' : '⭐ Sunset Premium')) + '</div>';
+      '<div class="pack-status">' + (owned ? '✅ Доступен' : (p.requirePremium === 'prime' ? '💎 Prime' : '⭐ Sunset')) + '</div>';
     el.appendChild(div);
   });
 }
 
+/* ============ МУЗЫКА ============ */
 function loadMusicList(q) {
   const el = document.getElementById('tracksList');
   el.innerHTML = '';
@@ -1517,6 +1074,7 @@ document.getElementById('playerClose').addEventListener('click', () => {
   document.getElementById('playerBar').classList.remove('show');
 });
 
+/* ============ КАНАЛЫ ============ */
 function renderChannelsList() {
   const list = document.getElementById('channelsList');
   list.innerHTML = '';
@@ -1537,6 +1095,7 @@ function renderChannelsList() {
   });
 }
 
+/* ============ МОДАЛКИ ============ */
 document.getElementById('plusBtn').addEventListener('click', () => {
   document.getElementById('createModal').classList.add('show');
 });
@@ -1560,17 +1119,11 @@ document.querySelectorAll('.modal-option').forEach(opt => {
     fn.style.display = 'block'; fx.style.display = 'none';
     document.getElementById('linkResult').style.display = 'none';
 
-    if (a === 'post') {
-      ft.textContent = '📝 Новый пост';
-      fs.textContent = currentUser.premium === 'prime' ? 'Prime: до 1000 постов/мес всем' : 'Обычные посты видят только 2% людей';
-      fn.style.display = 'none'; fx.style.display = 'block';
-    } else if (a === 'story') {
-      ft.textContent = '📸 Новая история';
-      fs.textContent = 'Текст истории (24 часа)';
-      fn.style.display = 'none'; fx.style.display = 'block';
-    } else if (a === 'group-open') { ft.textContent = '🌍 Открытая группа'; fs.textContent = 'Любой может найти и зайти'; }
-    else if (a === 'group-closed') { ft.textContent = '🔒 Закрытая группа'; fs.textContent = 'Только по ссылке-приглашению'; }
-    else if (a === 'channel') { ft.textContent = '📢 Канал'; fs.textContent = 'Вы публикуете посты о жизни'; }
+    if (a === 'post') { ft.textContent = '📝 Пост'; fs.textContent = 'Что нового?'; fn.style.display = 'none'; fx.style.display = 'block'; }
+    else if (a === 'story') { ft.textContent = '📸 История'; fs.textContent = 'Текст'; fn.style.display = 'none'; fx.style.display = 'block'; }
+    else if (a === 'group-open') { ft.textContent = '🌍 Открытая группа'; fs.textContent = 'Название'; }
+    else if (a === 'group-closed') { ft.textContent = '🔒 Закрытая группа'; fs.textContent = 'Название'; }
+    else if (a === 'channel') { ft.textContent = '📢 Канал'; fs.textContent = 'Название'; }
     document.getElementById('formModal').classList.add('show');
     setTimeout(() => { (fn.style.display === 'none' ? fx : fn).focus(); }, 300);
   });
@@ -1583,13 +1136,11 @@ document.getElementById('formCancel').addEventListener('click', () => {
 document.getElementById('formSubmit').addEventListener('click', function() {
   if (pendingAction === 'post') {
     const text = document.getElementById('formText').value.trim();
-    if (text.length < 3) { alert('Пост минимум 3 символа'); return; }
-    const p = { id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, time: 'сейчас', likes: 0, reposts: 0, comments: [], likedByMe: false, repostedByMe: false };
-    posts.unshift(p);
-    localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+    if (text.length < 3) { alert('Минимум 3 символа'); return; }
+    posts.unshift({ id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, time: 'сейчас', likes: 0, reposts: 0, comments: [] });
+    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderPosts();
-    alert(currentUser.premium === 'prime' ? '✅ Пост опубликован и виден всем!' : '📝 Пост создан. Обычные посты видят только 2% пользователей. Купите Prime Premium чтобы видели все.');
     return;
   }
   if (pendingAction === 'story') {
@@ -1597,13 +1148,13 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
     userStories.unshift({ id: 's_' + Date.now(), author: currentUser.name, color: currentUser.color, emoji: currentUser.emoji, text: text });
     if (userStories.length > 10) userStories = userStories.slice(0, 10);
-    localStorage.setItem(STORIES_KEY, JSON.stringify(userStories));
+    try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderStories();
     return;
   }
   const name = document.getElementById('formName').value.trim();
-  if (name.length < 2) { alert('Название минимум 2 символа'); return; }
+  if (name.length < 2) { alert('Минимум 2 символа'); return; }
   const id = 'x' + Date.now();
   const color = rnd(['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee']);
   const emoji = name.charAt(0).toUpperCase();
@@ -1612,24 +1163,25 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     const closed = pendingAction === 'group-closed';
     const link = closed ? ('https://xxxxxxxx3459.github.io/nekros-site/#join=' + id) : null;
     groups.push({ id, name, color, emoji, closed, link, type: 'group', owner: currentUser.name });
-    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
+    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
     if (closed) {
       botJoinCheck(link, name);
       document.getElementById('linkResult').style.display = 'block';
       document.getElementById('linkBox').textContent = link;
       const btn = document.getElementById('formSubmit');
       btn.textContent = 'Готово';
-      btn.onclick = () => { document.getElementById('formModal').classList.remove('show'); btn.textContent = 'Создать'; btn.onclick = null; };
+      btn.onclick = () => { document.getElementById('formModal').classList.remove('show'); btn.textContent = 'Создать'; };
     } else document.getElementById('formModal').classList.remove('show');
     renderChatsList('groups', '');
   } else if (pendingAction === 'channel') {
     channels.push({ id, name, color, emoji, desc: 'Мой канал', type: 'channel', owner: currentUser.name });
-    localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
+    try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderChannelsList();
   }
 });
 
+/* ============ МЕНЮ ЧАТА ============ */
 document.getElementById('chatMenuBtn').addEventListener('click', () => {
   document.getElementById('chatMenuModal').classList.add('show');
 });
@@ -1638,7 +1190,7 @@ document.getElementById('clearChatBtn').addEventListener('click', () => {
   if (!activeChat) return;
   if (confirm('Удалить все сообщения?')) {
     chats[activeChat.id] = [];
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
+    try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
     renderChat();
     document.getElementById('chatMenuModal').classList.remove('show');
   }
@@ -1646,11 +1198,11 @@ document.getElementById('clearChatBtn').addEventListener('click', () => {
 
 document.getElementById('deleteChatBtn').addEventListener('click', () => {
   if (!activeChat) return;
-  if (confirm('Удалить чат целиком?')) {
+  if (confirm('Удалить чат?')) {
     delete chats[activeChat.id];
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-    if (activeChat.type === 'group') { groups = groups.filter(g => g.id !== activeChat.id); localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); }
-    if (activeChat.type === 'channel') { channels = channels.filter(c => c.id !== activeChat.id); localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); renderChannelsList(); }
+    try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+    if (activeChat.type === 'group') { groups = groups.filter(g => g.id !== activeChat.id); try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} }
+    if (activeChat.type === 'channel') { channels = channels.filter(c => c.id !== activeChat.id); try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} renderChannelsList(); }
     document.getElementById('chatMenuModal').classList.remove('show');
     chatEl.classList.remove('show');
     activeChat = null;
@@ -1658,19 +1210,20 @@ document.getElementById('deleteChatBtn').addEventListener('click', () => {
   }
 });
 
+/* ============ ПРОФИЛЬ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
-  const md = document.getElementById('profileModal');
   document.getElementById('profileTitle').textContent = currentUser.name;
   document.getElementById('profileStatus').textContent =
     currentUser.premium === 'prime' ? '💎 Prime Premium' :
-    currentUser.premium === 'sunset' ? '⭐ Sunset Premium' : 'Обычный аккаунт';
+    currentUser.premium === 'sunset' ? '⭐ Sunset Premium' : 'Обычный';
   const pp = document.getElementById('profilePosts');
   pp.innerHTML = '';
-  if (!posts.length) pp.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>Пока нет постов</p></div>';
+  if (!posts.length) pp.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>Нет постов</p></div>';
   else posts.forEach(p => pp.appendChild(buildPostEl(p, true)));
-  md.classList.add('show');
+  document.getElementById('profileModal').classList.add('show');
 });
 
+/* ============ ПОКУПКИ ============ */
 document.querySelectorAll('.promo-price').forEach(btn => {
   btn.addEventListener('click', () => {
     const item = btn.dataset.buy;
@@ -1683,39 +1236,28 @@ document.querySelectorAll('.promo-price').forEach(btn => {
     };
     const name = names[item] || item;
     if (item === 'sunset_year' || item === 'prime_year') {
-      if (confirm('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\nПодтвердить покупку?')) {
+      if (confirm('💳 ' + name + '\n💰 ' + price + ' ₽\n\nПодтвердить?')) {
         currentUser.premium = item === 'sunset_year' ? 'sunset' : 'prime';
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
         updatePremiumBadge();
         renderStickerPacks();
         renderStickerRow();
-        alert('✅ ' + name + ' активирован!');
+        alert('✅ Активировано!');
       }
     } else {
-      alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Свяжитесь с администратором\n(СБП или карта)');
+      alert('💳 ' + name + '\n💰 ' + price + ' ₽\n\nОбратитесь к администратору');
     }
   });
 });
 
-function scheduleHourlyRefresh() {
-  setInterval(() => { renderPosts(); }, 3600000);
-}
-let lastActiveTime = Date.now();
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    const now = Date.now();
-    if (now - lastActiveTime > 3600000) { renderPosts(); }
-    lastActiveTime = now;
-  }
-});
-
+/* ============ ХЭШ JOIN ============ */
 window.addEventListener('load', () => {
   const h = location.hash;
   if (h && h.startsWith('#join=')) {
     const gid = h.substring(6);
     setTimeout(() => {
       const g = groups.find(x => x.id === gid);
-      if (g) alert('Вы вошли в группу "' + g.name + '" по ссылке!');
+      if (g) alert('Вы вошли в "' + g.name + '"!');
     }, 1500);
   }
 });
