@@ -949,6 +949,11 @@ function pushMessage(msg) {
   if (!chats[activeChat.id]) chats[activeChat.id] = [];
   chats[activeChat.id].push(msg);
   try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+
+  // УДАЛЯЕМ НАДПИСЬ "НАЧНИТЕ ДИАЛОГ" ПРИ ПЕРВОМ СООБЩЕНИИ
+  const emptyBlock = chatBody.querySelector('.empty-state');
+  if (emptyBlock) emptyBlock.remove();
+
   addMsgToDOM(msg);
   chatBody.scrollTop = chatBody.scrollHeight;
   const item = activeChat;
@@ -968,6 +973,7 @@ function pushMessage(msg) {
       }, 1000 + i * 1500 + Math.random() * 1000);
     }
   }
+}
 }
 
 chatSend.addEventListener('click', sendMsg);
