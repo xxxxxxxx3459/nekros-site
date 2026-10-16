@@ -104,8 +104,8 @@
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
-  .empty-state { text-align: center; padding: 50px 20px; color: #fff; margin: 20px 16px; background: linear-gradient(135deg, rgba(255,140,66,0.18), rgba(255,94,98,0.18)); border: 2px dashed rgba(255,140,66,0.5); border-radius: 20px; }
-  .empty-state .emoji { font-size: 56px; margin-bottom: 14px; }
+ .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.8); margin: 20px 16px; background: transparent; border: none; border-radius: 20px; }
+  .empty-state .emoji { font-size: 64px; margin-bottom: 16px; }
   .empty-state p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.95); }
   .empty-state b { color: #ffb380; }
 
@@ -913,7 +913,7 @@ function renderChat() {
   const msgs = chats[activeChat.id] || [];
   chatBody.innerHTML = '';
   if (!msgs.length) {
-    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
+    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
     return;
   }
   msgs.forEach(m => addMsgToDOM(m));
