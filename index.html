@@ -22,7 +22,6 @@
     background: linear-gradient(180deg, rgba(20,5,30,0.4), rgba(30,10,40,0.25) 40%, rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75));
   }
 
-  /* РЕГИСТРАЦИЯ */
   #register {
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: center; justify-content: center;
@@ -61,7 +60,6 @@
   }
   .reg-btn:active { transform: scale(0.98); }
 
-  /* ПАНЕЛЬ */
   #panel { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; background: rgba(15,10,25,0.72); backdrop-filter: blur(30px); }
   #panel.show { display: flex; }
 
@@ -104,7 +102,7 @@
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
- .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.8); margin: 20px 16px; background: transparent; border: none; border-radius: 20px; }
+  .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.8); margin: 20px 16px; background: transparent; border: none; border-radius: 20px; }
   .empty-state .emoji { font-size: 64px; margin-bottom: 16px; }
   .empty-state p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.95); }
   .empty-state b { color: #ffb380; }
@@ -489,7 +487,7 @@
 <audio id="audioPlayer"></audio>
 
 <script>
-/* ============ РЕГИСТРАЦИЯ — РАБОТАЕТ 100% ============ */
+/* ============ РЕГИСТРАЦИЯ ============ */
 const STORAGE_KEY = 'sunset_user_v12';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
@@ -498,11 +496,9 @@ const avatarPreview = document.getElementById('avatarPreview');
 const regName = document.getElementById('regName');
 const regBtn = document.getElementById('regBtn');
 
-// Устанавливаем цвет сразу
 avatarPreview.style.background = chosenColor;
 avatarPreview.textContent = '?';
 
-// Клик по аватару — меняем цвет
 avatarPreview.addEventListener('click', function() {
   let i = AVATAR_COLORS.indexOf(chosenColor);
   i = (i + 1) % AVATAR_COLORS.length;
@@ -510,7 +506,6 @@ avatarPreview.addEventListener('click', function() {
   avatarPreview.style.background = chosenColor;
 });
 
-// Обновление буквы аватара
 function updateAvatarLetter() {
   const n = (regName.value || '').trim();
   avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
@@ -520,7 +515,6 @@ regName.addEventListener('change', updateAvatarLetter);
 regName.addEventListener('keyup', updateAvatarLetter);
 regName.addEventListener('paste', () => setTimeout(updateAvatarLetter, 50));
 
-// Главное — кнопка продолжения
 function continueToApp() {
   const n = (regName.value || '').trim();
   if (n.length < 2) {
@@ -533,12 +527,10 @@ function continueToApp() {
   startApp();
 }
 
-// Дублируем обработчики чтобы точно сработало
 regBtn.addEventListener('click', continueToApp);
 regBtn.addEventListener('touchend', function(e) { e.preventDefault(); continueToApp(); });
 regBtn.onclick = continueToApp;
 
-// Enter в поле имени
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) {
     continueToApp();
@@ -600,13 +592,242 @@ const COMMUNITIES = [
 
 /* ============ БОТЫ ============ */
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+
+const PERSONAL_STORIES = [
+  'Сейчас пью кофе и смотрю в окно ☕ Дождь идёт, красиво...',
+  'Только что из спортзала, руки отваливаются 💪',
+  'Готовлю пасту, надеюсь не сожгу 😅',
+  'Смотрю сериал, затянуло пиздец 😂',
+  'Гулял(а) в парке, погода огонь 🔥',
+  'Читаю книгу, не могу оторваться 📖',
+  'Работаю над новым проектом, мозг кипит 🧠',
+  'Слушаю музыку и расслабляюсь 🎵',
+  'Играю в игры, отдыхаю 🎮',
+  'Собираюсь спать, устал(а) сегодня 😴',
+  'Только проснулся, кофе спасает ☕',
+  'Бегаю по утрам, привычка уже 🏃',
+  'Готовлю ужин, что-то вкусное 🍳',
+  'Смотрю футбол, болею за своих ⚽',
+  'Рисую, вдохновение пришло 🎨',
+  'Купил(а) новую книгу, не терпится прочитать 📚',
+  'Ходил(а) в кино, фильм топ 🎬',
+  'Планирую поездку, уже не могу ждать ✈️',
+  'Сижу в кафе, наблюдаю за людьми ☕',
+  'Пишу музыку, почти закончил(а) 🎹',
+  'Разбираю шкаф, нашёл(ла) кучу старого хлама 😂',
+  'Учу новый язык, тяжело но интересно 📚',
+  'Играю с котом, он бесится 🐱',
+  'Занимаюсь ремонтом, руки в краске 🔨',
+  'Смотрю аниме, топчик 🔥',
+  'Пеку печенье, вся квартира пахнет 🍪',
+  'Катаюсь на велосипеде, кайф 🚴',
+  'Просто отдыхаю, лень что-то делать 😴',
+  'Работаю из дома, продуктивно сегодня 💻',
+  'Пью чай с лимоном, лечусь 🍵',
+  'Смотрю ютуб, час пролетел незаметно 📺',
+  'Играю на гитаре, вспомнил(а) молодость 🎸',
+  'Готовлюсь к экзамену, голова кругом 📚',
+  'Убираюсь дома, чистота — залог успеха 🧹',
+  'Ходил(а) в бассейн, освежился 🏊',
+  'Разговариваю с друзьями, весело 😄',
+  'Смотрю закат, красиво до слёз 🌅',
+  'Заказал(а) пиццу, жду доставку 🍕'
+];
+
+const PROACTIVE_SHORT = [
+  'Привет! Как твои дела? 😊',
+  'Хэй! Чем занимаешься? 🤔',
+  'Привет! Что нового? 👋',
+  'О, привет! Как ты сегодня? 😄',
+  'Приветик! Как прошёл день? 🌙',
+  'Не спишь? 😄',
+  'Скучал(а) по тебе 😊',
+  'Привет! Ты куда пропал(а)? 👀'
+];
+
+const PROACTIVE_LONG = [
+  'Привет! Давно не общались 😊 Как ты?',
+  'О, привет! Ты куда пропал(а)? 👀',
+  'Привет-привет! Скучал(а) по тебе 😄',
+  'Хэй! Ты живой(ая)? 😅',
+  'Привет! Что нового у тебя? 🌟',
+  'Слушай, мы давно не болтали, как сам(а)? 🤗',
+  'Привет! Вспоминал(а) о тебе 😌',
+  'Оу, сколько лет, сколько зим! Как ты? 😄'
+];
+
 function generateReply(t) {
   const l = t.toLowerCase();
-  if (/привет|здравств|хай|hi|hello|ку/i.test(l)) return rnd(['Привет!','Приветик!','Хай!','Ку!','Салют!']) + ' ' + rnd(['😄','😁','🤣','😊','😎']);
-  if (/как дела|как ты|как жизнь/i.test(l)) return rnd(['Всё отлично!','Хорошо!','Отлично!']) + ' А у тебя как?';
-  if (/\?$/.test(t.trim())) return rnd(['Хороший вопрос','Интересно','Хм']) + ', а ты что думаешь?';
-  return rnd(['Классно!','Круто!','Огонь!','Супер!','Отлично!','Вау!','Норм!','Топ!','Согласен','Точно','Именно так','👍','👌','🔥']);
+
+  const badWords = ['дурак','дура','идиот','идиотка','тупой','тупая','дебил','кретин','лох','чмо','мудак','мудила','козёл','козел','сволочь','гад','придурок','урод','тупица','балбес','олух','долбоёб','долбоеб','еблан','пидор','гандон','хуйло','хуесос','пиздюк','шлюха','мразь','тварь','падла','гнида','ублюдок','дегенерат','жопошник','ссыкло','нытик','баран','осёл','осел','кобыла','свинья','крыса','ничтожество','жмот','клоун','цирк'];
+  const matWords = ['блядь','блять','блядина','хуй','хуя','хуе','хуё','пизда','пиздец','пизд','ебать','ебал','ебу','ебёт','ебет','ёб','сука','нахуй','нахер','охуел','охуеть','ахуел','заебал','заебала','проебал','уебал','отъебись','съебись','наебал','въебал','долбоеб'];
+
+  if (badWords.some(w => l.includes(w)) || matWords.some(w => l.includes(w))) {
+    return rnd([
+      'Сам такой, блядь 😤','Ты чё, охуел что ли? 🖕','Следи за базаром, петушок 🐔',
+      'Иди нахуй, умник 🤬','Сам дурак! 😂','Ты на себя посмотри, гений 🤡',
+      'За слова отвечаешь? 👊','Заткнись, а то заблокирую 🚫','Слышь, полегче на поворотах 🛑',
+      'Мне насрать на твоё мнение 💩','Ещё раз напишешь — забаню 🔨','Остынь, нервный 😎',
+      'Ты как бабка у подъезда 😆','Ты чё такой дерзкий? 🐺','Не стыдно так выражаться? 🤨',
+      'Ну и хамло 🐷','Гопник что ли? 😂','Ещё слово — и я обижусь 🚪',
+      'Ха, а сам-то кто? 😏','По себе людей не судят 🤷','Успокойся, а то лопнешь 💥',
+      'Чё за быдло в чате? 🤢','Мозги включи, если есть 🧠','Не зли меня, я страшный 😈',
+      'Ты вообще кто такой, чтобы мне хамить? 🙄','Слышь, интеллигент, попридержи язык 👅',
+      'Ой, напугал! Аж коленки затряслись 😂','Ещё раз — пожалуюсь админу 📝'
+    ]);
+  }
+
+  if (/привет|здравств|хай|^hi$|^hello$|^ку$|здаров|салют|доброе утро|добрый день|добрый вечер|доброй ночи/i.test(l)) {
+    return rnd([
+      'Привет! 😄','Приветик! 👋','Хай! 🤙','Ку! 😎','Салют! 🔥','Здорово! 🤝',
+      'О, привет! Как сам? 😊','Здрасьте-пожалуйста! 😄','Привет-привет! 🌟',
+      'Оу, кто к нам пришёл! 😁','О, ты онлайн! Привет 😎','Хэй! Рад(а) тебя видеть 🤗'
+    ]);
+  }
+
+  if (/что делаешь|чем занят|чем занимаешься|чё делаешь|что делал|чем занимался|как жизнь|как сам|как ты|как дела/i.test(l)) {
+    return rnd([
+      ...PERSONAL_STORIES,
+      'Да всё нормально, а у тебя что? 😊','Всё хорошо! А ты чем занят? 🤔'
+    ]);
+  }
+
+  if (/расскажи о себе|о себе|про себя|чем увлекаешься|хобби|что любишь/i.test(l)) {
+    return rnd([
+      'Люблю музыку, спорт и вкусную еду 😋',
+      'Увлекаюсь фотографией, снимаю всё подряд 📸',
+      'Обожаю путешествия, мечтаю объехать весь мир ✈️',
+      'Читаю книги, больше всего фантастику 📚',
+      'Играю в игры, в основном шутеры 🎮',
+      'Занимаюсь спортом, хожу в зал 3 раза в неделю 💪',
+      'Люблю готовить, особенно итальянскую кухню 🍝',
+      'Рисую, это моё хобби с детства 🎨',
+      'Смотрю аниме, обожаю жанр сёнэн 🌸',
+      'Программирую, это и работа и хобби 💻',
+      'Гуляю по городу по вечерам, люблю атмосферу 🌃',
+      'Обожаю животных, особенно собак 🐶',
+      'Занимаюсь музыкой, играю на гитаре 🎸',
+      'Люблю кофе и долгие разговоры по ночам ☕'
+    ]);
+  }
+
+  if (/сколько тебе лет|твой возраст|тебе сколько/i.test(l)) {
+    return rnd([
+      'А сколько дашь? 😏','Мне ' + (18 + Math.floor(Math.random()*15)) + ' 😄','Секрет! 🤫','Возраст — просто цифра 😎','Молодой ещё 😄'
+    ]);
+  }
+
+  if (/где живёшь|откуда ты|из какого города|ты откуда/i.test(l)) {
+    return rnd(['В Москве 😊','Из Питера 🌆','Живу в Казани 🕌','В Новосибирске ❄️','Из Екатеринбурга 🏙️','Секрет 🤫','Рядом с тобой 😏']);
+  }
+
+  if (/\?$/.test(t.trim())) {
+    return rnd([
+      'Хороший вопрос 🤔 А ты сам как думаешь?','Интересно! А сам что думаешь?',
+      'Хм, сложно сказать 🤷','А почему ты спрашиваешь? 👀','Не знаю даже, если честно 😅',
+      'А сам как считаешь?','Давай подумаем... 🤔','Ты уверен, что это важно? 😄','Ох, философский вопрос 😅'
+    ]);
+  }
+
+  if (/хаха|ха-ха|ахах|ржу|смешно|лол|^lol$|😂|🤣|😆/i.test(l)) {
+    return rnd(['Хаха, сам ржу 😂','Ахахах 🤣','Ну ты выдал! 😆','Ор 😂','Смешно, согласен 😄','Умора! 🤣','Ржунимагу 😂','Ты жжёшь 🔥']);
+  }
+
+  if (/груст|плохо|печаль|устал|тяжело|😢|😭|🥺|депресс/i.test(l)) {
+    return rnd([
+      'Держись, всё наладится! 💪','Бывает, братан... Всё пройдёт 🤗','Сочувствую 🥺 Хочешь поговорить?',
+      'Не грусти, скоро будет лучше ✨','Всё будет хорошо! 💖','Обнимаю 🤗 Всё будет ок!',
+      'Если хочешь выговориться — я тут 🫂','Держись, я с тобой 💪'
+    ]);
+  }
+
+  if (/люблю|любить|нравишься|❤️|💕|💖|скучаю/i.test(l)) {
+    return rnd([
+      'Ой, я тоже тебя люблю! 😊💕','Взаимно! ❤️','Ты такой милый 🥰','Ой, спасибо! 😳💖',
+      'Приятно, очень приятно 😊','Сердце ёкнуло 🥰','Ты меня смущаешь 😳','Ой, неожиданно! 😊💕'
+    ]);
+  }
+
+  if (/ты красив|ты умн|ты классн|ты лучш|ты крут|ты хорош|молодец/i.test(l)) {
+    return rnd(['Спасибо! Ты тоже классный 😊','Ой, спасибо! 😳','Приятно слышать! 🥰','Спасибо, стараюсь 😎','Ах, ты льстишь 😄']);
+  }
+
+  if (/спасиб|благодар/i.test(l)) {
+    return rnd(['Пожалуйста! 😊','Не за что! 🤗','Всегда рад помочь! 👍','Обращайся! 😎','Рад(а) был(а) помочь 💖']);
+  }
+
+  if (/извини|прости|сорри|sorry/i.test(l)) {
+    return rnd(['Да ладно, всё норм 😊','Ничего страшного 🤗','Забыли 😄','Прощаю 😌','Всё ок, не парься 👍']);
+  }
+
+  if (/ты бот|ты робот|ты программа|ты живой/i.test(l)) {
+    return rnd(['Я живой человек 😄','С чего ты взял? 😅','Я такой же как ты 🤷','Бот? Где ты бота увидел 😏']);
+  }
+
+  if (/пока|до свидания|бай|спокойной ночи|доброй ночи/i.test(l)) {
+    return rnd(['Пока! До связи 👋','Давай, до завтра 😊','Спокойной ночи! 🌙','Пока-пока! 😄','До скорого 🤗']);
+  }
+
+  if (l.length < 5) {
+    return rnd(['Хм 🤔','И? 👀','Ну? 😄','Что? 🤨','Ага 😏','Ясно 😌','О как! 😮','Да ладно! 😯','Ну-ка? 😎']);
+  }
+
+  return rnd([
+    'Классно! 👍','Круто! 🔥','Огонь! 🚀','Супер! ⚡','Отлично! 😎','Вау! 😮',
+    'Норм! 👌','Топ! 🏆','Согласен 💯','Точно! 👊','Именно так! ✌️',
+    'Интересно 🤔','А что дальше? 👀','Расскажи ещё 😄',
+    'А я вот думаю иначе 😏','Хм, не уверен 🤨','Спорно 🤷',
+    'Ого! 😲','Прям так? 🙄','Да ну! 😲','Серьёзно? 🤨',
+    'Ха, а ты забавный 😄','Мне нравится ход твоих мыслей 💭',
+    'Продолжай, интересно 👂','А сам-то что делаешь? 🤔',
+    'Ясно-понятно 😌','Ну ты даёшь! 😄','Вот это поворот! 😲',
+    'Ммм, интересно 🤔','А я думал(а) иначе 😅','Ладно, уговорил(а) 😄',
+    'Слушай, а ты весёлый 😄','Не ожидал(а) такого 😮','Логично 👍'
+  ]);
 }
+
+function generateProactiveMsg(elapsed) {
+  const DAY = 24 * 60 * 60 * 1000;
+  if (elapsed > 3 * DAY) return rnd(PROACTIVE_LONG);
+  return rnd(PROACTIVE_SHORT);
+}
+
+function proactiveCheck() {
+  if (!currentUser) return;
+  const now = Date.now();
+  const HOUR = 60 * 60 * 1000;
+
+  PEOPLE.forEach(person => {
+    const id = person.id;
+    const msgs = chats[id] || [];
+    if (!msgs.length) return;
+
+    const lastMsg = msgs[msgs.length - 1];
+    const lastTs = lastMsg.ts || 0;
+    if (!lastTs) return;
+    const elapsed = now - lastTs;
+
+    if (elapsed > 6 * HOUR) {
+      const chance = elapsed > 3 * 24 * HOUR ? 0.8 : 0.4;
+      if (Math.random() < chance) {
+        setTimeout(() => {
+          const text = generateProactiveMsg(elapsed);
+          const msg = { text, time: nowTime(), from: 'them', ts: Date.now() };
+          if (!chats[id]) chats[id] = [];
+          chats[id].push(msg);
+          try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+          if (activeChat && activeChat.id === id) {
+            addMsgToDOM(msg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+          } else {
+            renderChatsList(currentSearchTab, '');
+          }
+        }, 2000 + Math.random() * 4000);
+      }
+    }
+  });
+}
+
 function botJoinCheck(link, groupName) {
   setTimeout(() => {
     if (activeChat && activeChat.name === groupName) {
@@ -640,7 +861,6 @@ const SONGS = [
   ['Nirvana', 'Smells Like Teen Spirit'],['Queen', 'Bohemian Rhapsody'],
   ['AC/DC', 'Thunderstruck'],['Arctic Monkeys', 'Do I Wanna Know?']
 ];
-let currentTrack = null;
 
 const STORY_TEMPLATES = [
   { author: 'Мария', color: '#a06cd5', text: 'Погуляла в парке 🌅' },
@@ -677,6 +897,10 @@ function startApp() {
   renderChannelsList();
   renderStickerPacks();
   renderStickerRow();
+
+  // Запуск проверки: напишут ли боты первыми
+  setTimeout(proactiveCheck, 3000);
+  setInterval(proactiveCheck, 60 * 60 * 1000);
 }
 
 function updatePremiumBadge() {
@@ -701,7 +925,6 @@ function updatePremiumBadge() {
   }
 }
 
-// Автозаход если уже зарегистрирован
 try {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
   if (saved && saved.name) {
@@ -947,10 +1170,10 @@ function sendMsg() {
 
 function pushMessage(msg) {
   if (!chats[activeChat.id]) chats[activeChat.id] = [];
+  msg.ts = msg.ts || Date.now();
   chats[activeChat.id].push(msg);
   try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
 
-  // УДАЛЯЕМ НАДПИСЬ "НАЧНИТЕ ДИАЛОГ" ПРИ ПЕРВОМ СООБЩЕНИИ
   const emptyBlock = chatBody.querySelector('.empty-state');
   if (emptyBlock) emptyBlock.remove();
 
@@ -963,7 +1186,7 @@ function pushMessage(msg) {
       setTimeout(() => {
         const rt = generateReply(msg.text);
         const sn = item.type === 'person' ? item.name : rnd(PEOPLE).name;
-        const reply = { text: item.type === 'person' ? rt : sn + ': ' + rt, time: nowTime(), from: 'them' };
+        const reply = { text: item.type === 'person' ? rt : sn + ': ' + rt, time: nowTime(), from: 'them', ts: Date.now() };
         chats[item.id].push(reply);
         try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
         if (activeChat && activeChat.id === item.id) {
@@ -973,7 +1196,6 @@ function pushMessage(msg) {
       }, 1000 + i * 1500 + Math.random() * 1000);
     }
   }
-}
 }
 
 chatSend.addEventListener('click', sendMsg);
