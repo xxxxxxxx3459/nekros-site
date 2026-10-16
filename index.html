@@ -88,10 +88,7 @@
     background: linear-gradient(135deg, #ffd700, #ff8c00);
     color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5);
   }
-  .premium-badge.prime {
-    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-    color: #fff;
-  }
+  .premium-badge.prime { background: linear-gradient(135deg, #00d4ff, #7b2ff7); color: #fff; }
   .my-name { font-size: 17px; font-weight: 600; }
   .my-status { font-size: 12px; opacity: 0.85; margin-top: 2px; }
   .header-right { display: flex; gap: 8px; }
@@ -135,6 +132,9 @@
     color: #fff; border-color: transparent;
   }
 
+  #chatsList { padding: 4px 0; }
+
+  /* Обычный вид — 1 колонка (группы, сообщества) */
   .card-item {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 14px; border-radius: 16px;
@@ -163,6 +163,64 @@
   .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
   .badge.channel-badge { background: rgba(168, 85, 247, 0.25); color: #c4b5fd; }
 
+  /* СЕТКА 2 КОЛОНКИ для людей */
+  .chats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 8px 12px;
+  }
+  .chats-grid .card-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px 10px;
+    gap: 10px;
+    margin: 0;
+    background: rgba(255,255,255,0.06);
+  }
+  .chats-grid .card-item .card-avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 26px;
+    margin: 0 auto;
+  }
+  .chats-grid .card-item .card-info {
+    text-align: center;
+    width: 100%;
+  }
+  .chats-grid .card-item .card-name {
+    font-size: 14px;
+    white-space: normal;
+  }
+  .chats-grid .card-item .card-sub {
+    font-size: 11px;
+  }
+
+  /* Пустое состояние — ВЫДЕЛЕНО */
+  .empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #fff;
+    margin: 20px 16px;
+    background: linear-gradient(135deg, rgba(255,140,66,0.18), rgba(255,94,98,0.18));
+    border: 2px dashed rgba(255,140,66,0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(255,100,80,0.15);
+  }
+  .empty-state .emoji {
+    font-size: 56px;
+    margin-bottom: 14px;
+    opacity: 1;
+    filter: drop-shadow(0 4px 12px rgba(255,140,66,0.5));
+  }
+  .empty-state p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.95);
+    font-weight: 500;
+  }
+  .empty-state b { color: #ffb380; font-weight: 700; }
+
   /* СТОРИС */
   .stories-row {
     display: flex; gap: 10px; padding: 12px 16px;
@@ -179,7 +237,6 @@
     background: linear-gradient(135deg, #ff8c42, #ff5e62, #a06cd5);
     display: flex; align-items: center; justify-content: center;
   }
-  .story-ring.viewed { background: rgba(255,255,255,0.2); }
   .story-img {
     width: 100%; height: 100%; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -191,12 +248,8 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     max-width: 68px;
   }
-  .story-ring.my-add {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62);
-  }
-  .story-ring.my-add .story-img {
-    background: rgba(15,10,25,0.6); font-size: 26px;
-  }
+  .story-ring.my-add { background: linear-gradient(135deg, #ff8c42, #ff5e62); }
+  .story-ring.my-add .story-img { background: rgba(15,10,25,0.6); font-size: 26px; }
 
   /* ПОСТЫ */
   .post {
@@ -205,10 +258,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px;
   }
-  .post-header {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 12px;
-  }
+  .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
   .post-avatar {
     width: 40px; height: 40px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -230,25 +280,15 @@
   }
   .post-action.liked { color: #ff5e8c; }
   .post-action.reposted { color: #4ade80; }
-
-  .post-comments {
-    margin-top: 10px; padding-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .comment {
-    display: flex; gap: 8px; padding: 6px 0;
-    font-size: 13px; color: #fff;
-  }
+  .post-comments { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .comment { display: flex; gap: 8px; padding: 6px 0; font-size: 13px; color: #fff; }
   .comment-author { font-weight: 600; color: #ffb380; }
-  .comment-input-row {
-    display: flex; gap: 8px; margin-top: 8px;
-  }
+  .comment-input-row { display: flex; gap: 8px; margin-top: 8px; }
   .comment-input {
     flex: 1; background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 20px; padding: 8px 14px;
-    color: #fff; font-size: 13px; outline: none;
-    font-family: inherit;
+    color: #fff; font-size: 13px; outline: none; font-family: inherit;
   }
   .comment-send {
     background: linear-gradient(135deg, #ff8c42, #ff5e62);
@@ -257,7 +297,6 @@
     font-size: 14px; cursor: pointer;
   }
 
-  /* СТИКЕРЫ В ЧАТЕ */
   .sticker-row {
     display: flex; gap: 8px; padding: 6px 14px;
     overflow-x: auto; background: rgba(0,0,0,0.3);
@@ -273,17 +312,7 @@
     font-size: 22px; cursor: pointer;
     flex-shrink: 0; padding: 0;
   }
-  .sticker-btn.locked {
-    opacity: 0.4;
-    position: relative;
-  }
-  .sticker-btn.locked::after {
-    content: '🔒'; position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; background: rgba(0,0,0,0.5); border-radius: 10px;
-  }
 
-  /* МУЗЫКА */
   .music-search { padding: 12px 16px; display: flex; gap: 8px; }
   .music-search input {
     flex: 1; background: rgba(255,255,255,0.15);
@@ -327,7 +356,6 @@
     color: #ff8c42; font-size: 22px; cursor: pointer; padding: 6px 10px;
   }
 
-  /* ЧАТ */
   #chat {
     position: absolute; inset: 0; z-index: 40;
     display: flex; flex-direction: column;
@@ -431,7 +459,6 @@
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 20px; }
 
-  /* МОДАЛКИ */
   .modal {
     position: fixed; inset: 0; z-index: 200;
     display: flex; align-items: flex-end; justify-content: center;
@@ -501,7 +528,6 @@
     border: 1px solid rgba(255,140,66,0.3); text-align: center;
   }
 
-  /* ПРОДВИЖЕНИЕ */
   .promo-card {
     margin: 8px 16px 14px; padding: 16px;
     background: rgba(255,255,255,0.06);
@@ -520,7 +546,7 @@
   .promo-emoji { font-size: 32px; line-height: 1; }
   .promo-name { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .promo-desc { color: rgba(255,255,255,0.65); font-size: 12px; line-height: 1.4; }
-  .promo-prices { display: flex; gap: 8px; flex-wrap: wrap; }
+  .promo-prices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
   .promo-price {
     flex: 1; min-width: 120px; padding: 12px 14px;
     border-radius: 12px;
@@ -529,11 +555,6 @@
     cursor: pointer; font-family: inherit;
     box-shadow: 0 4px 12px rgba(255,100,80,0.35);
     text-align: center;
-  }
-  .promo-price:active { transform: scale(0.97); }
-  .promo-price small {
-    display: block; font-size: 10px; font-weight: 500;
-    opacity: 0.9; margin-top: 2px;
   }
   .promo-price.prime-btn {
     background: linear-gradient(135deg, #00d4ff, #7b2ff7);
@@ -549,7 +570,30 @@
     font-size: 11px; padding: 16px 20px 30px; line-height: 1.5;
   }
 
-  /* СТИКЕР-ПАКИ */
+  /* ПРЕМИУМ СПИСКИ */
+  .premium-features {
+    margin: 12px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .feat {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 4px 0;
+  }
+  .feat b { color: #fff; }
+  .feat-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    width: 22px;
+    text-align: center;
+  }
+
   .sticker-packs {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px; padding: 8px 16px;
@@ -560,15 +604,10 @@
     border-radius: 14px; padding: 14px;
     text-align: center; cursor: pointer;
   }
-  .pack-card.locked {
-    opacity: 0.6; position: relative;
-  }
+  .pack-card.locked { opacity: 0.6; }
   .pack-card .pack-emoji { font-size: 32px; margin-bottom: 8px; }
   .pack-card .pack-name { color: #fff; font-size: 13px; font-weight: 600; }
-  .pack-card .pack-status {
-    font-size: 10px; margin-top: 4px;
-    color: rgba(255,255,255,0.6);
-  }
+  .pack-card .pack-status { font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.6); }
   .pack-card.owned { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.1); }
   .pack-card.prime-pack { border-color: rgba(0,212,255,0.4); }
   .pack-card.sunset-pack { border-color: rgba(255,215,0,0.4); }
@@ -578,7 +617,6 @@
 
 <div class="sunset-photo"></div>
 
-<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -589,7 +627,6 @@
   </div>
 </div>
 
-<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left" id="myProfileBtn">
@@ -607,7 +644,6 @@
 
   <div class="content" id="content">
 
-    <!-- ЧАТЫ -->
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
@@ -620,14 +656,12 @@
       <div id="chatsList"></div>
     </div>
 
-    <!-- ЛЕНТА (посты + истории) -->
     <div class="tab-content" id="tab-feed">
       <div class="stories-row" id="storiesRow"></div>
       <div class="section-title" style="padding-top:6px;">📝 Посты</div>
       <div id="postsList"></div>
     </div>
 
-    <!-- МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="music-search">
         <input type="text" id="musicSearch" placeholder="Поиск музыки...">
@@ -636,19 +670,16 @@
       <div id="tracksList"></div>
     </div>
 
-    <!-- КАНАЛЫ -->
     <div class="tab-content" id="tab-channels">
       <div class="section-title">📢 Каналы о жизни</div>
       <div id="channelsList"></div>
     </div>
 
-    <!-- СТИКЕРЫ -->
     <div class="tab-content" id="tab-stickers">
       <div class="section-title">🎨 Пакеты стикеров</div>
       <div class="sticker-packs" id="stickerPacks"></div>
     </div>
 
-    <!-- ПРОМО -->
     <div class="tab-content" id="tab-promo">
       <div class="section-title">👑 Premium подписки</div>
 
@@ -657,11 +688,23 @@
           <span class="promo-emoji">⭐</span>
           <div>
             <div class="promo-name">Sunset Premium</div>
-            <div class="promo-desc">Галочка ✅ · без рекламы · эксклюзивный пак стикеров Sunset · приоритет в поддержке</div>
+            <div class="promo-desc">3 200 ₽ / год · для активных пользователей</div>
           </div>
         </div>
+        <div class="premium-features">
+          <div class="feat"><span class="feat-icon">✅</span><span><b>Галочка ⭐</b> рядом с именем</span></div>
+          <div class="feat"><span class="feat-icon">🚫</span><span><b>Без рекламы</b> других пользователей</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак стикеров Sunset</b> — 12 эксклюзивных</span></div>
+          <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>без лимита</b></span></div>
+          <div class="feat"><span class="feat-icon">📊</span><span><b>Кто смотрел профиль</b></span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>5 эксклюзивных тем</b> оформления</span></div>
+          <div class="feat"><span class="feat-icon">📝</span><span>До <b>500 постов/мес</b></span></div>
+          <div class="feat"><span class="feat-icon">📎</span><span>Файлы до <b>500 МБ</b></span></div>
+          <div class="feat"><span class="feat-icon">⚡</span><span>Поддержка <b>за 24 часа</b></span></div>
+          <div class="feat"><span class="feat-icon">👥</span><span>Создавать <b>группы и каналы</b> без ограничений</span></div>
+        </div>
         <div class="promo-prices">
-          <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="3200">3 200 ₽ / год</button>
+          <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="3200">Купить за 3 200 ₽ / год</button>
         </div>
       </div>
 
@@ -670,11 +713,25 @@
           <span class="promo-emoji">💎</span>
           <div>
             <div class="promo-name">Prime Premium</div>
-            <div class="promo-desc">Всё из Sunset + 1000 постов/мес · эксклюзивный Prime пак стикеров · приоритетный показ · значок 💎</div>
+            <div class="promo-desc">4 000 ₽ / год · максимум возможностей</div>
           </div>
         </div>
+        <div class="premium-features">
+          <div class="feat"><span class="feat-icon">💎</span><span><b>Значок Prime 💎</b> рядом с именем</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>Пак стикеров Prime</b> — Sunset не может им пользоваться</span></div>
+          <div class="feat"><span class="feat-icon">📝</span><span>До <b>1 000 постов/мес</b></span></div>
+          <div class="feat"><span class="feat-icon">👁️</span><span>Твои посты видят <b>ВСЕ 100%</b> (у обычных только 2%)</span></div>
+          <div class="feat"><span class="feat-icon">⭐</span><span><b>Приоритетный показ</b> — посты и комменты наверху</span></div>
+          <div class="feat"><span class="feat-icon">📎</span><span>Файлы до <b>2 ГБ</b></span></div>
+          <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>всегда первыми</b> в ленте</span></div>
+          <div class="feat"><span class="feat-icon">🎵</span><span>Свой трек <b>в топ</b> музыки</span></div>
+          <div class="feat"><span class="feat-icon">👑</span><span><b>1 мес продвижения канала</b> в подарок</span></div>
+          <div class="feat"><span class="feat-icon">🎨</span><span><b>15 эксклюзивных тем</b> оформления</span></div>
+          <div class="feat"><span class="feat-icon">💬</span><span>Посты до <b>5 000 символов</b></span></div>
+          <div class="feat"><span class="feat-icon">⚡</span><span>Поддержка <b>за 6 часов</b></span></div>
+        </div>
         <div class="promo-prices">
-          <button class="promo-price prime-btn" data-buy="prime_year" data-price="4000">4 000 ₽ / год</button>
+          <button class="promo-price prime-btn" data-buy="prime_year" data-price="4000">Купить за 4 000 ₽ / год</button>
         </div>
       </div>
 
@@ -723,12 +780,11 @@
       </div>
 
       <div class="promo-note">
-        💳 Оплата только рублями: СБП · Карта. Возврат в течение 7 дней.
+        💳 Оплата только рублями: СБП · Карта.
       </div>
     </div>
   </div>
 
-  <!-- ПЛЕЕР -->
   <div class="player-bar" id="playerBar">
     <div class="player-cover" id="playerCover"></div>
     <div class="player-info">
@@ -739,7 +795,6 @@
     <button class="player-btn" id="playerClose">✕</button>
   </div>
 
-  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
@@ -749,7 +804,6 @@
     <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
-  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -772,7 +826,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ПЛЮСИК -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -807,7 +860,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ФОРМЫ -->
 <div class="modal" id="formModal">
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новая группа</div>
@@ -823,7 +875,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ПРОФИЛЯ -->
 <div class="modal" id="profileModal">
   <div class="modal-card">
     <div class="modal-title" id="profileTitle">Профиль</div>
@@ -833,7 +884,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА МЕНЮ ЧАТА -->
 <div class="modal" id="chatMenuModal">
   <div class="modal-card">
     <div class="modal-title">Действия</div>
@@ -843,7 +893,7 @@
     </div>
     <div class="modal-option" id="deleteChatBtn">
       <div class="opt-title">❌ Удалить чат</div>
-      <div class="opt-desc">Полное удаление чата (для групп/каналов — если ты владелец)</div>
+      <div class="opt-desc">Полное удаление чата</div>
     </div>
     <button class="modal-close" data-close="chatMenuModal">Отмена</button>
   </div>
@@ -852,7 +902,6 @@
 <audio id="audioPlayer"></audio>
 
 <script>
-/* ============ КЭШ 1 ЧАС ============ */
 function cacheGet(k, a) {
   try { const r = localStorage.getItem('cache_' + k); if (!r) return null;
     const o = JSON.parse(r); if (Date.now() - o.timestamp > (a || 3600000)) return null;
@@ -863,13 +912,12 @@ function cacheSet(k, d) {
   try { localStorage.setItem('cache_' + k, JSON.stringify({ timestamp: Date.now(), data: d })); } catch(e) {}
 }
 
-/* ============ ХРАНИЛИЩЕ ============ */
-const STORAGE_KEY = 'sunset_user_v9';
-const CHATS_KEY = 'sunset_chats_v9';
-const GROUPS_KEY = 'sunset_groups_v9';
-const CHANNELS_KEY = 'sunset_channels_v9';
-const POSTS_KEY = 'sunset_posts_v9';
-const STORIES_KEY = 'sunset_stories_v9';
+const STORAGE_KEY = 'sunset_user_v11';
+const CHATS_KEY = 'sunset_chats_v11';
+const GROUPS_KEY = 'sunset_groups_v11';
+const CHANNELS_KEY = 'sunset_channels_v11';
+const POSTS_KEY = 'sunset_posts_v11';
+const STORIES_KEY = 'sunset_stories_v11';
 
 let currentUser = null;
 let chats = {};
@@ -881,7 +929,6 @@ let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
 
-/* ============ ПАКЕТЫ СТИКЕРОВ ============ */
 const STICKER_PACKS = {
   free_smileys: { name: 'Смайлики', emoji: '😀', emojis: ['😀','😂','🥰','😎','🤔','😴','🤗','😭','😡','🤯','🥳','😇'], price: 0 },
   free_animals: { name: 'Животные', emoji: '🐶', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮'], price: 0 },
@@ -893,7 +940,6 @@ const STICKER_PACKS = {
   prime_pack: { name: 'Prime Diamond', emoji: '💎', emojis: ['💎','👑','🏆','🥇','🎖️','🏅','⚜️','🔱','💠','🔷','💠','🆒'], price: 0, requirePremium: 'prime' }
 };
 
-/* ============ ЛЮДИ ============ */
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
   ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
@@ -917,7 +963,6 @@ const COMMUNITIES = [
   { id: 'comm_memes', name: 'Мемы 24/7', color: '#ef4444', emoji: '😂', desc: 'Юмор', type: 'community' }
 ];
 
-/* ============ БОТЫ ============ */
 const BOT_TEMPLATES = {
   greeting: ['Привет', 'Хай', 'Здравствуй', 'Приветствую', 'Ку', 'Йо', 'Салют'],
   reaction: ['Классно!', 'Круто!', 'Огонь!', 'Супер!', 'Отлично!', 'Вау!', 'Норм!', 'Топ!'],
@@ -945,7 +990,6 @@ function botJoinCheck(link, groupName) {
   }, 3000);
 }
 
-/* ============ МУЗЫКА ============ */
 const SONGS = [
   ['Imagine Dragons', 'Believer'],['Ed Sheeran', 'Shape of You'],['The Weeknd', 'Blinding Lights'],
   ['Dua Lipa', 'Levitating'],['Billie Eilish', 'Bad Guy'],['Post Malone', 'Circles'],
@@ -971,7 +1015,6 @@ const SONGS = [
 ];
 let currentTrack = null;
 
-/* ============ ИСТОРИИ (шаблоны) ============ */
 const STORY_TEMPLATES = [
   { author: 'Мария', color: '#a06cd5', text: 'Погуляла в парке — идеальный закат 🌅' },
   { author: 'Дмитрий', color: '#4a90e2', text: 'Запустил свой сайт! Ура 🎉' },
@@ -983,7 +1026,6 @@ const STORY_TEMPLATES = [
   { author: 'Сергей', color: '#7b68ee', text: 'Собрал новый ПК 💻' }
 ];
 
-/* ============ РЕГИСТРАЦИЯ ============ */
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 const avatarPreview = document.getElementById('avatarPreview');
@@ -1016,7 +1058,6 @@ regBtn.addEventListener('click', () => {
   startApp();
 });
 
-/* ============ ЗАПУСК ============ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
@@ -1024,7 +1065,6 @@ function startApp() {
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
 
-  // Загружаем
   chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
   groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
   channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
@@ -1067,7 +1107,6 @@ function updatePremiumBadge() {
 const savedUser = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
 if (savedUser) { currentUser = savedUser; setTimeout(startApp, 200); }
 
-/* ============ НАВИГАЦИЯ ============ */
 document.querySelectorAll('.nav-btn').forEach(b => {
   b.addEventListener('click', () => {
     const tab = b.dataset.tab;
@@ -1079,7 +1118,6 @@ document.querySelectorAll('.nav-btn').forEach(b => {
   });
 });
 
-/* ============ ТАБЫ ПОИСКА ============ */
 document.querySelectorAll('.search-tab').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('.search-tab').forEach(x => x.classList.remove('active'));
@@ -1092,24 +1130,29 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
   renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
-/* ============ СПИСОК ЧАТОВ ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   list.innerHTML = '';
+  list.className = '';
+
   let items = [];
   if (tab === 'people') items = PEOPLE.map(p => ({ ...p, type: 'person' }));
   else if (tab === 'groups') {
     items = groups.map(g => ({ ...g, type: 'group' }));
     if (!items.length) {
-      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>Нет групп. Нажмите <b>+</b> сверху.</p></div>';
+      list.innerHTML = '<div class="empty-state"><div class="emoji">👥</div><p>У вас пока нет групп.<br>Нажмите <b>+</b> справа вверху,<br>чтобы создать первую!</p></div>';
       return;
     }
   } else if (tab === 'communities') items = COMMUNITIES.map(c => ({ ...c, type: 'community' }));
   if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
   if (!items.length) {
-    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Не найдено</p></div>';
+    list.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Никого не найдено</p></div>';
     return;
   }
+
+  // Люди — сетка 2 колонки. Группы/сообщества — обычный список
+  if (tab === 'people') list.classList.add('chats-grid');
+
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'card-item';
@@ -1131,16 +1174,12 @@ function esc(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-/* ============ СТОРИС ============ */
 function renderStories() {
   const row = document.getElementById('storiesRow');
   row.innerHTML = '';
-
-  // Моя история (добавить)
   const mine = document.createElement('div');
   mine.className = 'story-circle';
-  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div>' +
-    '<div class="story-label">Моя история</div>';
+  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Моя история</div>';
   mine.addEventListener('click', () => {
     pendingAction = 'story';
     document.getElementById('formTitle').textContent = '📸 Новая история';
@@ -1152,38 +1191,25 @@ function renderStories() {
     document.getElementById('formModal').classList.add('show');
   });
   row.appendChild(mine);
-
-  // Мои истории
-  userStories.forEach((s, i) => {
+  userStories.forEach((s) => {
     const d = document.createElement('div');
     d.className = 'story-circle';
-    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.emoji + '</div></div>' +
-      '<div class="story-label">' + esc(s.author) + '</div>';
+    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.emoji + '</div></div><div class="story-label">' + esc(s.author) + '</div>';
     row.appendChild(d);
   });
-
-  // Истории других
   STORY_TEMPLATES.forEach(s => {
     const d = document.createElement('div');
     d.className = 'story-circle';
-    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.author.charAt(0) + '</div></div>' +
-      '<div class="story-label">' + esc(s.author) + '</div>';
+    d.innerHTML = '<div class="story-ring"><div class="story-img" style="background:' + s.color + '">' + s.author.charAt(0) + '</div></div><div class="story-label">' + esc(s.author) + '</div>';
     d.addEventListener('click', () => alert('📸 История от ' + s.author + '\n\n' + s.text));
     row.appendChild(d);
   });
 }
 
-/* ============ ПОСТЫ ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   el.innerHTML = '';
-
-  // Мои посты
-  posts.forEach(p => {
-    el.appendChild(buildPostEl(p, false));
-  });
-
-  // Посты других (только некоторые видны)
+  posts.forEach(p => el.appendChild(buildPostEl(p, false)));
   const seed = Math.floor(Date.now() / 3600000);
   const extra = [
     { id: 'p1_' + seed, author: 'Мария', color: '#a06cd5', text: 'Закат сегодня был невероятный 🌅 Кто видел?', time: '2 ч', likes: 12, reposts: 3, comments: [] },
@@ -1199,11 +1225,8 @@ function buildPostEl(p, isMine, isOther) {
   const liked = p.likedByMe;
   const reposted = p.repostedByMe;
   div.innerHTML =
-    '<div class="post-header">' +
-      '<div class="post-avatar" style="background:' + p.color + '">' + p.author.charAt(0) + '</div>' +
-      '<div class="post-meta"><div class="post-author">' + esc(p.author) + (isMine ? ' <span style="font-size:10px;opacity:0.6">— ваш пост</span>' : '') + '</div>' +
-      '<div class="post-time">' + p.time + '</div></div>' +
-    '</div>' +
+    '<div class="post-header"><div class="post-avatar" style="background:' + p.color + '">' + p.author.charAt(0) + '</div>' +
+      '<div class="post-meta"><div class="post-author">' + esc(p.author) + (isMine ? ' <span style="font-size:10px;opacity:0.6">— ваш пост</span>' : '') + '</div><div class="post-time">' + p.time + '</div></div></div>' +
     '<div class="post-text">' + esc(p.text) + '</div>' +
     '<div class="post-actions">' +
       '<button class="post-action like-btn ' + (liked ? 'liked' : '') + '">' + (liked ? '❤️' : '🤍') + ' ' + (p.likes || 0) + '</button>' +
@@ -1212,10 +1235,7 @@ function buildPostEl(p, isMine, isOther) {
     '</div>' +
     '<div class="post-comments" style="display:none">' +
       (p.comments || []).map(c => '<div class="comment"><span class="comment-author">' + esc(c.author) + ':</span> ' + esc(c.text) + '</div>').join('') +
-      '<div class="comment-input-row">' +
-        '<input type="text" class="comment-input" placeholder="Комментарий...">' +
-        '<button class="comment-send">➤</button>' +
-      '</div>' +
+      '<div class="comment-input-row"><input type="text" class="comment-input" placeholder="Комментарий..."><button class="comment-send">➤</button></div>' +
     '</div>';
 
   const likeBtn = div.querySelector('.like-btn');
@@ -1228,17 +1248,14 @@ function buildPostEl(p, isMine, isOther) {
     else { p.likes = (p.likes || 0) + 1; p.likedByMe = true; likeBtn.classList.add('liked'); likeBtn.innerHTML = '❤️ ' + p.likes; }
     savePostsIfMine(p);
   });
-
   repostBtn.addEventListener('click', () => {
     if (reposted) { p.reposts--; p.repostedByMe = false; repostBtn.classList.remove('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
     else { p.reposts = (p.reposts || 0) + 1; p.repostedByMe = true; repostBtn.classList.add('reposted'); repostBtn.innerHTML = '🔄 ' + p.reposts; }
     savePostsIfMine(p);
   });
-
   commentBtn.addEventListener('click', () => {
     commentsBlock.style.display = commentsBlock.style.display === 'none' ? 'block' : 'none';
   });
-
   const input = div.querySelector('.comment-input');
   const send = div.querySelector('.comment-send');
   const sendComment = () => {
@@ -1248,11 +1265,7 @@ function buildPostEl(p, isMine, isOther) {
     p.comments.push({ author: currentUser.name, text: t });
     input.value = '';
     commentsBlock.innerHTML = (p.comments || []).map(c => '<div class="comment"><span class="comment-author">' + esc(c.author) + ':</span> ' + esc(c.text) + '</div>').join('') +
-      '<div class="comment-input-row">' +
-        '<input type="text" class="comment-input" placeholder="Комментарий...">' +
-        '<button class="comment-send">➤</button>' +
-      '</div>';
-    // Перепривязываем
+      '<div class="comment-input-row"><input type="text" class="comment-input" placeholder="Комментарий..."><button class="comment-send">➤</button></div>';
     const ni = commentsBlock.querySelector('.comment-input');
     const ns = commentsBlock.querySelector('.comment-send');
     ns.addEventListener('click', () => { const t2 = ni.value.trim(); if (!t2) return; p.comments.push({author: currentUser.name, text: t2}); ni.value=''; renderPosts(); });
@@ -1260,7 +1273,6 @@ function buildPostEl(p, isMine, isOther) {
   };
   send.addEventListener('click', sendComment);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') sendComment(); });
-
   return div;
 }
 
@@ -1269,7 +1281,6 @@ function savePostsIfMine(p) {
   if (idx !== -1) { posts[idx] = p; localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
 }
 
-/* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
@@ -1320,20 +1331,10 @@ function addMsgToDOM(msg, idx) {
     div.textContent = msg.text;
   } else {
     div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them') + (msg.isSticker ? ' sticker' : '');
-    if (msg.isSticker) {
-      div.textContent = msg.text;
-    } else {
-      div.innerHTML = esc(msg.text) + '<div class="time">' + msg.time + '</div>';
-    }
-    // Долгий тап на сообщении для удаления
+    if (msg.isSticker) div.textContent = msg.text;
+    else div.innerHTML = esc(msg.text) + '<div class="time">' + msg.time + '</div>';
     let pressTimer;
-    const startPress = () => {
-      pressTimer = setTimeout(() => {
-        if (confirm('Удалить это сообщение?')) {
-          deleteMessage(msg);
-        }
-      }, 800);
-    };
+    const startPress = () => { pressTimer = setTimeout(() => { if (confirm('Удалить это сообщение?')) deleteMessage(msg); }, 800); };
     const cancelPress = () => clearTimeout(pressTimer);
     div.addEventListener('touchstart', startPress);
     div.addEventListener('touchend', cancelPress);
@@ -1374,7 +1375,6 @@ function pushMessage(msg) {
   localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
   addMsgToDOM(msg);
   chatBody.scrollTop = chatBody.scrollHeight;
-
   const item = activeChat;
   if (item.type === 'person' || item.type === 'group' || item.type === 'community') {
     const cnt = (item.type === 'group' || item.type === 'community') ? 2 : 1;
@@ -1382,11 +1382,7 @@ function pushMessage(msg) {
       setTimeout(() => {
         const rt = generateReply(msg.text);
         const sn = item.type === 'person' ? item.name : rnd(PEOPLE).name;
-        const reply = {
-          text: item.type === 'person' ? rt : sn + ': ' + rt,
-          time: nowTime(),
-          from: 'them'
-        };
+        const reply = { text: item.type === 'person' ? rt : sn + ': ' + rt, time: nowTime(), from: 'them' };
         chats[item.id].push(reply);
         localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
         if (activeChat && activeChat.id === item.id) {
@@ -1409,13 +1405,9 @@ document.getElementById('backBtn').addEventListener('click', () => {
 });
 
 document.getElementById('settingsBtn').addEventListener('click', () => {
-  if (confirm('Выйти из аккаунта?')) {
-    localStorage.clear();
-    location.reload();
-  }
+  if (confirm('Выйти из аккаунта?')) { localStorage.clear(); location.reload(); }
 });
 
-/* ============ СТИКЕР-РЯД В ЧАТЕ ============ */
 function renderStickerRow() {
   const row = document.getElementById('stickerRow');
   row.innerHTML = '';
@@ -1427,7 +1419,6 @@ function renderStickerRow() {
     else if (p.requirePremium === 'prime' && currentUser.premium === 'prime') owned.push(p);
   });
   const allEmojis = owned.flatMap(p => p.emojis);
-  // показываем 10 случайных
   const shuffled = allEmojis.sort(() => 0.5 - Math.random()).slice(0, 12);
   shuffled.forEach(e => {
     const b = document.createElement('button');
@@ -1441,7 +1432,6 @@ function renderStickerRow() {
   });
 }
 
-/* ============ СТИКЕР-ПАКИ (раздел) ============ */
 function renderStickerPacks() {
   const el = document.getElementById('stickerPacks');
   el.innerHTML = '';
@@ -1454,15 +1444,13 @@ function renderStickerPacks() {
     div.className = 'pack-card ' + (owned ? 'owned' : 'locked') +
       (p.requirePremium === 'prime' ? ' prime-pack' : '') +
       (p.requirePremium === 'sunset' ? ' sunset-pack' : '');
-    div.innerHTML =
-      '<div class="pack-emoji">' + p.emoji + '</div>' +
+    div.innerHTML = '<div class="pack-emoji">' + p.emoji + '</div>' +
       '<div class="pack-name">' + p.name + '</div>' +
       '<div class="pack-status">' + (owned ? '✅ Доступен' : (p.requirePremium === 'prime' ? '💎 Prime Premium' : '⭐ Sunset Premium')) + '</div>';
     el.appendChild(div);
   });
 }
 
-/* ============ МУЗЫКА ============ */
 function loadMusicList(q) {
   const el = document.getElementById('tracksList');
   el.innerHTML = '';
@@ -1512,14 +1500,13 @@ document.getElementById('playerClose').addEventListener('click', () => {
   document.getElementById('playerBar').classList.remove('show');
 });
 
-/* ============ КАНАЛЫ ============ */
 function renderChannelsList() {
   const list = document.getElementById('channelsList');
   list.innerHTML = '';
   const all = [
-    { id: 'life_maria', name: 'Мария о жизни', color: '#a06cd5', emoji: 'М', desc: 'О быте', type: 'channel', owner: 'system' },
-    { id: 'life_dmitry', name: 'Дмитрий пишет', color: '#4a90e2', emoji: 'Д', desc: 'О работе', type: 'channel', owner: 'system' },
-    { id: 'life_anna', name: 'Анна делится', color: '#ff5e8c', emoji: 'А', desc: 'О кулинарии', type: 'channel', owner: 'system' },
+    { id: 'life_maria', name: 'Мария о жизни', color: '#a06cd5', emoji: 'М', desc: 'О быте', type: 'channel' },
+    { id: 'life_dmitry', name: 'Дмитрий пишет', color: '#4a90e2', emoji: 'Д', desc: 'О работе', type: 'channel' },
+    { id: 'life_anna', name: 'Анна делится', color: '#ff5e8c', emoji: 'А', desc: 'О кулинарии', type: 'channel' },
     ...channels
   ];
   all.forEach(ch => {
@@ -1533,7 +1520,6 @@ function renderChannelsList() {
   });
 }
 
-/* ============ МОДАЛКА + ============ */
 document.getElementById('plusBtn').addEventListener('click', () => {
   document.getElementById('createModal').classList.add('show');
 });
@@ -1565,16 +1551,9 @@ document.querySelectorAll('.modal-option').forEach(opt => {
       ft.textContent = '📸 Новая история';
       fs.textContent = 'Текст истории (24 часа)';
       fn.style.display = 'none'; fx.style.display = 'block';
-    } else if (a === 'group-open') {
-      ft.textContent = '🌍 Открытая группа';
-      fs.textContent = 'Любой может найти и зайти';
-    } else if (a === 'group-closed') {
-      ft.textContent = '🔒 Закрытая группа';
-      fs.textContent = 'Только по ссылке-приглашению';
-    } else if (a === 'channel') {
-      ft.textContent = '📢 Канал';
-      fs.textContent = 'Вы публикуете посты о жизни';
-    }
+    } else if (a === 'group-open') { ft.textContent = '🌍 Открытая группа'; fs.textContent = 'Любой может найти и зайти'; }
+    else if (a === 'group-closed') { ft.textContent = '🔒 Закрытая группа'; fs.textContent = 'Только по ссылке-приглашению'; }
+    else if (a === 'channel') { ft.textContent = '📢 Канал'; fs.textContent = 'Вы публикуете посты о жизни'; }
     document.getElementById('formModal').classList.add('show');
     setTimeout(() => { (fn.style.display === 'none' ? fx : fn).focus(); }, 300);
   });
@@ -1588,15 +1567,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
   if (pendingAction === 'post') {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 3) { alert('Пост минимум 3 символа'); return; }
-    const p = {
-      id: 'p_' + Date.now(),
-      author: currentUser.name,
-      color: currentUser.color,
-      text: text,
-      time: 'сейчас',
-      likes: 0, reposts: 0, comments: [],
-      likedByMe: false, repostedByMe: false
-    };
+    const p = { id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, time: 'сейчас', likes: 0, reposts: 0, comments: [], likedByMe: false, repostedByMe: false };
     posts.unshift(p);
     localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
     document.getElementById('formModal').classList.remove('show');
@@ -1604,24 +1575,16 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     alert(currentUser.premium === 'prime' ? '✅ Пост опубликован и виден всем!' : '📝 Пост создан. Обычные посты видят только 2% пользователей. Купите Prime Premium чтобы видели все.');
     return;
   }
-
   if (pendingAction === 'story') {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
-    userStories.unshift({
-      id: 's_' + Date.now(),
-      author: currentUser.name,
-      color: currentUser.color,
-      emoji: currentUser.emoji,
-      text: text
-    });
+    userStories.unshift({ id: 's_' + Date.now(), author: currentUser.name, color: currentUser.color, emoji: currentUser.emoji, text: text });
     if (userStories.length > 10) userStories = userStories.slice(0, 10);
     localStorage.setItem(STORIES_KEY, JSON.stringify(userStories));
     document.getElementById('formModal').classList.remove('show');
     renderStories();
     return;
   }
-
   const name = document.getElementById('formName').value.trim();
   if (name.length < 2) { alert('Название минимум 2 символа'); return; }
   const id = 'x' + Date.now();
@@ -1650,7 +1613,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
   }
 });
 
-/* ============ МЕНЮ ЧАТА ============ */
 document.getElementById('chatMenuBtn').addEventListener('click', () => {
   document.getElementById('chatMenuModal').classList.add('show');
 });
@@ -1679,7 +1641,6 @@ document.getElementById('deleteChatBtn').addEventListener('click', () => {
   }
 });
 
-/* ============ ПРОФИЛЬ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   const md = document.getElementById('profileModal');
   document.getElementById('profileTitle').textContent = currentUser.name;
@@ -1693,23 +1654,17 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   md.classList.add('show');
 });
 
-/* ============ ПОКУПКИ ============ */
 document.querySelectorAll('.promo-price').forEach(btn => {
   btn.addEventListener('click', () => {
     const item = btn.dataset.buy;
     const price = btn.dataset.price;
     const names = {
-      sunset_year: 'Sunset Premium (год)',
-      prime_year: 'Prime Premium (год)',
-      community_month: 'Продвижение сообщества (мес)',
-      community_year: 'Продвижение сообщества (год)',
-      channel_month: 'Продвижение канала (мес)',
-      channel_year: 'Продвижение канала (год)',
-      group_month: 'Продвижение группы (мес)',
-      group_year: 'Продвижение группы (год)'
+      sunset_year: 'Sunset Premium (год)', prime_year: 'Prime Premium (год)',
+      community_month: 'Продвижение сообщества (мес)', community_year: 'Продвижение сообщества (год)',
+      channel_month: 'Продвижение канала (мес)', channel_year: 'Продвижение канала (год)',
+      group_month: 'Продвижение группы (мес)', group_year: 'Продвижение группы (год)'
     };
     const name = names[item] || item;
-
     if (item === 'sunset_year' || item === 'prime_year') {
       if (confirm('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\nПодтвердить покупку?')) {
         currentUser.premium = item === 'sunset_year' ? 'sunset' : 'prime';
@@ -1720,19 +1675,14 @@ document.querySelectorAll('.promo-price').forEach(btn => {
         alert('✅ ' + name + ' активирован!');
       }
     } else {
-      alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Свяжитесь с администратором для оплаты\n(СБП или карта)');
+      alert('💳 Оплата: ' + name + '\n💰 Сумма: ' + price + ' ₽\n\n📞 Свяжитесь с администратором\n(СБП или карта)');
     }
   });
 });
 
-/* ============ АВТООБНОВЛЕНИЕ ============ */
 function scheduleHourlyRefresh() {
-  setInterval(() => {
-    // Обновляем ленту каждый час
-    renderPosts();
-  }, 3600000);
+  setInterval(() => { renderPosts(); }, 3600000);
 }
-
 let lastActiveTime = Date.now();
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
@@ -1742,7 +1692,6 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-/* ============ ХЭШ JOIN ============ */
 window.addEventListener('load', () => {
   const h = location.hash;
   if (h && h.startsWith('#join=')) {
