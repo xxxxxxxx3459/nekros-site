@@ -232,7 +232,6 @@
 
 <div class="sunset-photo"></div>
 
-<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -243,7 +242,6 @@
   </div>
 </div>
 
-<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left" id="myProfileBtn">
@@ -528,8 +526,6 @@ function continueToApp() {
 }
 
 regBtn.addEventListener('click', continueToApp);
-regBtn.addEventListener('touchend', function(e) { e.preventDefault(); continueToApp(); });
-regBtn.onclick = continueToApp;
 
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) {
@@ -898,7 +894,6 @@ function startApp() {
   renderStickerPacks();
   renderStickerRow();
 
-  // Запуск проверки: напишут ли боты первыми
   setTimeout(proactiveCheck, 3000);
   setInterval(proactiveCheck, 60 * 60 * 1000);
 }
