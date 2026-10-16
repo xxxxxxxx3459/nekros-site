@@ -1150,6 +1150,23 @@ function renderChatsList(tab, q) {
     return;
   }
 
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'card-item';
+    let badge = '';
+    if (item.type === 'group') badge = item.closed ? '<span class="badge closed">🔒</span>' : '<span class="badge open">🌍</span>';
+    else if (item.type === 'community') badge = '<span class="badge open">🌍</span>';
+    const lastMsg = chats[item.id] && chats[item.id].length ? chats[item.id][chats[item.id].length-1].text : (item.desc || 'Написать');
+    let cls = 'card-avatar';
+    if (item.type === 'group') cls += ' group';
+    div.innerHTML = '<div class="' + cls + '" style="background:' + item.color + '">' + item.emoji + '</div>' +
+      '<div class="card-info"><div class="card-name">' + esc(item.name) + badge + '</div>' +
+      '<div class="card-sub">' + esc(lastMsg) + '</div></div>';
+    div.addEventListener('click', () => openChat(item));
+    list.appendChild(div);
+  });
+}
+
   // Люди — сетка 2 колонки. Группы/сообщества — обычный список
   if (tab === 'people') list.classList.add('chats-grid');
 
