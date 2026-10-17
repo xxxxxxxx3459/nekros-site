@@ -324,7 +324,6 @@
         
         <div class="pinned-sections" id="pinnedSections"></div>
         
-        <!-- КНОПКА НАСТРОЙКИ РАЗДЕЛОВ -->
         <div class="manage-pinned-btn" id="managePinnedBtn" style="display:none;">⚙️ Настроить разделы</div>
 
         <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
@@ -481,16 +480,34 @@
 <div class="modal" id="addParticipantsModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Добавить участников</div>
-    <div class="modal-sub">Выберите людей из списка</div>
-    <div id="participantsList" style="margin-top: 10px; max-height: 50vh; overflow-y: auto;"></div>
+    <div class="modal-sub">Поиск людей по имени</div>
+    <input type="text" class="modal-input" id="searchInviteInput" placeholder="Введите имя (например: Иван)..." style="margin-bottom: 10px;">
+    <div id="participantsList" style="margin-top: 10px; max-height: 45vh; overflow-y: auto;"></div>
     <button class="modal-close" data-close="addParticipantsModal">Закрыть</button>
   </div>
 </div>
 
-<!-- МОДАЛКА ПРОФИЛЯ (НАСТРОЙКИ) -->
+<!-- МОДАЛКА ПРОФИЛЯ (ДЛЯ ЧУЖИХ) -->
+<div class="modal" id="publicProfileModal">
+  <div class="modal-card" style="max-height: 90vh;">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom: 20px;">
+        <div class="my-avatar" id="pubProfileAvatar" style="width: 70px; height: 70px; font-size: 28px;"></div>
+        <div style="flex:1;">
+            <div id="pubProfileName" style="font-size: 20px; font-weight: bold; color: #fff;"></div>
+            <div id="pubProfileStatus" style="font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px;"></div>
+        </div>
+        <button id="pubSubscribeBtn" class="profile-action-btn" style="width:auto; padding: 8px 16px; margin:0;">Подписаться</button>
+    </div>
+    <div class="section-title" style="padding: 0 0 10px 0;">📌 Закрепленные разделы</div>
+    <div class="pinned-sections" id="pubPinnedSections"></div>
+    <button class="modal-close" data-close="publicProfileModal">Закрыть</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ (НАСТРОЙКИ) -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
-    <div class="modal-title" id="profileTitle">Профиль</div>
+    <div class="modal-title" id="profileTitle">Мой профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
     
     <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить фото профиля</button>
@@ -524,7 +541,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v28';
+const STORAGE_KEY = 'sunset_user_v30';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -587,12 +604,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v28';
-const GROUPS_KEY = 'sunset_groups_v28';
-const CHANNELS_KEY = 'sunset_channels_v28';
-const POSTS_KEY = 'sunset_posts_v28';
-const LIKES_KEY = 'sunset_likes_v28';
-const STORIES_KEY = 'sunset_stories_v28';
+const CHATS_KEY = 'sunset_chats_v30';
+const GROUPS_KEY = 'sunset_groups_v30';
+const CHANNELS_KEY = 'sunset_channels_v30';
+const POSTS_KEY = 'sunset_posts_v30';
+const LIKES_KEY = 'sunset_likes_v30';
+const STORIES_KEY = 'sunset_stories_v30';
 
 let currentUser = null;
 let chats = {};
@@ -605,7 +622,7 @@ let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
 
-/* ============ ГЕНЕРАТОР ИМЕН ============ */
+/* ============ ГЕНЕРАТОР ИМЕН И БАЗА ЮЗЕРОВ ============ */
 const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Арсений','Иван','Денис','Евгений','Даниил','Тимур','Владислав','Игорь','Олег','Павел','Руслан'];
 const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Арина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия','Кристина','Людмила','Галина','Надежда'];
 const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Егоров','Павлов','Козлов','Степанов','Николаев','Орлов','Андреев','Макаров','Никитин','Захаров','Зайцев','Соловьёв','Борисов','Яковлев','Григорьев','Романов','Воробьёв','Сергеев','Кузьмин','Фролов','Александров','Дмитриев','Королёв','Гусев','Киселёв','Ильин','Максимов','Поляков','Сорокин','Виноградов','Ковалёв','Белов','Медведев','Антонов','Тарасов'];
@@ -618,6 +635,20 @@ function getRandomFullName() {
     return `${firstName} ${finalLastName}`;
 }
 
+// Генерируем базу из 500 фейковых пользователей для поиска
+const ALL_USERS = [];
+for(let i=0; i<500; i++) {
+    ALL_USERS.push({ 
+        id: 'u_' + i, 
+        name: getRandomFullName(), 
+        color: rnd(AVATAR_COLORS), 
+        emoji: '', 
+        type: 'person', 
+        lastSeen: rnd(['в сети', 'был(а) в сети недавно', 'год назад'])
+    });
+}
+ALL_USERS.forEach(u => u.emoji = u.name.charAt(0));
+
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
   ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
@@ -629,8 +660,8 @@ const PEOPLE = PEOPLE_NAMES.map(p => ({
 }));
 
 const DEFAULT_COMMUNITIES = [
-  { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
-  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community' }
+  { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community', memberCount: 1240 },
+  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community', memberCount: 850 }
 ];
 
 const SONGS = [
@@ -738,12 +769,8 @@ function simulatePromotion() {
 
         if (hoursDiff > 1) {
             let totalViewsToAdd = 0;
-            
-            if (currentUser.premium === 'sunset') {
-                totalViewsToAdd = Math.floor(hoursDiff * (Math.random() * 10 + 30)); 
-            } else if (currentUser.premium === 'prime') {
-                totalViewsToAdd = Math.floor(hoursDiff * (Math.random() * 50 + 100));
-            }
+            if (currentUser.premium === 'sunset') totalViewsToAdd = Math.floor(hoursDiff * (Math.random() * 10 + 30)); 
+            else if (currentUser.premium === 'prime') totalViewsToAdd = Math.floor(hoursDiff * (Math.random() * 50 + 100));
 
             if (totalViewsToAdd > 0) {
                 const newSubs = Math.floor(totalViewsToAdd * (Math.random() * 0.05 + 0.02));
@@ -834,7 +861,7 @@ function renderMusic() {
     });
 }
 
-/* ============ СПИСОК ЧАТОВ ============ */
+/* ============ СПИСОК ЧАТОВ (С КОЛ-ВОМ УЧАСТНИКОВ) ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
@@ -857,40 +884,93 @@ function renderChatsList(tab, q) {
     const div = document.createElement('div');
     div.className = 'card-item';
     let badge = (item.type === 'group' || item.type === 'community') ? '<span class="badge open">🌍</span>' : '';
-    let subText = item.type === 'person' ? item.lastSeen : (item.desc || 'Написать');
+    
+    // Вывод количества участников для групп/каналов
+    let subText = '';
+    if (item.type === 'person') {
+        subText = item.lastSeen;
+    } else {
+        if (!item.memberCount) item.memberCount = Math.floor(Math.random() * 500) + 10;
+        subText = `${item.memberCount.toLocaleString('ru-RU')} участников`;
+    }
 
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
       <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
-    div.addEventListener('click', () => openChat(item));
+    
+    // ЕСЛИ ЭТО ЧЕЛОВЕК - ОТКРЫВАЕМ ЕГО ПУБЛИЧНЫЙ ПРОФИЛЬ, ИНАЧЕ - ЧАТ
+    div.addEventListener('click', () => {
+        if (item.type === 'person') {
+            openPublicProfile(item);
+        } else {
+            openChat(item);
+        }
+    });
     list.appendChild(div);
   });
+}
+
+/* ============ ПУБЛИЧНЫЙ ПРОФИЛЬ ============ */
+function openPublicProfile(person) {
+    document.getElementById('pubProfileName').textContent = person.name;
+    document.getElementById('pubProfileStatus').textContent = person.lastSeen || 'в сети';
+    
+    const av = document.getElementById('pubProfileAvatar');
+    av.textContent = person.emoji;
+    av.style.background = person.color;
+
+    const pubPinned = document.getElementById('pubPinnedSections');
+    pubPinned.innerHTML = '';
+    
+    // Имитация того, что у пользователя есть закрепы
+    const isPrem = Math.random() > 0.5;
+    const limit = isPrem ? (Math.random() > 0.5 ? 8 : 3) : 0;
+
+    if (limit === 0) {
+        pubPinned.innerHTML = '<div class="pinned-empty">Нет закрепленных разделов</div>';
+    } else {
+        for (let i = 0; i < limit; i++) {
+            const div = document.createElement('div');
+            div.className = 'pinned-item';
+            const rType = rnd(['group', 'channel']);
+            div.innerHTML = `
+                <div class="pinned-icon">${rType === 'channel' ? '📢' : '👥'}</div>
+                <div class="pinned-name">${esc(person.name.split(' ')[0])} ${rType === 'channel' ? 'TV' : 'Chat'}</div>
+            `;
+            div.addEventListener('click', () => alert('Это чужой раздел, вы можете только подписаться на него!'));
+            pubPinned.appendChild(div);
+        }
+    }
+
+    const subBtn = document.getElementById('pubSubscribeBtn');
+    subBtn.textContent = 'Подписаться';
+    subBtn.style.color = '#fff';
+    subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
+    
+    subBtn.onclick = () => {
+        subBtn.textContent = 'Вы подписаны';
+        subBtn.style.background = 'rgba(255,255,255,0.1)';
+        subBtn.style.color = '#86efac';
+        alert(`Вы подписались на ${person.name}!`);
+    };
+
+    document.getElementById('publicProfileModal').classList.add('show');
 }
 
 /* ============ ИСТОРИИ ============ */
 function calculateStoryViews(story) {
     if (!story.createdAt) return 0;
-    
     const now = Date.now();
-    const msElapsed = now - story.createdAt;
-    const hoursElapsed = msElapsed / (1000 * 60 * 60);
-    
+    const hoursElapsed = (now - story.createdAt) / (1000 * 60 * 60);
     if (hoursElapsed < 0.1) return 0;
 
-    let maxDaily = 0;
-    if (story.author === currentUser.name) {
-        if (currentUser.premium === 'sunset') maxDaily = 822;
-        else if (currentUser.premium === 'prime') maxDaily = 2740;
-        else maxDaily = 100;
-    } else {
-        maxDaily = 5000;
-    }
+    let maxDaily = (story.author === currentUser.name && currentUser.premium === 'sunset') ? 822 : 
+                   ((story.author === currentUser.name && currentUser.premium === 'prime') ? 2740 : 100);
+                   
+    if (story.author !== currentUser.name) maxDaily = 5000;
 
     const daysElapsed = hoursElapsed / 24;
-    let views = Math.floor(daysElapsed * maxDaily);
-    views += Math.floor(Math.random() * (maxDaily * 0.1));
-    
-    if (story.targetViews) return Math.min(views, story.targetViews);
-    return views;
+    let views = Math.floor(daysElapsed * maxDaily) + Math.floor(Math.random() * (maxDaily * 0.1));
+    return story.targetViews ? Math.min(views, story.targetViews) : views;
 }
 
 function renderStories() {
@@ -936,37 +1016,28 @@ function showStoryViewers(story, totalViews) {
 
     let totalReacts = Math.floor(totalViews * (Math.random() * 0.02 + 0.01)); 
     if (totalReacts > 3000) totalReacts = 3000; 
-
     const displayCount = Math.min(totalViews, 60);
     const reactionRatio = totalViews > 0 ? (totalReacts / totalViews) : 0;
 
-    const viewers = [];
     for (let i = 0; i < displayCount; i++) {
         const name = getRandomFullName();
         const color = rnd(AVATAR_COLORS);
         const initial = name.charAt(0);
         let reaction = null;
-        if (Math.random() < reactionRatio) {
-             reaction = rnd(['❤️', '🔥', '😂', '😮']);
-        }
-        viewers.push({ name, color, initial, reaction });
-    }
+        if (Math.random() < reactionRatio) reaction = rnd(['❤️', '🔥', '😂', '😮']);
 
-    viewers.sort((a, b) => (b.reaction ? 1 : 0) - (a.reaction ? 1 : 0));
-
-    viewers.forEach(v => {
         const div = document.createElement('div');
         div.className = 'viewer-item';
         div.innerHTML = `
-            <div class="viewer-avatar" style="background:${v.color}">${v.initial}</div>
+            <div class="viewer-avatar" style="background:${color}">${initial}</div>
             <div class="viewer-info">
-                <div class="viewer-name">${v.name}</div>
+                <div class="viewer-name">${name}</div>
                 <div class="viewer-time">${Math.floor(Math.random() * 15) + 1} минут назад</div>
             </div>
-            ${v.reaction ? `<div class="viewer-reaction">${v.reaction}</div>` : ''}
+            ${reaction ? `<div class="viewer-reaction">${reaction}</div>` : ''}
         `;
         list.appendChild(div);
-    });
+    }
 
     if (totalViews > displayCount) {
         const more = document.createElement('div');
@@ -988,7 +1059,6 @@ function renderPosts() {
       ];
       [...posts, ...demoPosts].forEach(p => el.appendChild(buildPostEl(p)));
   }
-  
   renderMyPagePosts();
 }
 
@@ -1007,10 +1077,7 @@ function renderMyPagePosts() {
 function buildPostEl(p) {
   const div = document.createElement('div');
   div.className = 'post';
-  
   const hasLiked = userLikes.includes(p.id);
-  const likeClass = hasLiked ? 'liked' : '';
-  const likeIcon = hasLiked ? '❤️' : '🤍';
   
   let mediaHtml = '';
   if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
@@ -1035,7 +1102,7 @@ function buildPostEl(p) {
     <div class="post-text">${esc(p.text)}</div>
     ${mediaHtml}
     <div class="post-actions">
-      <button class="post-action ${likeClass} like-btn">${likeIcon} <span>${p.likes || 0}</span></button>
+      <button class="post-action ${hasLiked ? 'liked' : ''} like-btn">${hasLiked ? '❤️' : '🤍'} <span>${p.likes || 0}</span></button>
       <button class="post-action repost-btn">🔄 <span>${p.reposts || 0}</span></button>
       <button class="post-action comment-btn">💬 <span>${(p.comments||[]).length}</span></button>
     </div>
@@ -1122,23 +1189,15 @@ function renderMyPage() {
         manageBtn.style.display = 'none';
     } else {
         manageBtn.style.display = 'block';
-
-        // Фильтруем ссылки по закрепленным ID
+        
+        // Берем только те, что отмечены в pinnedIds
         let pinnedLinks = allLinks.filter(link => currentUser.pinnedIds.includes(link.id));
         
-        // Если ничего не закреплено, но есть ссылки, автоматически закрепляем первые
-        if (pinnedLinks.length === 0 && allLinks.length > 0) {
-            currentUser.pinnedIds = allLinks.slice(0, limit).map(l => l.id);
-            pinnedLinks = allLinks.slice(0, limit);
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-        }
-
         // Ограничиваем до лимита
         pinnedLinks = pinnedLinks.slice(0, limit);
 
         for (let i = 0; i < limit; i++) {
             const div = document.createElement('div');
-            
             if (i < pinnedLinks.length) {
                 const link = pinnedLinks[i];
                 div.className = 'pinned-item';
@@ -1146,32 +1205,21 @@ function renderMyPage() {
                     <div class="pinned-icon">${link.type === 'channel' ? '📢' : (link.type === 'community' ? '🌍' : '👥')}</div>
                     <div class="pinned-name">${esc(link.name)}</div>
                 `;
-                // ПЕРЕХОД В ЧАТ ПРИ НАЖАТИИ
-                div.addEventListener('click', () => {
-                    openChat(link);
-                });
+                div.addEventListener('click', () => openChat(link));
             } else {
                 div.className = 'pinned-item';
                 div.style.opacity = '0.4';
-                div.innerHTML = `
-                    <div class="pinned-icon">+</div>
-                    <div class="pinned-name">Слот ${i+1}</div>
-                `;
+                div.innerHTML = `<div class="pinned-icon">+</div><div class="pinned-name">Слот ${i+1}</div>`;
                 div.addEventListener('click', openManagePinned);
             }
             pinnedContainer.appendChild(div);
         }
     }
-
     renderMyPagePosts();
 }
 
-/* Управление закрепами */
 function openManagePinned() {
-    let limit = 0;
-    if (currentUser.premium === 'prime') limit = 8;
-    else if (currentUser.premium === 'sunset') limit = 3;
-
+    let limit = (currentUser.premium === 'prime') ? 8 : (currentUser.premium === 'sunset' ? 3 : 0);
     const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
     const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
@@ -1183,17 +1231,23 @@ function openManagePinned() {
     list.innerHTML = '';
 
     if (allLinks.length === 0) {
-        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">У вас пока нет созданных групп или каналов.</div>';
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">У вас пока нет созданных групп, каналов или сообществ.</div>';
     } else {
         allLinks.forEach(link => {
             const isPinned = currentUser.pinnedIds.includes(link.id);
             const div = document.createElement('div');
             div.className = 'viewer-item';
+            
+            // Определяем текст для типа
+            let typeText = 'Группа';
+            if (link.type === 'channel') typeText = 'Канал';
+            else if (link.type === 'community') typeText = 'Сообщество';
+
             div.innerHTML = `
                 <div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div>
                 <div class="viewer-info">
                     <div class="viewer-name">${esc(link.name)}</div>
-                    <div class="viewer-time">${link.type === 'channel' ? 'Канал' : (link.type === 'community' ? 'Сообщество' : 'Группа')}</div>
+                    <div class="viewer-time">${typeText}</div>
                 </div>
                 <input type="checkbox" ${isPinned ? 'checked' : ''} style="width:20px; height:20px; accent-color:#ff8c42; cursor:pointer;">
             `;
@@ -1203,11 +1257,12 @@ function openManagePinned() {
                 if (e.target.checked) {
                     if (currentUser.pinnedIds.length >= limit) {
                         e.target.checked = false;
-                        alert(`Лимит вашего тарифа: ${limit} раздела. Уберите другой раздел, чтобы добавить этот.`);
+                        alert(`Лимит вашего тарифа: ${limit} раздела. Уберите другой, чтобы добавить этот.`);
                         return;
                     }
                     if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
                 } else {
+                    // Убираем из закрепов, но не удаляем саму группу!
                     currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
                 }
                 try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
@@ -1218,12 +1273,10 @@ function openManagePinned() {
             list.appendChild(div);
         });
     }
-
     document.getElementById('managePinnedModal').classList.add('show');
 }
 
 document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
-
 
 /* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
@@ -1239,11 +1292,12 @@ function openChat(item) {
   if (item.type === 'person') {
       statusEl.textContent = item.lastSeen;
       statusEl.className = 'status ' + (item.lastSeen === 'в сети' ? 'online' : 'offline');
-      document.getElementById('addParticipantsBtn').style.display = 'none'; // Скрываем для личных
+      document.getElementById('addParticipantsBtn').style.display = 'none';
   } else {
-      statusEl.textContent = item.type === 'channel' ? 'канал' : 'группа';
+      if (!item.memberCount) item.memberCount = Math.floor(Math.random() * 500) + 10;
+      statusEl.textContent = `${item.memberCount.toLocaleString('ru-RU')} участников`;
       statusEl.className = 'status online';
-      document.getElementById('addParticipantsBtn').style.display = 'flex'; // Показываем для групп
+      document.getElementById('addParticipantsBtn').style.display = 'flex';
   }
   
   chatEl.classList.add('show');
@@ -1255,6 +1309,11 @@ function openChat(item) {
     msgs.forEach(m => addMsgToDOM(m));
     chatBody.scrollTop = chatBody.scrollHeight;
   }
+}
+
+function saveGroups() {
+    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+    try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
 }
 
 function addMsgToDOM(msg) {
@@ -1321,25 +1380,37 @@ document.getElementById('backBtn').addEventListener('click', () => {
   activeChat = null;
 });
 
-/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ ============ */
+/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ (С ПОИСКОМ) ============ */
 document.getElementById('addParticipantsBtn').addEventListener('click', () => {
     if (!activeChat) return;
-    
+    document.getElementById('searchInviteInput').value = '';
+    renderParticipantsList(ALL_USERS);
+    document.getElementById('addParticipantsModal').classList.add('show');
+});
+
+document.getElementById('searchInviteInput').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    const filtered = ALL_USERS.filter(u => u.name.toLowerCase().includes(q));
+    renderParticipantsList(filtered);
+});
+
+function renderParticipantsList(users) {
     const list = document.getElementById('participantsList');
     list.innerHTML = '';
     
-    // Генерируем 100 ботов
-    for (let i = 0; i < 100; i++) {
-        const name = getRandomFullName();
-        const color = rnd(AVATAR_COLORS);
-        const initial = name.charAt(0);
-        
+    if (users.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">Никого не найдено</div>';
+        return;
+    }
+
+    // Показываем первых 50 для оптимизации
+    users.slice(0, 50).forEach(user => {
         const div = document.createElement('div');
         div.className = 'viewer-item';
         div.innerHTML = `
-            <div class="viewer-avatar" style="background:${color}">${initial}</div>
+            <div class="viewer-avatar" style="background:${user.color}">${user.emoji}</div>
             <div class="viewer-info">
-                <div class="viewer-name">${name}</div>
+                <div class="viewer-name">${user.name}</div>
             </div>
             <button class="invite-btn">Пригласить</button>
         `;
@@ -1352,23 +1423,24 @@ document.getElementById('addParticipantsBtn').addEventListener('click', () => {
             btn.style.background = 'transparent';
             btn.disabled = true;
             
-            // Добавляем системное сообщение в чат
-            const sysMsg = { text: `👤 ${name} присоединился к чату`, time: nowTime(), from: 'system' };
+            // Добавляем системное сообщение и увеличиваем счетчик
+            const sysMsg = { text: `👤 ${user.name} присоединился к чату`, time: nowTime(), from: 'system' };
             if (!chats[activeChat.id]) chats[activeChat.id] = [];
             chats[activeChat.id].push(sysMsg);
             try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
             
+            activeChat.memberCount = (activeChat.memberCount || 0) + 1;
+            saveGroups();
+            document.getElementById('chatStatus').textContent = `${activeChat.memberCount.toLocaleString('ru-RU')} участников`;
+
             if (activeChat) {
                 addMsgToDOM(sysMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
             }
         });
-        
         list.appendChild(div);
-    }
-    
-    document.getElementById('addParticipantsModal').classList.add('show');
-});
+    });
+}
 
 /* ============ МОДАЛКИ И СОЗДАНИЕ ============ */
 function openPostModal() {
@@ -1390,7 +1462,6 @@ function openPostModal() {
     } else {
         musicInput.style.display = 'block';
     }
-    
     document.getElementById('formModal').classList.add('show');
 }
 
@@ -1407,13 +1478,9 @@ document.querySelectorAll('.modal-option').forEach(opt => {
     const a = opt.dataset.action;
     document.getElementById('createModal').classList.remove('show');
     
-    if (a === 'post') {
-        openPostModal();
-        return;
-    }
+    if (a === 'post') { openPostModal(); return; }
     
     pendingAction = a;
-    
     const ft = document.getElementById('formTitle');
     const fs = document.getElementById('formSub');
     const fn = document.getElementById('formName');
@@ -1427,22 +1494,18 @@ document.querySelectorAll('.modal-option').forEach(opt => {
     if (a === 'story') { 
       ft.textContent = '📸 История'; 
       fs.textContent = 'Бесплатно для всех'; 
-      fx.style.display = 'block';
-      fx.placeholder = 'Что происходит?';
+      fx.style.display = 'block'; fx.placeholder = 'Что происходит?';
     }
     else if (a === 'group' || a === 'community') { 
       ft.textContent = a === 'group' ? '👥 Группа' : '🌍 Сообщество'; 
       fs.textContent = 'Введите название'; 
-      fn.style.display = 'block'; 
-      fx.style.display = 'none'; 
+      fn.style.display = 'block'; fx.style.display = 'none'; 
     }
     else if (a === 'channel') { 
       ft.textContent = '📢 Канал'; 
       fs.textContent = 'Введите название'; 
-      fn.style.display = 'block'; 
-      fx.style.display = 'none'; 
+      fn.style.display = 'block'; fx.style.display = 'none'; 
     }
-    
     document.getElementById('formModal').classList.add('show');
   });
 });
@@ -1458,99 +1521,58 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     let musicUrl = document.getElementById('formMusic').value.trim();
     
     if (text.length < 3 && !photoUrl) { alert('Напишите текст или добавьте фото'); return; }
-    
-    if (currentUser.premium === 'sunset' && posts.length >= 200) {
-      alert('Лимит Sunset Premium: 200 постов в месяц. Купите Prime!'); return;
-    }
-    if (currentUser.premium !== 'sunset' && currentUser.premium !== 'prime' && posts.length >= 20) {
-      alert('Лимит бесплатного аккаунта: 20 постов. Купите Premium!'); return;
-    }
+    if (currentUser.premium === 'sunset' && posts.length >= 200) { alert('Лимит Sunset Premium: 200 постов.'); return; }
+    if (currentUser.premium !== 'sunset' && currentUser.premium !== 'prime' && posts.length >= 20) { alert('Лимит: 20 постов.'); return; }
+    if (musicUrl && currentUser.premium !== 'prime') { alert('Музыка только для Prime!'); musicUrl = ''; }
 
-    if (musicUrl && currentUser.premium !== 'prime') {
-      alert('Прикреплять музыку могут только Prime Premium пользователи!');
-      musicUrl = '';
-    }
-
-    let musicObj = null;
-    if (musicUrl) musicObj = { title: 'Мой трек', artist: 'Ссылка из интернета' };
+    let musicObj = musicUrl ? { title: 'Мой трек', artist: 'Ссылка из интернета' } : null;
 
     posts.unshift({ 
-      id: 'p_' + Date.now(), 
-      author: currentUser.name, 
-      color: currentUser.color, 
-      text: text, 
-      image: photoUrl || null,
-      music: musicObj,
-      time: 'сейчас', 
-      likes: 0, 
-      views: Math.floor(Math.random() * 100) + 10,
-      reposts: 0, 
-      comments: [] 
+      id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, 
+      image: photoUrl || null, music: musicObj, time: 'сейчас', likes: 0, 
+      views: Math.floor(Math.random() * 100) + 10, reposts: 0, comments: [] 
     });
     
     try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
-    
-    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-    document.querySelector('.nav-btn[data-tab="mypage"]').classList.add('active');
-    document.getElementById('tab-mypage').classList.add('active');
-    renderMyPage();
+    document.querySelector('.nav-btn[data-tab="mypage"]').click();
 
   } else if (pendingAction === 'story') {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
     
-    let target = 10000;
-    if (currentUser.premium === 'sunset') target = 822 * 20;
-    else if (currentUser.premium === 'prime') target = 2740 * 20;
-    else target = 100 * 20;
+    let target = currentUser.premium === 'sunset' ? 822 * 20 : (currentUser.premium === 'prime' ? 2740 * 20 : 100 * 20);
 
     userStories.unshift({ 
-      id: 's_' + Date.now(), 
-      author: currentUser.name, 
-      color: currentUser.color, 
-      emoji: currentUser.emoji, 
-      text: text,
-      createdAt: Date.now(),
-      targetViews: target
+      id: 's_' + Date.now(), author: currentUser.name, color: currentUser.color, 
+      emoji: currentUser.emoji, text: text, createdAt: Date.now(), targetViews: target
     });
     
     try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderStories();
-    
-    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-    document.querySelector('.nav-btn[data-tab="feed"]').classList.add('active');
-    document.getElementById('tab-feed').classList.add('active');
+    document.querySelector('.nav-btn[data-tab="feed"]').click();
 
   } else {
     const name = document.getElementById('formName').value.trim();
     if (name.length < 2) { alert('Введите название'); return; }
     
     const newItem = { 
-        id: 'item_' + Date.now(), 
-        name: name, 
-        color: rnd(AVATAR_COLORS), 
-        emoji: name.charAt(0).toUpperCase(), 
-        owner: currentUser.name, 
-        desc: 'Создано вами' 
+        id: 'item_' + Date.now(), name: name, color: rnd(AVATAR_COLORS), 
+        emoji: name.charAt(0).toUpperCase(), owner: currentUser.name, desc: 'Создано вами',
+        memberCount: Math.floor(Math.random() * 50) + 1
     };
 
     if (pendingAction === 'channel') {
-      newItem.type = 'channel';
-      channels.push(newItem);
+      newItem.type = 'channel'; channels.push(newItem);
       try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
       currentSearchTab = 'channels';
     } else if (pendingAction === 'community') {
-      newItem.type = 'community';
-      groups.push(newItem);
+      newItem.type = 'community'; groups.push(newItem);
       try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
       currentSearchTab = 'communities';
     } else {
-      newItem.type = 'group';
-      groups.push(newItem);
+      newItem.type = 'group'; groups.push(newItem);
       try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
       currentSearchTab = 'groups';
     }
@@ -1558,18 +1580,14 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     document.getElementById('formModal').classList.remove('show');
     alert('Успешно создано!');
     renderMyPage(); 
-    renderChatsList(currentSearchTab, '');
+    document.querySelector(`.search-tab[data-stab="${currentSearchTab}"]`).click();
   }
 });
 
-/* ============ ПРОФИЛЬ ============ */
+/* ============ МОЙ ПРОФИЛЬ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
-  
-  let premText = 'Обычный пользователь';
-  if (currentUser.premium === 'prime') premText = '💎 Master';
-  else if (currentUser.premium === 'sunset') premText = '⭐ Administrator';
-  
+  let premText = currentUser.premium === 'prime' ? '💎 Master' : (currentUser.premium === 'sunset' ? '⭐ Administrator' : 'Обычный пользователь');
   document.getElementById('profileStatus').textContent = premText;
   document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
 
@@ -1577,35 +1595,30 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   pp.innerHTML = '';
   
   if (currentUser.premium) {
-    let statsHtml = `<div class="stats-box">
+    pp.innerHTML = `<div class="stats-box">
         <div class="stats-row"><span>Общий охват (за год):</span> <span class="stats-value">${(currentUser.profileViews || 0).toLocaleString('ru-RU')}</span></div>
         <div class="stats-row"><span>Новые подписчики:</span> <span class="stats-value">+${(currentUser.subscribers || 0).toLocaleString('ru-RU')}</span></div>
         <div class="stats-row"><span>Тариф продвижения:</span> <span class="stats-value">${currentUser.premium === 'prime' ? '1 млн/год' : '300 тыс/год'}</span></div>
     </div>`;
-    pp.innerHTML = statsHtml;
   }
-  
   document.getElementById('profileModal').classList.add('show');
 });
 
 document.getElementById('myStatusSelect').addEventListener('change', function() {
     currentUser.lastSeen = this.value;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    if (!currentUser.premium) {
-        document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
-    }
+    if (!currentUser.premium) document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
     renderMyPage(); 
 });
 
 document.getElementById('changeAvatarBtn').addEventListener('click', () => {
-    const newEmoji = prompt('Введите новую букву или эмодзи для аватарки (например: 😎 или A):', currentUser.emoji);
+    const newEmoji = prompt('Введите новую букву или эмодзи:', currentUser.emoji);
     if (newEmoji) {
         currentUser.emoji = newEmoji.charAt(0);
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
         document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
         document.getElementById('promptAvatar').textContent = currentUser.emoji;
         renderMyPage();
-        alert('Фото профиля обновлено!');
     }
 });
 
@@ -1620,7 +1633,7 @@ document.querySelectorAll('.promo-price').forEach(btn => {
       currentUser.premium = item === 'sunset_year' ? 'sunset' : 'prime';
       currentUser.profileViews = 0;
       currentUser.subscribers = 0;
-      currentUser.pinnedIds = []; // Сбрасываем закрепы при покупке
+      currentUser.pinnedIds = []; 
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
       updatePremiumBadge();
       renderMyPage(); 
