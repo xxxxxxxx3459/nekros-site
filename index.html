@@ -56,8 +56,11 @@
     font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
     font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
     min-height: 56px;
+    touch-action: manipulation; /* ФИКС ДЛЯ НАЖАТИЙ */
+    user-select: none;
   }
   .reg-btn:active { transform: scale(0.98); }
+  .reg-error { color: #ff5e62; font-size: 13px; margin-top: 10px; display: none; font-weight: 600; }
 
   /* ПАНЕЛЬ */
   #panel { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; background: rgba(15,10,25,0.72); backdrop-filter: blur(30px); }
@@ -142,7 +145,7 @@
   .comment-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; font-family: inherit; }
   .comment-send { background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 50%; width: 38px; height: 38px; color: #fff; font-size: 16px; cursor: pointer; }
 
-  /* МОЯ СТРАНИЦА (НОВЫЙ ДИЗАЙН) */
+  /* МОЯ СТРАНИЦА */
   .my-page-header { display: flex; align-items: center; gap: 16px; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .my-page-avatar { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; position: relative; border: 3px solid rgba(255,255,255,0.2); }
   .my-page-info h2 { font-size: 22px; color: #fff; margin-bottom: 4px; }
@@ -270,7 +273,9 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
+    <!-- Добавил onclick прямо в HTML для 100% срабатывания -->
+    <button type="button" class="reg-btn" id="regBtn" onclick="continueToApp()">Продолжить →</button>
+    <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
 
@@ -482,13 +487,14 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v24';
+const STORAGE_KEY = 'sunset_user_v25';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
 const avatarPreview = document.getElementById('avatarPreview');
 const regName = document.getElementById('regName');
 const regBtn = document.getElementById('regBtn');
+const regError = document.getElementById('regError');
 
 avatarPreview.style.background = chosenColor;
 avatarPreview.textContent = '?';
@@ -503,12 +509,19 @@ avatarPreview.addEventListener('click', function() {
 function updateAvatarLetter() {
   const n = (regName.value || '').trim();
   avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
+  if(n.length >= 2) regError.style.display = 'none'; // скрываем ошибку при вводе
 }
 regName.addEventListener('input', updateAvatarLetter);
 
 function continueToApp() {
   const n = (regName.value || '').trim();
-  if (n.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
+  
+  if (n.length < 2) { 
+    regError.style.display = 'block'; // Показываем ошибку вместо alert
+    return; 
+  }
+  
+  regError.style.display = 'none';
   
   let isAdmin = false;
   let premiumLevel = null;
@@ -527,18 +540,17 @@ function continueToApp() {
   startApp();
 }
 
-regBtn.addEventListener('click', continueToApp);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) continueToApp();
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v24';
-const GROUPS_KEY = 'sunset_groups_v24';
-const CHANNELS_KEY = 'sunset_channels_v24';
-const POSTS_KEY = 'sunset_posts_v24';
-const LIKES_KEY = 'sunset_likes_v24';
-const STORIES_KEY = 'sunset_stories_v24';
+const CHATS_KEY = 'sunset_chats_v25';
+const GROUPS_KEY = 'sunset_groups_v25';
+const CHANNELS_KEY = 'sunset_channels_v25';
+const POSTS_KEY = 'sunset_posts_v25';
+const LIKES_KEY = 'sunset_likes_v25';
+const STORIES_KEY = 'sunset_stories_v25';
 
 let currentUser = null;
 let chats = {};
@@ -658,7 +670,7 @@ function startApp() {
   renderPosts();
   renderStories();
   renderMusic();
-  renderMyPage(); // Рендерим новую вкладку
+  renderMyPage();
   simulatePromotion();
 
   setInterval(() => {
@@ -736,7 +748,7 @@ document.querySelectorAll('.nav-btn').forEach(b => {
     document.getElementById('content').scrollTop = 0;
 
     if (tab === 'mypage') {
-        renderMyPage(); // Обновляем данные при переходе на страницу
+        renderMyPage();
     }
   });
 });
@@ -878,13 +890,13 @@ function showStoryViewers(story, totalViews) {
     const reactionRatio = totalViews > 0 ? (totalReacts / totalViews) : 0;
 
     const viewers = [];
-    for (let i = 0; i < displayCount;122 i++) {
+    for (let i = 0; i < displayCount; i++) {
         const name = getRandomFullName();
-3        const color = rnd(AVATAR_COLORS);
--        const initial = name.charAt(0);
-4        let reaction = null;
-d        if (Math.random() < reactionRatio) {
-98             reaction = rnd(['❤️', '🔥', '😂', '😮']);
+        const color = rnd(AVATAR_COLORS);
+        const initial = name.charAt(0);
+        let reaction = null;
+        if (Math.random() < reactionRatio) {
+             reaction = rnd(['❤️', '🔥', '😂', '😮']);
         }
         viewers.push({ name, color, initial, reaction });
     }
@@ -915,13 +927,13 @@ d        if (Math.random() < reactionRatio) {
     document.getElementById('storyViewersModal').classList.add('show');
 }
 
-/* ============ ПОСТЫ (МОЯ СТРАНИЦА И ЛЕНТА) ============ */
+/* ============ ПОСТЫ ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   if(el) {
       el.innerHTML = '';
       const demoPosts = [
-        { id: 'd1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅', image: 'https://images.unsplash.com/photo-149561681c6e9c869?w=600', music: null, time: '2 ч', views: 1240, likes: 12, reposts: 3, comments: [] }
+        { id: 'd1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅', image: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600', music: null, time: '2 ч', views: 1240, likes: 12, reposts: 3, comments: [] }
       ];
       [...posts, ...demoPosts].forEach(p => el.appendChild(buildPostEl(p)));
   }
@@ -1039,9 +1051,8 @@ function savePostsIfMine(p) {
   }
 }
 
-/* ============ МОЯ СТРАНИЦА (РЕНДЕР) ============ */
+/* ============ МОЯ СТРАНИЦА ============ */
 function renderMyPage() {
-    // Шапка профиля
     document.getElementById('mpName').textContent = currentUser.name;
     document.getElementById('mpStatus').textContent = currentUser.lastSeen || 'в сети';
     
@@ -1057,7 +1068,6 @@ function renderMyPage() {
         const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; mpAvatar.appendChild(b);
     }
 
-    // Закрепленные разделы
     const pinnedContainer = document.getElementById('pinnedSections');
     pinnedContainer.innerHTML = '';
 
@@ -1068,7 +1078,6 @@ function renderMyPage() {
     if (limit === 0) {
         pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов здесь</div>';
     } else {
-        // Собираем все доступные ссылки (группы, каналы, сообщества)
         const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
         const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
         const myChannels = channels.filter(c => c.owner === currentUser.name);
@@ -1088,7 +1097,6 @@ function renderMyPage() {
                 div.addEventListener('click', () => alert(`Переход в ${link.name}`));
                 pinnedContainer.appendChild(div);
             });
-            // Заполняем пустые слоты до лимита
             for (let i = allLinks.length; i < limit; i++) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'pinned-item';
@@ -1133,9 +1141,9 @@ function openChat(item) {
 }
 
 function addMsgToDOM(msg) {
-  const div { = document.createElement('div');
-  if ( textmsg.from === 'system') {
-    div.style:.cssText = 'align-self:center; rtfont-size:12px;color:,rgba(255,255,255,0 time.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
+  const div = document.createElement('div');
+  if (msg.from === 'system') {
+    div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
     div.textContent = msg.text;
   } else {
     div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
@@ -1173,7 +1181,7 @@ document.getElementById('chatSend').addEventListener('click', () => {
 
   setTimeout(() => {
     const rt = generateReply(msg.text);
-    const reply =: nowTime(), from: 'them' };
+    const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
     try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
     if (activeChat) { 
@@ -1302,7 +1310,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     
-    // Переключаемся на Мою страницу после создания поста
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav-btn[data-tab="mypage"]').classList.add('active');
@@ -1332,7 +1339,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     document.getElementById('formModal').classList.remove('show');
     renderStories();
     
-    // Переключаемся на Главную
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav-btn[data-tab="feed"]').classList.add('active');
@@ -1370,12 +1376,12 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     
     document.getElementById('formModal').classList.remove('show');
     alert('Успешно создано!');
-    renderMyPage(); // Обновляем мою страницу
+    renderMyPage(); 
     renderChatsList(currentSearchTab, '');
   }
 });
 
-/* ============ ПРОФИЛЬ (НАСТРОЙКИ) ============ */
+/* ============ ПРОФИЛЬ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
   
@@ -1407,7 +1413,7 @@ document.getElementById('myStatusSelect').addEventListener('change', function() 
     if (!currentUser.premium) {
         document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
     }
-    renderMyPage(); // Обновляем статус на странице
+    renderMyPage(); 
 });
 
 document.getElementById('changeAvatarBtn').addEventListener('click', () => {
@@ -1434,7 +1440,7 @@ document.querySelectorAll('.promo-price').forEach(btn => {
       currentUser.subscribers = 0;
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
       updatePremiumBadge();
-      renderMyPage(); // Обновляем страницу чтобы появились слоты
+      renderMyPage(); 
       alert('✅ Premium успешно активирован!');
       localStorage.removeItem('sunset_last_promo_' + currentUser.name);
       simulatePromotion();
