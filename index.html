@@ -115,7 +115,7 @@
   .story-ring.my-add { background: linear-gradient(135deg, #ff8c42, #ff5e62); }
   .story-ring.my-add .story-img { background: rgba(15,10,25,0.6); font-size: 26px; }
 
-  /* НОВЫЕ КРАСИВЫЕ ПОСТЫ */
+  /* КРАСИВЫЕ ПОСТЫ */
   .post { margin: 12px; padding: 16px; background: rgba(30, 20, 40, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
   .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
@@ -272,8 +272,6 @@
           <div class="feat"><span class="feat-icon">⭐</span><span><b>Значок звездочки</b> рядом с именем</span></div>
           <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц</b></span></div>
           <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
-          <div class="feat"><span class="feat-icon">🎵</span><span>Возможность прикреплять <b>музыку к постам</b></span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории <b>без лимита</b></span></div>
         </div>
         <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="1800">Купить за 1 800 ₽ / год</button>
       </div>
@@ -290,8 +288,9 @@
           <div class="feat"><span class="feat-icon">💎</span><span><b>Значок алмаза</b> рядом с именем</span></div>
           <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
           <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
-          <div class="feat"><span class="feat-icon">🔗</span><span><b>Ссылки на каналы, сообщества и группы</b> в профиле</span></div>
+          <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества, каналы, группы <b>видны всем</b> на твоей странице</span></div>
           <div class="feat"><span class="feat-icon">🔒</span><span>Тумблер приватности: <b>скрыть/показать</b> группы и каналы</span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span>Истории <b>продвигаются выше</b> (в 1000% больше охватов, обычно 5-10%)</span></div>
           <div class="feat"><span class="feat-icon">🎵</span><span>Возможность прикреплять <b>музыку и фото к постам</b></span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
@@ -331,7 +330,7 @@
     <div class="modal-title">Создать</div>
     <div class="modal-sub">Выбери что хочешь сделать</div>
     <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Текст, фото и музыка</div></div>
-    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты</div></div>
+    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты (бесплатно)</div></div>
     <div class="modal-option" data-action="group-open"><div class="opt-title">🌍 Открытая группа</div><div class="opt-desc">Любой может найти</div></div>
     <div class="modal-option" data-action="group-closed"><div class="opt-title">🔒 Закрытая группа</div><div class="opt-desc">Только по ссылке</div></div>
     <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Посты о жизни</div></div>
@@ -347,19 +346,13 @@
     
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40" style="display:none;">
     
-    <!-- Поле для поста с нужным плейсхолдером -->
     <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь, что у вас нового?"></textarea>
     
-    <!-- Поля для фото и музыки -->
     <div id="postMediaFields" style="display:none;">
       <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото (URL) - необязательно">
-      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (URL) - необязательно">
+      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (URL) - только для Prime">
     </div>
 
-    <div id="linkResult" style="display:none;">
-      <div style="font-size:12px;opacity:0.7;margin-bottom:8px;">Ссылка:</div>
-      <div style="background:rgba(0,0,0,0.4); padding:12px; border-radius:12px; font-size:12px; word-break:break-all; color:#ffb380; margin-bottom:12px;" id="linkBox"></div>
-    </div>
     <button class="modal-primary" id="formSubmit">Опубликовать</button>
     <button class="modal-close" id="formCancel">Отмена</button>
   </div>
@@ -370,14 +363,14 @@
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
-    <div id="profilePosts"></div>
+    <div id="profileContent"></div>
     <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v13';
+const STORAGE_KEY = 'sunset_user_v14';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -405,12 +398,9 @@ regName.addEventListener('keyup', updateAvatarLetter);
 
 function continueToApp() {
   const n = (regName.value || '').trim();
-  if (n.length < 2) {
-    alert('Введите имя (минимум 2 символа)');
-    return;
-  }
+  if (n.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
   
-  // СЕКРЕТНЫЙ АДМИН ДОСТУП (Введи имя admin)
+  // СЕКРЕТНЫЙ АДМИН ДОСТУП (Введи имя admin или boss)
   let isAdmin = false;
   let premiumLevel = null;
   if (n.toLowerCase() === 'admin' || n.toLowerCase() === 'boss') {
@@ -429,16 +419,20 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v13';
-const GROUPS_KEY = 'sunset_groups_v13';
-const POSTS_KEY = 'sunset_posts_v13';
-const LIKES_KEY = 'sunset_likes_v13';
+const CHATS_KEY = 'sunset_chats_v14';
+const GROUPS_KEY = 'sunset_groups_v14';
+const CHANNELS_KEY = 'sunset_channels_v14';
+const POSTS_KEY = 'sunset_posts_v14';
+const LIKES_KEY = 'sunset_likes_v14';
+const STORIES_KEY = 'sunset_stories_v14';
 
 let currentUser = null;
 let chats = {};
 let groups = [];
+let channels = [];
 let posts = [];
-let userLikes = []; // Массив ID лайкнутых постов
+let userStories = [];
+let userLikes = [];
 let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
@@ -478,13 +472,16 @@ function startApp() {
   try {
     chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
     groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
+    channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
     posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
     userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
+    userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
   } catch(e) {}
 
   updatePremiumBadge();
   renderChatsList('people');
   renderPosts();
+  renderStories();
 }
 
 function updatePremiumBadge() {
@@ -543,29 +540,56 @@ function renderChatsList(tab, q) {
   });
 }
 
-/* ============ ПОСТЫ (НОВЫЙ ДИЗАЙН) ============ */
+/* ============ СТОРИС (С БУСТОМ ДЛЯ ПРАЙМА) ============ */
+function renderStories() {
+  const row = document.getElementById('storiesRow');
+  row.innerHTML = '';
+  
+  const mine = document.createElement('div');
+  mine.className = 'story-circle';
+  mine.innerHTML = '<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Моя</div>';
+  mine.addEventListener('click', () => {
+    pendingAction = 'story';
+    document.getElementById('formTitle').textContent = '📸 История';
+    document.getElementById('formSub').textContent = 'Истории бесплатны для всех!';
+    document.getElementById('formName').style.display = 'none';
+    document.getElementById('formText').style.display = 'block';
+    document.getElementById('formText').value = '';
+    document.getElementById('postMediaFields').style.display = 'none';
+    document.getElementById('formModal').classList.add('show');
+  });
+  row.appendChild(mine);
+  
+  userStories.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'story-circle';
+    d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${s.color}">${s.emoji}</div></div><div class="story-label">${esc(s.author)}</div>`;
+    d.addEventListener('click', () => alert(`📸 История от ${s.author}\n\n"${s.text}"\n\n👁️ Просмотры: ${s.views}`));
+    row.appendChild(d);
+  });
+}
+
+/* ============ ПОСТЫ ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   el.innerHTML = '';
   
-  // Демо-посты для красоты
   const demoPosts = [
     { id: 'd1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅 Прикрепляю фото!', image: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600', music: null, time: '2 ч', views: 1240, likes: 12, reposts: 3, comments: [] },
     { id: 'd2', author: 'Дмитрий', color: '#4a90e2', text: 'Слушаю новый трек, просто топ!', image: null, music: { title: 'Believer', artist: 'Imagine Dragons' }, time: '5 ч', views: 850, likes: 8, reposts: 1, comments: [] }
   ];
 
-  [...posts, ...demoPosts].forEach(p => el.appendChild(buildPostEl(p, false)));
+  [...posts, ...demoPosts].forEach(p => el.appendChild(buildPostEl(p)));
 }
 
-function buildPostEl(p, isMine) {
+function buildPostEl(p) {
   const div = document.createElement('div');
   div.className = 'post';
   
   const hasLiked = userLikes.includes(p.id);
   const likeClass = hasLiked ? 'liked' : '';
   const likeIcon = hasLiked ? '❤️' : '🤍';
-  const views = p.views || Math.floor(Math.random() * 500) + 10; // Симуляция просмотров
-
+  
   let mediaHtml = '';
   if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
   if (p.music) mediaHtml += `
@@ -583,7 +607,7 @@ function buildPostEl(p, isMine) {
       <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
       <div class="post-meta">
         <div class="post-author">${esc(p.author)}</div>
-        <div class="post-time">${p.time} · 👁️ ${views}</div>
+        <div class="post-time">${p.time} · 👁️ ${p.views || Math.floor(Math.random() * 500) + 10}</div>
       </div>
     </div>
     <div class="post-text">${esc(p.text)}</div>
@@ -602,11 +626,9 @@ function buildPostEl(p, isMine) {
     </div>
   `;
 
-  // Логика лайка (только 1 раз)
   const likeBtn = div.querySelector('.like-btn');
   likeBtn.addEventListener('click', function() {
     if (userLikes.includes(p.id)) {
-      // Убираем лайк, если передумал
       p.likes = Math.max(0, (p.likes || 1) - 1);
       userLikes = userLikes.filter(id => id !== p.id);
       this.classList.remove('liked');
@@ -621,7 +643,6 @@ function buildPostEl(p, isMine) {
     savePostsIfMine(p);
   });
 
-  // Репост (бесконечный)
   div.querySelector('.repost-btn').addEventListener('click', function() {
     p.reposts = (p.reposts || 0) + 1;
     this.innerHTML = `🔄 <span>${p.reposts}</span>`;
@@ -630,7 +651,6 @@ function buildPostEl(p, isMine) {
     savePostsIfMine(p);
   });
 
-  // Комментарии
   const cb = div.querySelector('.post-comments');
   div.querySelector('.comment-btn').addEventListener('click', () => {
     cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
@@ -715,7 +735,6 @@ document.getElementById('chatSend').addEventListener('click', () => {
   document.getElementById('chatInput').value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  // Ответ бота
   setTimeout(() => {
     const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
@@ -766,10 +785,20 @@ document.querySelectorAll('.modal-option').forEach(opt => {
       fs.textContent = 'Поделитесь чем-нибудь'; 
       mediaFields.style.display = 'block'; 
       fx.placeholder = 'Привет! Расскажите что-нибудь, что у вас нового?';
+      
+      // Скрываем поле для музыки, если нет Прайма
+      const musicInput = document.getElementById('formMusic');
+      if (currentUser.premium !== 'prime') {
+        musicInput.style.display = 'none';
+        musicInput.placeholder = 'Только для Prime Premium';
+      } else {
+        musicInput.style.display = 'block';
+        musicInput.placeholder = 'Ссылка на музыку (URL) - для Prime';
+      }
     }
     else if (a === 'story') { 
       ft.textContent = '📸 История'; 
-      fs.textContent = 'Текст для истории'; 
+      fs.textContent = 'Бесплатно для всех'; 
       fx.placeholder = 'Что происходит?';
     }
     else if (a === 'group-open' || a === 'group-closed') { 
@@ -797,7 +826,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
   if (pendingAction === 'post') {
     const text = document.getElementById('formText').value.trim();
     const photoUrl = document.getElementById('formPhoto').value.trim();
-    const musicUrl = document.getElementById('formMusic').value.trim();
+    let musicUrl = document.getElementById('formMusic').value.trim();
     
     if (text.length < 3 && !photoUrl) { alert('Напишите текст или добавьте фото'); return; }
     
@@ -809,9 +838,15 @@ document.getElementById('formSubmit').addEventListener('click', function() {
       alert('Лимит бесплатного аккаунта: 20 постов. Купите Premium!'); return;
     }
 
+    // Проверка на музыку (только Prime)
+    if (musicUrl && currentUser.premium !== 'prime') {
+      alert('Прикреплять музыку могут только Prime Premium пользователи!');
+      musicUrl = '';
+    }
+
     let musicObj = null;
     if (musicUrl) {
-      musicObj = { title: 'Мой трек', artist: 'Ссылка из интернета' }; // Заглушка для музыки
+      musicObj = { title: 'Мой трек', artist: 'Ссылка из интернета' };
     }
 
     posts.unshift({ 
@@ -833,45 +868,87 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     renderPosts();
     
   } else if (pendingAction === 'story') {
-    alert('История добавлена!');
+    const text = document.getElementById('formText').value.trim();
+    if (text.length < 2) { alert('Минимум 2 символа'); return; }
+    
+    // ЛОГИКА БУСТА ИСТОРИЙ ДЛЯ PRIME (1000% охватов)
+    let views = 0;
+    if (currentUser.premium === 'prime') {
+      // 1000% буст. Обычно 5-10 (например, 5-10% от 100 подписчиков). Prime получает от 1000 до 5000.
+      views = Math.floor(Math.random() * 4000) + 1000; 
+    } else {
+      // Обычные пользователи (5-10%)
+      views = Math.floor(Math.random() * 45) + 5; 
+    }
+
+    userStories.unshift({ 
+      id: 's_' + Date.now(), 
+      author: currentUser.name, 
+      color: currentUser.color, 
+      emoji: currentUser.emoji, 
+      text: text,
+      views: views
+    });
+    
+    if (userStories.length > 20) userStories = userStories.slice(0, 20);
+    try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
+    renderStories();
+    alert(`История добавлена! Просмотров: ${views}`);
+    
   } else {
-    // Создание группы/канала
     const name = document.getElementById('formName').value.trim();
     if (name.length < 2) { alert('Введите название'); return; }
-    groups.push({ id: 'g_' + Date.now(), name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'group', desc: 'Группа' });
-    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+    
+    if (pendingAction === 'channel') {
+      channels.push({ id: 'c_' + Date.now(), name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'channel', owner: currentUser.name, desc: 'Мой канал' });
+      try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
+    } else {
+      groups.push({ id: 'g_' + Date.now(), name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'group', owner: currentUser.name, desc: 'Группа' });
+      try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+    }
     document.getElementById('formModal').classList.remove('show');
-    alert('Создано!');
+    alert('Успешно создано!');
   }
 });
 
-/* ============ ПРОФИЛЬ ============ */
+/* ============ ПРОФИЛЬ С СЫЛКАМИ НА ГРУППЫ/КАНАЛЫ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
   document.getElementById('profileStatus').textContent = 
     currentUser.premium === 'prime' ? '💎 Prime Premium' : 
     currentUser.premium === 'sunset' ? '⭐ Sunset Premium' : 'Обычный пользователь';
   
-  const pp = document.getElementById('profilePosts');
+  const pp = document.getElementById('profileContent');
   pp.innerHTML = '';
   
-  // Ссылки на группы для Prime
+  // Ссылки на группы и каналы (ТОЛЬКО ДЛЯ PRIME)
   if (currentUser.premium === 'prime') {
+    const myGroups = groups.filter(g => g.owner === currentUser.name);
+    const myChannels = channels.filter(c => c.owner === currentUser.name);
+    
+    let linksHtml = `<b>🔗 Мои сообщества и каналы (видны всем):</b><br><br>`;
+    if(myGroups.length === 0 && myChannels.length === 0) {
+        linksHtml += `<span style="opacity:0.6; font-size:12px;">Вы еще не создали ни одной группы или канала. Нажмите "+" чтобы создать.</span><br><br>`;
+    } else {
+        myGroups.forEach(g => linksHtml += `<a href="#" onclick="alert('Переход в группу: ${esc(g.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">🌍 ${esc(g.name)}</a>`);
+        myChannels.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в канал: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">📢 ${esc(c.name)}</a>`);
+    }
+    
+    // Тумблер приватности
+    linksHtml += `<label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:12px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px; font-size:13px; color:rgba(255,255,255,0.8);">
+      <input type="checkbox" checked style="accent-color:#ff8c42;" onchange="alert('Видимость ссылок переключена!')"> Показывать ссылки другим пользователям
+    </label>`;
+
     const linksDiv = document.createElement('div');
-    linksDiv.style.cssText = 'background:rgba(255,255,255,0.1); padding:12px; border-radius:12px; margin-bottom:16px; font-size:14px;';
-    linksDiv.innerHTML = `<b>🔗 Мои сообщества и каналы:</b><br><br>
-      <a href="#" style="color:#ff8c42; text-decoration:none;">🌍 Моя первая группа</a><br><br>
-      <a href="#" style="color:#ff8c42; text-decoration:none;">📢 Мой канал (подписчики)</a><br><br>
-      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-        <input type="checkbox" checked style="accent-color:#ff8c42;"> Показывать группы в профиле
-      </label>`;
+    linksDiv.style.cssText = 'background:rgba(255,255,255,0.08); padding:16px; border-radius:16px; margin-bottom:20px; font-size:14px; border:1px solid rgba(255,255,255,0.1);';
+    linksDiv.innerHTML = linksHtml;
     pp.appendChild(linksDiv);
   }
 
   const myPosts = posts.filter(p => p.author === currentUser.name);
   if (!myPosts.length) pp.innerHTML += '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов</p></div>';
-  else myPosts.forEach(p => pp.appendChild(buildPostEl(p, true)));
+  else myPosts.forEach(p => pp.appendChild(buildPostEl(p)));
   
   document.getElementById('profileModal').classList.add('show');
 });
