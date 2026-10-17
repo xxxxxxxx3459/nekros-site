@@ -55,9 +55,7 @@
     border: none; border-radius: 14px; padding: 18px;
     font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
     font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
-    min-height: 56px;
-    touch-action: manipulation;
-    user-select: none;
+    min-height: 56px; touch-action: manipulation; user-select: none;
   }
   .reg-btn:active { transform: scale(0.98); }
   .reg-error { color: #ff5e62; font-size: 13px; margin-top: 10px; display: none; font-weight: 600; }
@@ -145,7 +143,7 @@
   .comment-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; font-family: inherit; }
   .comment-send { background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 50%; width: 38px; height: 38px; color: #fff; font-size: 16px; cursor: pointer; }
 
-  /* МУЗЫКА (ИСПРАВЛЕНА ВЕРСТКА) */
+  /* МУЗЫКА */
   .track { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .track-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .track-num { width: 26px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; flex-shrink: 0; }
@@ -179,6 +177,14 @@
   .pinned-icon { font-size: 24px; }
   .pinned-name { font-size: 10px; color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
   .pinned-empty { grid-column: span 4; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; padding: 10px 0; }
+  
+  .manage-pinned-btn {
+      margin: 0 12px 12px 12px; padding: 10px; text-align: center;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px; color: #ff8c42; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: 0.2s;
+  }
+  .manage-pinned-btn:active { background: rgba(255,255,255,0.15); }
 
   /* ЧАТ */
   #chat { position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column; background: rgba(15, 10, 25, 0.95); backdrop-filter: blur(30px); transform: translateX(100%); transition: transform 0.3s ease; }
@@ -187,7 +193,6 @@
   .back-btn { background: transparent; border: none; color: #fff; font-size: 24px; padding: 4px 8px; cursor: pointer; }
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
-  
   .chat-title .status { 
     font-size: 11px; margin-top: 2px; display: inline-block;
     background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
@@ -238,11 +243,9 @@
     appearance: none; -webkit-appearance: none;
   }
   .status-select option { background: #2a1a35; color: #fff; }
-  
   .stats-box { background: rgba(255,255,255,0.08); padding: 16px; border-radius: 16px; margin-bottom: 20px; font-size: 14px; border: 1px solid rgba(255,255,255,0.1); }
   .stats-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
   .stats-value { font-weight: 700; color: #ffb380; }
-
   .profile-action-btn {
       width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px;
       background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -251,13 +254,14 @@
   }
   .profile-action-btn:hover { background: rgba(255,255,255,0.15); }
 
-  /* СПИСОК ЗРИТЕЛЕЙ */
+  /* СПИСОК ЗРИТЕЛЕЙ / УЧАСТНИКОВ */
   .viewer-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .viewer-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff; flex-shrink: 0;}
   .viewer-info { flex: 1; }
   .viewer-name { font-size: 14px; font-weight: 600; color: #fff; }
   .viewer-time { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px;}
   .viewer-reaction { font-size: 24px; }
+  .invite-btn { background: rgba(255,140,66,0.2); border: 1px solid rgba(255,140,66,0.5); color: #ffb380; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
   /* ПРЕМИУМ КАРТОЧКИ */
   .promo-card { margin: 12px 16px; padding: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
@@ -311,7 +315,6 @@
     
     <!-- ВКЛАДКА 1: МОЯ СТРАНИЦА -->
     <div class="tab-content active" id="tab-mypage">
-        <!-- Плашка для создания поста -->
         <div class="create-post-prompt" onclick="openPostModal()">
             <div class="my-avatar" id="promptAvatar" style="width:36px; height:36px; font-size:14px;"></div>
             <span>Привет! Расскажите что-нибудь...</span>
@@ -319,8 +322,10 @@
 
         <div class="section-title" style="padding-top: 10px;">📌 Закрепленные разделы</div>
         
-        <!-- ЗДЕСЬ БУДУТ 8 ИЛИ 3 РАЗДЕЛА -->
         <div class="pinned-sections" id="pinnedSections"></div>
+        
+        <!-- КНОПКА НАСТРОЙКИ РАЗДЕЛОВ -->
+        <div class="manage-pinned-btn" id="managePinnedBtn" style="display:none;">⚙️ Настроить разделы</div>
 
         <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
             <span>📝 Мои посты</span>
@@ -417,6 +422,7 @@
         <div class="name" id="chatName"></div>
         <div class="status" id="chatStatus">в сети</div>
       </div>
+      <button class="icon-btn" id="addParticipantsBtn" style="display:none; font-size:20px;">➕</button>
       <button class="chat-menu" id="chatMenuBtn">⋯</button>
     </div>
     <div class="chat-body" id="chatBody"></div>
@@ -461,6 +467,26 @@
   </div>
 </div>
 
+<!-- МОДАЛКА НАСТРОЙКИ РАЗДЕЛОВ -->
+<div class="modal" id="managePinnedModal">
+  <div class="modal-card" style="max-height: 85vh;">
+    <div class="modal-title">Настройка разделов</div>
+    <div class="modal-sub" id="managePinnedCount"></div>
+    <div id="managePinnedList" style="margin-top: 10px;"></div>
+    <button class="modal-close" data-close="managePinnedModal">Готово</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА ДОБАВЛЕНИЯ УЧАСТНИКОВ -->
+<div class="modal" id="addParticipantsModal">
+  <div class="modal-card" style="max-height: 85vh;">
+    <div class="modal-title">Добавить участников</div>
+    <div class="modal-sub">Выберите людей из списка</div>
+    <div id="participantsList" style="margin-top: 10px; max-height: 50vh; overflow-y: auto;"></div>
+    <button class="modal-close" data-close="addParticipantsModal">Закрыть</button>
+  </div>
+</div>
+
 <!-- МОДАЛКА ПРОФИЛЯ (НАСТРОЙКИ) -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
@@ -498,7 +524,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v27';
+const STORAGE_KEY = 'sunset_user_v28';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -538,7 +564,6 @@ function continueToApp() {
   let premiumLevel = null;
   const lowerName = n.toLowerCase();
   
-  // СЕКРЕТНЫЙ ВХОД: admin - Sunset, boss - Prime
   if (lowerName === 'admin') {
     isAdmin = true;
     premiumLevel = 'sunset';
@@ -550,7 +575,7 @@ function continueToApp() {
   currentUser = { 
       name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
       premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-      profileViews: 0, subscribers: 0
+      profileViews: 0, subscribers: 0, pinnedIds: []
   };
   
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
@@ -562,12 +587,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v27';
-const GROUPS_KEY = 'sunset_groups_v27';
-const CHANNELS_KEY = 'sunset_channels_v27';
-const POSTS_KEY = 'sunset_posts_v27';
-const LIKES_KEY = 'sunset_likes_v27';
-const STORIES_KEY = 'sunset_stories_v27';
+const CHATS_KEY = 'sunset_chats_v28';
+const GROUPS_KEY = 'sunset_groups_v28';
+const CHANNELS_KEY = 'sunset_channels_v28';
+const POSTS_KEY = 'sunset_posts_v28';
+const LIKES_KEY = 'sunset_likes_v28';
+const STORIES_KEY = 'sunset_stories_v28';
 
 let currentUser = null;
 let chats = {};
@@ -741,10 +766,10 @@ function updatePremiumBadge() {
   
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
-    st.textContent = '💎 Master'; // Английский статус
+    st.textContent = '💎 Master'; 
   } else if (currentUser.premium === 'sunset') {
     const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; av.appendChild(b);
-    st.textContent = '⭐ Administrator'; // Английский статус
+    st.textContent = '⭐ Administrator'; 
   } else {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
@@ -755,6 +780,7 @@ try {
   if (saved && saved.name) {
     currentUser = saved;
     if(!currentUser.lastSeen) currentUser.lastSeen = 'в сети';
+    if(!currentUser.pinnedIds) currentUser.pinnedIds = [];
     setTimeout(startApp, 100);
   }
 } catch(e) {}
@@ -787,7 +813,7 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
   renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
-/* ============ МУЗЫКА (ИСПРАВЛЕНА) ============ */
+/* ============ МУЗЫКА ============ */
 function renderMusic() {
     const el = document.getElementById('musicList');
     el.innerHTML = '';
@@ -1079,6 +1105,7 @@ function savePostsIfMine(p) {
 /* ============ МОЯ СТРАНИЦА ============ */
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
+    const manageBtn = document.getElementById('managePinnedBtn');
     pinnedContainer.innerHTML = '';
 
     let limit = 0;
@@ -1088,23 +1115,41 @@ function renderMyPage() {
     const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
     const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
-    
     let allLinks = [...myGroups, ...myComm, ...myChannels];
 
     if (limit === 0) {
         pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов здесь</div>';
+        manageBtn.style.display = 'none';
     } else {
+        manageBtn.style.display = 'block';
+
+        // Фильтруем ссылки по закрепленным ID
+        let pinnedLinks = allLinks.filter(link => currentUser.pinnedIds.includes(link.id));
+        
+        // Если ничего не закреплено, но есть ссылки, автоматически закрепляем первые
+        if (pinnedLinks.length === 0 && allLinks.length > 0) {
+            currentUser.pinnedIds = allLinks.slice(0, limit).map(l => l.id);
+            pinnedLinks = allLinks.slice(0, limit);
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+        }
+
+        // Ограничиваем до лимита
+        pinnedLinks = pinnedLinks.slice(0, limit);
+
         for (let i = 0; i < limit; i++) {
             const div = document.createElement('div');
             
-            if (i < allLinks.length) {
-                const link = allLinks[i];
+            if (i < pinnedLinks.length) {
+                const link = pinnedLinks[i];
                 div.className = 'pinned-item';
                 div.innerHTML = `
                     <div class="pinned-icon">${link.type === 'channel' ? '📢' : (link.type === 'community' ? '🌍' : '👥')}</div>
                     <div class="pinned-name">${esc(link.name)}</div>
                 `;
-                div.addEventListener('click', () => alert(`Переход в ${link.name}`));
+                // ПЕРЕХОД В ЧАТ ПРИ НАЖАТИИ
+                div.addEventListener('click', () => {
+                    openChat(link);
+                });
             } else {
                 div.className = 'pinned-item';
                 div.style.opacity = '0.4';
@@ -1112,7 +1157,7 @@ function renderMyPage() {
                     <div class="pinned-icon">+</div>
                     <div class="pinned-name">Слот ${i+1}</div>
                 `;
-                div.addEventListener('click', () => alert('Создайте группу или канал через кнопку "+" сверху, чтобы заполнить слот!'));
+                div.addEventListener('click', openManagePinned);
             }
             pinnedContainer.appendChild(div);
         }
@@ -1120,6 +1165,65 @@ function renderMyPage() {
 
     renderMyPagePosts();
 }
+
+/* Управление закрепами */
+function openManagePinned() {
+    let limit = 0;
+    if (currentUser.premium === 'prime') limit = 8;
+    else if (currentUser.premium === 'sunset') limit = 3;
+
+    const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
+    const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
+    const myChannels = channels.filter(c => c.owner === currentUser.name);
+    let allLinks = [...myGroups, ...myComm, ...myChannels];
+
+    document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit} слотов`;
+    
+    const list = document.getElementById('managePinnedList');
+    list.innerHTML = '';
+
+    if (allLinks.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">У вас пока нет созданных групп или каналов.</div>';
+    } else {
+        allLinks.forEach(link => {
+            const isPinned = currentUser.pinnedIds.includes(link.id);
+            const div = document.createElement('div');
+            div.className = 'viewer-item';
+            div.innerHTML = `
+                <div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div>
+                <div class="viewer-info">
+                    <div class="viewer-name">${esc(link.name)}</div>
+                    <div class="viewer-time">${link.type === 'channel' ? 'Канал' : (link.type === 'community' ? 'Сообщество' : 'Группа')}</div>
+                </div>
+                <input type="checkbox" ${isPinned ? 'checked' : ''} style="width:20px; height:20px; accent-color:#ff8c42; cursor:pointer;">
+            `;
+            
+            const checkbox = div.querySelector('input');
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    if (currentUser.pinnedIds.length >= limit) {
+                        e.target.checked = false;
+                        alert(`Лимит вашего тарифа: ${limit} раздела. Уберите другой раздел, чтобы добавить этот.`);
+                        return;
+                    }
+                    if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
+                } else {
+                    currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
+                }
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+                document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit} слотов`;
+                renderMyPage();
+            });
+
+            list.appendChild(div);
+        });
+    }
+
+    document.getElementById('managePinnedModal').classList.add('show');
+}
+
+document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
+
 
 /* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
@@ -1135,9 +1239,11 @@ function openChat(item) {
   if (item.type === 'person') {
       statusEl.textContent = item.lastSeen;
       statusEl.className = 'status ' + (item.lastSeen === 'в сети' ? 'online' : 'offline');
+      document.getElementById('addParticipantsBtn').style.display = 'none'; // Скрываем для личных
   } else {
-      statusEl.textContent = 'канал/группа';
+      statusEl.textContent = item.type === 'channel' ? 'канал' : 'группа';
       statusEl.className = 'status online';
+      document.getElementById('addParticipantsBtn').style.display = 'flex'; // Показываем для групп
   }
   
   chatEl.classList.add('show');
@@ -1154,7 +1260,7 @@ function openChat(item) {
 function addMsgToDOM(msg) {
   const div = document.createElement('div');
   if (msg.from === 'system') {
-    div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0;';
+    div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.6);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;margin:4px 0; text-align:center;';
     div.textContent = msg.text;
   } else {
     div.className = 'message ' + (msg.from === 'me' ? 'me' : 'them');
@@ -1215,8 +1321,56 @@ document.getElementById('backBtn').addEventListener('click', () => {
   activeChat = null;
 });
 
+/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ ============ */
+document.getElementById('addParticipantsBtn').addEventListener('click', () => {
+    if (!activeChat) return;
+    
+    const list = document.getElementById('participantsList');
+    list.innerHTML = '';
+    
+    // Генерируем 100 ботов
+    for (let i = 0; i < 100; i++) {
+        const name = getRandomFullName();
+        const color = rnd(AVATAR_COLORS);
+        const initial = name.charAt(0);
+        
+        const div = document.createElement('div');
+        div.className = 'viewer-item';
+        div.innerHTML = `
+            <div class="viewer-avatar" style="background:${color}">${initial}</div>
+            <div class="viewer-info">
+                <div class="viewer-name">${name}</div>
+            </div>
+            <button class="invite-btn">Пригласить</button>
+        `;
+        
+        const btn = div.querySelector('.invite-btn');
+        btn.addEventListener('click', () => {
+            btn.textContent = 'Приглашен';
+            btn.style.color = '#86efac';
+            btn.style.borderColor = 'transparent';
+            btn.style.background = 'transparent';
+            btn.disabled = true;
+            
+            // Добавляем системное сообщение в чат
+            const sysMsg = { text: `👤 ${name} присоединился к чату`, time: nowTime(), from: 'system' };
+            if (!chats[activeChat.id]) chats[activeChat.id] = [];
+            chats[activeChat.id].push(sysMsg);
+            try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+            
+            if (activeChat) {
+                addMsgToDOM(sysMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        });
+        
+        list.appendChild(div);
+    }
+    
+    document.getElementById('addParticipantsModal').classList.add('show');
+});
+
 /* ============ МОДАЛКИ И СОЗДАНИЕ ============ */
-// Функция для кнопки на "Моей странице"
 function openPostModal() {
     pendingAction = 'post';
     document.getElementById('formTitle').textContent = '📝 Новый пост';
@@ -1240,7 +1394,6 @@ function openPostModal() {
     document.getElementById('formModal').classList.add('show');
 }
 
-// Кнопка + (только для групп/каналов)
 document.getElementById('plusBtn').addEventListener('click', () => {
   document.getElementById('createModal').classList.add('show');
 });
@@ -1254,7 +1407,6 @@ document.querySelectorAll('.modal-option').forEach(opt => {
     const a = opt.dataset.action;
     document.getElementById('createModal').classList.remove('show');
     
-    // Если выбрали пост, используем ту же логику, что и на странице
     if (a === 'post') {
         openPostModal();
         return;
@@ -1339,7 +1491,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     
-    // После создания поста переходим на Мою страницу
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav-btn[data-tab="mypage"]').classList.add('active');
@@ -1469,6 +1620,7 @@ document.querySelectorAll('.promo-price').forEach(btn => {
       currentUser.premium = item === 'sunset_year' ? 'sunset' : 'prime';
       currentUser.profileViews = 0;
       currentUser.subscribers = 0;
+      currentUser.pinnedIds = []; // Сбрасываем закрепы при покупке
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
       updatePremiumBadge();
       renderMyPage(); 
