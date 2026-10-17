@@ -84,8 +84,10 @@
   .search-section { padding: 12px 16px 0; }
   .search-input { width: 100%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit; }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
+  
+  /* ОБНОВЛЕННЫЕ ВКЛАДКИ (4 ШТУКИ) */
   .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
-  .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 6px; color: rgba(255,255,255,0.7); font-size: 12px; cursor: pointer; font-family: inherit; text-align: center; }
+  .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 2px; color: rgba(255,255,255,0.7); font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; transition: 0.2s; }
   .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
 
   #chatsList { padding: 4px 0; }
@@ -115,18 +117,15 @@
   .story-ring.my-add { background: linear-gradient(135deg, #ff8c42, #ff5e62); }
   .story-ring.my-add .story-img { background: rgba(15,10,25,0.6); font-size: 26px; }
 
-  /* КРАСИВЫЕ ПОСТЫ */
+  /* ПОСТЫ */
   .post { margin: 12px; padding: 16px; background: rgba(30, 20, 40, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
   .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
   .post-meta { flex: 1; }
   .post-author { color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 4px;}
   .post-time { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 2px; }
-  .post-views { font-size: 12px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 4px;}
   .post-text { color: #e0e0e0; font-size: 15px; line-height: 1.5; margin-bottom: 14px; white-space: pre-wrap;}
-  
   .post-image { width: 100%; border-radius: 14px; margin-bottom: 14px; display: block; object-fit: cover; max-height: 400px; }
-  
   .post-music { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05); }
   .post-music-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff8c42, #ff5e62); display: flex; align-items: center; justify-content: center; font-size: 16px; }
   .post-music-info { flex: 1; }
@@ -154,7 +153,6 @@
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
   .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
-  .chat-menu { background: transparent; border: none; color: #fff; font-size: 20px; padding: 4px 8px; cursor: pointer; }
   .chat-body { flex: 1; overflow-y: auto; padding: 16px 14px 20px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
   .chat-body::-webkit-scrollbar { display: none; }
   .message { max-width: 78%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-wrap: break-word; position: relative; }
@@ -236,11 +234,13 @@
   <div class="content" id="content">
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
-        <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск людей, групп, сообществ...">
+        <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
+        <!-- ОБНОВЛЕННЫЕ ВКЛАДКИ -->
         <div class="search-tabs">
           <button class="search-tab active" data-stab="people">👤 Люди</button>
           <button class="search-tab" data-stab="groups">👥 Группы</button>
           <button class="search-tab" data-stab="communities">🌍 Сообщества</button>
+          <button class="search-tab" data-stab="channels">📢 Каналы</button>
         </div>
       </div>
       <div id="chatsList"></div>
@@ -250,11 +250,6 @@
       <div class="stories-row" id="storiesRow"></div>
       <div class="section-title">📝 Лента</div>
       <div id="postsList"></div>
-    </div>
-
-    <div class="tab-content" id="tab-channels">
-      <div class="section-title">📢 Каналы о жизни</div>
-      <div id="channelsList"></div>
     </div>
 
     <div class="tab-content" id="tab-promo">
@@ -287,11 +282,9 @@
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">💎</span><span><b>Значок алмаза</b> рядом с именем</span></div>
           <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
-          <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
-          <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества, каналы, группы <b>видны всем</b> на твоей странице</span></div>
-          <div class="feat"><span class="feat-icon">🔒</span><span>Тумблер приватности: <b>скрыть/показать</b> группы и каналы</span></div>
-          <div class="feat"><span class="feat-icon">🚀</span><span>Истории <b>продвигаются выше</b> (в 1000% больше охватов, обычно 5-10%)</span></div>
-          <div class="feat"><span class="feat-icon">🎵</span><span>Возможность прикреплять <b>музыку и фото к постам</b></span></div>
+          <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества и каналы <b>видны всем</b></span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span>Истории <b>продвигаются выше</b> (в 1000% больше охватов)</span></div>
+          <div class="feat"><span class="feat-icon">🎵</span><span>Возможность прикреплять <b>музыку к постам</b></span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
       </div>
@@ -301,7 +294,6 @@
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
     <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Лента</span></button>
-    <button class="nav-btn" data-tab="channels"><span class="nav-icon">📢</span><span>Каналы</span></button>
     <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
@@ -331,9 +323,9 @@
     <div class="modal-sub">Выбери что хочешь сделать</div>
     <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Текст, фото и музыка</div></div>
     <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты (бесплатно)</div></div>
-    <div class="modal-option" data-action="group-open"><div class="opt-title">🌍 Открытая группа</div><div class="opt-desc">Любой может найти</div></div>
-    <div class="modal-option" data-action="group-closed"><div class="opt-title">🔒 Закрытая группа</div><div class="opt-desc">Только по ссылке</div></div>
-    <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Посты о жизни</div></div>
+    <div class="modal-option" data-action="group"><div class="opt-title">👥 Группа</div><div class="opt-desc">Создать сообщество</div></div>
+    <div class="modal-option" data-action="community"><div class="opt-title">🌍 Сообщество</div><div class="opt-desc">Глобальное сообщество</div></div>
+    <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Трансляция постов</div></div>
     <button class="modal-close" data-close="createModal">Отмена</button>
   </div>
 </div>
@@ -370,7 +362,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v14';
+const STORAGE_KEY = 'sunset_user_v15';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -393,8 +385,6 @@ function updateAvatarLetter() {
   avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
 }
 regName.addEventListener('input', updateAvatarLetter);
-regName.addEventListener('change', updateAvatarLetter);
-regName.addEventListener('keyup', updateAvatarLetter);
 
 function continueToApp() {
   const n = (regName.value || '').trim();
@@ -419,12 +409,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v14';
-const GROUPS_KEY = 'sunset_groups_v14';
-const CHANNELS_KEY = 'sunset_channels_v14';
-const POSTS_KEY = 'sunset_posts_v14';
-const LIKES_KEY = 'sunset_likes_v14';
-const STORIES_KEY = 'sunset_stories_v14';
+const CHATS_KEY = 'sunset_chats_v15';
+const GROUPS_KEY = 'sunset_groups_v15';
+const CHANNELS_KEY = 'sunset_channels_v15';
+const POSTS_KEY = 'sunset_posts_v15';
+const LIKES_KEY = 'sunset_likes_v15';
+const STORIES_KEY = 'sunset_stories_v15';
 
 let currentUser = null;
 let chats = {};
@@ -445,7 +435,7 @@ const PEOPLE_NAMES = [
 ];
 const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person' }));
 
-const COMMUNITIES = [
+const DEFAULT_COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
   { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community' }
 ];
@@ -482,6 +472,13 @@ function startApp() {
   renderChatsList('people');
   renderPosts();
   renderStories();
+  
+  // Обновляем просмотры историй каждую минуту, чтобы график рос на глазах
+  setInterval(() => {
+    if (document.getElementById('tab-feed').classList.contains('active')) {
+        renderStories();
+    }
+  }, 60000);
 }
 
 function updatePremiumBadge() {
@@ -520,29 +517,79 @@ document.querySelectorAll('.nav-btn').forEach(b => {
   });
 });
 
+/* ============ ВКЛАДКИ ПОИСКА ============ */
+document.querySelectorAll('.search-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentSearchTab = t.dataset.stab;
+    renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
+  });
+});
+document.getElementById('mainSearchInput').addEventListener('input', e => {
+  renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
+});
+
 /* ============ СПИСОК ЧАТОВ ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
   list.innerHTML = '';
-  let items = (tab === 'people') ? PEOPLE : (tab === 'communities' ? COMMUNITIES : groups);
   
+  let items = [];
+  if (tab === 'people') items = PEOPLE;
+  else if (tab === 'groups') items = groups.map(g => ({...g, type: 'group'}));
+  else if (tab === 'communities') items = [...DEFAULT_COMMUNITIES, ...groups.filter(g => g.type === 'community')];
+  else if (tab === 'channels') items = channels.map(c => ({...c, type: 'channel'}));
+
   if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
-  if (!items.length) { list.innerHTML = '<div class="empty-state"><p>Не найдено</p></div>'; return; }
+  
+  if (!items.length) { 
+      list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div><p>Здесь пока пусто.<br>Нажмите <b>+</b> чтобы создать!</p></div>`; 
+      return; 
+  }
 
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'card-item';
-    div.innerHTML = `<div class="card-avatar" style="background:${item.color}">${item.emoji}</div>
-      <div class="card-info"><div class="card-name">${esc(item.name)}</div><div class="card-sub">${esc(item.desc || 'Написать')}</div></div>`;
+    
+    let badge = '';
+    if (item.type === 'group' || item.type === 'community') badge = '<span class="badge open">🌍</span>';
+    
+    div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
+      <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(item.desc || 'Написать')}</div></div>`;
     div.addEventListener('click', () => openChat(item));
     list.appendChild(div);
   });
 }
 
-/* ============ СТОРИС (С БУСТОМ ДЛЯ ПРАЙМА) ============ */
+/* ============ СТОРИС (МАТЕМАТИКА РОСТА) ============ */
+const TARGET_VIEWS = [55000, 60000, 63000, 67000, 74000, 75000, 80000, 82000, 86000, 90000, 92000, 100000];
+
+function calculateStoryViews(story) {
+    if (!story.createdAt || !story.targetViews) return story.views || 10; // Для старых историй
+    
+    const now = Date.now();
+    const hoursElapsed = (now - story.createdAt) / (1000 * 60 * 60);
+    const totalHours = 20 * 24; // 480 часов (20 дней)
+    
+    if (hoursElapsed >= totalHours) return story.targetViews;
+    
+    // Плавный график: медленный старт, ускорение к середине и замедление к концу
+    const progress = hoursElapsed / totalHours;
+    const curve = Math.sin(progress * Math.PI / 2); 
+    
+    let baseViews = Math.floor(story.targetViews * curve);
+    
+    // Добавляем шум (рандом), чтобы каждый час цифра менялась на разные значения
+    const noise = Math.floor(Math.random() * (story.targetViews * 0.005)); 
+    
+    return Math.min(story.targetViews, baseViews + noise);
+}
+
 function renderStories() {
   const row = document.getElementById('storiesRow');
+  if (!row) return;
   row.innerHTML = '';
   
   const mine = document.createElement('div');
@@ -561,10 +608,16 @@ function renderStories() {
   row.appendChild(mine);
   
   userStories.forEach(s => {
+    // Высчитываем просмотры на текущий момент
+    const currentViews = calculateStoryViews(s);
+    
+    // Сохраняем текущее значение для отображения (но не в localStorage, чтобы не спамить)
+    s.displayViews = currentViews;
+
     const d = document.createElement('div');
     d.className = 'story-circle';
     d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${s.color}">${s.emoji}</div></div><div class="story-label">${esc(s.author)}</div>`;
-    d.addEventListener('click', () => alert(`📸 История от ${s.author}\n\n"${s.text}"\n\n👁️ Просмотры: ${s.views}`));
+    d.addEventListener('click', () => alert(`📸 История от ${s.author}\n\n"${s.text}"\n\n👁️ Просмотры: ${currentViews.toLocaleString('ru-RU')}`));
     row.appendChild(d);
   });
 }
@@ -786,14 +839,11 @@ document.querySelectorAll('.modal-option').forEach(opt => {
       mediaFields.style.display = 'block'; 
       fx.placeholder = 'Привет! Расскажите что-нибудь, что у вас нового?';
       
-      // Скрываем поле для музыки, если нет Прайма
       const musicInput = document.getElementById('formMusic');
       if (currentUser.premium !== 'prime') {
         musicInput.style.display = 'none';
-        musicInput.placeholder = 'Только для Prime Premium';
       } else {
         musicInput.style.display = 'block';
-        musicInput.placeholder = 'Ссылка на музыку (URL) - для Prime';
       }
     }
     else if (a === 'story') { 
@@ -801,15 +851,15 @@ document.querySelectorAll('.modal-option').forEach(opt => {
       fs.textContent = 'Бесплатно для всех'; 
       fx.placeholder = 'Что происходит?';
     }
-    else if (a === 'group-open' || a === 'group-closed') { 
-      ft.textContent = a === 'group-open' ? '🌍 Открытая группа' : '🔒 Закрытая группа'; 
-      fs.textContent = 'Название группы'; 
+    else if (a === 'group' || a === 'community') { 
+      ft.textContent = a === 'group' ? '👥 Группа' : '🌍 Сообщество'; 
+      fs.textContent = 'Введите название'; 
       fn.style.display = 'block'; 
       fx.style.display = 'none'; 
     }
     else if (a === 'channel') { 
       ft.textContent = '📢 Канал'; 
-      fs.textContent = 'Название канала'; 
+      fs.textContent = 'Введите название'; 
       fn.style.display = 'block'; 
       fx.style.display = 'none'; 
     }
@@ -838,7 +888,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
       alert('Лимит бесплатного аккаунта: 20 постов. Купите Premium!'); return;
     }
 
-    // Проверка на музыку (только Prime)
     if (musicUrl && currentUser.premium !== 'prime') {
       alert('Прикреплять музыку могут только Prime Premium пользователи!');
       musicUrl = '';
@@ -871,15 +920,8 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
     
-    // ЛОГИКА БУСТА ИСТОРИЙ ДЛЯ PRIME (1000% охватов)
-    let views = 0;
-    if (currentUser.premium === 'prime') {
-      // 1000% буст. Обычно 5-10 (например, 5-10% от 100 подписчиков). Prime получает от 1000 до 5000.
-      views = Math.floor(Math.random() * 4000) + 1000; 
-    } else {
-      // Обычные пользователи (5-10%)
-      views = Math.floor(Math.random() * 45) + 5; 
-    }
+    // Выбираем случайную цель от 55к до 100к
+    const target = rnd(TARGET_VIEWS);
 
     userStories.unshift({ 
       id: 's_' + Date.now(), 
@@ -887,32 +929,57 @@ document.getElementById('formSubmit').addEventListener('click', function() {
       color: currentUser.color, 
       emoji: currentUser.emoji, 
       text: text,
-      views: views
+      createdAt: Date.now(),
+      targetViews: target
     });
     
-    if (userStories.length > 20) userStories = userStories.slice(0, 20);
     try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderStories();
-    alert(`История добавлена! Просмотров: ${views}`);
+    alert(`История добавлена! Она будет набирать просмотры постепенно, в течение 20 дней дойдет до ${target.toLocaleString('ru-RU')}`);
     
   } else {
     const name = document.getElementById('formName').value.trim();
     if (name.length < 2) { alert('Введите название'); return; }
     
+    const newItem = { 
+        id: 'item_' + Date.now(), 
+        name: name, 
+        color: rnd(AVATAR_COLORS), 
+        emoji: name.charAt(0).toUpperCase(), 
+        owner: currentUser.name, 
+        desc: 'Создано вами' 
+    };
+
     if (pendingAction === 'channel') {
-      channels.push({ id: 'c_' + Date.now(), name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'channel', owner: currentUser.name, desc: 'Мой канал' });
+      newItem.type = 'channel';
+      channels.push(newItem);
       try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-    } else {
-      groups.push({ id: 'g_' + Date.now(), name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'group', owner: currentUser.name, desc: 'Группа' });
+      currentSearchTab = 'channels';
+    } else if (pendingAction === 'community') {
+      newItem.type = 'community';
+      groups.push(newItem); // Сообщества храним в массиве групп для простоты
       try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+      currentSearchTab = 'communities';
+    } else {
+      newItem.type = 'group';
+      groups.push(newItem);
+      try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+      currentSearchTab = 'groups';
     }
+    
     document.getElementById('formModal').classList.remove('show');
     alert('Успешно создано!');
+    // Переключаем вкладку на созданное и рендерим
+    document.querySelectorAll('.search-tab').forEach(x => {
+        if(x.dataset.stab === currentSearchTab) x.classList.add('active');
+        else x.classList.remove('active');
+    });
+    renderChatsList(currentSearchTab, '');
   }
 });
 
-/* ============ ПРОФИЛЬ С СЫЛКАМИ НА ГРУППЫ/КАНАЛЫ ============ */
+/* ============ ПРОФИЛЬ С СЫЛКАМИ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
   document.getElementById('profileStatus').textContent = 
@@ -922,20 +989,21 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   const pp = document.getElementById('profileContent');
   pp.innerHTML = '';
   
-  // Ссылки на группы и каналы (ТОЛЬКО ДЛЯ PRIME)
   if (currentUser.premium === 'prime') {
-    const myGroups = groups.filter(g => g.owner === currentUser.name);
+    const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
+    const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
     
     let linksHtml = `<b>🔗 Мои сообщества и каналы (видны всем):</b><br><br>`;
-    if(myGroups.length === 0 && myChannels.length === 0) {
-        linksHtml += `<span style="opacity:0.6; font-size:12px;">Вы еще не создали ни одной группы или канала. Нажмите "+" чтобы создать.</span><br><br>`;
-    } else {
-        myGroups.forEach(g => linksHtml += `<a href="#" onclick="alert('Переход в группу: ${esc(g.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">🌍 ${esc(g.name)}</a>`);
-        myChannels.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в канал: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">📢 ${esc(c.name)}</a>`);
+    
+    myGroups.forEach(g => linksHtml += `<a href="#" onclick="alert('Переход в группу: ${esc(g.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">👥 ${esc(g.name)}</a>`);
+    myComm.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в сообщество: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">🌍 ${esc(c.name)}</a>`);
+    myChannels.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в канал: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">📢 ${esc(c.name)}</a>`);
+    
+    if(myGroups.length === 0 && myChannels.length === 0 && myComm.length === 0) {
+        linksHtml += `<span style="opacity:0.6; font-size:12px;">Вы еще ничего не создали.</span><br>`;
     }
     
-    // Тумблер приватности
     linksHtml += `<label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:12px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px; font-size:13px; color:rgba(255,255,255,0.8);">
       <input type="checkbox" checked style="accent-color:#ff8c42;" onchange="alert('Видимость ссылок переключена!')"> Показывать ссылки другим пользователям
     </label>`;
