@@ -85,7 +85,7 @@
   .search-input { width: 100%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit; }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
   
-  /* ОБНОВЛЕННЫЕ ВКЛАДКИ (4 ШТУКИ) */
+  /* ВКЛАДКИ */
   .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
   .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 2px; color: rgba(255,255,255,0.7); font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; transition: 0.2s; }
   .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
@@ -235,7 +235,7 @@
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
-        <!-- ОБНОВЛЕННЫЕ ВКЛАДКИ -->
+        <!-- ВКЛАДКИ -->
         <div class="search-tabs">
           <button class="search-tab active" data-stab="people">👤 Люди</button>
           <button class="search-tab" data-stab="groups">👥 Группы</button>
@@ -362,7 +362,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v15';
+const STORAGE_KEY = 'sunset_user_v16';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -409,12 +409,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v15';
-const GROUPS_KEY = 'sunset_groups_v15';
-const CHANNELS_KEY = 'sunset_channels_v15';
-const POSTS_KEY = 'sunset_posts_v15';
-const LIKES_KEY = 'sunset_likes_v15';
-const STORIES_KEY = 'sunset_stories_v15';
+const CHATS_KEY = 'sunset_chats_v16';
+const GROUPS_KEY = 'sunset_groups_v16';
+const CHANNELS_KEY = 'sunset_channels_v16';
+const POSTS_KEY = 'sunset_posts_v16';
+const LIKES_KEY = 'sunset_likes_v16';
+const STORIES_KEY = 'sunset_stories_v16';
 
 let currentUser = null;
 let chats = {};
@@ -473,12 +473,13 @@ function startApp() {
   renderPosts();
   renderStories();
   
-  // Обновляем просмотры историй каждую минуту, чтобы график рос на глазах
+  // ОБНОВЛЕНИЕ ИСТОРИЙ КАЖДЫЕ 15 МИНУТ (900 000 мс)
   setInterval(() => {
     if (document.getElementById('tab-feed').classList.contains('active')) {
         renderStories();
+        console.log("Просмотры историй обновлены! (Прошло 15 минут)");
     }
-  }, 60000);
+  }, 900000);
 }
 
 function updatePremiumBadge() {
@@ -563,28 +564,48 @@ function renderChatsList(tab, q) {
   });
 }
 
-/* ============ СТОРИС (МАТЕМАТИКА РОСТА) ============ */
+/* ============ СТОРИС (НОВАЯ МАТЕМАТИКА РОСТА) ============ */
 const TARGET_VIEWS = [55000, 60000, 63000, 67000, 74000, 75000, 80000, 82000, 86000, 90000, 92000, 100000];
 
 function calculateStoryViews(story) {
-    if (!story.createdAt || !story.targetViews) return story.views || 10; // Для старых историй
+    if (!story.createdAt || !story.targetViews) return story.views || 2;
     
     const now = Date.now();
-    const hoursElapsed = (now - story.createdAt) / (1000 * 60 * 60);
-    const totalHours = 20 * 24; // 480 часов (20 дней)
+    const msElapsed = now - story.createdAt;
+    const hoursElapsed = msElapsed / (1000 * 60 * 60);
+    const target = story.targetViews;
     
-    if (hoursElapsed >= totalHours) return story.targetViews;
+    if (hoursElapsed >= 480) return target; // 20 дней
     
-    // Плавный график: медленный старт, ускорение к середине и замедление к концу
-    const progress = hoursElapsed / totalHours;
-    const curve = Math.sin(progress * Math.PI / 2); 
-    
-    let baseViews = Math.floor(story.targetViews * curve);
-    
-    // Добавляем шум (рандом), чтобы каждый час цифра менялась на разные значения
-    const noise = Math.floor(Math.random() * (story.targetViews * 0.005)); 
-    
-    return Math.min(story.targetViews, baseViews + noise);
+    let views;
+    // ЭТАП 1: Первые сутки (24 часа). Быстрый старт, как ты просил (2, 5, 10, 50...)
+    if (hoursElapsed < 24) {
+        // Формула: 15 * (часы^1.5)
+        // 15 мин (0.25ч) = 15 * 0.125 = ~2 просмотра
+        // 30 мин (0.5ч)  = 15 * 0.35 = ~5 просмотров
+        // 1 час          = 15 * 1 = 15 просмотров
+        // 2 часа         = 15 * 2.82 = ~42 просмотра
+        views = 15 * Math.pow(hoursElapsed, 1.5);
+        
+        // Добавляем микро-рандом, чтобы числа были не идеально ровные
+        views += Math.random() * 3; 
+    } 
+    // ЭТАП 2: Со 2-го по 20-й день. Плавный набор до целевой суммы.
+    else {
+        const baseAtDay1 = 15 * Math.pow(24, 1.5); // База на конец 1-го дня (~1763)
+        const progress = (hoursElapsed - 24) / (480 - 24); // Прогресс от 0 до 1
+        
+        // Используем квадратный корень, чтобы график шел вверх, но замедлялся
+        const curve = Math.pow(progress, 0.5); 
+        
+        views = baseAtDay1 + (target - baseAtDay1) * curve;
+        
+        // Добавляем шум, чтобы в течение дня цифры менялись неравномерно
+        const noise = Math.random() * (target * 0.002);
+        views += noise;
+    }
+
+    return Math.min(target, Math.floor(views));
 }
 
 function renderStories() {
@@ -608,11 +629,8 @@ function renderStories() {
   row.appendChild(mine);
   
   userStories.forEach(s => {
-    // Высчитываем просмотры на текущий момент
     const currentViews = calculateStoryViews(s);
-    
-    // Сохраняем текущее значение для отображения (но не в localStorage, чтобы не спамить)
-    s.displayViews = currentViews;
+    s.displayViews = currentViews; // Обновляем для показа
 
     const d = document.createElement('div');
     d.className = 'story-circle';
@@ -920,7 +938,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
     
-    // Выбираем случайную цель от 55к до 100к
+    // Выбираем случайную цель
     const target = rnd(TARGET_VIEWS);
 
     userStories.unshift({ 
@@ -936,7 +954,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderStories();
-    alert(`История добавлена! Она будет набирать просмотры постепенно, в течение 20 дней дойдет до ${target.toLocaleString('ru-RU')}`);
+    alert(`История добавлена! \n\nОна будет набирать просмотры постепенно. \nЧерез 20 дней дойдет до ${target.toLocaleString('ru-RU')}.`);
     
   } else {
     const name = document.getElementById('formName').value.trim();
@@ -958,7 +976,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
       currentSearchTab = 'channels';
     } else if (pendingAction === 'community') {
       newItem.type = 'community';
-      groups.push(newItem); // Сообщества храним в массиве групп для простоты
+      groups.push(newItem);
       try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
       currentSearchTab = 'communities';
     } else {
@@ -970,7 +988,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     
     document.getElementById('formModal').classList.remove('show');
     alert('Успешно создано!');
-    // Переключаем вкладку на созданное и рендерим
     document.querySelectorAll('.search-tab').forEach(x => {
         if(x.dataset.stab === currentSearchTab) x.classList.add('active');
         else x.classList.remove('active');
