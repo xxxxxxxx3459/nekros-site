@@ -85,7 +85,6 @@
   .search-input { width: 100%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit; }
   .search-input::placeholder { color: rgba(255,255,255,0.6); }
   
-  /* ВКЛАДКИ */
   .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
   .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 2px; color: rgba(255,255,255,0.7); font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; transition: 0.2s; }
   .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
@@ -100,7 +99,6 @@
   .card-sub { color: rgba(255,255,255,0.7); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-left: 4px; }
   .badge.open { background: rgba(74, 222, 128, 0.25); color: #86efac; }
-  .badge.closed { background: rgba(255, 140, 66, 0.25); color: #ffb380; }
 
   .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.8); margin: 20px 16px; background: transparent; border: none; border-radius: 20px; }
   .empty-state .emoji { font-size: 64px; margin-bottom: 16px; }
@@ -136,7 +134,6 @@
   .post-action { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(255,255,255,0.05); border: none; color: rgba(255,255,255,0.7); font-size: 13px; cursor: pointer; font-family: inherit; padding: 8px; border-radius: 10px; transition: 0.2s; }
   .post-action:hover { background: rgba(255,255,255,0.1); }
   .post-action.liked { color: #ff5e8c; background: rgba(255,94,140,0.1); }
-  .post-action.reposted { color: #4ade80; background: rgba(74,222,128,0.1); }
   
   .post-comments { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
   .comment { padding: 8px 0; font-size: 13px; color: #ccc; }
@@ -152,7 +149,18 @@
   .back-btn { background: transparent; border: none; color: #fff; font-size: 24px; padding: 4px 8px; cursor: pointer; }
   .chat-title { flex: 1; }
   .chat-title .name { font-size: 16px; font-weight: 600; }
-  .chat-title .status { font-size: 12px; opacity: 0.8; margin-top: 1px; }
+  
+  .chat-title .status { 
+    font-size: 11px; margin-top: 2px; display: inline-block;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 2px 8px; border-radius: 10px; transition: 0.3s;
+  }
+  .chat-title .status.online { color: #86efac; border-color: rgba(74,222,128,0.3); }
+  .chat-title .status.offline { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.1); }
+  .chat-title .status.typing { color: #ffb380; border-color: rgba(255,140,66,0.4); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+
   .chat-body { flex: 1; overflow-y: auto; padding: 16px 14px 20px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
   .chat-body::-webkit-scrollbar { display: none; }
   .message { max-width: 78%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-wrap: break-word; position: relative; }
@@ -183,6 +191,14 @@
   .modal-input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; }
   .modal-textarea { width: 100%; min-height: 120px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; resize: none; }
   .modal-primary { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+
+  /* СПИСОК ЗРИТЕЛЕЙ */
+  .viewer-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .viewer-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff; flex-shrink: 0;}
+  .viewer-info { flex: 1; }
+  .viewer-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .viewer-time { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px;}
+  .viewer-reaction { font-size: 24px; }
 
   /* ПРЕМИУМ КАРТОЧКИ */
   .promo-card { margin: 12px 16px; padding: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
@@ -235,7 +251,6 @@
     <div class="tab-content active" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
-        <!-- ВКЛАДКИ -->
         <div class="search-tabs">
           <button class="search-tab active" data-stab="people">👤 Люди</button>
           <button class="search-tab" data-stab="groups">👥 Группы</button>
@@ -283,7 +298,7 @@
           <div class="feat"><span class="feat-icon">💎</span><span><b>Значок алмаза</b> рядом с именем</span></div>
           <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
           <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества и каналы <b>видны всем</b></span></div>
-          <div class="feat"><span class="feat-icon">🚀</span><span>Истории <b>продвигаются выше</b> (в 1000% больше охватов)</span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span>Истории <b>продвигаются выше</b> (1000% охватов)</span></div>
           <div class="feat"><span class="feat-icon">🎵</span><span>Возможность прикреплять <b>музыку к постам</b></span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
@@ -360,9 +375,19 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ЗРИТЕЛЕЙ -->
+<div class="modal" id="storyViewersModal">
+  <div class="modal-card" style="max-height: 85vh;">
+    <div class="modal-title">Зрители истории</div>
+    <div class="modal-sub" id="storyViewersCount"></div>
+    <div id="storyViewersList" style="margin-top: 10px;"></div>
+    <button class="modal-close" data-close="storyViewersModal">Закрыть</button>
+  </div>
+</div>
+
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v16';
+const STORAGE_KEY = 'sunset_user_v20';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -390,7 +415,6 @@ function continueToApp() {
   const n = (regName.value || '').trim();
   if (n.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
   
-  // СЕКРЕТНЫЙ АДМИН ДОСТУП (Введи имя admin или boss)
   let isAdmin = false;
   let premiumLevel = null;
   if (n.toLowerCase() === 'admin' || n.toLowerCase() === 'boss') {
@@ -409,12 +433,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v16';
-const GROUPS_KEY = 'sunset_groups_v16';
-const CHANNELS_KEY = 'sunset_channels_v16';
-const POSTS_KEY = 'sunset_posts_v16';
-const LIKES_KEY = 'sunset_likes_v16';
-const STORIES_KEY = 'sunset_stories_v16';
+const CHATS_KEY = 'sunset_chats_v20';
+const GROUPS_KEY = 'sunset_groups_v20';
+const CHANNELS_KEY = 'sunset_channels_v20';
+const POSTS_KEY = 'sunset_posts_v20';
+const LIKES_KEY = 'sunset_likes_v20';
+const STORIES_KEY = 'sunset_stories_v20';
 
 let currentUser = null;
 let chats = {};
@@ -427,13 +451,34 @@ let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
 
-/* ============ ЛЮДИ ============ */
+/* ============ ГЕНЕРАТОР ИМЕН ============ */
+const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Арсений','Иван','Денис','Евгений','Даниил','Тимур','Владислав','Игорь','Олег','Павел','Руслан'];
+const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Арина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия','Кристина','Людмила','Галина','Надежда'];
+const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Егоров','Павлов','Козлов','Степанов','Николаев','Орлов','Андреев','Макаров','Никитин','Захаров','Зайцев','Соловьёв','Борисов','Яковлев','Григорьев','Романов','Воробьёв','Сергеев','Кузьмин','Фролов','Александров','Дмитриев','Королёв','Гусев','Киселёв','Ильин','Максимов','Поляков','Сорокин','Виноградов','Ковалёв','Белов','Медведев','Антонов','Тарасов'];
+
+function getRandomFullName() {
+    const isMale = Math.random() > 0.5;
+    const firstName = isMale ? rnd(FIRST_NAMES_M) : rnd(FIRST_NAMES_F);
+    const lastName = rnd(LAST_NAMES);
+    const finalLastName = isMale ? lastName : (lastName.endsWith('ий') ? lastName.replace('ий', 'ая') : lastName + 'а');
+    return `${firstName} ${finalLastName}`;
+}
+
+const STATUSES = [
+    'в сети', 'был(а) в сети недавно', 
+    'год назад', '2 года назад', '3 года назад', 
+    '4 года назад', '5 лет назад', '10 лет назад'
+];
+
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
   ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
   ['ivan', 'Иван', '#4ecdc4', 'И'],['elena', 'Елена', '#f5a623', 'Е']
 ];
-const PEOPLE = PEOPLE_NAMES.map(p => ({ id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person' }));
+const PEOPLE = PEOPLE_NAMES.map(p => ({ 
+    id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person',
+    lastSeen: STATUSES[Math.floor(Math.random() * STATUSES.length)]
+}));
 
 const DEFAULT_COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community' },
@@ -473,11 +518,9 @@ function startApp() {
   renderPosts();
   renderStories();
   
-  // ОБНОВЛЕНИЕ ИСТОРИЙ КАЖДЫЕ 15 МИНУТ (900 000 мс)
   setInterval(() => {
     if (document.getElementById('tab-feed').classList.contains('active')) {
         renderStories();
-        console.log("Просмотры историй обновлены! (Прошло 15 минут)");
     }
   }, 900000);
 }
@@ -518,7 +561,6 @@ document.querySelectorAll('.nav-btn').forEach(b => {
   });
 });
 
-/* ============ ВКЛАДКИ ПОИСКА ============ */
 document.querySelectorAll('.search-tab').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('.search-tab').forEach(x => x.classList.remove('active'));
@@ -553,22 +595,21 @@ function renderChatsList(tab, q) {
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'card-item';
-    
-    let badge = '';
-    if (item.type === 'group' || item.type === 'community') badge = '<span class="badge open">🌍</span>';
-    
+    let badge = (item.type === 'group' || item.type === 'community') ? '<span class="badge open">🌍</span>' : '';
+    let subText = item.type === 'person' ? item.lastSeen : (item.desc || 'Написать');
+
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
-      <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(item.desc || 'Написать')}</div></div>`;
+      <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
     div.addEventListener('click', () => openChat(item));
     list.appendChild(div);
   });
 }
 
-/* ============ СТОРИС (НОВАЯ МАТЕМАТИКА РОСТА) ============ */
-const TARGET_VIEWS = [55000, 60000, 63000, 67000, 74000, 75000, 80000, 82000, 86000, 90000, 92000, 100000];
+/* ============ СТОРИС И ГЕНЕРАЦИЯ ЗРИТЕЛЕЙ ============ */
+const TARGET_VIEWS_20_DAYS = [55000, 60000, 63000, 67000, 74000, 75000, 80000, 82000, 86000, 90000, 92000, 100000];
 
 function calculateStoryViews(story) {
-    if (!story.createdAt || !story.targetViews) return story.views || 2;
+    if (!story.createdAt || !story.targetViews) return story.views || 0;
     
     const now = Date.now();
     const msElapsed = now - story.createdAt;
@@ -578,33 +619,15 @@ function calculateStoryViews(story) {
     if (hoursElapsed >= 480) return target; // 20 дней
     
     let views;
-    // ЭТАП 1: Первые сутки (24 часа). Быстрый старт, как ты просил (2, 5, 10, 50...)
     if (hoursElapsed < 24) {
-        // Формула: 15 * (часы^1.5)
-        // 15 мин (0.25ч) = 15 * 0.125 = ~2 просмотра
-        // 30 мин (0.5ч)  = 15 * 0.35 = ~5 просмотров
-        // 1 час          = 15 * 1 = 15 просмотров
-        // 2 часа         = 15 * 2.82 = ~42 просмотра
-        views = 15 * Math.pow(hoursElapsed, 1.5);
-        
-        // Добавляем микро-рандом, чтобы числа были не идеально ровные
-        views += Math.random() * 3; 
-    } 
-    // ЭТАП 2: Со 2-го по 20-й день. Плавный набор до целевой суммы.
-    else {
-        const baseAtDay1 = 15 * Math.pow(24, 1.5); // База на конец 1-го дня (~1763)
-        const progress = (hoursElapsed - 24) / (480 - 24); // Прогресс от 0 до 1
-        
-        // Используем квадратный корень, чтобы график шел вверх, но замедлялся
-        const curve = Math.pow(progress, 0.5); 
-        
-        views = baseAtDay1 + (target - baseAtDay1) * curve;
-        
-        // Добавляем шум, чтобы в течение дня цифры менялись неравномерно
-        const noise = Math.random() * (target * 0.002);
-        views += noise;
+        // Начинаем с 0 и плавно растём до 15к за первые сутки
+        const progress = hoursElapsed / 24;
+        views = 15000 * Math.pow(progress, 0.8);
+    } else {
+        const baseAtDay1 = 15000; 
+        const progress = (hoursElapsed - 24) / (480 - 24); 
+        views = baseAtDay1 + (target - baseAtDay1) * Math.pow(progress, 0.5) + (Math.random() * (target * 0.002));
     }
-
     return Math.min(target, Math.floor(views));
 }
 
@@ -630,14 +653,76 @@ function renderStories() {
   
   userStories.forEach(s => {
     const currentViews = calculateStoryViews(s);
-    s.displayViews = currentViews; // Обновляем для показа
-
+    
     const d = document.createElement('div');
     d.className = 'story-circle';
     d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${s.color}">${s.emoji}</div></div><div class="story-label">${esc(s.author)}</div>`;
-    d.addEventListener('click', () => alert(`📸 История от ${s.author}\n\n"${s.text}"\n\n👁️ Просмотры: ${currentViews.toLocaleString('ru-RU')}`));
+    
+    d.addEventListener('click', () => {
+        showStoryViewers(s, currentViews);
+    });
     row.appendChild(d);
   });
+}
+
+/* ==== ЗРИТЕЛИ И РЕАКЦИИ (ДО 3000) ==== */
+function showStoryViewers(story, totalViews) {
+    document.getElementById('storyViewersCount').textContent = `Всего просмотров: ${totalViews.toLocaleString('ru-RU')}`;
+    const list = document.getElementById('storyViewersList');
+    list.innerHTML = '';
+
+    // РЕАЛИСТИЧНАЯ МАТЕМАТИКА РЕАКЦИЙ:
+    // От 0.5% до 3% от просмотров, но не более 3000
+    let totalReacts = Math.floor(totalViews * (Math.random() * 0.025 + 0.005)); 
+    if (totalReacts > 3000) totalReacts = 3000; 
+
+    // Коэффициент вероятности получить реакцию для конкретного человека
+    const reactionRatio = totalViews > 0 ? (totalReacts / totalViews) : 0;
+
+    // Генерируем 60 случайных людей для списка
+    const displayCount = 60;
+    const viewers = [];
+
+    for (let i = 0; i < displayCount; i++) {
+        const name = getRandomFullName();
+        const color = rnd(AVATAR_COLORS);
+        const initial = name.charAt(0);
+        
+        let reaction = null;
+        // Если человек попал в概率 реакции
+        if (Math.random() < reactionRatio) {
+             const emojis = ['❤️', '🔥', '😂', '😮'];
+             reaction = rnd(emojis);
+        }
+
+        viewers.push({ name, color, initial, reaction });
+    }
+
+    // Сначала показываем тех, кто поставил реакцию, чтобы было видно
+    viewers.sort((a, b) => (b.reaction ? 1 : 0) - (a.reaction ? 1 : 0));
+
+    viewers.forEach(v => {
+        const div = document.createElement('div');
+        div.className = 'viewer-item';
+        div.innerHTML = `
+            <div class="viewer-avatar" style="background:${v.color}">${v.initial}</div>
+            <div class="viewer-info">
+                <div class="viewer-name">${v.name}</div>
+                <div class="viewer-time">${Math.floor(Math.random() * 50) + 1} минут назад</div>
+            </div>
+            ${v.reaction ? `<div class="viewer-reaction">${v.reaction}</div>` : ''}
+        `;
+        list.appendChild(div);
+    });
+
+    if (totalViews > displayCount) {
+        const more = document.createElement('div');
+        more.style.cssText = 'text-align:center; font-size:13px; opacity:0.6; padding:16px; font-weight:600;';
+        more.textContent = `И еще ${(totalViews - displayCount).toLocaleString('ru-RU')} человек...`;
+        list.appendChild(more);
+    }
+
+    document.getElementById('storyViewersModal').classList.add('show');
 }
 
 /* ============ ПОСТЫ ============ */
@@ -646,8 +731,7 @@ function renderPosts() {
   el.innerHTML = '';
   
   const demoPosts = [
-    { id: 'd1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅 Прикрепляю фото!', image: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600', music: null, time: '2 ч', views: 1240, likes: 12, reposts: 3, comments: [] },
-    { id: 'd2', author: 'Дмитрий', color: '#4a90e2', text: 'Слушаю новый трек, просто топ!', image: null, music: { title: 'Believer', artist: 'Imagine Dragons' }, time: '5 ч', views: 850, likes: 8, reposts: 1, comments: [] }
+    { id: 'd1', author: 'Мария', color: '#a06cd5', text: 'Закат сегодня невероятный 🌅', image: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600', music: null, time: '2 ч', views: 1240, likes: 12, reposts: 3, comments: [] }
   ];
 
   [...posts, ...demoPosts].forEach(p => el.appendChild(buildPostEl(p)));
@@ -718,7 +802,7 @@ function buildPostEl(p) {
     p.reposts = (p.reposts || 0) + 1;
     this.innerHTML = `🔄 <span>${p.reposts}</span>`;
     navigator.clipboard?.writeText('Ссылка на пост: https://sunset.app/post/' + p.id);
-    alert('Пост скопирован! Ссылка у вас в буфере.');
+    alert('Пост скопирован в буфер обмена!');
     savePostsIfMine(p);
   });
 
@@ -760,7 +844,15 @@ function openChat(item) {
   document.getElementById('chatName').textContent = item.name;
   document.getElementById('chatAvatar').textContent = item.emoji;
   document.getElementById('chatAvatar').style.background = item.color;
-  document.getElementById('chatStatus').textContent = 'в сети';
+  
+  const statusEl = document.getElementById('chatStatus');
+  if (item.type === 'person') {
+      statusEl.textContent = item.lastSeen;
+      statusEl.className = 'status ' + (item.lastSeen === 'в сети' ? 'online' : 'offline');
+  } else {
+      statusEl.textContent = 'канал/группа';
+      statusEl.className = 'status online';
+  }
   
   chatEl.classList.add('show');
   chatBody.innerHTML = '';
@@ -806,13 +898,26 @@ document.getElementById('chatSend').addEventListener('click', () => {
   document.getElementById('chatInput').value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
 
+  const statusEl = document.getElementById('chatStatus');
+  if (activeChat.type === 'person') {
+      statusEl.textContent = 'печатает...';
+      statusEl.className = 'status typing';
+  }
+
   setTimeout(() => {
     const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
     try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-    if (activeChat) { addMsgToDOM(reply); chatBody.scrollTop = chatBody.scrollHeight; }
-  }, 1500);
+    if (activeChat) { 
+        if (activeChat.type === 'person') {
+            statusEl.textContent = activeChat.lastSeen;
+            statusEl.className = 'status ' + (activeChat.lastSeen === 'в сети' ? 'online' : 'offline');
+        }
+        addMsgToDOM(reply); 
+        chatBody.scrollTop = chatBody.scrollHeight; 
+    }
+  }, 2500);
 });
 
 document.getElementById('chatInput').addEventListener('keydown', e => {
@@ -898,7 +1003,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     
     if (text.length < 3 && !photoUrl) { alert('Напишите текст или добавьте фото'); return; }
     
-    // Проверка лимитов
     if (currentUser.premium === 'sunset' && posts.length >= 200) {
       alert('Лимит Sunset Premium: 200 постов в месяц. Купите Prime!'); return;
     }
@@ -912,9 +1016,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     }
 
     let musicObj = null;
-    if (musicUrl) {
-      musicObj = { title: 'Мой трек', artist: 'Ссылка из интернета' };
-    }
+    if (musicUrl) musicObj = { title: 'Мой трек', artist: 'Ссылка из интернета' };
 
     posts.unshift({ 
       id: 'p_' + Date.now(), 
@@ -933,13 +1035,12 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderPosts();
-    
+
   } else if (pendingAction === 'story') {
     const text = document.getElementById('formText').value.trim();
     if (text.length < 2) { alert('Минимум 2 символа'); return; }
     
-    // Выбираем случайную цель
-    const target = rnd(TARGET_VIEWS);
+    const target = rnd(TARGET_VIEWS_20_DAYS);
 
     userStories.unshift({ 
       id: 's_' + Date.now(), 
@@ -954,7 +1055,6 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     renderStories();
-    alert(`История добавлена! \n\nОна будет набирать просмотры постепенно. \nЧерез 20 дней дойдет до ${target.toLocaleString('ru-RU')}.`);
     
   } else {
     const name = document.getElementById('formName').value.trim();
@@ -1012,7 +1112,6 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
     const myChannels = channels.filter(c => c.owner === currentUser.name);
     
     let linksHtml = `<b>🔗 Мои сообщества и каналы (видны всем):</b><br><br>`;
-    
     myGroups.forEach(g => linksHtml += `<a href="#" onclick="alert('Переход в группу: ${esc(g.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">👥 ${esc(g.name)}</a>`);
     myComm.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в сообщество: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">🌍 ${esc(c.name)}</a>`);
     myChannels.forEach(c => linksHtml += `<a href="#" onclick="alert('Переход в канал: ${esc(c.name)}'); return false;" style="color:#ff8c42; text-decoration:none; display:block; margin-bottom:8px; font-weight:600;">📢 ${esc(c.name)}</a>`);
