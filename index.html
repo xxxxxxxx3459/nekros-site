@@ -421,7 +421,10 @@
         <div class="name" id="chatName"></div>
         <div class="status" id="chatStatus">в сети</div>
       </div>
-      <button class="icon-btn" id="addParticipantsBtn" style="display:none; font-size:20px;">➕</button>
+      
+      <!-- Кнопки в шапке чата -->
+      <button class="icon-btn" id="chatMembersBtn" style="display:none; font-size:20px; background:transparent; border:none;">👥</button>
+      <button class="icon-btn" id="addParticipantsBtn" style="display:none; font-size:20px; background:transparent; border:none;">➕</button>
       <button class="chat-menu" id="chatMenuBtn">⋯</button>
     </div>
     <div class="chat-body" id="chatBody"></div>
@@ -432,7 +435,7 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СОЗДАНИЯ (ГРУППЫ/КАНАЛЫ) -->
+<!-- МОДАЛКА СОЗДАНИЯ -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -484,6 +487,16 @@
     <input type="text" class="modal-input" id="searchInviteInput" placeholder="Введите имя (например: Иван)..." style="margin-bottom: 10px;">
     <div id="participantsList" style="margin-top: 10px; max-height: 45vh; overflow-y: auto;"></div>
     <button class="modal-close" data-close="addParticipantsModal">Закрыть</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА УПРАВЛЕНИЯ УЧАСТНИКАМИ (УДАЛЕНИЕ) -->
+<div class="modal" id="manageMembersModal">
+  <div class="modal-card" style="max-height: 85vh;">
+    <div class="modal-title">Участники</div>
+    <div class="modal-sub" id="manageMembersCount"></div>
+    <div id="manageMembersList" style="margin-top: 10px; max-height: 50vh; overflow-y: auto;"></div>
+    <button class="modal-close" data-close="manageMembersModal">Закрыть</button>
   </div>
 </div>
 
@@ -541,7 +554,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v30';
+const STORAGE_KEY = 'sunset_user_v31';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -604,12 +617,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v30';
-const GROUPS_KEY = 'sunset_groups_v30';
-const CHANNELS_KEY = 'sunset_channels_v30';
-const POSTS_KEY = 'sunset_posts_v30';
-const LIKES_KEY = 'sunset_likes_v30';
-const STORIES_KEY = 'sunset_stories_v30';
+const CHATS_KEY = 'sunset_chats_v31';
+const GROUPS_KEY = 'sunset_groups_v31';
+const CHANNELS_KEY = 'sunset_channels_v31';
+const POSTS_KEY = 'sunset_posts_v31';
+const LIKES_KEY = 'sunset_likes_v31';
+const STORIES_KEY = 'sunset_stories_v31';
 
 let currentUser = null;
 let chats = {};
@@ -635,7 +648,7 @@ function getRandomFullName() {
     return `${firstName} ${finalLastName}`;
 }
 
-// Генерируем базу из 500 фейковых пользователей для поиска
+// База пользователей для поиска
 const ALL_USERS = [];
 for(let i=0; i<500; i++) {
     ALL_USERS.push({ 
@@ -660,8 +673,8 @@ const PEOPLE = PEOPLE_NAMES.map(p => ({
 }));
 
 const DEFAULT_COMMUNITIES = [
-  { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community', memberCount: 1240 },
-  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community', memberCount: 850 }
+  { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community', members: [] },
+  { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community', members: [] }
 ];
 
 const SONGS = [
@@ -861,7 +874,7 @@ function renderMusic() {
     });
 }
 
-/* ============ СПИСОК ЧАТОВ (С КОЛ-ВОМ УЧАСТНИКОВ) ============ */
+/* ============ СПИСОК ЧАТОВ ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
@@ -885,19 +898,18 @@ function renderChatsList(tab, q) {
     div.className = 'card-item';
     let badge = (item.type === 'group' || item.type === 'community') ? '<span class="badge open">🌍</span>' : '';
     
-    // Вывод количества участников для групп/каналов
     let subText = '';
     if (item.type === 'person') {
         subText = item.lastSeen;
     } else {
-        if (!item.memberCount) item.memberCount = Math.floor(Math.random() * 500) + 10;
-        subText = `${item.memberCount.toLocaleString('ru-RU')} участников`;
+        // Показываем РЕАЛЬНОЕ количество участников (из массива members)
+        const count = item.members ? item.members.length : 0;
+        subText = `${count} участников`;
     }
 
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
       <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
     
-    // ЕСЛИ ЭТО ЧЕЛОВЕК - ОТКРЫВАЕМ ЕГО ПУБЛИЧНЫЙ ПРОФИЛЬ, ИНАЧЕ - ЧАТ
     div.addEventListener('click', () => {
         if (item.type === 'person') {
             openPublicProfile(item);
@@ -921,7 +933,6 @@ function openPublicProfile(person) {
     const pubPinned = document.getElementById('pubPinnedSections');
     pubPinned.innerHTML = '';
     
-    // Имитация того, что у пользователя есть закрепы
     const isPrem = Math.random() > 0.5;
     const limit = isPrem ? (Math.random() > 0.5 ? 8 : 3) : 0;
 
@@ -1190,10 +1201,7 @@ function renderMyPage() {
     } else {
         manageBtn.style.display = 'block';
         
-        // Берем только те, что отмечены в pinnedIds
         let pinnedLinks = allLinks.filter(link => currentUser.pinnedIds.includes(link.id));
-        
-        // Ограничиваем до лимита
         pinnedLinks = pinnedLinks.slice(0, limit);
 
         for (let i = 0; i < limit; i++) {
@@ -1238,7 +1246,6 @@ function openManagePinned() {
             const div = document.createElement('div');
             div.className = 'viewer-item';
             
-            // Определяем текст для типа
             let typeText = 'Группа';
             if (link.type === 'channel') typeText = 'Канал';
             else if (link.type === 'community') typeText = 'Сообщество';
@@ -1262,7 +1269,6 @@ function openManagePinned() {
                     }
                     if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
                 } else {
-                    // Убираем из закрепов, но не удаляем саму группу!
                     currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
                 }
                 try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
@@ -1293,18 +1299,20 @@ function openChat(item) {
       statusEl.textContent = item.lastSeen;
       statusEl.className = 'status ' + (item.lastSeen === 'в сети' ? 'online' : 'offline');
       document.getElementById('addParticipantsBtn').style.display = 'none';
+      document.getElementById('chatMembersBtn').style.display = 'none';
   } else {
-      if (!item.memberCount) item.memberCount = Math.floor(Math.random() * 500) + 10;
-      statusEl.textContent = `${item.memberCount.toLocaleString('ru-RU')} участников`;
+      if (!item.members) item.members = []; // Инициализируем пустой массив
+      statusEl.textContent = `${item.members.length} участников`;
       statusEl.className = 'status online';
       document.getElementById('addParticipantsBtn').style.display = 'flex';
+      document.getElementById('chatMembersBtn').style.display = 'flex';
   }
   
   chatEl.classList.add('show');
   chatBody.innerHTML = '';
   const msgs = chats[item.id] || [];
   if (!msgs.length) {
-    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
+    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>В группе пока никого нет. Пригласите участников!</p></div>';
   } else {
     msgs.forEach(m => addMsgToDOM(m));
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -1380,7 +1388,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
   activeChat = null;
 });
 
-/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ (С ПОИСКОМ) ============ */
+/* ============ ПРИГЛАШЕНИЕ И УДАЛЕНИЕ УЧАСТНИКОВ ============ */
 document.getElementById('addParticipantsBtn').addEventListener('click', () => {
     if (!activeChat) return;
     document.getElementById('searchInviteInput').value = '';
@@ -1403,7 +1411,6 @@ function renderParticipantsList(users) {
         return;
     }
 
-    // Показываем первых 50 для оптимизации
     users.slice(0, 50).forEach(user => {
         const div = document.createElement('div');
         div.className = 'viewer-item';
@@ -1423,15 +1430,21 @@ function renderParticipantsList(users) {
             btn.style.background = 'transparent';
             btn.disabled = true;
             
-            // Добавляем системное сообщение и увеличиваем счетчик
+            // Добавляем в массив участников
+            if (!activeChat.members) activeChat.members = [];
+            // Проверка, чтобы не добавить дважды
+            if (!activeChat.members.find(m => m.id === user.id)) {
+                activeChat.members.push(user);
+            }
+            saveGroups();
+
+            // Добавляем системное сообщение
             const sysMsg = { text: `👤 ${user.name} присоединился к чату`, time: nowTime(), from: 'system' };
             if (!chats[activeChat.id]) chats[activeChat.id] = [];
             chats[activeChat.id].push(sysMsg);
             try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
             
-            activeChat.memberCount = (activeChat.memberCount || 0) + 1;
-            saveGroups();
-            document.getElementById('chatStatus').textContent = `${activeChat.memberCount.toLocaleString('ru-RU')} участников`;
+            document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
 
             if (activeChat) {
                 addMsgToDOM(sysMsg);
@@ -1441,6 +1454,58 @@ function renderParticipantsList(users) {
         list.appendChild(div);
     });
 }
+
+// Модалка управления участниками (УДАЛЕНИЕ)
+document.getElementById('chatMembersBtn').addEventListener('click', () => {
+    if (!activeChat) return;
+    const list = document.getElementById('manageMembersList');
+    list.innerHTML = '';
+    
+    document.getElementById('manageMembersCount').textContent = `Всего участников: ${activeChat.members ? activeChat.members.length : 0}`;
+
+    if (!activeChat.members || activeChat.members.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">В группе пока никого нет</div>';
+    } else {
+        activeChat.members.forEach((member, index) => {
+            const div = document.createElement('div');
+            div.className = 'viewer-item';
+            div.innerHTML = `
+                <div class="viewer-avatar" style="background:${member.color}">${member.emoji}</div>
+                <div class="viewer-info">
+                    <div class="viewer-name">${member.name}</div>
+                </div>
+                <button style="background:transparent; border:none; color:#ff5e62; font-size:20px; cursor:pointer;">❌</button>
+            `;
+            
+            const removeBtn = div.querySelector('button');
+            removeBtn.addEventListener('click', () => {
+                // Удаляем из массива
+                activeChat.members.splice(index, 1);
+                saveGroups();
+                
+                // Обновляем статус в шапке
+                document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
+                
+                // Добавляем системное сообщение
+                const sysMsg = { text: `👤 ${member.name} покинул чат`, time: nowTime(), from: 'system' };
+                if (!chats[activeChat.id]) chats[activeChat.id] = [];
+                chats[activeChat.id].push(sysMsg);
+                try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+                
+                addMsgToDOM(sysMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                
+                // Перерисовываем список
+                document.getElementById('chatMembersBtn').click();
+            });
+            
+            list.appendChild(div);
+        });
+    }
+    
+    document.getElementById('manageMembersModal').classList.add('show');
+});
+
 
 /* ============ МОДАЛКИ И СОЗДАНИЕ ============ */
 function openPostModal() {
@@ -1560,7 +1625,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     const newItem = { 
         id: 'item_' + Date.now(), name: name, color: rnd(AVATAR_COLORS), 
         emoji: name.charAt(0).toUpperCase(), owner: currentUser.name, desc: 'Создано вами',
-        memberCount: Math.floor(Math.random() * 50) + 1
+        members: [] // ПУСТОЙ МАССИВ УЧАСТНИКОВ (0 человек)
     };
 
     if (pendingAction === 'channel') {
@@ -1578,7 +1643,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     }
     
     document.getElementById('formModal').classList.remove('show');
-    alert('Успешно создано!');
+    alert('Успешно создано! В группе пока 0 участников.');
     renderMyPage(); 
     document.querySelector(`.search-tab[data-stab="${currentSearchTab}"]`).click();
   }
