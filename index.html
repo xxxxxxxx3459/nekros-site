@@ -145,7 +145,25 @@
   .comment-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; font-family: inherit; }
   .comment-send { background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 50%; width: 38px; height: 38px; color: #fff; font-size: 16px; cursor: pointer; }
 
+  /* МУЗЫКА (ИСПРАВЛЕНА ВЕРСТКА) */
+  .track { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .track-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .track-num { width: 26px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; flex-shrink: 0; }
+  .track-info { min-width: 0; }
+  .track-name { color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-artist { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-play { color: #ff8c42; font-size: 18px; padding-left: 10px; }
+
   /* МОЯ СТРАНИЦА */
+  .create-post-prompt {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; padding: 12px 16px; margin: 12px;
+    cursor: pointer; transition: 0.2s;
+  }
+  .create-post-prompt:active { background: rgba(255,255,255,0.15); }
+  .create-post-prompt span { color: rgba(255,255,255,0.6); font-size: 15px; }
+
   .pinned-sections {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
     padding: 16px; background: rgba(0,0,0,0.2); margin: 12px; border-radius: 20px;
@@ -293,7 +311,13 @@
     
     <!-- ВКЛАДКА 1: МОЯ СТРАНИЦА -->
     <div class="tab-content active" id="tab-mypage">
-        <div class="section-title" style="padding-top: 16px;">📌 Закрепленные разделы</div>
+        <!-- Плашка для создания поста -->
+        <div class="create-post-prompt" onclick="openPostModal()">
+            <div class="my-avatar" id="promptAvatar" style="width:36px; height:36px; font-size:14px;"></div>
+            <span>Привет! Расскажите что-нибудь...</span>
+        </div>
+
+        <div class="section-title" style="padding-top: 10px;">📌 Закрепленные разделы</div>
         
         <!-- ЗДЕСЬ БУДУТ 8 ИЛИ 3 РАЗДЕЛА -->
         <div class="pinned-sections" id="pinnedSections"></div>
@@ -344,8 +368,8 @@
           </div>
         </div>
         <div class="premium-features">
-          <div class="feat"><span class="feat-icon">⭐</span><span><b>Статус lol@56/2!</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> для продвижения постов, групп, каналов</span></div>
+          <div class="feat"><span class="feat-icon">⭐</span><span><b>Статус Administrator</b> рядом с именем</span></div>
+          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице для закрепления постов, групп, каналов</span></div>
           <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц с продвижением</b></span></div>
           <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
           <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 300%</b> (до 300 тыс. человек в год)</span></div>
@@ -403,7 +427,7 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СОЗДАНИЯ -->
+<!-- МОДАЛКА СОЗДАНИЯ (ГРУППЫ/КАНАЛЫ) -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -474,7 +498,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v26';
+const STORAGE_KEY = 'sunset_user_v27';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -512,7 +536,13 @@ function continueToApp() {
   
   let isAdmin = false;
   let premiumLevel = null;
-  if (n.toLowerCase() === 'admin' || n.toLowerCase() === 'boss') {
+  const lowerName = n.toLowerCase();
+  
+  // СЕКРЕТНЫЙ ВХОД: admin - Sunset, boss - Prime
+  if (lowerName === 'admin') {
+    isAdmin = true;
+    premiumLevel = 'sunset';
+  } else if (lowerName === 'boss') {
     isAdmin = true;
     premiumLevel = 'prime';
   }
@@ -532,12 +562,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v26';
-const GROUPS_KEY = 'sunset_groups_v26';
-const CHANNELS_KEY = 'sunset_channels_v26';
-const POSTS_KEY = 'sunset_posts_v26';
-const LIKES_KEY = 'sunset_likes_v26';
-const STORIES_KEY = 'sunset_stories_v26';
+const CHATS_KEY = 'sunset_chats_v27';
+const GROUPS_KEY = 'sunset_groups_v27';
+const CHANNELS_KEY = 'sunset_channels_v27';
+const POSTS_KEY = 'sunset_posts_v27';
+const LIKES_KEY = 'sunset_likes_v27';
+const STORIES_KEY = 'sunset_stories_v27';
 
 let currentUser = null;
 let chats = {};
@@ -641,6 +671,10 @@ function startApp() {
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
+  
+  document.getElementById('promptAvatar').textContent = currentUser.emoji;
+  document.getElementById('promptAvatar').style.background = currentUser.color;
+
   updatePremiumBadge();
 
   try {
@@ -656,7 +690,7 @@ function startApp() {
   renderPosts();
   renderStories();
   renderMusic();
-  renderMyPage(); // Рендерим вкладку
+  renderMyPage(); 
   simulatePromotion();
 
   setInterval(() => {
@@ -707,10 +741,10 @@ function updatePremiumBadge() {
   
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
-    st.textContent = '💎 Master';
+    st.textContent = '💎 Master'; // Английский статус
   } else if (currentUser.premium === 'sunset') {
     const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; av.appendChild(b);
-    st.textContent = '⭐ lol@56/2!';
+    st.textContent = '⭐ Administrator'; // Английский статус
   } else {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
@@ -753,17 +787,20 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
   renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
-/* ============ МУЗЫКА ============ */
+/* ============ МУЗЫКА (ИСПРАВЛЕНА) ============ */
 function renderMusic() {
     const el = document.getElementById('musicList');
     el.innerHTML = '';
     SONGS.forEach((s, i) => {
         const d = document.createElement('div');
         d.className = 'track';
-        d.innerHTML = `<div class="track-num">${i + 1}</div>
-            <div class="track-info">
-                <div class="track-name">${esc(s[1])}</div>
-                <div class="track-artist">${esc(s[0])}</div>
+        d.innerHTML = `
+            <div class="track-left">
+                <div class="track-num">${i + 1}</div>
+                <div class="track-info">
+                    <div class="track-name">${esc(s[1])}</div>
+                    <div class="track-artist">${esc(s[0])}</div>
+                </div>
             </div>
             <div class="track-play">▶</div>`;
         d.addEventListener('click', () => alert(`🎵 Воспроизведение: ${s[0]} - ${s[1]}`));
@@ -935,7 +972,7 @@ function renderMyPagePosts() {
     myPageList.innerHTML = '';
     const myPosts = posts.filter(p => p.author === currentUser.name);
     if (!myPosts.length) {
-        myPageList.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов.<br>Нажмите <b>+</b> чтобы создать!</p></div>';
+        myPageList.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов.<br>Нажмите на плашку выше, чтобы создать!</p></div>';
     } else {
         myPosts.forEach(p => myPageList.appendChild(buildPostEl(p)));
     }
@@ -1039,7 +1076,7 @@ function savePostsIfMine(p) {
   }
 }
 
-/* ============ МОЯ СТРАНИЦА (РЕНДЕР СЕТКИ) ============ */
+/* ============ МОЯ СТРАНИЦА ============ */
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     pinnedContainer.innerHTML = '';
@@ -1048,7 +1085,6 @@ function renderMyPage() {
     if (currentUser.premium === 'prime') limit = 8;
     else if (currentUser.premium === 'sunset') limit = 3;
 
-    // Собираем созданные ссылки
     const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
     const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
@@ -1058,7 +1094,6 @@ function renderMyPage() {
     if (limit === 0) {
         pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов здесь</div>';
     } else {
-        // Заполняем реальными ссылками
         for (let i = 0; i < limit; i++) {
             const div = document.createElement('div');
             
@@ -1071,7 +1106,6 @@ function renderMyPage() {
                 `;
                 div.addEventListener('click', () => alert(`Переход в ${link.name}`));
             } else {
-                // Пустой слот
                 div.className = 'pinned-item';
                 div.style.opacity = '0.4';
                 div.innerHTML = `
@@ -1182,6 +1216,31 @@ document.getElementById('backBtn').addEventListener('click', () => {
 });
 
 /* ============ МОДАЛКИ И СОЗДАНИЕ ============ */
+// Функция для кнопки на "Моей странице"
+function openPostModal() {
+    pendingAction = 'post';
+    document.getElementById('formTitle').textContent = '📝 Новый пост';
+    document.getElementById('formSub').textContent = 'Поделитесь чем-нибудь';
+    document.getElementById('formName').style.display = 'none';
+    document.getElementById('formText').style.display = 'block';
+    document.getElementById('formText').value = '';
+    document.getElementById('formText').placeholder = 'Привет! Расскажите что-нибудь, что у вас нового?';
+    
+    document.getElementById('postMediaFields').style.display = 'block';
+    document.getElementById('formPhoto').value = '';
+    document.getElementById('formMusic').value = '';
+    
+    const musicInput = document.getElementById('formMusic');
+    if (currentUser.premium !== 'prime') {
+        musicInput.style.display = 'none';
+    } else {
+        musicInput.style.display = 'block';
+    }
+    
+    document.getElementById('formModal').classList.add('show');
+}
+
+// Кнопка + (только для групп/каналов)
 document.getElementById('plusBtn').addEventListener('click', () => {
   document.getElementById('createModal').classList.add('show');
 });
@@ -1194,6 +1253,13 @@ document.querySelectorAll('.modal-option').forEach(opt => {
   opt.addEventListener('click', () => {
     const a = opt.dataset.action;
     document.getElementById('createModal').classList.remove('show');
+    
+    // Если выбрали пост, используем ту же логику, что и на странице
+    if (a === 'post') {
+        openPostModal();
+        return;
+    }
+    
     pendingAction = a;
     
     const ft = document.getElementById('formTitle');
@@ -1203,27 +1269,13 @@ document.querySelectorAll('.modal-option').forEach(opt => {
     const mediaFields = document.getElementById('postMediaFields');
     
     fn.value = ''; fx.value = '';
-    document.getElementById('formPhoto').value = '';
-    document.getElementById('formMusic').value = '';
     fn.style.display = 'none'; 
     mediaFields.style.display = 'none';
 
-    if (a === 'post') { 
-      ft.textContent = '📝 Новый пост'; 
-      fs.textContent = 'Поделитесь чем-нибудь'; 
-      mediaFields.style.display = 'block'; 
-      fx.placeholder = 'Привет! Расскажите что-нибудь, что у вас нового?';
-      
-      const musicInput = document.getElementById('formMusic');
-      if (currentUser.premium !== 'prime') {
-        musicInput.style.display = 'none';
-      } else {
-        musicInput.style.display = 'block';
-      }
-    }
-    else if (a === 'story') { 
+    if (a === 'story') { 
       ft.textContent = '📸 История'; 
       fs.textContent = 'Бесплатно для всех'; 
+      fx.style.display = 'block';
       fx.placeholder = 'Что происходит?';
     }
     else if (a === 'group' || a === 'community') { 
@@ -1287,6 +1339,7 @@ document.getElementById('formSubmit').addEventListener('click', function() {
     try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
     document.getElementById('formModal').classList.remove('show');
     
+    // После создания поста переходим на Мою страницу
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav-btn[data-tab="mypage"]').classList.add('active');
@@ -1364,7 +1417,7 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   
   let premText = 'Обычный пользователь';
   if (currentUser.premium === 'prime') premText = '💎 Master';
-  else if (currentUser.premium === 'sunset') premText = '⭐ lol@56/2!';
+  else if (currentUser.premium === 'sunset') premText = '⭐ Administrator';
   
   document.getElementById('profileStatus').textContent = premText;
   document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
@@ -1399,6 +1452,7 @@ document.getElementById('changeAvatarBtn').addEventListener('click', () => {
         currentUser.emoji = newEmoji.charAt(0);
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
         document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
+        document.getElementById('promptAvatar').textContent = currentUser.emoji;
         renderMyPage();
         alert('Фото профиля обновлено!');
     }
