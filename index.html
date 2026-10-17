@@ -192,6 +192,15 @@
   .modal-textarea { width: 100%; min-height: 120px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; resize: none; }
   .modal-primary { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
 
+  /* ВЫБОР СТАТУСА В ПРОФИЛЕ */
+  .status-select {
+    width: 100%; padding: 12px 16px; margin-bottom: 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-size: 15px; font-family: inherit; outline: none;
+    appearance: none; -webkit-appearance: none;
+  }
+  .status-select option { background: #2a1a35; color: #fff; }
+
   /* СПИСОК ЗРИТЕЛЕЙ */
   .viewer-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .viewer-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff; flex-shrink: 0;}
@@ -365,11 +374,25 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ПРОФИЛЯ -->
+<!-- МОДАЛКА ПРОФИЛЯ (С ВЫБОРОМ СТАТУСА) -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
+    
+    <!-- ВЫБОР СТАТУСА -->
+    <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block;">Выберите ваш статус:</label>
+    <select class="status-select" id="myStatusSelect">
+        <option value="в сети">в сети</option>
+        <option value="был(а) в сети недавно">был(а) в сети недавно</option>
+        <option value="год назад">год назад</option>
+        <option value="2 года назад">2 года назад</option>
+        <option value="3 года назад">3 года назад</option>
+        <option value="4 года назад">4 года назад</option>
+        <option value="5 лет назад">5 лет назад</option>
+        <option value="6 лет назад">6 лет назад</option>
+    </select>
+
     <div id="profileContent"></div>
     <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
@@ -387,7 +410,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v20';
+const STORAGE_KEY = 'sunset_user_v21';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -422,7 +445,12 @@ function continueToApp() {
     premiumLevel = 'prime';
   }
 
-  currentUser = { name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), premium: premiumLevel, isAdmin: isAdmin };
+  // По умолчанию юзер в сети
+  currentUser = { 
+      name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+      premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети' 
+  };
+  
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
   startApp();
 }
@@ -433,12 +461,12 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v20';
-const GROUPS_KEY = 'sunset_groups_v20';
-const CHANNELS_KEY = 'sunset_channels_v20';
-const POSTS_KEY = 'sunset_posts_v20';
-const LIKES_KEY = 'sunset_likes_v20';
-const STORIES_KEY = 'sunset_stories_v20';
+const CHATS_KEY = 'sunset_chats_v21';
+const GROUPS_KEY = 'sunset_groups_v21';
+const CHANNELS_KEY = 'sunset_channels_v21';
+const POSTS_KEY = 'sunset_posts_v21';
+const LIKES_KEY = 'sunset_likes_v21';
+const STORIES_KEY = 'sunset_stories_v21';
 
 let currentUser = null;
 let chats = {};
@@ -464,12 +492,7 @@ function getRandomFullName() {
     return `${firstName} ${finalLastName}`;
 }
 
-const STATUSES = [
-    'в сети', 'был(а) в сети недавно', 
-    'год назад', '2 года назад', '3 года назад', 
-    '4 года назад', '5 лет назад', '10 лет назад'
-];
-
+// Все боты ВСЕГДА в сети
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
   ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
@@ -477,7 +500,7 @@ const PEOPLE_NAMES = [
 ];
 const PEOPLE = PEOPLE_NAMES.map(p => ({ 
     id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person',
-    lastSeen: STATUSES[Math.floor(Math.random() * STATUSES.length)]
+    lastSeen: 'в сети'
 }));
 
 const DEFAULT_COMMUNITIES = [
@@ -503,6 +526,7 @@ function startApp() {
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
+  document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
 
   try {
     chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
@@ -530,14 +554,16 @@ function updatePremiumBadge() {
   const old = av.querySelector('.premium-badge');
   if (old) old.remove();
   const st = document.getElementById('myStatusLabel');
+  
+  // Восстанавливаем статус
+  st.textContent = currentUser.lastSeen || 'в сети';
+
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
-    st.textContent = '💎 Prime Premium';
+    st.textContent = '💎 Prime Premium'; // Перебиваем на премиум
   } else if (currentUser.premium === 'sunset') {
     const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; av.appendChild(b);
     st.textContent = '⭐ Sunset Premium';
-  } else {
-    st.textContent = 'в сети';
   }
 }
 
@@ -545,6 +571,7 @@ try {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
   if (saved && saved.name) {
     currentUser = saved;
+    if(!currentUser.lastSeen) currentUser.lastSeen = 'в сети';
     setTimeout(startApp, 100);
   }
 } catch(e) {}
@@ -605,7 +632,7 @@ function renderChatsList(tab, q) {
   });
 }
 
-/* ============ СТОРИС И ГЕНЕРАЦИЯ ЗРИТЕЛЕЙ ============ */
+/* ============ СТОРИС ============ */
 const TARGET_VIEWS_20_DAYS = [55000, 60000, 63000, 67000, 74000, 75000, 80000, 82000, 86000, 90000, 92000, 100000];
 
 function calculateStoryViews(story) {
@@ -616,6 +643,9 @@ function calculateStoryViews(story) {
     const hoursElapsed = msElapsed / (1000 * 60 * 60);
     const target = story.targetViews;
     
+    // В первые минуты может быть 0
+    if (hoursElapsed < 0.05) return Math.floor(Math.random() * 3); // 0, 1 или 2 просмотра
+
     if (hoursElapsed >= 480) return target; // 20 дней
     
     let views;
@@ -665,22 +695,27 @@ function renderStories() {
   });
 }
 
-/* ==== ЗРИТЕЛИ И РЕАКЦИИ (ДО 3000) ==== */
+/* ==== ФИКС СПИСКА ЗРИТЕЛЕЙ (ТЕПЕРЬ ТОЧНО ПО ПРОСМОТРАМ) ==== */
 function showStoryViewers(story, totalViews) {
     document.getElementById('storyViewersCount').textContent = `Всего просмотров: ${totalViews.toLocaleString('ru-RU')}`;
     const list = document.getElementById('storyViewersList');
     list.innerHTML = '';
 
-    // РЕАЛИСТИЧНАЯ МАТЕМАТИКА РЕАКЦИЙ:
-    // От 0.5% до 3% от просмотров, но не более 3000
-    let totalReacts = Math.floor(totalViews * (Math.random() * 0.025 + 0.005)); 
+    // Если просмотров 0 - список пустой
+    if (totalViews === 0) {
+        list.innerHTML = '<div style="text-align:center; padding: 40px; color: rgba(255,255,255,0.5); font-size:14px;">Пока никто не смотрел</div>';
+        document.getElementById('storyViewersModal').classList.add('show');
+        return;
+    }
+
+    // Считаем реакции (1-3% от просмотров, максимум 3000)
+    let totalReacts = Math.floor(totalViews * (Math.random() * 0.02 + 0.01)); 
     if (totalReacts > 3000) totalReacts = 3000; 
 
-    // Коэффициент вероятности получить реакцию для конкретного человека
-    const reactionRatio = totalViews > 0 ? (totalReacts / totalViews) : 0;
+    // Сколько людей покажем в списке (если 5 просмотров, покажем 5, если 1000 - 60)
+    const displayCount = Math.min(totalViews, 60);
+    const reactionRatio = totalReacts / totalViews;
 
-    // Генерируем 60 случайных людей для списка
-    const displayCount = 60;
     const viewers = [];
 
     for (let i = 0; i < displayCount; i++) {
@@ -689,7 +724,7 @@ function showStoryViewers(story, totalViews) {
         const initial = name.charAt(0);
         
         let reaction = null;
-        // Если человек попал в概率 реакции
+        // Кидаем кубик: если выпало меньше вероятности, ставим реакцию
         if (Math.random() < reactionRatio) {
              const emojis = ['❤️', '🔥', '😂', '😮'];
              reaction = rnd(emojis);
@@ -698,7 +733,7 @@ function showStoryViewers(story, totalViews) {
         viewers.push({ name, color, initial, reaction });
     }
 
-    // Сначала показываем тех, кто поставил реакцию, чтобы было видно
+    // Сортируем, чтобы те, кто поставил реакцию, были сверху
     viewers.sort((a, b) => (b.reaction ? 1 : 0) - (a.reaction ? 1 : 0));
 
     viewers.forEach(v => {
@@ -708,13 +743,14 @@ function showStoryViewers(story, totalViews) {
             <div class="viewer-avatar" style="background:${v.color}">${v.initial}</div>
             <div class="viewer-info">
                 <div class="viewer-name">${v.name}</div>
-                <div class="viewer-time">${Math.floor(Math.random() * 50) + 1} минут назад</div>
+                <div class="viewer-time">${Math.floor(Math.random() * 15) + 1} минут назад</div>
             </div>
             ${v.reaction ? `<div class="viewer-reaction">${v.reaction}</div>` : ''}
         `;
         list.appendChild(div);
     });
 
+    // Если просмотров больше 60, пишем "И еще..."
     if (totalViews > displayCount) {
         const more = document.createElement('div');
         more.style.cssText = 'text-align:center; font-size:13px; opacity:0.6; padding:16px; font-weight:600;';
@@ -1096,13 +1132,16 @@ document.getElementById('formSubmit').addEventListener('click', function() {
   }
 });
 
-/* ============ ПРОФИЛЬ С СЫЛКАМИ ============ */
+/* ============ ПРОФИЛЬ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
   document.getElementById('profileStatus').textContent = 
     currentUser.premium === 'prime' ? '💎 Prime Premium' : 
     currentUser.premium === 'sunset' ? '⭐ Sunset Premium' : 'Обычный пользователь';
   
+  // Задаем текущий статус в селекте
+  document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
+
   const pp = document.getElementById('profileContent');
   pp.innerHTML = '';
   
@@ -1135,6 +1174,17 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   else myPosts.forEach(p => pp.appendChild(buildPostEl(p)));
   
   document.getElementById('profileModal').classList.add('show');
+});
+
+// Обработчик смены статуса в профиле
+document.getElementById('myStatusSelect').addEventListener('change', function() {
+    currentUser.lastSeen = this.value;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    
+    // Обновляем статус в шапке (если нет премиума, иначе текст перебьется)
+    if (!currentUser.premium) {
+        document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
+    }
 });
 
 /* ============ ПОКУПКА ПРЕМИУМА ============ */
