@@ -205,7 +205,8 @@
   .chat-header { padding: 52px 16px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.12); color: #fff; }
   .back-btn { background: transparent; border: none; color: #fff; font-size: 24px; padding: 4px 8px; cursor: pointer; }
   .chat-title { flex: 1; }
-  .chat-title .name { font-size: 16px; font-weight: 600; }
+  .chat-title .name { font-size: 16px; font-weight: 600; cursor: pointer; }
+  .chat-title .name:active { opacity: 0.7; }
   .chat-title .status { 
     font-size: 11px; margin-top: 2px; display: inline-block;
     background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
@@ -613,7 +614,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v39';
+const STORAGE_KEY = 'sunset_user_v40';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -676,13 +677,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v39';
-const GROUPS_KEY = 'sunset_groups_v39';
-const CHANNELS_KEY = 'sunset_channels_v39';
-const POSTS_KEY = 'sunset_posts_v39';
-const LIKES_KEY = 'sunset_likes_v39';
-const STORIES_KEY = 'sunset_stories_v39';
-const GAMES_KEY = 'sunset_games_v39';
+const CHATS_KEY = 'sunset_chats_v40';
+const GROUPS_KEY = 'sunset_groups_v40';
+const CHANNELS_KEY = 'sunset_channels_v40';
+const POSTS_KEY = 'sunset_posts_v40';
+const LIKES_KEY = 'sunset_likes_v40';
+const STORIES_KEY = 'sunset_stories_v40';
+const GAMES_KEY = 'sunset_games_v40';
 
 let currentUser = null;
 let chats = {};
@@ -696,8 +697,8 @@ let currentSearchTab = 'people';
 let pendingAction = null;
 
 let gameState = {
-    shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, maxLevel: 90 },
-    runner: { level: 1, maxLevel: 30 }
+    shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, maxLevel: 1000 },
+    runner: { level: 1, maxLevel: 1000 }
 };
 
 /* ============ ГЕНЕРАТОР ИМЕН И БАЗА ЮЗЕРОВ ============ */
@@ -945,13 +946,7 @@ function renderChatsList(tab, q) {
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
       <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
     
-    div.addEventListener('click', () => {
-        if (item.type === 'person') {
-            openPublicProfile(item);
-        } else {
-            openChat(item);
-        }
-    });
+    div.addEventListener('click', () => openChat(item));
     list.appendChild(div);
   });
 }
@@ -965,6 +960,10 @@ function openChat(item) {
   document.getElementById('chatName').textContent = item.name;
   document.getElementById('chatAvatar').textContent = item.emoji;
   document.getElementById('chatAvatar').style.background = item.color;
+  
+  document.getElementById('chatName').onclick = () => {
+      if (activeChat && activeChat.type === 'person') openPublicProfile(activeChat);
+  };
   
   const statusEl = document.getElementById('chatStatus');
   if (item.type === 'person') {
@@ -992,7 +991,7 @@ function openChat(item) {
   chatBody.innerHTML = '';
   const msgs = chats[item.id] || [];
   if (!msgs.length) {
-    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>В группе пока никого нет. Пригласите участников!</p></div>';
+    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
   } else {
     msgs.forEach(m => addMsgToDOM(m));
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -1212,149 +1211,162 @@ document.getElementById('chatMembersBtn').addEventListener('click', () => {
     document.getElementById('manageMembersModal').classList.add('show');
 });
 
-/* ============ МОДАЛКИ И СОЗДАНИЕ ============ */
-function openPostModal() {
-    pendingAction = 'post';
-    document.getElementById('formTitle').textContent = '📝 Новый пост';
-    document.getElementById('formSub').textContent = 'Поделитесь чем-нибудь';
-    document.getElementById('formName').style.display = 'none';
-    document.getElementById('formText').style.display = 'block';
-    document.getElementById('formText').value = '';
-    document.getElementById('formText').placeholder = 'Привет! Расскажите что-нибудь, что у вас нового?';
+/* ============ ПУБЛИЧНЫЙ ПРОФИЛЬ ============ */
+function openPublicProfile(person) {
+    document.getElementById('pubProfileName').textContent = person.name;
+    document.getElementById('pubProfileStatus').textContent = person.lastSeen || 'в сети';
     
-    document.getElementById('postMediaFields').style.display = 'block';
-    document.getElementById('formPhoto').value = '';
-    document.getElementById('formMusic').value = '';
+    const av = document.getElementById('pubProfileAvatar');
+    av.textContent = person.emoji;
+    av.style.background = person.color;
+
+    const pubPinned = document.getElementById('pubPinnedSections');
+    pubPinned.innerHTML = '';
     
-    const musicInput = document.getElementById('formMusic');
-    if (currentUser.premium !== 'prime') {
-        musicInput.style.display = 'none';
+    const isPrem = Math.random() > 0.5;
+    const limit = isPrem ? (Math.random() > 0.5 ? 8 : 3) : 0;
+
+    if (limit === 0) {
+        pubPinned.innerHTML = '<div class="pinned-empty">Нет закрепленных разделов</div>';
     } else {
-        musicInput.style.display = 'block';
+        for (let i = 0; i < limit; i++) {
+            const div = document.createElement('div');
+            div.className = 'pinned-item';
+            const rType = rnd(['group', 'channel']);
+            div.innerHTML = `
+                <div class="pinned-icon">${rType === 'channel' ? '📢' : '👥'}</div>
+                <div class="pinned-name">${esc(person.name.split(' ')[0])} ${rType === 'channel' ? 'TV' : 'Chat'}</div>
+            `;
+            div.addEventListener('click', () => alert('Это чужой раздел, вы можете только подписаться на него!'));
+            pubPinned.appendChild(div);
+        }
     }
-    document.getElementById('formModal').classList.add('show');
-}
 
-document.getElementById('plusBtn').addEventListener('click', () => {
-  document.getElementById('createModal').classList.add('show');
-});
-
-document.querySelectorAll('[data-close]').forEach(b => {
-  b.addEventListener('click', () => document.getElementById(b.dataset.close).classList.remove('show'));
-});
-
-document.querySelectorAll('.modal-option').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const a = opt.dataset.action;
-    document.getElementById('createModal').classList.remove('show');
+    const subBtn = document.getElementById('pubSubscribeBtn');
+    subBtn.textContent = 'Подписаться';
+    subBtn.style.color = '#fff';
+    subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
     
-    if (a === 'post') { openPostModal(); return; }
-    
-    pendingAction = a;
-    const ft = document.getElementById('formTitle');
-    const fs = document.getElementById('formSub');
-    const fn = document.getElementById('formName');
-    const fx = document.getElementById('formText');
-    const mediaFields = document.getElementById('postMediaFields');
-    
-    fn.value = ''; fx.value = '';
-    fn.style.display = 'none'; 
-    mediaFields.style.display = 'none';
-
-    if (a === 'story') { 
-      ft.textContent = '📸 История'; 
-      fs.textContent = 'Бесплатно для всех'; 
-      fx.style.display = 'block'; fx.placeholder = 'Что происходит?';
-    }
-    else if (a === 'group' || a === 'community') { 
-      ft.textContent = a === 'group' ? '👥 Группа' : '🌍 Сообщество'; 
-      fs.textContent = 'Введите название'; 
-      fn.style.display = 'block'; fx.style.display = 'none'; 
-    }
-    else if (a === 'channel') { 
-      ft.textContent = '📢 Канал'; 
-      fs.textContent = 'Введите название'; 
-      fn.style.display = 'block'; fx.style.display = 'none'; 
-    }
-    document.getElementById('formModal').classList.add('show');
-  });
-});
-
-document.getElementById('formCancel').addEventListener('click', () => {
-  document.getElementById('formModal').classList.remove('show');
-});
-
-document.getElementById('formSubmit').addEventListener('click', function() {
-  if (pendingAction === 'post') {
-    const text = document.getElementById('formText').value.trim();
-    const photoUrl = document.getElementById('formPhoto').value.trim();
-    let musicUrl = document.getElementById('formMusic').value.trim();
-    
-    if (text.length < 3 && !photoUrl) { alert('Напишите текст или добавьте фото'); return; }
-    if (currentUser.premium === 'sunset' && posts.length >= 200) { alert('Лимит Sunset Premium: 200 постов.'); return; }
-    if (currentUser.premium !== 'sunset' && currentUser.premium !== 'prime' && posts.length >= 20) { alert('Лимит: 20 постов.'); return; }
-    if (musicUrl && currentUser.premium !== 'prime') { alert('Музыка только для Prime!'); musicUrl = ''; }
-
-    let musicObj = musicUrl ? { title: 'Мой трек', artist: 'Ссылка из интернета' } : null;
-
-    posts.unshift({ 
-      id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, 
-      image: photoUrl || null, music: musicObj, time: 'сейчас', likes: 0, 
-      views: Math.floor(Math.random() * 100) + 10, reposts: 0, comments: [] 
-    });
-    
-    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-    document.getElementById('formModal').classList.remove('show');
-    document.querySelector('.nav-btn[data-tab="mypage"]').click();
-
-  } else if (pendingAction === 'story') {
-    const text = document.getElementById('formText').value.trim();
-    if (text.length < 2) { alert('Минимум 2 символа'); return; }
-    
-    let target = currentUser.premium === 'sunset' ? 822 * 20 : (currentUser.premium === 'prime' ? 2740 * 20 : 100 * 20);
-
-    userStories.unshift({ 
-      id: 's_' + Date.now(), author: currentUser.name, color: currentUser.color, 
-      emoji: currentUser.emoji, text: text, createdAt: Date.now(), targetViews: target
-    });
-    
-    try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
-    document.getElementById('formModal').classList.remove('show');
-    renderStories();
-    document.querySelector('.nav-btn[data-tab="feed"]').click();
-
-  } else {
-    const name = document.getElementById('formName').value.trim();
-    if (name.length < 2) { alert('Введите название'); return; }
-    
-    const newItem = { 
-        id: 'item_' + Date.now(), name: name, color: rnd(AVATAR_COLORS), 
-        emoji: name.charAt(0).toUpperCase(), owner: currentUser.name, desc: 'Создано вами',
-        members: [] // Пустой массив
+    subBtn.onclick = () => {
+        subBtn.textContent = 'Вы подписаны';
+        subBtn.style.background = 'rgba(255,255,255,0.1)';
+        subBtn.style.color = '#86efac';
+        alert(`Вы подписались на ${person.name}!`);
     };
 
-    if (pendingAction === 'channel') {
-      newItem.type = 'channel'; channels.push(newItem);
-      try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-      currentSearchTab = 'channels';
-    } else if (pendingAction === 'community') {
-      newItem.type = 'community'; groups.push(newItem);
-      try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-      currentSearchTab = 'communities';
-    } else {
-      newItem.type = 'group'; groups.push(newItem);
-      try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-      currentSearchTab = 'groups';
-    }
-    
-    document.getElementById('formModal').classList.remove('show');
-    alert('Успешно создано! В чате пока 0 участников.');
-    renderMyPage(); 
-    document.querySelector(`.search-tab[data-stab="${currentSearchTab}"]`).click();
-  }
-});
+    document.getElementById('publicProfileModal').classList.add('show');
+}
 
-/* ============ ПРОФИЛЬ (МОЯ СТРАНИЦА) ============ */
+/* ============ ЛЕНТА (ГЛАВНАЯ) ============ */
+function renderPosts() {
+  const el = document.getElementById('postsList');
+  if(el) {
+      el.innerHTML = '';
+      
+      const allFeed = [...posts, ...BOT_POSTS];
+      allFeed.sort(() => Math.random() - 0.5);
+      
+      allFeed.forEach(p => el.appendChild(buildPostEl(p)));
+  }
+  renderMyPagePosts();
+}
+
+function buildPostEl(p) {
+  const div = document.createElement('div');
+  div.className = 'post';
+  const hasLiked = userLikes.includes(p.id);
+  
+  let mediaHtml = '';
+  if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
+  if (p.music) mediaHtml += `
+    <div class="post-music">
+      <div class="post-music-icon">🎵</div>
+      <div class="post-music-info">
+        <div class="post-music-title">${esc(p.music.title || 'Трек')}</div>
+        <div class="post-music-artist">${esc(p.music.artist || 'Исполнитель')}</div>
+      </div>
+      <div style="color:#ff8c42; font-size:18px;">▶</div>
+    </div>`;
+
+  div.innerHTML = `
+    <div class="post-header">
+      <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
+      <div class="post-meta">
+        <div class="post-author">${esc(p.author)}</div>
+        <div class="post-time">${p.time} · 👁️ ${p.views || Math.floor(Math.random() * 500) + 10}</div>
+      </div>
+    </div>
+    <div class="post-text">${esc(p.text)}</div>
+    ${mediaHtml}
+    <div class="post-actions">
+      <button class="post-action ${hasLiked ? 'liked' : ''} like-btn">${hasLiked ? '❤️' : '🤍'} <span>${p.likes || 0}</span></button>
+      <button class="post-action repost-btn">🔄 <span>${p.reposts || 0}</span></button>
+      <button class="post-action comment-btn">💬 <span>${(p.comments||[]).length}</span></button>
+    </div>
+    <div class="post-comments" style="display:none">
+      <div class="comments-list">${(p.comments || []).map(c => `<div class="comment"><span class="comment-author">${esc(c.author)}:</span> ${esc(c.text)}</div>`).join('')}</div>
+      <div class="comment-input-row">
+        <input type="text" class="comment-input" placeholder="Написать комментарий...">
+        <button class="comment-send">➤</button>
+      </div>
+    </div>
+  `;
+
+  const likeBtn = div.querySelector('.like-btn');
+  likeBtn.addEventListener('click', function() {
+    if (userLikes.includes(p.id)) {
+      p.likes = Math.max(0, (p.likes || 1) - 1);
+      userLikes = userLikes.filter(id => id !== p.id);
+      this.classList.remove('liked');
+      this.innerHTML = `🤍 <span>${p.likes}</span>`;
+    } else {
+      p.likes = (p.likes || 0) + 1;
+      userLikes.push(p.id);
+      this.classList.add('liked');
+      this.innerHTML = `❤️ <span>${p.likes}</span>`;
+    }
+    try { localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes)); } catch(e) {}
+    savePostsIfMine(p);
+  });
+
+  div.querySelector('.repost-btn').addEventListener('click', function() {
+    p.reposts = (p.reposts || 0) + 1;
+    this.innerHTML = `🔄 <span>${p.reposts}</span>`;
+    navigator.clipboard?.writeText('Ссылка на пост: https://sunset.app/post/' + p.id);
+    alert('Пост скопирован в буфер обмена!');
+    savePostsIfMine(p);
+  });
+
+  const cb = div.querySelector('.post-comments');
+  div.querySelector('.comment-btn').addEventListener('click', () => {
+    cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
+  });
+
+  const input = div.querySelector('.comment-input');
+  const send = div.querySelector('.comment-send');
+  const list = div.querySelector('.comments-list');
+  send.addEventListener('click', () => {
+    const t = input.value.trim();
+    if (!t) return;
+    if (!p.comments) p.comments = [];
+    p.comments.push({ author: currentUser.name, text: t });
+    input.value = '';
+    list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
+    savePostsIfMine(p);
+  });
+
+  return div;
+}
+
+function savePostsIfMine(p) {
+  const idx = posts.findIndex(x => x.id === p.id);
+  if (idx !== -1) {
+    posts[idx] = p;
+    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
+  }
+}
+
+/* ============ МОЯ СТРАНИЦА ============ */
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     const manageBtn = document.getElementById('managePinnedBtn');
@@ -1469,115 +1481,6 @@ function openManagePinned() {
 }
 document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
 
-/* ============ ЛЕНТА (ГЛАВНАЯ) ============ */
-function renderPosts() {
-  const el = document.getElementById('postsList');
-  if(el) {
-      el.innerHTML = '';
-      
-      const allFeed = [...posts, ...BOT_POSTS];
-      allFeed.sort(() => Math.random() - 0.5);
-      
-      allFeed.forEach(p => el.appendChild(buildPostEl(p)));
-  }
-  renderMyPagePosts();
-}
-
-function buildPostEl(p) {
-  const div = document.createElement('div');
-  div.className = 'post';
-  const hasLiked = userLikes.includes(p.id);
-  
-  let mediaHtml = '';
-  if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
-  if (p.music) mediaHtml += `
-    <div class="post-music">
-      <div class="post-music-icon">🎵</div>
-      <div class="post-music-info">
-        <div class="post-music-title">${esc(p.music.title || 'Трек')}</div>
-        <div class="post-music-artist">${esc(p.music.artist || 'Исполнитель')}</div>
-      </div>
-      <div style="color:#ff8c42; font-size:18px;">▶</div>
-    </div>`;
-
-  div.innerHTML = `
-    <div class="post-header">
-      <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
-      <div class="post-meta">
-        <div class="post-author">${esc(p.author)}</div>
-        <div class="post-time">${p.time} · 👁️ ${p.views || Math.floor(Math.random() * 500) + 10}</div>
-      </div>
-    </div>
-    <div class="post-text">${esc(p.text)}</div>
-    ${mediaHtml}
-    <div class="post-actions">
-      <button class="post-action ${hasLiked ? 'liked' : ''} like-btn">${hasLiked ? '❤️' : '🤍'} <span>${p.likes || 0}</span></button>
-      <button class="post-action repost-btn">🔄 <span>${p.reposts || 0}</span></button>
-      <button class="post-action comment-btn">💬 <span>${(p.comments||[]).length}</span></button>
-    </div>
-    <div class="post-comments" style="display:none">
-      <div class="comments-list">${(p.comments || []).map(c => `<div class="comment"><span class="comment-author">${esc(c.author)}:</span> ${esc(c.text)}</div>`).join('')}</div>
-      <div class="comment-input-row">
-        <input type="text" class="comment-input" placeholder="Написать комментарий...">
-        <button class="comment-send">➤</button>
-      </div>
-    </div>
-  `;
-
-  const likeBtn = div.querySelector('.like-btn');
-  likeBtn.addEventListener('click', function() {
-    if (userLikes.includes(p.id)) {
-      p.likes = Math.max(0, (p.likes || 1) - 1);
-      userLikes = userLikes.filter(id => id !== p.id);
-      this.classList.remove('liked');
-      this.innerHTML = `🤍 <span>${p.likes}</span>`;
-    } else {
-      p.likes = (p.likes || 0) + 1;
-      userLikes.push(p.id);
-      this.classList.add('liked');
-      this.innerHTML = `❤️ <span>${p.likes}</span>`;
-    }
-    try { localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes)); } catch(e) {}
-    savePostsIfMine(p);
-  });
-
-  div.querySelector('.repost-btn').addEventListener('click', function() {
-    p.reposts = (p.reposts || 0) + 1;
-    this.innerHTML = `🔄 <span>${p.reposts}</span>`;
-    navigator.clipboard?.writeText('Ссылка на пост: https://sunset.app/post/' + p.id);
-    alert('Пост скопирован в буфер обмена!');
-    savePostsIfMine(p);
-  });
-
-  const cb = div.querySelector('.post-comments');
-  div.querySelector('.comment-btn').addEventListener('click', () => {
-    cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
-  });
-
-  const input = div.querySelector('.comment-input');
-  const send = div.querySelector('.comment-send');
-  const list = div.querySelector('.comments-list');
-  send.addEventListener('click', () => {
-    const t = input.value.trim();
-    if (!t) return;
-    if (!p.comments) p.comments = [];
-    p.comments.push({ author: currentUser.name, text: t });
-    input.value = '';
-    list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
-    savePostsIfMine(p);
-  });
-
-  return div;
-}
-
-function savePostsIfMine(p) {
-  const idx = posts.findIndex(x => x.id === p.id);
-  if (idx !== -1) {
-    posts[idx] = p;
-    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-  }
-}
-
 /* ============ ИГРЫ ============ */
 function renderGames() {
     const grid = document.getElementById('gamesGrid');
@@ -1630,7 +1533,7 @@ function closeGame() {
 let shooterObj = {
     canvas: null, ctx: null, playerX: 150, playerY: 400,
     bullets: [], meteors: [], particles: [], stars: [],
-    score: 0, coinsEarned: 0, isDead: false,
+    score: 0, coinsEarned: 0, isDead: false, isFiring: false,
     fireCooldown: 0, lastShot: 0
 };
 
@@ -1650,25 +1553,37 @@ function initShooter() {
     shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.particles = [];
     shooterObj.stars = Array.from({length: 50}, () => ({x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1}));
     shooterObj.score = 0; shooterObj.coinsEarned = 0; shooterObj.isDead = false;
+    shooterObj.isFiring = false;
     
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Очки: <span id="shScore">0</span></div><div>Монеты: <span id="shCoins">${gameState.shooter.coins}</span></div>`;
+    uiTop.innerHTML = `<div>Очки: <span id="shScore">0</span></div><div>Уровень: ${gameState.shooter.plane}</div><div>Монеты: <span id="shCoins">${gameState.shooter.coins}</span></div>`;
     area.appendChild(uiTop);
 
     const movePlayer = (e) => {
         const rect = canvas.getBoundingClientRect();
         let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
         shooterObj.playerX = clientX - rect.left;
         if (shooterObj.playerX < 20) shooterObj.playerX = 20;
         if (shooterObj.playerX > canvas.width - 20) shooterObj.playerX = canvas.width - 20;
+        
+        if (e.touches) {
+            shooterObj.playerY = clientY - rect.top;
+            if (shooterObj.playerY < 50) shooterObj.playerY = 50;
+            if (shooterObj.playerY > canvas.height - 20) shooterObj.playerY = canvas.height - 20;
+        }
     };
     
-    canvas.addEventListener('touchmove', movePlayer, {passive: false});
-    canvas.addEventListener('mousemove', movePlayer);
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); movePlayer(e); shooterObj.isFiring = true; }, {passive: false});
+    canvas.addEventListener('mousemove', (e) => { movePlayer(e); if (e.buttons === 1) shooterObj.isFiring = true; });
     
-    canvas.addEventListener('touchstart', () => { shooterObj.fireCooldown = 0; });
-    canvas.addEventListener('mousedown', () => { shooterObj.fireCooldown = 0; });
+    canvas.addEventListener('touchstart', (e) => { movePlayer(e); shooterObj.isFiring = true; });
+    canvas.addEventListener('mousedown', (e) => { movePlayer(e); shooterObj.isFiring = true; });
+    
+    canvas.addEventListener('touchend', () => { shooterObj.isFiring = false; });
+    canvas.addEventListener('mouseup', () => { shooterObj.isFiring = false; });
 
     let lastTime = performance.now();
     let meteorSpawnTime = 0;
@@ -1689,15 +1604,37 @@ function initShooter() {
             ctx.fillRect(s.x, s.y, 2, 2);
         });
 
+        // Рисуем корабль
+        ctx.save();
+        ctx.translate(shooterObj.playerX, shooterObj.playerY);
+        
+        // Корпус
         ctx.fillStyle = '#00d4ff';
         ctx.beginPath();
-        ctx.moveTo(shooterObj.playerX, shooterObj.playerY - 20);
-        ctx.lineTo(shooterObj.playerX - 15, shooterObj.playerY + 10);
-        ctx.lineTo(shooterObj.playerX + 15, shooterObj.playerY + 10);
+        ctx.moveTo(0, -25); // Нос
+        ctx.lineTo(15, 10); // Правое крыло
+        ctx.lineTo(5, 15);  // Правый хвост
+        ctx.lineTo(0, 10);  // Центр хвоста
+        ctx.lineTo(-5, 15); // Левый хвост
+        ctx.lineTo(-15, 10); // Левое крыло
+        ctx.closePath();
         ctx.fill();
 
+        // Кабина
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, -5, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Двигатель (светится в зависимости от стрельбы)
+        ctx.fillStyle = shooterObj.isFiring ? '#ff8c42' : '#555';
+        ctx.fillRect(-5, 15, 10, 8);
+        
+        ctx.restore();
+
+        // Стрельба при движении
         const fireRate = Math.max(50, 300 - (gameState.shooter.fireRate * 10));
-        if (time - shooterObj.lastShot > fireRate) {
+        if (shooterObj.isFiring && time - shooterObj.lastShot > fireRate) {
             shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20 });
             shooterObj.lastShot = time;
         }
@@ -1705,16 +1642,20 @@ function initShooter() {
         ctx.fillStyle = '#ff8c42';
         for (let i = shooterObj.bullets.length - 1; i >= 0; i--) {
             let b = shooterObj.bullets[i];
-            b.y -= 10;
-            ctx.fillRect(b.x - 2, b.y - 10, 4, 10);
+            b.y -= 15;
+            ctx.fillRect(b.x - 2, b.y - 10, 4, 15);
             if (b.y < 0) shooterObj.bullets.splice(i, 1);
         }
 
-        if (time - meteorSpawnTime > 1000) {
+        // Сложность от уровня
+        let spawnRate = Math.max(150, 1000 - (gameState.shooter.plane * 2));
+        let mSpeed = 2 + (gameState.shooter.plane * 0.02);
+
+        if (time - meteorSpawnTime > spawnRate) {
             meteorSpawnTime = time;
             shooterObj.meteors.push({
                 x: Math.random() * (canvas.width - 40) + 20,
-                y: -30, speed: Math.random() * 2 + 2, size: Math.random() * 20 + 15,
+                y: -30, speed: mSpeed, size: Math.random() * 20 + 15,
                 hp: 1
             });
         }
@@ -1796,16 +1737,16 @@ function openShooterShop() {
         return `<button class="upgrade-btn" onclick="buyUpgrade('${lvl}', ${cost})">${cost} 🪙</button>`;
     };
 
-    const planeCost = Math.floor(10 * Math.pow(1.2, s.plane));
-    const incomeCost = Math.floor(15 * Math.pow(1.3, s.income));
-    const fireRateCost = Math.floor(20 * Math.pow(1.4, s.fireRate));
-    const turboCost = Math.floor(50 * Math.pow(1.5, s.turbo));
+    const planeCost = Math.floor(10 * Math.pow(1.1, s.plane));
+    const incomeCost = Math.floor(15 * Math.pow(1.1, s.income));
+    const fireRateCost = Math.floor(20 * Math.pow(1.1, s.fireRate));
+    const turboCost = Math.floor(50 * Math.pow(1.1, s.turbo));
 
     area.innerHTML = `
         <div class="shop-container">
-            <div class="shop-header"><span>🛠 Улучшения</span><span>${s.coins} 🪙</span></div>
+            <div class="shop-header"><span>🛠 Улучшения (Ур. ${s.plane}/1000)</span><span>${s.coins} 🪙</span></div>
             <div class="upgrade-item">
-                <div class="upgrade-info"><h4>✈️ Самолет (Ур. ${s.plane})</h4><p>Увеличивает урон (до 90 ур.)</p></div>
+                <div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Увеличивает сложность и урон</p></div>
                 ${getBtn(s.plane, planeCost).replace("buyUpgrade('${lvl}'", "buyUpgrade('plane'")}
             </div>
             <div class="upgrade-item">
@@ -1861,7 +1802,7 @@ function initRunner() {
     runnerObj.squareY = canvas.height - 80;
     runnerObj.squareVy = 0;
     runnerObj.obstacles = [];
-    runnerObj.speed = 5 + (gameState.runner.level * 0.5);
+    runnerObj.speed = 5 + (gameState.runner.level * 0.05);
     runnerObj.score = 0;
     runnerObj.level = gameState.runner.level;
     runnerObj.isDead = false;
@@ -1869,7 +1810,7 @@ function initRunner() {
 
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Уровень: <span id="rnLevel">${runnerObj.level}</span></div><div>Счет: <span id="rnScore">0</span></div>`;
+    uiTop.innerHTML = `<div>Уровень: <span id="rnLevel">${runnerObj.level}</span>/1000</div><div>Счет: <span id="rnScore">0</span></div>`;
     area.appendChild(uiTop);
 
     const jump = (e) => {
@@ -1903,14 +1844,38 @@ function initRunner() {
             runnerObj.squareVy = 0;
         }
 
-        ctx.fillStyle = '#ff8c42';
-        ctx.fillRect(50, runnerObj.squareY, 30, 30);
+        ctx.save();
+        ctx.translate(50, runnerObj.squareY);
+        
+        let grad = ctx.createLinearGradient(0, 0, 30, 30);
+        grad.addColorStop(0, '#ff8c42');
+        grad.addColorStop(1, '#ff5e62');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(0, 0, 30, 30, 8);
+        ctx.fill();
+
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(10, 10, 4, 0, Math.PI*2);
+        ctx.arc(20, 10, 4, 0, Math.PI*2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(11, 10, 2, 0, Math.PI*2);
+        ctx.arc(21, 10, 2, 0, Math.PI*2);
+        ctx.fill();
+        
+        ctx.restore();
+
+        let minSpawn = Math.max(30, 100 - (runnerObj.level * 0.1));
+        let maxSpawn = Math.max(60, 150 - (runnerObj.level * 0.1));
 
         runnerObj.spawnTimer -= dt;
         if (runnerObj.spawnTimer <= 0) {
             runnerObj.obstacles.push({ x: canvas.width, w: Math.random() * 20 + 20, h: Math.random() * 40 + 20 });
-            const minSpawn = Math.max(40, 100 - runnerObj.level * 5);
-            const maxSpawn = Math.max(80, 150 - runnerObj.level * 5);
             runnerObj.spawnTimer = Math.random() * (maxSpawn - minSpawn) + minSpawn;
         }
 
@@ -1930,11 +1895,11 @@ function initRunner() {
                 runnerObj.score += 10;
                 document.getElementById('rnScore').innerText = runnerObj.score;
                 
-                if (runnerObj.score % 100 === 0) {
+                if (runnerObj.score % 100 === 0 && runnerObj.level < 1000) {
                     runnerObj.level++;
                     gameState.runner.level = runnerObj.level;
                     saveGameState();
-                    runnerObj.speed += 0.5;
+                    runnerObj.speed += 0.05;
                     document.getElementById('rnLevel').innerText = runnerObj.level;
                 }
             }
@@ -1962,18 +1927,15 @@ function endRunner() {
 }
 
 /* ============ СОБЫТИЯ (ВЫХОД И ПРОФИЛЬ) ============ */
-// Кнопка шестеренки - вызываем модалку выхода
 document.getElementById('settingsBtn').addEventListener('click', () => {
   document.getElementById('logoutModal').classList.add('show');
 });
 
-// Кнопка "Выйти" в модалке
 document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
   localStorage.clear();
   location.reload();
 });
 
-// Кнопка профиля - открывает окно с настройками и статусом
 document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileTitle').textContent = currentUser.name;
   let premText = currentUser.premium === 'prime' ? '💎 Master' : (currentUser.premium === 'sunset' ? '⭐ Administrator' : 'Обычный пользователь');
@@ -1993,7 +1955,6 @@ document.getElementById('myProfileBtn').addEventListener('click', () => {
   document.getElementById('profileModal').classList.add('show');
 });
 
-// Смена статуса в селекте
 document.getElementById('myStatusSelect').addEventListener('change', function() {
     currentUser.lastSeen = this.value;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
@@ -2001,7 +1962,6 @@ document.getElementById('myStatusSelect').addEventListener('change', function() 
     renderMyPage(); 
 });
 
-// Смена аватарки
 document.getElementById('changeAvatarBtn').addEventListener('click', () => {
     const newEmoji = prompt('Введите новую букву или эмодзи:', currentUser.emoji);
     if (newEmoji) {
