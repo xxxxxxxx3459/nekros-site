@@ -119,13 +119,13 @@
   /* ПОСТЫ */
   .post { margin: 12px; padding: 16px; background: rgba(30, 20, 40, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
   .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align:-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
+  .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
   .post-meta { flex: 1; }
   .post-author { color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 4px;}
   .post-time { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 2px; }
   .post-text { color: #e0e0e0; font-size: 15px; line-height: 1.5; margin-bottom: 14px; white-space: pre-wrap;}
   .post-image { width: 100%; border-radius: 14px; margin-bottom: 14px; display: block; object-fit: cover; max-height: 400px; }
-  .post-music { display flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05); }
+  .post-music { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05); }
   .post-music-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff8c42, #ff5e62); display: flex; align-items: center; justify-content: center; font-size: 16px; }
   .post-music-info { flex: 1; }
   .post-music-title { color: #fff; font-size: 13px; font-weight: 600; }
@@ -660,7 +660,7 @@ function playSound(type) {
 }
 
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v41';
+const STORAGE_KEY = 'sunset_user_v42';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -723,13 +723,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v41';
-const GROUPS_KEY = 'sunset_groups_v41';
-const CHANNELS_KEY = 'sunset_channels_v41';
-const POSTS_KEY = 'sunset_posts_v41';
-const LIKES_KEY = 'sunset_likes_v41';
-const STORIES_KEY = 'sunset_stories_v41';
-const GAMES_KEY = 'sunset_games_v41';
+const CHATS_KEY = 'sunset_chats_v42';
+const GROUPS_KEY = 'sunset_groups_v42';
+const CHANNELS_KEY = 'sunset_channels_v42';
+const POSTS_KEY = 'sunset_posts_v42';
+const LIKES_KEY = 'sunset_likes_v42';
+const STORIES_KEY = 'sunset_stories_v42';
+const GAMES_KEY = 'sunset_games_v42';
 
 let currentUser = null;
 let chats = {};
@@ -1652,7 +1652,7 @@ function initShooter() {
             ctx.fillRect(s.x, s.y, 2, 2);
         });
 
-        // Рисуем корабль (треугольник с деталями)
+        // Рисуем корабль
         ctx.save();
         ctx.translate(shooterObj.playerX, shooterObj.playerY);
         ctx.fillStyle = '#00d4ff';
@@ -1704,20 +1704,19 @@ function initShooter() {
         // Спавн инопланетян (каждые 4 сек)
         if (time - alienSpawnTime > 4000) {
             alienSpawnTime = time;
-            let hp = Math.floor(Math.random() * (120 - 15 + 1)) + 15; // HP от 15 до 120
+            let hp = Math.floor(Math.random() * (120 - 15 + 1)) + 15;
             shooterObj.aliens.push({
                 x: Math.random() * (canvas.width - 60) + 30,
                 y: -50, speed: mSpeed * 0.8, width: 50, height: 25, hp: hp, maxHp: hp
             });
         }
 
-        // Рисуем и обрабатываем Метеориты
+        // Метеориты
         for (let i = shooterObj.meteors.length - 1; i >= 0; i--) {
             let m = shooterObj.meteors[i];
             m.y += m.speed;
             
-            // Отрисовка метеорита (неправильный многоугольник)
-            ctx.fillStyle = '#8c5a45'; // Коричнево-серый
+            ctx.fillStyle = '#8c5a45';
             ctx.beginPath();
             for(let a = 0; a < Math.PI*2; a += Math.PI/6) {
                 let r = m.size + (Math.random()*4 - 2);
@@ -1725,7 +1724,6 @@ function initShooter() {
             }
             ctx.closePath();
             ctx.fill();
-            // Кратеры
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.beginPath(); ctx.arc(m.x - 5, m.y - 5, 4, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(m.x + 6, m.y + 3, 3, 0, Math.PI*2); ctx.fill();
@@ -1752,22 +1750,20 @@ function initShooter() {
             if (m.y > canvas.height) { shooterObj.meteors.splice(i, 1); }
         }
 
-        // Рисуем и обрабатываем Инопланетян
+        // Инопланетяне
         for (let i = shooterObj.aliens.length - 1; i >= 0; i--) {
             let a = shooterObj.aliens[i];
             a.y += a.speed;
 
-            // Отрисовка НЛО
-            ctx.fillStyle = '#4ade80'; // Зеленый
+            ctx.fillStyle = '#4ade80';
             ctx.beginPath();
             ctx.ellipse(a.x, a.y, a.width/2, a.height/2, 0, 0, Math.PI*2);
             ctx.fill();
-            // Купол
             ctx.fillStyle = '#86efac';
             ctx.beginPath();
             ctx.arc(a.x, a.y - 5, 15, Math.PI, 0);
             ctx.fill();
-            // Полоска HP
+            
             ctx.fillStyle = 'red';
             ctx.fillRect(a.x - 20, a.y - 25, 40, 4);
             ctx.fillStyle = '#4ade80';
@@ -1777,7 +1773,7 @@ function initShooter() {
                 let b = shooterObj.bullets[j];
                 if (Math.hypot(a.x - b.x, a.y - b.y) < a.width/2 + 5) {
                     shooterObj.bullets.splice(j, 1);
-                    a.hp -= 10; // Урон от пули
+                    a.hp -= 10;
                     if (a.hp <= 0) {
                         for(let p=0; p<15; p++) shooterObj.particles.push({x: a.x, y: a.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1});
                         shooterObj.aliens.splice(i, 1);
@@ -1901,7 +1897,7 @@ function initRunner() {
     runnerObj.canvas = canvas;
     runnerObj.ctx = canvas.getContext('2d');
     
-    // Квадрат стоит ровно на полу (Пол на canvas.height - 20, высота квадрата 30)
+    // Квадрат стоит ровно на полу
     runnerObj.squareY = canvas.height - 20 - 30; 
     runnerObj.squareVy = 0;
     runnerObj.obstacles = [];
@@ -1937,7 +1933,6 @@ function initRunner() {
         ctx.fillStyle = '#1a0a1e';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Пол
         ctx.fillStyle = '#333';
         ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
 
@@ -1949,7 +1944,6 @@ function initRunner() {
             runnerObj.squareVy = 0;
         }
 
-        // Квадрат с глазами
         ctx.save();
         ctx.translate(50, runnerObj.squareY);
         
@@ -1976,7 +1970,6 @@ function initRunner() {
         
         ctx.restore();
 
-        // Очень частый спавн препятствий на высоких уровнях
         let minSpawn = Math.max(20, 100 - (runnerObj.level * 0.5));
         let maxSpawn = Math.max(40, 150 - (runnerObj.level * 0.5));
 
@@ -1993,7 +1986,6 @@ function initRunner() {
             o.x -= runnerObj.speed * dt;
             ctx.fillRect(o.x, canvas.height - 20 - o.h, o.w, o.h);
 
-            // Коллизия
             if (o.x < 50 + 30 && o.x + o.w > 50 && runnerObj.squareY + 30 > canvas.height - 20 - o.h) {
                 endRunner();
                 return;
@@ -2029,4 +2021,60 @@ function endRunner() {
         <div style="text-align:center; padding:20px;">
             <h2 style="color:#ff5e62; font-size:28px; margin-bottom:10px;">Вы разбились!</h2>
             <div style="font-size:20px; margin-bottom:20px;">Ваш счет: <b>${runnerObj.score}</b></div>
-            <div style="font-size:16px; opacity:0.8; margin-bottom:20
+            <div style="font-size:16px; opacity:0.8; margin-bottom:20px;">Достигнут уровень: ${runnerObj.level}</div>
+            <button class="game-btn" onclick="initRunner()">Попробовать снова</button>
+            <button class="game-btn" style="background:#555; margin-top:10px;" onclick="closeGame()">Выйти</button>
+        </div>
+    `;
+}
+
+/* ============ СОБЫТИЯ (ВЫХОД И ПРОФИЛЬ) ============ */
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('logoutModal').classList.add('show');
+});
+
+document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
+  localStorage.clear();
+  location.reload();
+});
+
+document.getElementById('myProfileBtn').addEventListener('click', () => {
+  document.getElementById('profileTitle').textContent = currentUser.name;
+  let premText = currentUser.premium === 'prime' ? '💎 Master' : (currentUser.premium === 'sunset' ? '⭐ Administrator' : 'Обычный пользователь');
+  document.getElementById('profileStatus').textContent = premText;
+  document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
+
+  const pp = document.getElementById('profileContent');
+  pp.innerHTML = '';
+  
+  if (currentUser.premium) {
+    pp.innerHTML = `<div class="stats-box">
+        <div class="stats-row"><span>Общий охват (за год):</span> <span class="stats-value">${(currentUser.profileViews || 0).toLocaleString('ru-RU')}</span></div>
+        <div class="stats-row"><span>Новые подписчики:</span> <span class="stats-value">+${(currentUser.subscribers || 0).toLocaleString('ru-RU')}</span></div>
+        <div class="stats-row"><span>Тариф продвижения:</span> <span class="stats-value">${currentUser.premium === 'prime' ? '1 млн/год' : '300 тыс/год'}</span></div>
+    </div>`;
+  }
+  document.getElementById('profileModal').classList.add('show');
+});
+
+document.getElementById('myStatusSelect').addEventListener('change', function() {
+    currentUser.lastSeen = this.value;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    if (!currentUser.premium) document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
+    renderMyPage(); 
+});
+
+document.getElementById('changeAvatarBtn').addEventListener('click', () => {
+    const newEmoji = prompt('Введите новую букву или эмодзи:', currentUser.emoji);
+    if (newEmoji) {
+        currentUser.emoji = newEmoji.charAt(0);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+        document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
+        document.getElementById('promptAvatar').textContent = currentUser.emoji;
+        renderMyPage();
+    }
+});
+
+</script>
+</body>
+</html>
