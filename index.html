@@ -326,7 +326,6 @@
 
 <div class="sunset-photo"></div>
 
-<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -338,7 +337,6 @@
   </div>
 </div>
 
-<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left" id="myProfileBtn">
@@ -356,26 +354,18 @@
 
   <div class="content" id="content">
     
-    <!-- ВКЛАДКА 1: МОЯ СТРАНИЦА -->
     <div class="tab-content active" id="tab-mypage">
         <div class="create-post-prompt" onclick="openPostModal()">
             <div class="my-avatar" id="promptAvatar" style="width:36px; height:36px; font-size:14px;"></div>
             <span>Привет! Расскажите что-нибудь...</span>
         </div>
-
         <div class="section-title" style="padding-top: 10px;">📌 Закрепленные разделы</div>
-        
         <div class="pinned-sections" id="pinnedSections"></div>
-        
         <div class="manage-pinned-btn" id="managePinnedBtn" style="display:none;">⚙️ Настроить разделы</div>
-
-        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-            <span>📝 Мои посты</span>
-        </div>
+        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;"><span>📝 Мои посты</span></div>
         <div id="myPagePostsList"></div>
     </div>
 
-    <!-- ВКЛАДКА 2: ЧАТЫ -->
     <div class="tab-content" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
@@ -389,29 +379,24 @@
       <div id="chatsList"></div>
     </div>
 
-    <!-- ВКЛАДКА 3: ГЛАВНАЯ (ЛЕНТА) -->
     <div class="tab-content" id="tab-feed">
       <div class="stories-row" id="storiesRow"></div>
       <div class="section-title">📝 Лента новостей</div>
       <div id="postsList"></div>
     </div>
 
-    <!-- ВКЛАДКА 4: МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="section-title">🎵 Музыка</div>
       <div id="musicList" style="padding-bottom: 20px;"></div>
     </div>
 
-    <!-- ВКЛАДКА 5: ИГРЫ -->
     <div class="tab-content" id="tab-games">
         <div class="section-title">🎮 Игры</div>
         <div class="games-grid" id="gamesGrid"></div>
     </div>
 
-    <!-- ВКЛАДКА 6: ПРОМО -->
     <div class="tab-content" id="tab-promo">
       <div class="section-title">👑 Premium подписки</div>
-
       <div class="promo-card sunset">
         <div class="promo-head">
           <span class="promo-emoji">⭐</span>
@@ -428,7 +413,6 @@
         </div>
         <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="1800">Купить за 1 800 ₽ / год</button>
       </div>
-
       <div class="promo-card prime">
         <div class="promo-head">
           <span class="promo-emoji">💎</span>
@@ -448,7 +432,6 @@
     </div>
   </div>
 
-  <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="mypage"><span class="nav-icon">👤</span><span>Моя стр.</span></button>
     <button class="nav-btn" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
@@ -458,7 +441,6 @@
     <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
-  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -479,7 +461,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СОЗДАНИЯ -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -493,7 +474,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ФОРМЫ -->
 <div class="modal" id="formModal">
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новый пост</div>
@@ -509,7 +489,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА НАСТРОЙКИ РАЗДЕЛОВ -->
 <div class="modal" id="managePinnedModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Настройка разделов</div>
@@ -519,7 +498,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ДОБАВЛЕНИЯ УЧАСТНИКОВ -->
 <div class="modal" id="addParticipantsModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Добавить участников</div>
@@ -530,7 +508,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА УПРАВЛЕНИЯ УЧАСТНИКАМИ -->
 <div class="modal" id="manageMembersModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Участники</div>
@@ -540,7 +517,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ПУБЛИЧНОГО ПРОФИЛЯ -->
 <div class="modal" id="publicProfileModal">
   <div class="modal-card" style="max-height: 90vh;">
     <div style="display:flex; align-items:center; gap:16px; margin-bottom: 20px;">
@@ -557,7 +533,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Мой профиль</div>
@@ -575,7 +550,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ВЫХОДА -->
 <div class="modal" id="logoutModal">
   <div class="modal-card">
     <div class="modal-title">Выйти из аккаунта?</div>
@@ -585,7 +559,6 @@
   </div>
 </div>
 
-<!-- ОВЕРЛЕЙ ДЛЯ ИГР -->
 <div id="gameOverlay">
     <div class="game-topbar">
         <button class="game-close" onclick="closeGame()">✕</button>
@@ -653,7 +626,18 @@ function playSound(type) {
     } catch(e) {}
 }
 
-/* ============ РЕГИСТРАЦИЯ ============ */
+function speakPotracheno() {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance("Потрачено");
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.8;
+        utterance.pitch = 0.6;
+        utterance.volume = 1;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
 const STORAGE_KEY = 'sunset_user_v50';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
@@ -808,7 +792,6 @@ const BOT_POSTS = [
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ============ СТАРТ ============ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
@@ -867,7 +850,6 @@ try {
   }
 } catch(e) {}
 
-/* ============ НАВИГАЦИЯ ============ */
 document.querySelectorAll('.nav-btn').forEach(b => {
   b.addEventListener('click', () => {
     const tab = b.dataset.tab;
@@ -894,7 +876,6 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
   renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
 });
 
-/* ============ МУЗЫКА ============ */
 function renderMusic() {
     const el = document.getElementById('musicList');
     if (!el) return;
@@ -908,7 +889,6 @@ function renderMusic() {
     el.innerHTML = html;
 }
 
-/* ============ СПИСОК ЧАТОВ ============ */
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
@@ -932,7 +912,6 @@ function renderChatsList(tab, q) {
   });
 }
 
-/* ============ ЧАТ ============ */
 const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
 
@@ -1028,7 +1007,6 @@ function generateReply(text) {
   return rnd(['Интересно!', 'Согласен!', 'Ну да)', 'Ага, понятно', 'Расскажи ещё!']);
 }
 
-/* ============ УДАЛЕНИЕ ЧАТА ============ */
 document.getElementById('deleteChatBtn').addEventListener('click', () => {
     if (!activeChat) return;
     if (activeChat.owner !== currentUser.name) { alert('Вы не владелец!'); return; }
@@ -1042,7 +1020,6 @@ document.getElementById('deleteChatBtn').addEventListener('click', () => {
     }
 });
 
-/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ ============ */
 document.getElementById('addParticipantsBtn').addEventListener('click', () => {
     if (!activeChat) return;
     document.getElementById('searchInviteInput').value = '';
@@ -1082,7 +1059,6 @@ function renderParticipantsList(users) {
     });
 }
 
-/* ============ ПУБЛИЧНЫЙ ПРОФИЛЬ ============ */
 function openPublicProfile(person) {
     document.getElementById('pubProfileName').textContent = person.name;
     document.getElementById('pubProfileStatus').textContent = person.lastSeen || 'в сети';
@@ -1095,7 +1071,6 @@ function openPublicProfile(person) {
     document.getElementById('publicProfileModal').classList.add('show');
 }
 
-/* ============ ЛЕНТА ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   if(el) {
@@ -1164,7 +1139,6 @@ function savePostsIfMine(p) {
   if (idx !== -1) { posts[idx] = p; try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {} }
 }
 
-/* ============ МОЯ СТРАНИЦА ============ */
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     const manageBtn = document.getElementById('managePinnedBtn');
@@ -1244,7 +1218,6 @@ function openManagePinned() {
 }
 document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
 
-/* ============ ИГРЫ ============ */
 function renderGames() {
     const grid = document.getElementById('gamesGrid');
     if (!grid) return;
@@ -1353,26 +1326,20 @@ function initShooter(level) {
         turboWaveRadius: 0, turboWaveActive: false, shake: 0
     };
 
-    // Сложность по уровню
     const difficulty = 1 + (level - 1) * 0.08;
-
-    // Звёзды
     shooterObj.stars = Array.from({length: 60}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1 }));
 
-    // UI
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
     uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="shTime">06:00</span></div><div>⭐ <span id="shScore">0</span></div>`;
     area.appendChild(uiTop);
 
-    // Турбо шкала
     const turboBar = document.createElement('div');
     turboBar.className = 'turbo-bar-container';
     turboBar.id = 'turboBar';
     turboBar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div><div class="turbo-bar-label" id="turboLabel">ТУРБО 0%</div>';
     area.appendChild(turboBar);
 
-    // Турбо кнопка
     const turboBtn = document.createElement('button');
     turboBtn.className = 'turbo-btn';
     turboBtn.id = 'turboBtn';
@@ -1395,7 +1362,6 @@ function initShooter(level) {
         }
     };
 
-    // Управление
     const movePlayer = (e) => {
         const rect = canvas.getBoundingClientRect();
         let cx = e.touches ? e.touches[0].clientX : e.clientX;
@@ -1417,16 +1383,13 @@ function initShooter(level) {
     canvas.addEventListener('touchend', () => { shooterObj.isFiring = false; });
     canvas.addEventListener('mouseup', () => { shooterObj.isFiring = false; });
 
-    let lastTime = performance.now();
     let lastTimerTick = performance.now();
     let spawnTime = 0;
     let bossShootTime = 0;
 
     const gameLoop = (time) => {
         if (!shooterObj.canvas || shooterObj.isDead) return;
-        lastTime = time;
 
-        // Таймер
         if (!shooterObj.boss && time - lastTimerTick > 1000) {
             lastTimerTick = time;
             shooterObj.timeLeft--;
@@ -1438,8 +1401,6 @@ function initShooter(level) {
         }
 
         const ctx = shooterObj.ctx;
-
-        // Тряска
         let shakeX = 0, shakeY = 0;
         if (shooterObj.shake > 0) {
             shakeX = (Math.random() - 0.5) * shooterObj.shake;
@@ -1452,7 +1413,6 @@ function initShooter(level) {
         ctx.fillStyle = '#0a0510';
         ctx.fillRect(-10, -10, canvas.width+20, canvas.height+20);
 
-        // Звёзды
         shooterObj.stars.forEach(s => {
             s.y += s.speed;
             if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
@@ -1460,7 +1420,6 @@ function initShooter(level) {
             ctx.fillRect(s.x, s.y, 2, 2);
         });
 
-        // Корабль
         ctx.save();
         ctx.translate(shooterObj.playerX, shooterObj.playerY);
         let sizeMult = 1 + (gameState.shooter.plane * 0.02);
@@ -1476,7 +1435,6 @@ function initShooter(level) {
         ctx.fillRect(-5, 15, 10, 8);
         ctx.restore();
 
-        // Стрельба
         const fireRate = Math.max(50, 300 - (gameState.shooter.fireRate * 10));
         if (shooterObj.isFiring && time - shooterObj.lastShot > fireRate) {
             if (shooterObj.turboActive) {
@@ -1490,7 +1448,6 @@ function initShooter(level) {
             playSound('laser');
         }
 
-        // Пули
         ctx.fillStyle = shooterObj.turboActive ? '#ffd700' : '#ff8c42';
         for (let i = shooterObj.bullets.length - 1; i >= 0; i--) {
             let b = shooterObj.bullets[i];
@@ -1499,7 +1456,6 @@ function initShooter(level) {
             if (b.y < 0) shooterObj.bullets.splice(i, 1);
         }
 
-        // Спавн метеоритов и НЛО (всегда вниз летят)
         let spawnRate = Math.max(120, 700 - (level * 3) - (gameState.shooter.plane * 3));
         let mSpeed = 2 + level * 0.15 + (gameState.shooter.plane * 0.05);
 
@@ -1512,7 +1468,6 @@ function initShooter(level) {
             }
         }
 
-        // Метеориты
         for (let i = shooterObj.meteors.length - 1; i >= 0; i--) {
             let m = shooterObj.meteors[i];
             m.y += m.speed;
@@ -1549,7 +1504,6 @@ function initShooter(level) {
             if (m.y > canvas.height) { shooterObj.meteors.splice(i, 1); }
         }
 
-        // НЛО (летят зигзагом вниз)
         for (let i = shooterObj.enemyUfos.length - 1; i >= 0; i--) {
             let u = shooterObj.enemyUfos[i];
             u.y += u.speed;
@@ -1586,15 +1540,12 @@ function initShooter(level) {
             if (u.y > canvas.height) { shooterObj.enemyUfos.splice(i, 1); }
         }
 
-        // БОСС
         if (shooterObj.boss) {
             let b = shooterObj.boss;
             b.time = (b.time || 0) + 1;
-            // Движение по кругу/восьмёрке в верхней части экрана
             b.x = canvas.width / 2 + Math.cos(b.time * 0.02) * (canvas.width * 0.3);
             b.y = 100 + Math.sin(b.time * 0.03) * 50;
             
-            // Рисуем босса
             ctx.save();
             ctx.translate(b.x, b.y);
             ctx.fillStyle = '#ff5e62';
@@ -1609,7 +1560,6 @@ function initShooter(level) {
             ctx.beginPath(); ctx.arc(15, -8, 3, 0, Math.PI*2); ctx.fill();
             ctx.restore();
 
-            // HP бар над боссом
             const barWidth = 120;
             const barX = b.x - barWidth/2;
             const barY = b.y - 60;
@@ -1626,11 +1576,9 @@ function initShooter(level) {
             ctx.fillText(`${Math.ceil(b.hp)} / ${b.maxHp}`, b.x, barY + 9);
             ctx.textAlign = 'left';
 
-            // Стрельба босса (в игрока)
             const shootDelay = Math.max(600, 1500 - level * 5);
             if (time - bossShootTime > shootDelay) {
                 bossShootTime = time;
-                // Наводимся на игрока
                 const dx = shooterObj.playerX - b.x;
                 const dy = shooterObj.playerY - b.y;
                 const dist = Math.hypot(dx, dy);
@@ -1640,7 +1588,6 @@ function initShooter(level) {
                 });
             }
 
-            // Пули по боссу
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let bul = shooterObj.bullets[j];
                 if (Math.hypot(b.x - bul.x, b.y - bul.y) < 65) {
@@ -1652,7 +1599,6 @@ function initShooter(level) {
             }
         }
 
-        // Снаряды босса
         for (let i = shooterObj.bossProjectiles.length - 1; i >= 0; i--) {
             let p = shooterObj.bossProjectiles[i];
             p.x += p.vx; p.y += p.vy;
@@ -1664,7 +1610,6 @@ function initShooter(level) {
             if (p.x < -30 || p.x > canvas.width + 30 || p.y < -30 || p.y > canvas.height + 30) shooterObj.bossProjectiles.splice(i, 1);
         }
 
-        // ТУРБО ВОЛНА
         if (shooterObj.turboWaveActive) {
             shooterObj.turboWaveRadius += 12;
             ctx.strokeStyle = `rgba(255,215,0,${Math.max(0, 1 - shooterObj.turboWaveRadius / (canvas.width * 1.2))})`;
@@ -1678,7 +1623,6 @@ function initShooter(level) {
             ctx.arc(shooterObj.playerX, shooterObj.playerY, shooterObj.turboWaveRadius - 10, 0, Math.PI*2);
             ctx.stroke();
 
-            // Уничтожаем всё в волне (кроме босса - ему 30% урона)
             for (let i = shooterObj.meteors.length - 1; i >= 0; i--) {
                 let m = shooterObj.meteors[i];
                 if (Math.hypot(m.x - shooterObj.playerX, m.y - shooterObj.playerY) < shooterObj.turboWaveRadius) {
@@ -1697,7 +1641,6 @@ function initShooter(level) {
                     playSound('explosion');
                 }
             }
-            // Боссу 30% урона
             if (shooterObj.boss && !shooterObj.boss.waveHit) {
                 let b = shooterObj.boss;
                 if (Math.hypot(b.x - shooterObj.playerX, b.y - shooterObj.playerY) < shooterObj.turboWaveRadius) {
@@ -1716,20 +1659,13 @@ function initShooter(level) {
             }
         }
 
-        // Частицы
         for (let i = shooterObj.particles.length - 1; i >= 0; i--) {
             let p = shooterObj.particles[i];
             p.x += p.vx; p.y += p.vy; p.life -= 0.03;
-            ctx.fillStyle = p.color ? p.color.replace(')', `,${p.life})`).replace('rgb', 'rgba') : `rgba(255,140,66,${p.life})`;
-            if (p.color && p.color.startsWith('#')) {
-                // упрощённо
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.life;
-                ctx.fillRect(p.x, p.y, 4, 4);
-                ctx.globalAlpha = 1;
-            } else {
-                ctx.fillRect(p.x, p.y, 4, 4);
-            }
+            ctx.fillStyle = p.color ? p.color : `rgba(255,140,66,${p.life})`;
+            ctx.globalAlpha = p.life;
+            ctx.fillRect(p.x, p.y, 4, 4);
+            ctx.globalAlpha = 1;
             if (p.life <= 0) shooterObj.particles.splice(i, 1);
         }
 
@@ -1741,7 +1677,6 @@ function initShooter(level) {
 
 function chargeTurbo() {
     if (shooterObj.turboActive || shooterObj.turboUses >= 2) return;
-    // Заряд набирается примерно за 20 сек (2 заряда = 40 сек)
     shooterObj.turboCharge += 1.2 + (gameState.shooter.turbo * 0.15);
     if (shooterObj.turboCharge > 100) shooterObj.turboCharge = 100;
     
@@ -1785,13 +1720,49 @@ function endShooter(isWin) {
         }, 100);
     } else {
         playSound('gameover');
+        speakPotracheno();
+        
         let coinsEarned = Math.floor(shooterObj.score * 0.3 * (1 + gameState.shooter.income * 0.2));
         gameState.shooter.coins += coinsEarned;
         saveGameState();
+        
+        const area = document.getElementById('gameArea');
+        const sadScreen = document.createElement('div');
+        sadScreen.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50; padding: 20px; text-align: center;';
+        sadScreen.innerHTML = `
+            <div style="font-size: 42px; font-weight: 900; color: #ff5e62; letter-spacing: 3px; text-shadow: 0 0 20px #ff5e62, 0 0 40px #ff5e62; animation: shakeSad 0.5s; margin-bottom: 20px; word-break: break-word; width: 100%;">ПОТРАЧЕНО</div>
+            <div style="font-size: 18px; color: #fff; margin-bottom: 10px;">Очки: ${shooterObj.score}</div>
+            <div style="font-size: 14px; color: #4ade80; margin-bottom: 20px;">Монеты: +${coinsEarned}</div>
+        `;
+        const style = document.createElement('style');
+        style.textContent = '@keyframes shakeSad{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}';
+        sadScreen.appendChild(style);
+        area.appendChild(sadScreen);
+
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const sadNotes = [392, 370, 349, 330, 294, 262, 220, 196];
+            sadNotes.forEach((freq, i) => {
+                setTimeout(() => {
+                    try {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+                    } catch(e) {}
+                }, i * 400);
+            });
+        } catch(e) {}
+        
         setTimeout(() => {
-            alert(`💀 ПОТРАЧЕНО\nОчки: ${shooterObj.score}\nМонеты: +${coinsEarned}\n\nПопробуй ещё раз!`);
+            if (sadScreen.parentNode) sadScreen.remove();
             openShooterMenu();
-        }, 100);
+        }, 4500);
     }
 }
 
@@ -1821,7 +1792,6 @@ function initRunner() {
     const ctx = canvas.getContext('2d');
     
     const level = gameState.runner.unlocked;
-    // Сложность растёт с уровнем
     const baseSpeed = 4 + level * 0.15;
     const spawnRate = Math.max(30, 90 - level * 0.5);
     
@@ -1834,7 +1804,6 @@ function initRunner() {
         spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
     };
 
-    // Таймер UI
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
     uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="rnTime">06:00</span></div><div>⭐ <span id="rnScore">0</span></div>`;
@@ -1854,12 +1823,10 @@ function initRunner() {
     const gameLoop = (time) => {
         if (runnerObj.isDead) return;
         
-        // Таймер
         if (time - runnerObj.lastTimerTick > 1000) {
             runnerObj.lastTimerTick = time;
             runnerObj.timeLeft--;
             if (runnerObj.timeLeft <= 0) {
-                // Уровень пройден!
                 endRunner(true);
                 return;
             }
@@ -1882,20 +1849,17 @@ function initRunner() {
         ctx.fillStyle = '#0a0510';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Небо
         const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
         grad.addColorStop(0, '#1a0a2e');
         grad.addColorStop(1, '#2a0a3e');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Земля
         ctx.fillStyle = '#1a1a2e';
         ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
         ctx.fillStyle = '#ff5e62';
         ctx.fillRect(0, canvas.height - 40, canvas.width, 3);
 
-        // Облака
         runnerObj.clouds.forEach(c => {
             c.x -= c.s;
             if (c.x < -50) { c.x = canvas.width + 50; c.y = Math.random() * 150 + 20; }
@@ -1903,7 +1867,6 @@ function initRunner() {
             ctx.fillRect(c.x, c.y, 50, 20);
         });
 
-        // Спавн препятствий
         if (runnerObj.frame % Math.max(35, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
             const oh = Math.random() > 0.4 ? 40 : 60;
             runnerObj.obstacles.push({
@@ -1938,20 +1901,17 @@ function initRunner() {
             }
         }
 
-        // Игрок — маленький куб с глазами
         const px = runnerObj.playerX, py = runnerObj.playerY, sz = runnerObj.playerSize;
         ctx.fillStyle = '#00d4ff';
         ctx.fillRect(px, py, sz, sz);
         ctx.fillStyle = '#0088aa';
         ctx.fillRect(px, py, sz, 4);
-        // Глаза
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(px + 6, py + 8, 7, 7);
         ctx.fillRect(px + sz - 13, py + 8, 7, 7);
         ctx.fillStyle = '#000';
         ctx.fillRect(px + 8, py + 10, 3, 4);
         ctx.fillRect(px + sz - 11, py + 10, 3, 4);
-        // Улыбка
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1981,23 +1941,22 @@ function endRunner(isWin) {
             openRunnerMenu();
         }, 100);
     } else {
-        // ПЕЧАЛЬНАЯ ПЕСНЯ + "ПОТРАЧЕНО"
         playSound('gameover');
-        // Показываем печальный экран
+        speakPotracheno();
+        
         const area = document.getElementById('gameArea');
         const sadScreen = document.createElement('div');
-        sadScreen.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;';
+        sadScreen.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50; padding: 20px; text-align: center;';
         sadScreen.innerHTML = `
-            <div style="font-size:72px;font-weight:900;color:#ff5e62;letter-spacing:6px;text-shadow:0 0 30px #ff5e62;animation:shakeSad 0.5s;">ПОТРАЧЕНО</div>
-            <div style="font-size:20px;color:#fff;margin-top:20px;">Очки: ${runnerObj.score}</div>
-            <div style="font-size:14px;color:#888;margin-top:10px;">Печальная песня играет...</div>
+            <div style="font-size: 42px; font-weight: 900; color: #ff5e62; letter-spacing: 4px; text-shadow: 0 0 20px #ff5e62, 0 0 40px #ff5e62; animation: shakeSad 0.5s; margin-bottom: 20px; word-break: break-word; width: 100%;">ПОТРАЧЕНО</div>
+            <div style="font-size: 18px; color: #fff; margin-bottom: 10px;">Очки: ${runnerObj.score}</div>
+            <div style="font-size: 14px; color: #888; margin-top: 10px;">Печальная песня играет...</div>
         `;
         const style = document.createElement('style');
         style.textContent = '@keyframes shakeSad{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}';
         sadScreen.appendChild(style);
         area.appendChild(sadScreen);
         
-        // Печальная мелодия (несколько нот)
         try {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -2012,8 +1971,7 @@ function endRunner(isWin) {
                         osc.frequency.value = freq;
                         gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + 0.5);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
                     } catch(e) {}
                 }, i * 400);
             });
@@ -2026,11 +1984,10 @@ function endRunner(isWin) {
         setTimeout(() => {
             if (sadScreen.parentNode) sadScreen.remove();
             openRunnerMenu();
-        }, 4000);
+        }, 4500);
     }
 }
 
-/* ============ СТОРИС ============ */
 function renderStories() {
     const el = document.getElementById('storiesRow');
     if (!el) return;
@@ -2050,7 +2007,6 @@ function renderStories() {
     });
 }
 
-/* ============ ОБРАБОТЧИКИ МОДАЛОК ============ */
 document.querySelectorAll('[data-close]').forEach(btn => {
     btn.addEventListener('click', () => document.getElementById(btn.dataset.close).classList.remove('show'));
 });
