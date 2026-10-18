@@ -2114,6 +2114,281 @@ document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
     avatarPreview.textContent = '?';
 });
 
+if /* ================== ИГРА 3: ПЛАТФОРМЕР ================== */
+function openPlatformerMenu() {
+    const area = document.getElementById('gameArea');
+    area.innerHTML = `
+        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
+            <h2 style="color:#ffd700; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ffd700;">Супер Прыгун</h2>
+            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Собери монеты и допрыгни до флага!</div>
+            <button class="game-btn" onclick="initPlatformer()" style="background:linear-gradient(135deg, #ffd700, #ff8c00); color:#000;">▶️ Играть</button>
+        </div>`;
+}
+
+let platformerObj = {};
+
+function initPlatformer() {
+    const area = document.getElementById('gameArea');
+    area.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
+    canvas.height = window.innerHeight - 150;
+    area.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const levelData = {
+        platforms: [
+            {x: 0, y: canvas.height - 40, w: canvas.width, h: 40},
+            {x: 200, y: canvas.height - 120, w: 100, h: 20},
+            {x: 400, y: canvas.height - 200, w: 100, h: 20},
+            {x: 600, y: canvas.height - 150, w: 100, h: 20}
+        ],
+        enemies: [
+            {x: 300, y: canvas.height - 70, w: 30, h: 30, vx: 1.5, alive: true},
+            {x: 550, y: canvas.height - 70, w: 30, h: 30, vx: -1.5, alive: true}
+        ],
+        coins: [
+            {x: 220, y: canvas.height - 150, w: 15, h: 15, collected: false},
+            {x: 250, y: canvas.height - 150, w: 15, h: 15, collected: false},
+            {x: 420, y: canvas.height - 230, w: 15, h: 15, collected: false}
+        ],
+        flag: {x: canvas.width - 50, y: canvas.height - 120, w: 10, h: 80}
+    };
+
+    platformerObj = {
+        canvas, ctx,
+        player: { x: 50, y: canvas.height - 100, w: 30, h: 40, vx: 0, vy: 0, onGround: false, facingRight: true },
+        keys: { right: false, left: false, up: false },
+        level: levelData,
+        coinsCollected: 0,
+        isDead: false
+    };
+
+    const moveLeft = (e) => { if(e) e.preventDefault(); platformerObj.keys.left = true; platformerObj.keys.right = false; };
+    const moveRight = (e) => { if(e) e.preventDefault(); platformerObj.keys.right = true; platformerObj.keys.left = false; };
+    const jump = (e) => { 
+        if(e) e.preventDefault(); 
+        if (platformerObj.player.onGround) { 
+            platformerObj.player.vy = -13; 
+            platformerObj.player.onGround = false; 
+            playSound('jump'); 
+        } 
+    };
+    const stopMove = () => { platformerObj.keys.left = false; platformerObj.keys.right = false; };
+
+    const controls = document.createElement('div');
+    controls.style.cssText = 'position:absolute; bottom:20px; left:0; right:0; display:flex; justify-content:space-between; padding:0 20px; z-index:20;';
+    controls.innerHTML = `
+        <div style="display:flex; gap:10px;">
+            <button id="btnLeft" style="width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,0.2); color:#fff; font-size:24px; border:none; touch-action:none;">◀</button>
+            <button id="btnRight" style="width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,0.2); color:#fff; font-size:24px; border:none; touch-action:none;">▶</button>
+        </div>
+        <button id="btnJump" style="width:70px; height:70px; border-radius:50%; background:rgba(255,215,0,0.8); color:#000; font-weight:bold; font-size:16px; border:none; touch-action:none;">ПРЫГ</button>
+    `;
+    area.appendChild(controls);
+
+    document.getElementById('btnLeft').addEventListener('touchstart', moveLeft, {passive: false});
+    document.getElementById('btnLeft').addEventListener('mousedown', moveLeft);
+    document.getElementById('btnLeft').addEventListener('touchend', stopMove);
+    document.getElementById('btnLeft').addEventListener('mouseup', stopMove);
+
+    document.getElementById('btnRight').addEventListener('touchstart', moveRight, {passive: false});
+    document.getElementById('btnRight').addEventListener('mousedown', moveRight);
+    document.getElementById('btnRight').addEventListener('touchend', stopMove);
+    document.getElementById('btnRight').addEventListener('mouseup', stopMove);
+
+    document.getElementById('btnJump').addEventListener('touchstart', jump, {passive: false});
+    document.getElementById('btnJump').addEventListener('mousedown', jump);
+
+    const gameLoop = () => {
+        if (platformerObj.isDead) return;
+        const p = platformerObj.player;
+        const lvl = platformerObj.level;
+
+        if (platformerObj.keys.left) { p.vx = -5; p.facingRight = false; }
+        else if (platformerObj.keys.right) { p.vx = 5; p.facingRight = true; }
+        else { p.vx = 0; }
+
+        p.x += p.vx;
+        if (p.x < 0) p.x = 0;
+        if (p.x + p.w > canvas.width) p.x = canvas.width - p.w;
+
+        p.vy += 0.6;
+        p.y += p.vy;
+        p.onGround = false;
+
+        lvl.platforms.forEach(plat => {
+            if (p.x + p.w > plat.x && p.x < plat.x + plat.w && 
+                p.y + p.h > plat.y && p.y < plat.y + plat.h) {
+                if (p.vy > 0 && p.y + p.h - p.vy <= plat.y) {
+                    p.y = plat.y - p.h;
+                    p.vy = 0;
+                    p.onGround = true;
+                }
+                else if (p.vy < 0 && p.y - p.vy >= plat.y + plat.h) {
+                    p.y = plat.y + plat.h;
+                    p.vy = 0;
+                }
+            }
+        });
+
+        lvl.enemies.forEach(enemy => {
+            if (!enemy.alive) return;
+            enemy.x += enemy.vx;
+            if (enemy.x <= 0 || enemy.x + enemy.w >= canvas.width) enemy.vx *= -1;
+
+            if (p.x + p.w > enemy.x && p.x < enemy.x + enemy.w && 
+                p.y + p.h > enemy.y && p.y < enemy.y + enemy.h) {
+                if (p.vy > 0 && p.y + p.h - p.vy <= enemy.y + 5) {
+                    enemy.alive = false;
+                    p.vy = -10;
+                    playSound('explosion');
+                } else {
+                    endPlatformer();
+                    return;
+                }
+            }
+        });
+
+        lvl.coins.forEach(coin => {
+            if (coin.collected) return;
+            if (p.x + p.w > coin.x && p.x < coin.x + coin.w && 
+                p.y + p.h > coin.y && p.y < coin.y + coin.h) {
+                coin.collected = true;
+                platformerObj.coinsCollected++;
+                playSound('win');
+            }
+        });
+
+        const flag = lvl.flag;
+        if (p.x + p.w > flag.x && p.x < flag.x + flag.w && 
+            p.y + p.h > flag.y && p.y < flag.y + flag.h) {
+            endPlatformer(true);
+            return;
+        }
+
+        ctx.fillStyle = '#87CEEB';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        lvl.platforms.forEach(plat => {
+            ctx.fillStyle = '#4a2e15';
+            ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
+            ctx.fillStyle = '#4ade80';
+            ctx.fillRect(plat.x, plat.y, plat.w, 5);
+        });
+
+        lvl.coins.forEach(coin => {
+            if (!coin.collected) {
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.arc(coin.x + coin.w/2, coin.y + coin.h/2, coin.w/2, 0, Math.PI*2);
+                ctx.fill();
+            }
+        });
+
+        ctx.fillStyle = '#aaa';
+        ctx.fillRect(flag.x, flag.y, 5, flag.h);
+        ctx.fillStyle = '#ff5e62';
+        ctx.beginPath();
+        ctx.moveTo(flag.x + 5, flag.y);
+        ctx.lineTo(flag.x + 35, flag.y + 15);
+        ctx.lineTo(flag.x + 5, flag.y + 30);
+        ctx.fill();
+
+        lvl.enemies.forEach(enemy => {
+            if (enemy.alive) {
+                ctx.fillStyle = '#a06cd5';
+                ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(enemy.x + 5, enemy.y + 5, 6, 8);
+                ctx.fillRect(enemy.x + 18, enemy.y + 5, 6, 8);
+            }
+        });
+
+        ctx.fillStyle = '#00d4ff';
+        ctx.fillRect(p.x, p.y, p.w, p.h);
+        ctx.fillStyle = '#fff';
+        if (p.facingRight) {
+            ctx.fillRect(p.x + 15, p.y + 10, 8, 8);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(p.x + 18, p.y + 12, 3, 4);
+        } else {
+            ctx.fillRect(p.x + 7, p.y + 10, 8, 8);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(p.x + 9, p.y + 12, 3, 4);
+        }
+
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText(`Монеты: ${platformerObj.coinsCollected} / ${lvl.coins.length}`, 15, 35);
+
+        gameAnimFrame = requestAnimationFrame(gameLoop);
+    };
+    gameAnimFrame = requestAnimationFrame(gameLoop);
+}
+
+function endPlatformer(isWin = false) {
+    if (platformerObj.isDead) return;
+    platformerObj.isDead = true;
+    if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
+
+    if (isWin) {
+        playSound('win');
+        gameState.shooter.coins += 50;
+        saveGameState();
+        setTimeout(() => {
+            alert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nСобрано монет: ${platformerObj.coinsCollected}\nНаграда: +50 🪙`);
+            openPlatformerMenu();
+        }, 100);
+    } else {
+        playSound('gameover');
+        speakPotracheno();
+        
+        const area = document.getElementById('gameArea');
+        const sadScreen = document.createElement('div');
+        sadScreen.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50; padding: 20px; text-align: center;';
+        sadScreen.innerHTML = `
+            <div style="font-size: 42px; font-weight: 900; color: #ff5e62; letter-spacing: 4px; text-shadow: 0 0 20px #ff5e62, 0 0 40px #ff5e62; animation: shakeSad 0.5s; margin-bottom: 20px; word-break: break-word; width: 100%;">ПОТРАЧЕНО</div>
+            <div style="font-size: 18px; color: #fff; margin-bottom: 10px;">Монет собрано: ${platformerObj.coinsCollected}</div>
+            <div style="font-size: 14px; color: #888; margin-top: 10px;">Печальная песня играет...</div>
+        `;
+        const style = document.createElement('style');
+        style.textContent = '@keyframes shakeSad{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}';
+        sadScreen.appendChild(style);
+        area.appendChild(sadScreen);
+        
+        setTimeout(() => {
+            if (sadScreen.parentNode) sadScreen.remove();
+            openPlatformerMenu();
+        }, 3500);
+    }
+}
+
+// Автоматическое добавление карточки игры в меню
+setTimeout(() => {
+    const originalRender = window.renderGames;
+    if (originalRender) {
+        window.renderGames = function() {
+            originalRender();
+            const grid = document.getElementById('gamesGrid');
+            if (grid && !document.getElementById('plat-card')) {
+                const div = document.createElement('div');
+                div.id = 'plat-card';
+                div.className = 'game-card';
+                div.innerHTML = `<div class="game-icon">🍄</div><div class="game-title">Супер Прыгун</div><div class="game-desc">Прыгай по врагам и собирай монеты</div>`;
+                div.addEventListener('click', () => {
+                    currentGame = 'platformer';
+                    document.getElementById('gameOverlay').classList.add('show');
+                    document.getElementById('gameTitle').textContent = '🍄 Супер Прыгун';
+                    openPlatformerMenu();
+                });
+                grid.appendChild(div);
+            }
+        };
+        // Вызываем сразу, чтобы карточка появилась
+        window.renderGames();
+    }
+}, 100);
 if (currentUser) startApp();
 </script>
 </body>
