@@ -602,7 +602,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v35';
+const STORAGE_KEY = 'sunset_user_v37';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -665,13 +665,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v35';
-const GROUPS_KEY = 'sunset_groups_v35';
-const CHANNELS_KEY = 'sunset_channels_v35';
-const POSTS_KEY = 'sunset_posts_v35';
-const LIKES_KEY = 'sunset_likes_v35';
-const STORIES_KEY = 'sunset_stories_v35';
-const GAMES_KEY = 'sunset_games_v35';
+const CHATS_KEY = 'sunset_chats_v37';
+const GROUPS_KEY = 'sunset_groups_v37';
+const CHANNELS_KEY = 'sunset_channels_v37';
+const POSTS_KEY = 'sunset_posts_v37';
+const LIKES_KEY = 'sunset_likes_v37';
+const STORIES_KEY = 'sunset_stories_v37';
+const GAMES_KEY = 'sunset_games_v37';
 
 let currentUser = null;
 let chats = {};
@@ -725,7 +725,7 @@ const DEFAULT_COMMUNITIES = [
   { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community', members: [] }
 ];
 
-/* ============ 120 ПЕСЕН ============ */
+/* ============ 100 ПЕСЕН ============ */
 const SONGS = [
   ['Imagine Dragons', 'Believer'],['Ed Sheeran', 'Shape of You'],['The Weeknd', 'Blinding Lights'],
   ['Dua Lipa', 'Levitating'],['Billie Eilish', 'Bad Guy'],['Post Malone', 'Circles'],
@@ -737,7 +737,7 @@ const SONGS = [
   ['Shawn Mendes', 'Senorita'],['Camila Cabello', 'Havana'],['Ariana Grande', '7 Rings'],
   ['Katy Perry', 'Roar'],['Rihanna', 'Diamonds'],['Beyoncé', 'Halo'],
   ['Lady Gaga', 'Bad Romance'],['Bruno Mars', 'Uptown Funk'],['Justin Bieber', 'Sorry'],
-  ['Taylor Swift', 'Shake It Off'],['Taylor Swift', 'Anti-Hero'],['Dua Lipa', "Don't Start Now"],
+  ['Taylor Swift', 'Shake It Off'],['Taylor Swift', 'Anti-Hero'],['Dua Lipa', 'Dont Start Now'],
   ['Doja Cat', 'Say So'],['Sia', 'Chandelier'],['Sia', 'Snowman'],
   ['Ava Max', 'Sweet But Psycho'],['Tones and I', 'Dance Monkey'],
   ['Harry Styles', 'Watermelon Sugar'],['Billie Eilish', 'Lovely'],['Olivia Rodrigo', 'Good 4 U'],
@@ -750,15 +750,15 @@ const SONGS = [
   ['AC/DC', 'Thunderstruck'],['Arctic Monkeys', 'Do I Wanna Know?'],
   ['The Neighbourhood', 'Sweater Weather'],['Arctic Monkeys', '505'],
   ['Radiohead', 'Creep'],['Coldplay', 'The Scientist'],['Coldplay', 'Fix You'],
-  ['James Arthur', 'Say You Won\'t Let Go'],['John Legend', 'All of Me'],
+  ['James Arthur', 'Say You Wont Let Go'],['John Legend', 'All of Me'],
   ['Ed Sheeran', 'Photograph'],['Ed Sheeran', 'Thinking Out Loud'],
   ['Zayn', 'Pillowtalk'],['The Weeknd', 'Save Your Tears'],
   ['The Weeknd', 'Starboy'],['Post Malone', 'Sunflower'],
   ['Post Malone', 'Rockstar'],['Travis Scott', 'SICKO MODE'],
-  ['Drake', 'God\'s Plan'],['Drake', 'One Dance'],
+  ['Drake', 'Gods Plan'],['Drake', 'One Dance'],
   ['Kanye West', 'Stronger'],['Eminem', 'Lose Yourself'],
   ['Eminem', 'Stan'],['50 Cent', 'In Da Club'],
-  ['Snoop Dogg', 'Drop It Like It\'s Hot'],['Dr. Dre', 'Still D.R.E.'],
+  ['Snoop Dogg', 'Drop It Like Its Hot'],['Dr. Dre', 'Still D.R.E.'],
   ['2Pac', 'California Love'],['Notorious B.I.G.', 'Juicy'],
   ['Miyagi & Andy Panda', 'Kosandra'],['Miyagi & Andy Panda', 'Utopia'],
   ['Баста', 'Сансара'],['Баста', 'Моя вселенная'],
@@ -767,24 +767,7 @@ const SONGS = [
   ['ЛСП', 'Монетка'],['ЛСП', 'Тик-так'],
   ['FACE', 'Юморист'],['FACE', 'Бургер'],
   ['Моргенштерн', 'Cadillac'],['Моргенштерн', 'Новый мерин'],
-  ['Тимати', 'Где ты, где я'],['Тимати', 'В клубе'],
-  ['Дима Билан', 'Невозможное возможно'],['Полина Гагарина', 'Кукушка'],
-  ['Zivert', 'Life'],['Zivert', 'Beverly Hills'],
-  ['Artik & Asti', 'Под гипнозом'],['Artik & Asti', 'Девочка танцуй'],
-  ['Макс Корж', 'Жить в кайф'],['Макс Корж', 'Малиновый закат'],
-  ['Ленинград', 'Экспонат'],['Ленинград', 'В Питере - пить'],
-  ['Валентин Стрыкало', 'Наше лето'],['Валентин Стрыкало', 'Кайен'],
-  ['Кино', 'Группа крови'],['Кино', 'Звезда по имени Солнце'],
-  ['ДДТ', 'Осень'],['ДДТ', 'Что такое осень'],
-  ['Сплин', 'Выхода нет'],['Сплин', 'Романс'],
-  ['Мумий Тролль', 'Владивосток 2000'],['Мумий Тролль', 'Утекай'],
-  ['Каспийский Груз', 'Табак'],['Каспийский Груз', 'Золото'],
-  ['Гуф', 'Моя игра'],['Гуф', '100 строк'],
-  ['Баста', 'Выпускной'],['Баста', 'ЧК (Человек и Кот)'],
-  ['Noize MC', 'Устрой дестрой'],['Noize MC', 'Сопротивление'],
-  ['Anacondaz', 'Моя жизнь'],['Anacondaz', 'Свобода'],
-  ['Элджей', 'Розовое вино'],['Элджей', '360'],
-  ['Big Baby Tape', 'Gimme the Loot'],['Big Baby Tape', '99 Problems']
+  ['Тимати', 'Где ты, где я'],['Тимати', 'В клубе']
 ];
 
 // Базовые новости для ленты, чтобы не было пусто
