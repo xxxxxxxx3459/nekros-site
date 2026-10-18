@@ -602,7 +602,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v34';
+const STORAGE_KEY = 'sunset_user_v35';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -665,13 +665,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v34';
-const GROUPS_KEY = 'sunset_groups_v34';
-const CHANNELS_KEY = 'sunset_channels_v34';
-const POSTS_KEY = 'sunset_posts_v34';
-const LIKES_KEY = 'sunset_likes_v34';
-const STORIES_KEY = 'sunset_stories_v34';
-const GAMES_KEY = 'sunset_games_v34';
+const CHATS_KEY = 'sunset_chats_v35';
+const GROUPS_KEY = 'sunset_groups_v35';
+const CHANNELS_KEY = 'sunset_channels_v35';
+const POSTS_KEY = 'sunset_posts_v35';
+const LIKES_KEY = 'sunset_likes_v35';
+const STORIES_KEY = 'sunset_stories_v35';
+const GAMES_KEY = 'sunset_games_v35';
 
 let currentUser = null;
 let chats = {};
@@ -777,7 +777,14 @@ const SONGS = [
   ['Кино', 'Группа крови'],['Кино', 'Звезда по имени Солнце'],
   ['ДДТ', 'Осень'],['ДДТ', 'Что такое осень'],
   ['Сплин', 'Выхода нет'],['Сплин', 'Романс'],
-  ['Мумий Тролль', 'Владивосток 2000'],['Мумий Тролль', 'Утекай']
+  ['Мумий Тролль', 'Владивосток 2000'],['Мумий Тролль', 'Утекай'],
+  ['Каспийский Груз', 'Табак'],['Каспийский Груз', 'Золото'],
+  ['Гуф', 'Моя игра'],['Гуф', '100 строк'],
+  ['Баста', 'Выпускной'],['Баста', 'ЧК (Человек и Кот)'],
+  ['Noize MC', 'Устрой дестрой'],['Noize MC', 'Сопротивление'],
+  ['Anacondaz', 'Моя жизнь'],['Anacondaz', 'Свобода'],
+  ['Элджей', 'Розовое вино'],['Элджей', '360'],
+  ['Big Baby Tape', 'Gimme the Loot'],['Big Baby Tape', '99 Problems']
 ];
 
 // Базовые новости для ленты, чтобы не было пусто
@@ -888,6 +895,7 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
 /* ============ МУЗЫКА ============ */
 function renderMusic() {
     const el = document.getElementById('musicList');
+    if (!el) return;
     el.innerHTML = '';
     SONGS.forEach((s, i) => {
         const d = document.createElement('div');
@@ -1580,6 +1588,7 @@ function savePostsIfMine(p) {
 /* ============ ИГРЫ ============ */
 function renderGames() {
     const grid = document.getElementById('gamesGrid');
+    if (!grid) return;
     grid.innerHTML = '';
 
     const games = [
