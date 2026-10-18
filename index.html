@@ -246,9 +246,6 @@
     appearance: none; -webkit-appearance: none;
   }
   .status-select option { background: #2a1a35; color: #fff; }
-  .stats-box { background: rgba(255,255,255,0.08); padding: 16px; border-radius: 16px; margin-bottom: 20px; font-size: 14px; border: 1px solid rgba(255,255,255,0.1); }
-  .stats-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-  .stats-value { font-weight: 700; color: #ffb380; }
   .profile-action-btn {
       width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px;
       background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -262,7 +259,6 @@
   .viewer-info { flex: 1; }
   .viewer-name { font-size: 14px; font-weight: 600; color: #fff; }
   .viewer-time { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px;}
-  .viewer-reaction { font-size: 24px; }
   .invite-btn { background: rgba(255,140,66,0.2); border: 1px solid rgba(255,140,66,0.5); color: #ffb380; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
   .promo-card { margin: 12px 16px; padding: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
@@ -298,13 +294,18 @@
 
   .turbo-bar-container {
       position: absolute; bottom: 20px; left: 20px;
-      width: 150px; height: 20px; background: rgba(0,0,0,0.6);
-      border: 2px solid #555; border-radius: 10px; overflow: hidden;
-      display: none; z-index: 15;
+      width: 180px; height: 24px; background: rgba(0,0,0,0.7);
+      border: 2px solid #ff8c42; border-radius: 12px; overflow: hidden;
+      display: none; z-index: 15; box-shadow: 0 0 12px rgba(255,140,66,0.4);
   }
   .turbo-bar-fill {
-      height: 100%; width: 0%; background: linear-gradient(90deg, #ff8c42, #ffd700);
-      transition: width 0.2s;
+      height: 100%; width: 0%; background: linear-gradient(90deg, #ff8c42, #ffd700, #fff);
+      transition: width 0.3s; box-shadow: 0 0 10px #ffd700;
+  }
+  .turbo-bar-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 10px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px #000;
+      pointer-events: none; letter-spacing: 1px;
   }
   .turbo-btn {
       position: absolute; bottom: 20px; right: 20px;
@@ -421,11 +422,9 @@
         </div>
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">⭐</span><span><b>Статус Administrator</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице для закрепления постов, групп, каналов</span></div>
-          <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц с продвижением</b></span></div>
-          <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
-          <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 300%</b> (до 300 тыс. человек в год)</span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>822 просмотров в день с продвижением</b></span></div>
+          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице</span></div>
+          <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц</b></span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 300%</b></span></div>
         </div>
         <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="1800">Купить за 1 800 ₽ / год</button>
       </div>
@@ -440,11 +439,9 @@
         </div>
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">💎</span><span><b>Статус Master</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">📌</span><span><b>8 разделов</b> на твоей странице для продвижения своих каналов, групп сообществ</span></div>
-          <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты с продвижением</b></span></div>
-          <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества и каналы <b>видны всем</b></span></div>
-          <div class="feat"><span class="feat-icon">🚀</span><span>Продвижение на <b>1000%</b> (до 1 млн человек в год)</span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>2740 просмотров в день с продвижением</b></span></div>
+          <div class="feat"><span class="feat-icon">📌</span><span><b>8 разделов</b> на странице</span></div>
+          <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 1000%</b></span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
       </div>
@@ -470,11 +467,9 @@
         <div class="name" id="chatName"></div>
         <div class="status" id="chatStatus">в сети</div>
       </div>
-      
       <button class="icon-btn" id="chatMembersBtn" style="display:none; font-size:20px; background:transparent; border:none;">👥</button>
       <button class="icon-btn" id="addParticipantsBtn" style="display:none; font-size:20px; background:transparent; border:none;">➕</button>
       <button class="icon-btn" id="deleteChatBtn" style="display:none; font-size:20px; background:transparent; border:none; color:#ff5e62;">🗑️</button>
-      <button class="chat-menu" id="chatMenuBtn">⋯</button>
     </div>
     <div class="chat-body" id="chatBody"></div>
     <div class="chat-input-bar">
@@ -490,7 +485,7 @@
     <div class="modal-title">Создать</div>
     <div class="modal-sub">Выбери что хочешь сделать</div>
     <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Текст, фото и музыка</div></div>
-    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты (бесплатно)</div></div>
+    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты</div></div>
     <div class="modal-option" data-action="group"><div class="opt-title">👥 Группа</div><div class="opt-desc">Создать сообщество</div></div>
     <div class="modal-option" data-action="community"><div class="opt-title">🌍 Сообщество</div><div class="opt-desc">Глобальное сообщество</div></div>
     <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Трансляция постов</div></div>
@@ -503,16 +498,12 @@
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новый пост</div>
     <div class="modal-sub" id="formSub">Поделитесь чем-нибудь</div>
-    
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40" style="display:none;">
-    
-    <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь, что у вас нового?"></textarea>
-    
+    <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь..."></textarea>
     <div id="postMediaFields" style="display:none;">
-      <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото (URL) - необязательно">
-      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (URL) - только для Prime">
+      <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото (URL)">
+      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (URL)">
     </div>
-
     <button class="modal-primary" id="formSubmit">Опубликовать</button>
     <button class="modal-close" id="formCancel">Отмена</button>
   </div>
@@ -533,13 +524,13 @@
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Добавить участников</div>
     <div class="modal-sub">Поиск людей по имени</div>
-    <input type="text" class="modal-input" id="searchInviteInput" placeholder="Введите имя..." style="margin-bottom: 10px;">
+    <input type="text" class="modal-input" id="searchInviteInput" placeholder="Введите имя...">
     <div id="participantsList" style="margin-top: 10px; max-height: 45vh; overflow-y: auto;"></div>
     <button class="modal-close" data-close="addParticipantsModal">Закрыть</button>
   </div>
 </div>
 
-<!-- МОДАЛКА УПРАВЛЕНИЯ УЧАСТНИКАМИ (УДАЛЕНИЕ) -->
+<!-- МОДАЛКА УПРАВЛЕНИЯ УЧАСТНИКАМИ -->
 <div class="modal" id="manageMembersModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Участники</div>
@@ -549,7 +540,7 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ПРОФИЛЯ (ДЛЯ ЧУЖИХ) -->
+<!-- МОДАЛКА ПУБЛИЧНОГО ПРОФИЛЯ -->
 <div class="modal" id="publicProfileModal">
   <div class="modal-card" style="max-height: 90vh;">
     <div style="display:flex; align-items:center; gap:16px; margin-bottom: 20px;">
@@ -566,49 +557,31 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ (НАСТРОЙКИ + СТАТУС) -->
+<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Мой профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
-    
-    <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить фото профиля</button>
-
-    <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Выберите ваш статус:</label>
+    <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить цвет профиля</button>
+    <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
     <select class="status-select" id="myStatusSelect">
         <option value="в сети">в сети</option>
         <option value="был(а) в сети недавно">был(а) в сети недавно</option>
         <option value="год назад">год назад</option>
         <option value="2 года назад">2 года назад</option>
         <option value="3 года назад">3 года назад</option>
-        <option value="4 года назад">4 года назад</option>
-        <option value="5 лет назад">5 лет назад</option>
-        <option value="6 лет назад">6 лет назад</option>
     </select>
-
-    <div id="profileContent"></div>
     <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
 
-<!-- МОДАЛКА ВЫХОДА ИЗ АККАУНТА -->
+<!-- МОДАЛКА ВЫХОДА -->
 <div class="modal" id="logoutModal">
   <div class="modal-card">
     <div class="modal-title">Выйти из аккаунта?</div>
-    <div class="modal-sub">Вы уверены, что хотите выйти?</div>
-    
-    <button class="modal-primary" id="confirmLogoutBtn" style="background:#ff5e62; margin-bottom:10px; padding: 16px; font-weight: 700;">Выйти</button>
+    <div class="modal-sub">Вы уверены?</div>
+    <button class="modal-primary" id="confirmLogoutBtn" style="background:#ff5e62; margin-bottom:10px;">Выйти</button>
     <button class="modal-close" data-close="logoutModal">Отмена</button>
-  </div>
-</div>
-
-<!-- МОДАЛКА ЗРИТЕЛЕЙ -->
-<div class="modal" id="storyViewersModal">
-  <div class="modal-card" style="max-height: 85vh;">
-    <div class="modal-title">Зрители истории</div>
-    <div class="modal-sub" id="storyViewersCount"></div>
-    <div id="storyViewersList" style="margin-top: 10px;"></div>
-    <button class="modal-close" data-close="storyViewersModal">Закрыть</button>
   </div>
 </div>
 
@@ -623,20 +596,16 @@
 </div>
 
 <script>
-/* ============ ЗВУКИ (Web Audio API) ============ */
+/* ============ ЗВУКИ ============ */
 let audioCtx = null;
 function playSound(type) {
     try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
+        osc.connect(gain); gain.connect(audioCtx.destination);
         const now = audioCtx.currentTime;
-        
         if (type === 'laser') {
             osc.type = 'sine';
             osc.frequency.setValueAtTime(800, now);
@@ -661,10 +630,10 @@ function playSound(type) {
         } else if (type === 'gameover') {
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(400, now);
-            osc.frequency.exponentialRampToValueAtTime(50, now + 0.5);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-            osc.start(); osc.stop(now + 0.5);
+            osc.frequency.exponentialRampToValueAtTime(50, now + 1.2);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+            osc.start(); osc.stop(now + 1.2);
         } else if (type === 'win') {
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(400, now);
@@ -673,12 +642,19 @@ function playSound(type) {
             gain.gain.setValueAtTime(0.1, now);
             gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
             osc.start(); osc.stop(now + 0.4);
+        } else if (type === 'turbo') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, now);
+            osc.frequency.exponentialRampToValueAtTime(2000, now + 0.4);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.start(); osc.stop(now + 0.4);
         }
-    } catch(e) { console.log('Audio error', e); }
+    } catch(e) {}
 }
 
 /* ============ РЕГИСТРАЦИЯ ============ */
-const STORAGE_KEY = 'sunset_user_v45';
+const STORAGE_KEY = 'sunset_user_v50';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -706,32 +682,20 @@ regName.addEventListener('input', updateAvatarLetter);
 
 regBtn.addEventListener('click', function() {
   const n = (regName.value || '').trim();
-  
-  if (n.length < 2) { 
-    regError.style.display = 'block';
-    return; 
-  }
-  
+  if (n.length < 2) { regError.style.display = 'block'; return; }
   regError.style.display = 'none';
   
   let isAdmin = false;
   let premiumLevel = null;
   const lowerName = n.toLowerCase();
-  
-  if (lowerName === 'admin') {
-    isAdmin = true;
-    premiumLevel = 'sunset';
-  } else if (lowerName === 'boss') {
-    isAdmin = true;
-    premiumLevel = 'prime';
-  }
+  if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
+  else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
 
   currentUser = { 
       name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
       premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
       profileViews: 0, subscribers: 0, pinnedIds: []
   };
-  
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
   startApp();
 });
@@ -740,60 +704,49 @@ regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
 
-/* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v45';
-const GROUPS_KEY = 'sunset_groups_v45';
-const CHANNELS_KEY = 'sunset_channels_v45';
-const POSTS_KEY = 'sunset_posts_v45';
-const LIKES_KEY = 'sunset_likes_v45';
-const STORIES_KEY = 'sunset_stories_v45';
-const GAMES_KEY = 'sunset_games_v45';
+/* ============ ДАННЫЕ ============ */
+const CHATS_KEY = 'sunset_chats_v50';
+const GROUPS_KEY = 'sunset_groups_v50';
+const CHANNELS_KEY = 'sunset_channels_v50';
+const POSTS_KEY = 'sunset_posts_v50';
+const LIKES_KEY = 'sunset_likes_v50';
+const GAMES_KEY = 'sunset_games_v50';
 
 let currentUser = null;
-let chats = {};
-let groups = [];
-let channels = [];
-let posts = [];
-let userStories = [];
-let userLikes = [];
-let activeChat = null;
-let currentSearchTab = 'people';
-let pendingAction = null;
+let chats = {}, groups = [], channels = [], posts = [], userLikes = [];
+let activeChat = null, currentSearchTab = 'people';
 
 let gameState = {
     shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, unlocked: 1 },
-    runner: { level: 1, unlocked: 1 }
+    runner: { unlocked: 1 }
 };
 
-const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Арсений','Иван','Денис','Евгений','Даниил','Тимур','Владислав','Игорь','Олег','Павел','Руслан'];
-const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Арина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия','Кристина','Людмила','Галина','Надежда'];
-const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Егоров','Павлов','Козлов','Степанов','Николаев','Орлов','Андреев','Макаров','Никитин','Захаров','Зайцев','Соловьёв','Борисов','Яковлев','Григорьев','Романов','Воробьёв','Сергеев','Кузьмин','Фролов','Александров','Дмитриев','Королёв','Гусев','Киселёв','Ильин','Максимов','Поляков','Сорокин','Виноградов','Ковалёв','Белов','Медведев','Антонов','Тарасов'];
+const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Иван','Денис','Евгений','Даниил','Тимур'];
+const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия'];
+const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Козлов','Степанов','Николаев','Орлов','Андреев'];
 
 function getRandomFullName() {
     const isMale = Math.random() > 0.5;
     const firstName = isMale ? rnd(FIRST_NAMES_M) : rnd(FIRST_NAMES_F);
     const lastName = rnd(LAST_NAMES);
-    const finalLastName = isMale ? lastName : (lastName.endsWith('ий') ? lastName.replace('ий', 'ая') : lastName + 'а');
+    const finalLastName = isMale ? lastName : lastName + 'а';
     return `${firstName} ${finalLastName}`;
 }
 
 const ALL_USERS = [];
-for(let i=0; i<500; i++) {
-    ALL_USERS.push({ 
-        id: 'u_' + i, name: getRandomFullName(), color: rnd(AVATAR_COLORS), 
-        emoji: '', type: 'person', lastSeen: rnd(['в сети', 'был(а) в сети недавно', 'год назад'])
-    });
+for(let i=0; i<300; i++) {
+    const name = getRandomFullName();
+    ALL_USERS.push({ id: 'u_' + i, name: name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'person', lastSeen: rnd(['в сети', 'был(а) в сети недавно', 'год назад']) });
 }
-ALL_USERS.forEach(u => u.emoji = u.name.charAt(0));
 
-const PEOPLE_NAMES = [
-  ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
-  ['dmitry', 'Дмитрий', '#4a90e2', 'Д'],['anna', 'Анна', '#ff5e8c', 'А'],
-  ['ivan', 'Иван', '#4ecdc4', 'И'],['elena', 'Елена', '#f5a623', 'Е']
+const PEOPLE = [
+  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A', type: 'person', lastSeen: 'в сети' },
+  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M', type: 'person', lastSeen: 'в сети' },
+  { id: 'dmitry', name: 'Дмитрий', color: '#4a90e2', emoji: 'Д', type: 'person', lastSeen: 'в сети' },
+  { id: 'anna', name: 'Анна', color: '#ff5e8c', emoji: 'А', type: 'person', lastSeen: 'был(а) в сети недавно' },
+  { id: 'ivan', name: 'Иван', color: '#4ecdc4', emoji: 'И', type: 'person', lastSeen: 'в сети' },
+  { id: 'elena', name: 'Елена', color: '#f5a623', emoji: 'Е', type: 'person', lastSeen: 'год назад' }
 ];
-const PEOPLE = PEOPLE_NAMES.map(p => ({ 
-    id: p[0], name: p[1], color: p[2], emoji: p[3], type: 'person', lastSeen: 'в сети'
-}));
 
 const DEFAULT_COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community', members: [] },
@@ -845,26 +798,25 @@ const SONGS = [
 ];
 
 const BOT_POSTS = [
-    { id: 'bp1', author: 'Мария', color: '#a06cd5', text: 'Всем привет! Только что вернулась из спортзала, чувствую себя просто супер 💪 Кто еще сегодня тренировался?', time: '10 минут назад', views: 45, likes: 12, reposts: 0, comments: [] },
-    { id: 'bp2', author: 'Дмитрий', color: '#4a90e2', text: 'Сделал себе пасту с креветками на ужин. Получилось нереально вкусно 🍝 Обожаю готовить после работы.', time: '25 минут назад', views: 82, likes: 24, reposts: 1, comments: [] },
-    { id: 'bp3', author: 'Анна', color: '#ff5e8c', text: 'Закат сегодня просто невероятный 🌅 Сделала пару кадров на телефон. Люблю такие спокойные вечера.', time: '1 час назад', views: 120, likes: 56, reposts: 3, comments: [] },
-    { id: 'bp4', author: 'Алекс', color: '#ff6b6b', text: 'Слушаю новый альбом и пью кофе ☕ Идеальное воскресенье. Что слушаете вы?', time: '2 часа назад', views: 67, likes: 18, reposts: 0, comments: [] },
-    { id: 'bp5', author: 'Елена', color: '#f5a623', text: 'Погуляла в парке, погода сегодня шикарная. Успела покормить белок 🐿️', time: '3 часа назад', views: 104, likes: 31, reposts: 2, comments: [] }
+    { id: 'bp1', author: 'Мария', color: '#a06cd5', text: 'Всем привет! Только что вернулась из спортзала 💪', time: '10 минут назад', views: 45, likes: 12, reposts: 0, comments: [] },
+    { id: 'bp2', author: 'Дмитрий', color: '#4a90e2', text: 'Сделал пасту с креветками на ужин 🍝', time: '25 минут назад', views: 82, likes: 24, reposts: 1, comments: [] },
+    { id: 'bp3', author: 'Анна', color: '#ff5e8c', text: 'Закат сегодня просто невероятный 🌅', time: '1 час назад', views: 120, likes: 56, reposts: 3, comments: [] },
+    { id: 'bp4', author: 'Алекс', color: '#ff6b6b', text: 'Слушаю новый альбом и пью кофе ☕', time: '2 часа назад', views: 67, likes: 18, reposts: 0, comments: [] },
+    { id: 'bp5', author: 'Елена', color: '#f5a623', text: 'Погуляла в парке, покормила белок 🐿️', time: '3 часа назад', views: 104, likes: 31, reposts: 2, comments: [] }
 ];
 
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+/* ============ СТАРТ ============ */
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
-  
   document.getElementById('promptAvatar').textContent = currentUser.emoji;
   document.getElementById('promptAvatar').style.background = currentUser.color;
-
   updatePremiumBadge();
 
   try {
@@ -873,7 +825,6 @@ function startApp() {
     channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
     posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
     userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
-    userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
     const savedGames = JSON.parse(localStorage.getItem(GAMES_KEY) || 'null');
     if (savedGames) {
         if(savedGames.shooter && !savedGames.shooter.unlocked) savedGames.shooter.unlocked = 1;
@@ -888,13 +839,6 @@ function startApp() {
   renderMusic(); 
   renderGames();
   renderMyPage(); 
-  simulatePromotion();
-
-  setInterval(() => {
-    if (document.getElementById('tab-feed').classList.contains('active')) {
-        renderStories();
-    }
-  }, 60000);
 }
 
 function updatePremiumBadge() {
@@ -902,7 +846,6 @@ function updatePremiumBadge() {
   const old = av.querySelector('.premium-badge');
   if (old) old.remove();
   const st = document.getElementById('myStatusLabel');
-  
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
     st.textContent = '💎 Master'; 
@@ -933,7 +876,6 @@ document.querySelectorAll('.nav-btn').forEach(b => {
     b.classList.add('active');
     document.getElementById('tab-' + tab).classList.add('active');
     document.getElementById('content').scrollTop = 0;
-
     if (tab === 'mypage') renderMyPage();
     if (tab === 'games') renderGames();
     if (tab === 'music') renderMusic(); 
@@ -956,21 +898,12 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
 function renderMusic() {
     const el = document.getElementById('musicList');
     if (!el) return;
-    
     let html = '';
     SONGS.forEach((s, i) => {
-        html += `
-            <div class="track" onclick="alert('🎵 Воспроизведение: ${s[0]} - ${s[1]}')">
-                <div class="track-left">
-                    <div class="track-num">${i + 1}</div>
-                    <div class="track-info">
-                        <div class="track-name">${esc(s[1])}</div>
-                        <div class="track-artist">${esc(s[0])}</div>
-                    </div>
-                </div>
-                <div class="track-play">▶</div>
-            </div>
-        `;
+        html += `<div class="track" onclick="alert('🎵 Воспроизведение: ${esc(s[0])} - ${esc(s[1])}')">
+                <div class="track-left"><div class="track-num">${i + 1}</div>
+                    <div class="track-info"><div class="track-name">${esc(s[1])}</div><div class="track-artist">${esc(s[0])}</div></div>
+                </div><div class="track-play">▶</div></div>`;
     });
     el.innerHTML = html;
 }
@@ -980,36 +913,20 @@ function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
   list.innerHTML = '';
-  
   let items = [];
   if (tab === 'people') items = PEOPLE;
   else if (tab === 'groups') items = groups.map(g => ({...g, type: 'group'}));
   else if (tab === 'communities') items = [...DEFAULT_COMMUNITIES, ...groups.filter(g => g.type === 'community')];
   else if (tab === 'channels') items = channels.map(c => ({...c, type: 'channel'}));
-
   if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
-  
-  if (!items.length) { 
-      list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div><p>Здесь пока пусто.<br>Нажмите <b>+</b> чтобы создать!</p></div>`; 
-      return; 
-  }
-
+  if (!items.length) { list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div><p>Здесь пока пусто.</p></div>`; return; }
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'card-item';
     let badge = (item.type === 'group' || item.type === 'community') ? '<span class="badge open">🌍</span>' : '';
-    
-    let subText = '';
-    if (item.type === 'person') {
-        subText = item.lastSeen;
-    } else {
-        const count = item.members ? item.members.length : 0;
-        subText = `${count} участников`;
-    }
-
+    let subText = item.type === 'person' ? item.lastSeen : `${(item.members || []).length} участников`;
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
       <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
-    
     div.addEventListener('click', () => openChat(item));
     list.appendChild(div);
   });
@@ -1024,11 +941,9 @@ function openChat(item) {
   document.getElementById('chatName').textContent = item.name;
   document.getElementById('chatAvatar').textContent = item.emoji;
   document.getElementById('chatAvatar').style.background = item.color;
-  
   document.getElementById('chatName').onclick = () => {
       if (activeChat && activeChat.type === 'person') openPublicProfile(activeChat);
   };
-  
   const statusEl = document.getElementById('chatStatus');
   if (item.type === 'person') {
       statusEl.textContent = item.lastSeen;
@@ -1040,26 +955,15 @@ function openChat(item) {
       if (!item.members) item.members = [];
       statusEl.textContent = `${item.members.length} участников`;
       statusEl.className = 'status online';
-      
       document.getElementById('addParticipantsBtn').style.display = 'flex';
       document.getElementById('chatMembersBtn').style.display = 'flex';
-      
-      if (item.owner === currentUser.name) {
-          document.getElementById('deleteChatBtn').style.display = 'flex';
-      } else {
-          document.getElementById('deleteChatBtn').style.display = 'none';
-      }
+      document.getElementById('deleteChatBtn').style.display = item.owner === currentUser.name ? 'flex' : 'none';
   }
-  
   chatEl.classList.add('show');
   chatBody.innerHTML = '';
   const msgs = chats[item.id] || [];
-  if (!msgs.length) {
-    chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
-  } else {
-    msgs.forEach(m => addMsgToDOM(m));
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
+  if (!msgs.length) chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
+  else { msgs.forEach(m => addMsgToDOM(m)); chatBody.scrollTop = chatBody.scrollHeight; }
 }
 
 function saveGroups() {
@@ -1087,37 +991,25 @@ function nowTime() {
 document.getElementById('chatSend').addEventListener('click', () => {
   const t = document.getElementById('chatInput').value.trim();
   if (!t || !activeChat) return;
-  
   const msg = { text: t, time: nowTime(), from: 'me' };
   if (!chats[activeChat.id]) chats[activeChat.id] = [];
   chats[activeChat.id].push(msg);
   try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-
   const emptyBlock = chatBody.querySelector('.empty-state');
   if (emptyBlock) emptyBlock.remove();
-
   addMsgToDOM(msg);
   document.getElementById('chatInput').value = '';
   chatBody.scrollTop = chatBody.scrollHeight;
-
   const statusEl = document.getElementById('chatStatus');
-  if (activeChat.type === 'person') {
-      statusEl.textContent = 'печатает...';
-      statusEl.className = 'status typing';
-  }
-
+  if (activeChat.type === 'person') { statusEl.textContent = 'печатает...'; statusEl.className = 'status typing'; }
   setTimeout(() => {
     const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
     try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
     if (activeChat) { 
-        if (activeChat.type === 'person') {
-            statusEl.textContent = activeChat.lastSeen;
-            statusEl.className = 'status ' + (activeChat.lastSeen === 'в сети' ? 'online' : 'offline');
-        }
-        addMsgToDOM(reply); 
-        chatBody.scrollTop = chatBody.scrollHeight; 
+        if (activeChat.type === 'person') { statusEl.textContent = activeChat.lastSeen; statusEl.className = 'status ' + (activeChat.lastSeen === 'в сети' ? 'online' : 'offline'); }
+        addMsgToDOM(reply); chatBody.scrollTop = chatBody.scrollHeight; 
     }
   }, 2500);
 });
@@ -1126,10 +1018,7 @@ document.getElementById('chatInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('chatSend').click();
 });
 
-document.getElementById('backBtn').addEventListener('click', () => {
-  chatEl.classList.remove('show');
-  activeChat = null;
-});
+document.getElementById('backBtn').addEventListener('click', () => { chatEl.classList.remove('show'); activeChat = null; });
 
 function generateReply(text) {
   const t = text.toLowerCase();
@@ -1142,29 +1031,18 @@ function generateReply(text) {
 /* ============ УДАЛЕНИЕ ЧАТА ============ */
 document.getElementById('deleteChatBtn').addEventListener('click', () => {
     if (!activeChat) return;
-    if (activeChat.owner !== currentUser.name) {
-        alert('Вы не можете удалить этот чат, так как вы не его владелец!');
-        return;
-    }
-    if (confirm(`Вы уверены, что хотите удалить "${activeChat.name}"? Это действие необратимо.`)) {
-        if (activeChat.type === 'channel') {
-            channels = channels.filter(c => c.id !== activeChat.id);
-            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-        } else {
-            groups = groups.filter(g => g.id !== activeChat.id);
-            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-        }
+    if (activeChat.owner !== currentUser.name) { alert('Вы не владелец!'); return; }
+    if (confirm(`Удалить "${activeChat.name}"?`)) {
+        if (activeChat.type === 'channel') { channels = channels.filter(c => c.id !== activeChat.id); try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} }
+        else { groups = groups.filter(g => g.id !== activeChat.id); try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} }
         delete chats[activeChat.id];
         try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-        chatEl.classList.remove('show');
-        activeChat = null;
-        renderChatsList(currentSearchTab, '');
-        renderMyPage();
-        alert('Чат успешно удален!');
+        chatEl.classList.remove('show'); activeChat = null;
+        renderChatsList(currentSearchTab, ''); renderMyPage();
     }
 });
 
-/* ============ ПРИГЛАШЕНИЕ И УДАЛЕНИЕ УЧАСТНИКОВ ============ */
+/* ============ ДОБАВЛЕНИЕ УЧАСТНИКОВ ============ */
 document.getElementById('addParticipantsBtn').addEventListener('click', () => {
     if (!activeChat) return;
     document.getElementById('searchInviteInput').value = '';
@@ -1174,36 +1052,26 @@ document.getElementById('addParticipantsBtn').addEventListener('click', () => {
 
 document.getElementById('searchInviteInput').addEventListener('input', (e) => {
     const q = e.target.value.trim().toLowerCase();
-    const filtered = ALL_USERS.filter(u => u.name.toLowerCase().includes(q));
-    renderParticipantsList(filtered);
+    renderParticipantsList(ALL_USERS.filter(u => u.name.toLowerCase().includes(q)));
 });
 
 function renderParticipantsList(users) {
     const list = document.getElementById('participantsList');
     list.innerHTML = '';
-    if (users.length === 0) {
-        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">Никого не найдено</div>';
-        return;
-    }
+    if (users.length === 0) { list.innerHTML = '<div style="text-align:center; padding:20px; opacity:0.5;">Никого не найдено</div>'; return; }
     users.slice(0, 50).forEach(user => {
         const div = document.createElement('div');
         div.className = 'viewer-item';
-        div.innerHTML = `
-            <div class="viewer-avatar" style="background:${user.color}">${user.emoji}</div>
+        div.innerHTML = `<div class="viewer-avatar" style="background:${user.color}">${user.emoji}</div>
             <div class="viewer-info"><div class="viewer-name">${user.name}</div></div>
-            <button class="invite-btn">Пригласить</button>
-        `;
+            <button class="invite-btn">Пригласить</button>`;
         const btn = div.querySelector('.invite-btn');
         btn.addEventListener('click', () => {
-            btn.textContent = 'Приглашен';
-            btn.style.color = '#86efac';
-            btn.style.borderColor = 'transparent';
-            btn.style.background = 'transparent';
-            btn.disabled = true;
+            btn.textContent = 'Приглашен'; btn.style.color = '#86efac'; btn.disabled = true;
             if (!activeChat.members) activeChat.members = [];
             if (!activeChat.members.find(m => m.id === user.id)) activeChat.members.push(user);
             saveGroups();
-            const sysMsg = { text: `👤 ${user.name} присоединился к чату`, time: nowTime(), from: 'system' };
+            const sysMsg = { text: `👤 ${user.name} присоединился`, time: nowTime(), from: 'system' };
             if (!chats[activeChat.id]) chats[activeChat.id] = [];
             chats[activeChat.id].push(sysMsg);
             try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
@@ -1214,81 +1082,20 @@ function renderParticipantsList(users) {
     });
 }
 
-document.getElementById('chatMembersBtn').addEventListener('click', () => {
-    if (!activeChat) return;
-    const list = document.getElementById('manageMembersList');
-    list.innerHTML = '';
-    document.getElementById('manageMembersCount').textContent = `Всего участников: ${activeChat.members ? activeChat.members.length : 0}`;
-    if (!activeChat.members || activeChat.members.length === 0) {
-        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">В группе пока никого нет</div>';
-    } else {
-        activeChat.members.forEach((member, index) => {
-            const div = document.createElement('div');
-            div.className = 'viewer-item';
-            div.innerHTML = `
-                <div class="viewer-avatar" style="background:${member.color}">${member.emoji}</div>
-                <div class="viewer-info"><div class="viewer-name">${member.name}</div></div>
-                <button style="background:transparent; border:none; color:#ff5e62; font-size:20px; cursor:pointer; display:${activeChat.owner === currentUser.name ? 'block' : 'none'};">❌</button>
-            `;
-            const removeBtn = div.querySelector('button');
-            if (removeBtn) {
-                removeBtn.addEventListener('click', () => {
-                    if (activeChat.owner !== currentUser.name) { alert('Вы не можете удалять участников из этого чата!'); return; }
-                    activeChat.members.splice(index, 1);
-                    saveGroups();
-                    document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
-                    const sysMsg = { text: `👤 ${member.name} покинул чат`, time: nowTime(), from: 'system' };
-                    if (!chats[activeChat.id]) chats[activeChat.id] = [];
-                    chats[activeChat.id].push(sysMsg);
-                    try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-                    addMsgToDOM(sysMsg);
-                    chatBody.scrollTop = chatBody.scrollHeight;
-                    document.getElementById('chatMembersBtn').click();
-                });
-            }
-            list.appendChild(div);
-        });
-    }
-    document.getElementById('manageMembersModal').classList.add('show');
-});
-
 /* ============ ПУБЛИЧНЫЙ ПРОФИЛЬ ============ */
 function openPublicProfile(person) {
     document.getElementById('pubProfileName').textContent = person.name;
     document.getElementById('pubProfileStatus').textContent = person.lastSeen || 'в сети';
     const av = document.getElementById('pubProfileAvatar');
-    av.textContent = person.emoji;
-    av.style.background = person.color;
-    const pubPinned = document.getElementById('pubPinnedSections');
-    pubPinned.innerHTML = '';
-    const isPrem = Math.random() > 0.5;
-    const limit = isPrem ? (Math.random() > 0.5 ? 8 : 3) : 0;
-    if (limit === 0) {
-        pubPinned.innerHTML = '<div class="pinned-empty">Нет закрепленных разделов</div>';
-    } else {
-        for (let i = 0; i < limit; i++) {
-            const div = document.createElement('div');
-            div.className = 'pinned-item';
-            const rType = rnd(['group', 'channel']);
-            div.innerHTML = `<div class="pinned-icon">${rType === 'channel' ? '📢' : '👥'}</div><div class="pinned-name">${esc(person.name.split(' ')[0])} ${rType === 'channel' ? 'TV' : 'Chat'}</div>`;
-            div.addEventListener('click', () => alert('Это чужой раздел, вы можете только подписаться на него!'));
-            pubPinned.appendChild(div);
-        }
-    }
+    av.textContent = person.emoji; av.style.background = person.color;
+    document.getElementById('pubPinnedSections').innerHTML = '<div class="pinned-empty">Нет закрепленных разделов</div>';
     const subBtn = document.getElementById('pubSubscribeBtn');
-    subBtn.textContent = 'Подписаться';
-    subBtn.style.color = '#fff';
-    subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
-    subBtn.onclick = () => {
-        subBtn.textContent = 'Вы подписаны';
-        subBtn.style.background = 'rgba(255,255,255,0.1)';
-        subBtn.style.color = '#86efac';
-        alert(`Вы подписались на ${person.name}!`);
-    };
+    subBtn.textContent = 'Подписаться'; subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)'; subBtn.style.color = '#fff';
+    subBtn.onclick = () => { subBtn.textContent = 'Вы подписаны'; subBtn.style.background = 'rgba(255,255,255,0.1)'; subBtn.style.color = '#86efac'; };
     document.getElementById('publicProfileModal').classList.add('show');
 }
 
-/* ============ ЛЕНТА (ГЛАВНАЯ) ============ */
+/* ============ ЛЕНТА ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   if(el) {
@@ -1306,21 +1113,12 @@ function buildPostEl(p) {
   const hasLiked = userLikes.includes(p.id);
   let mediaHtml = '';
   if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
-  if (p.music) mediaHtml += `
-    <div class="post-music">
-      <div class="post-music-icon">🎵</div>
-      <div class="post-music-info">
-        <div class="post-music-title">${esc(p.music.title || 'Трек')}</div>
-        <div class="post-music-artist">${esc(p.music.artist || 'Исполнитель')}</div>
-      </div>
-      <div style="color:#ff8c42; font-size:18px;">▶</div>
-    </div>`;
   div.innerHTML = `
     <div class="post-header">
       <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
       <div class="post-meta">
         <div class="post-author">${esc(p.author)}</div>
-        <div class="post-time">${p.time} · 👁️ ${p.views || Math.floor(Math.random() * 500) + 10}</div>
+        <div class="post-time">${p.time} · 👁️ ${p.views || 0}</div>
       </div>
     </div>
     <div class="post-text">${esc(p.text)}</div>
@@ -1333,44 +1131,25 @@ function buildPostEl(p) {
     <div class="post-comments" style="display:none">
       <div class="comments-list">${(p.comments || []).map(c => `<div class="comment"><span class="comment-author">${esc(c.author)}:</span> ${esc(c.text)}</div>`).join('')}</div>
       <div class="comment-input-row">
-        <input type="text" class="comment-input" placeholder="Написать комментарий...">
+        <input type="text" class="comment-input" placeholder="Написать...">
         <button class="comment-send">➤</button>
       </div>
-    </div>
-  `;
+    </div>`;
   const likeBtn = div.querySelector('.like-btn');
   likeBtn.addEventListener('click', function() {
-    if (userLikes.includes(p.id)) {
-      p.likes = Math.max(0, (p.likes || 1) - 1);
-      userLikes = userLikes.filter(id => id !== p.id);
-      this.classList.remove('liked');
-      this.innerHTML = `🤍 <span>${p.likes}</span>`;
-    } else {
-      p.likes = (p.likes || 0) + 1;
-      userLikes.push(p.id);
-      this.classList.add('liked');
-      this.innerHTML = `❤️ <span>${p.likes}</span>`;
-    }
+    if (userLikes.includes(p.id)) { p.likes = Math.max(0, (p.likes || 1) - 1); userLikes = userLikes.filter(id => id !== p.id); this.classList.remove('liked'); this.innerHTML = `🤍 <span>${p.likes}</span>`; }
+    else { p.likes = (p.likes || 0) + 1; userLikes.push(p.id); this.classList.add('liked'); this.innerHTML = `❤️ <span>${p.likes}</span>`; }
     try { localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes)); } catch(e) {}
     savePostsIfMine(p);
   });
   div.querySelector('.repost-btn').addEventListener('click', function() {
-    p.reposts = (p.reposts || 0) + 1;
-    this.innerHTML = `🔄 <span>${p.reposts}</span>`;
-    navigator.clipboard?.writeText('Ссылка на пост: https://sunset.app/post/' + p.id);
-    alert('Пост скопирован в буфер обмена!');
-    savePostsIfMine(p);
+    p.reposts = (p.reposts || 0) + 1; this.innerHTML = `🔄 <span>${p.reposts}</span>`; savePostsIfMine(p);
   });
   const cb = div.querySelector('.post-comments');
-  div.querySelector('.comment-btn').addEventListener('click', () => {
-    cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
-  });
-  const input = div.querySelector('.comment-input');
-  const send = div.querySelector('.comment-send');
-  const list = div.querySelector('.comments-list');
+  div.querySelector('.comment-btn').addEventListener('click', () => { cb.style.display = cb.style.display === 'none' ? 'block' : 'none'; });
+  const input = div.querySelector('.comment-input'), send = div.querySelector('.comment-send'), list = div.querySelector('.comments-list');
   send.addEventListener('click', () => {
-    const t = input.value.trim();
-    if (!t) return;
+    const t = input.value.trim(); if (!t) return;
     if (!p.comments) p.comments = [];
     p.comments.push({ author: currentUser.name, text: t });
     input.value = '';
@@ -1382,10 +1161,7 @@ function buildPostEl(p) {
 
 function savePostsIfMine(p) {
   const idx = posts.findIndex(x => x.id === p.id);
-  if (idx !== -1) {
-    posts[idx] = p;
-    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-  }
+  if (idx !== -1) { posts[idx] = p; try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {} }
 }
 
 /* ============ МОЯ СТРАНИЦА ============ */
@@ -1401,12 +1177,11 @@ function renderMyPage() {
     const myChannels = channels.filter(c => c.owner === currentUser.name);
     let allLinks = [...myGroups, ...myComm, ...myChannels];
     if (limit === 0) {
-        pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов здесь</div>';
+        pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов</div>';
         manageBtn.style.display = 'none';
     } else {
         manageBtn.style.display = 'block';
-        let pinnedLinks = allLinks.filter(link => currentUser.pinnedIds.includes(link.id));
-        pinnedLinks = pinnedLinks.slice(0, limit);
+        let pinnedLinks = allLinks.filter(link => currentUser.pinnedIds.includes(link.id)).slice(0, limit);
         for (let i = 0; i < limit; i++) {
             const div = document.createElement('div');
             if (i < pinnedLinks.length) {
@@ -1431,11 +1206,8 @@ function renderMyPagePosts() {
     if (!myPageList) return;
     myPageList.innerHTML = '';
     const myPosts = posts.filter(p => p.author === currentUser.name);
-    if (!myPosts.length) {
-        myPageList.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов.<br>Нажмите на плашку выше, чтобы создать!</p></div>';
-    } else {
-        myPosts.forEach(p => myPageList.appendChild(buildPostEl(p)));
-    }
+    if (!myPosts.length) myPageList.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов.</p></div>';
+    else myPosts.forEach(p => myPageList.appendChild(buildPostEl(p)));
 }
 
 function openManagePinned() {
@@ -1447,40 +1219,27 @@ function openManagePinned() {
     document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit} слотов`;
     const list = document.getElementById('managePinnedList');
     list.innerHTML = '';
-    if (allLinks.length === 0) {
-        list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">У вас пока нет созданных групп, каналов или сообществ.</div>';
-    } else {
-        allLinks.forEach(link => {
-            const isPinned = currentUser.pinnedIds.includes(link.id);
-            const div = document.createElement('div');
-            div.className = 'viewer-item';
-            let typeText = 'Группа';
-            if (link.type === 'channel') typeText = 'Канал';
-            else if (link.type === 'community') typeText = 'Сообщество';
-            div.innerHTML = `
-                <div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div>
-                <div class="viewer-info"><div class="viewer-name">${esc(link.name)}</div><div class="viewer-time">${typeText}</div></div>
-                <input type="checkbox" ${isPinned ? 'checked' : ''} style="width:20px; height:20px; accent-color:#ff8c42; cursor:pointer;">
-            `;
-            const checkbox = div.querySelector('input');
-            checkbox.addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    if (currentUser.pinnedIds.length >= limit) {
-                        e.target.checked = false;
-                        alert(`Лимит вашего тарифа: ${limit} раздела.`);
-                        return;
-                    }
-                    if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
-                } else {
-                    currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
-                }
-                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-                document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit} слотов`;
-                renderMyPage();
-            });
-            list.appendChild(div);
+    if (allLinks.length === 0) list.innerHTML = '<div style="text-align:center; padding:20px; opacity:0.5;">Нет созданных групп и каналов</div>';
+    else allLinks.forEach(link => {
+        const isPinned = currentUser.pinnedIds.includes(link.id);
+        const div = document.createElement('div');
+        div.className = 'viewer-item';
+        let typeText = link.type === 'channel' ? 'Канал' : (link.type === 'community' ? 'Сообщество' : 'Группа');
+        div.innerHTML = `<div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div>
+            <div class="viewer-info"><div class="viewer-name">${esc(link.name)}</div><div class="viewer-time">${typeText}</div></div>
+            <input type="checkbox" ${isPinned ? 'checked' : ''} style="width:20px; height:20px; accent-color:#ff8c42; cursor:pointer;">`;
+        const checkbox = div.querySelector('input');
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                if (currentUser.pinnedIds.length >= limit) { e.target.checked = false; alert(`Лимит: ${limit}`); return; }
+                if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
+            } else currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+            document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit}`;
+            renderMyPage();
         });
-    }
+        list.appendChild(div);
+    });
     document.getElementById('managePinnedModal').classList.add('show');
 }
 document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
@@ -1491,8 +1250,8 @@ function renderGames() {
     if (!grid) return;
     grid.innerHTML = '';
     const games = [
-        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: 'Сбивай метеориты и Боссов', color: '#00d4ff' },
-        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: 'Прыгай через препятствия', color: '#ff5e62' }
+        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: `Уровень ${gameState.shooter.unlocked}/800` },
+        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: `Уровень ${gameState.runner.unlocked}/800` }
     ];
     games.forEach(g => {
         const div = document.createElement('div');
@@ -1505,15 +1264,12 @@ function renderGames() {
 
 let currentGame = null;
 let gameAnimFrame = null;
-let gameLogicInterval = null;
 
 function startGame(type) {
     currentGame = type;
     document.getElementById('gameOverlay').classList.add('show');
-    playSound('laser'); 
     let title = type === 'shooter' ? '✈️ Космический Шутер' : '🟦 Квадратик';
     document.getElementById('gameTitle').textContent = title;
-    document.getElementById('gameLevelDisplay').textContent = '';
     if (type === 'shooter') openShooterMenu();
     else if (type === 'runner') openRunnerMenu();
 }
@@ -1521,9 +1277,12 @@ function startGame(type) {
 function closeGame() {
     document.getElementById('gameOverlay').classList.remove('show');
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-    if (gameLogicInterval) clearInterval(gameLogicInterval);
     currentGame = null;
     renderGames();
+}
+
+function saveGameState() {
+    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
 /* ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== */
@@ -1533,17 +1292,15 @@ function openShooterMenu() {
     area.innerHTML = `
         <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
             <h2 style="color:#00d4ff; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #00d4ff;">Космический Шутер</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Открыто уровней: ${unlocked} / 800</div>
+            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Уровень: ${unlocked} / 800</div>
             <div style="display:flex; gap:15px; margin-bottom:30px; flex-wrap:wrap; justify-content:center;">
                 <button class="game-btn" onclick="openShooterShop()" style="background:#a06cd5;">🛠 Магазин</button>
-                <button class="game-btn" onclick="initShooter(${unlocked})">▶️ Играть (Ур. ${unlocked})</button>
+                <button class="game-btn" onclick="initShooter(${unlocked})">▶️ Играть</button>
             </div>
-            <div style="color:#aaa; font-size:12px; max-width:300px; text-align:center;">
-                Каждый уровень длится 6 минут. Продержись до конца, убей Босса и открой следующий уровень!
+            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; line-height:1.5;">
+                Уровень длится 6 минут.<br>Сбивай метеориты и НЛО.<br>Турбо: 2 заряда, большой взрыв!
             </div>
-            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
-        </div>
-    `;
+        </div>`;
 }
 
 function openShooterShop() {
@@ -1559,13 +1316,12 @@ function openShooterShop() {
     area.innerHTML = `
         <div class="shop-container">
             <div class="shop-header"><span>🛠 Улучшения</span><span>${s.coins} 🪙</span></div>
-            <div class="upgrade-item"><div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Увеличивает базовый урон</p></div>${getBtn('plane', s.plane)}</div>
-            <div class="upgrade-item"><div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет за очки</p></div>${getBtn('income', s.income)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Больше урона</p></div>${getBtn('plane', s.plane)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет</p></div>${getBtn('income', s.income)}</div>
             <div class="upgrade-item"><div class="upgrade-info"><h4>⚡ Скорострельность (Ур. ${s.fireRate})</h4><p>Быстрее стреляет</p></div>${getBtn('fireRate', s.fireRate)}</div>
-            <div class="upgrade-item"><div class="upgrade-info"><h4>🚀 Турбо-снаряд (Ур. ${s.turbo})</h4><p>Быстрее копится заряд</p></div>${getBtn('turbo', s.turbo)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>🚀 Турбо (Ур. ${s.turbo})</h4><p>Быстрее копится заряд</p></div>${getBtn('turbo', s.turbo)}</div>
             <button class="game-btn" style="margin-top:20px;" onclick="openShooterMenu()">Назад</button>
-        </div>
-    `;
+        </div>`;
 }
 
 function buyUpgrade(type, cost) {
@@ -1577,18 +1333,7 @@ function buyUpgrade(type, cost) {
     }
 }
 
-function saveGameState() {
-    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
-}
-
-let shooterObj = {
-    canvas: null, ctx: null, playerX: 150, playerY: 400,
-    bullets: [], meteors: [], enemyUfos: [], bossProjectiles: [], particles: [], stars: [],
-    score: 0, isDead: false, isFiring: false, lastShot: 0,
-    timeLeft: 360, boss: null, level: 1, 
-    turboCharge: 0, turboActive: false, turboUses: 0,
-    shake: 0
-};
+let shooterObj = {};
 
 function initShooter(level) {
     const area = document.getElementById('gameArea');
@@ -1597,66 +1342,74 @@ function initShooter(level) {
     canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
     canvas.height = window.innerHeight - 150;
     area.appendChild(canvas);
-    shooterObj.canvas = canvas;
-    shooterObj.ctx = canvas.getContext('2d');
-    shooterObj.playerX = canvas.width / 2;
-    shooterObj.playerY = canvas.height - 60;
-    shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.enemyUfos = []; shooterObj.bossProjectiles = []; shooterObj.particles = [];
-    shooterObj.stars = Array.from({length: 50}, () => ({x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1}));
-    shooterObj.score = 0; shooterObj.isDead = false; shooterObj.isFiring = false;
-    shooterObj.timeLeft = 360;
-    shooterObj.boss = null;
-    shooterObj.level = level;
-    shooterObj.turboCharge = 0;
-    shooterObj.turboActive = false;
-    shooterObj.turboUses = 0;
-    shooterObj.shake = 0;
 
+    shooterObj = {
+        canvas, ctx: canvas.getContext('2d'),
+        playerX: canvas.width / 2, playerY: canvas.height - 60,
+        bullets: [], meteors: [], enemyUfos: [], bossProjectiles: [], particles: [], stars: [],
+        score: 0, isDead: false, isFiring: false, lastShot: 0,
+        timeLeft: 360, boss: null, level: level,
+        turboCharge: 0, turboActive: false, turboUses: 0,
+        turboWaveRadius: 0, turboWaveActive: false, shake: 0
+    };
+
+    // Сложность по уровню
+    const difficulty = 1 + (level - 1) * 0.08;
+
+    // Звёзды
+    shooterObj.stars = Array.from({length: 60}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1 }));
+
+    // UI
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Ур: ${level} | Время: <span id="shTime">06:00</span></div><div>Очки: <span id="shScore">0</span></div>`;
+    uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="shTime">06:00</span></div><div>⭐ <span id="shScore">0</span></div>`;
     area.appendChild(uiTop);
 
+    // Турбо шкала
     const turboBar = document.createElement('div');
     turboBar.className = 'turbo-bar-container';
     turboBar.id = 'turboBar';
-    turboBar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div>';
+    turboBar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div><div class="turbo-bar-label" id="turboLabel">ТУРБО 0%</div>';
     area.appendChild(turboBar);
 
+    // Турбо кнопка
     const turboBtn = document.createElement('button');
     turboBtn.className = 'turbo-btn';
     turboBtn.id = 'turboBtn';
-    turboBtn.innerHTML = 'ТУРБО';
-    turboBtn.onclick = () => {
-        if (shooterObj.turboCharge >= 100 && shooterObj.turboUses < 2) {
-            shooterObj.turboActive = true;
-            shooterObj.turboCharge = 0;
-            shooterObj.turboUses++;
-            document.getElementById('turboFill').style.width = '0%';
-            turboBtn.classList.remove('ready');
-            turboBtn.style.display = 'none';
-            playSound('win');
-            if (shooterObj.turboUses >= 2) {
-                turboBar.style.display = 'none';
-            }
-        }
-    };
+    turboBtn.textContent = 'ТУРБО';
     area.appendChild(turboBtn);
 
+    turboBtn.onclick = () => {
+        if (shooterObj.turboCharge >= 100 && shooterObj.turboUses < 2 && !shooterObj.turboWaveActive) {
+            shooterObj.turboActive = true;
+            shooterObj.turboWaveActive = true;
+            shooterObj.turboWaveRadius = 0;
+            shooterObj.turboCharge = 0;
+            shooterObj.turboUses++;
+            playSound('turbo');
+            document.getElementById('turboFill').style.width = '0%';
+            document.getElementById('turboLabel').textContent = 'ТУРБО 0%';
+            turboBtn.classList.remove('ready');
+            turboBtn.style.display = 'none';
+            if (shooterObj.turboUses >= 2) turboBar.style.display = 'none';
+        }
+    };
+
+    // Управление
     const movePlayer = (e) => {
         const rect = canvas.getBoundingClientRect();
-        let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        let clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        shooterObj.playerX = clientX - rect.left;
+        let cx = e.touches ? e.touches[0].clientX : e.clientX;
+        let cy = e.touches ? e.touches[0].clientY : e.clientY;
+        shooterObj.playerX = cx - rect.left;
         if (shooterObj.playerX < 20) shooterObj.playerX = 20;
         if (shooterObj.playerX > canvas.width - 20) shooterObj.playerX = canvas.width - 20;
         if (e.touches) {
-            shooterObj.playerY = clientY - rect.top;
-            if (shooterObj.playerY < 50) shooterObj.playerY = 50;
+            shooterObj.playerY = cy - rect.top;
+            if (shooterObj.playerY < 60) shooterObj.playerY = 60;
             if (shooterObj.playerY > canvas.height - 20) shooterObj.playerY = canvas.height - 20;
         }
     };
-    
+
     canvas.addEventListener('touchmove', (e) => { e.preventDefault(); movePlayer(e); shooterObj.isFiring = true; }, {passive: false});
     canvas.addEventListener('mousemove', (e) => { movePlayer(e); if (e.buttons === 1) shooterObj.isFiring = true; });
     canvas.addEventListener('touchstart', (e) => { movePlayer(e); shooterObj.isFiring = true; });
@@ -1671,9 +1424,9 @@ function initShooter(level) {
 
     const gameLoop = (time) => {
         if (!shooterObj.canvas || shooterObj.isDead) return;
-        const dt = time - lastTime;
         lastTime = time;
 
+        // Таймер
         if (!shooterObj.boss && time - lastTimerTick > 1000) {
             lastTimerTick = time;
             shooterObj.timeLeft--;
@@ -1685,18 +1438,21 @@ function initShooter(level) {
         }
 
         const ctx = shooterObj.ctx;
+
+        // Тряска
         let shakeX = 0, shakeY = 0;
         if (shooterObj.shake > 0) {
             shakeX = (Math.random() - 0.5) * shooterObj.shake;
             shakeY = (Math.random() - 0.5) * shooterObj.shake;
             shooterObj.shake -= 0.5;
         }
-        
+
         ctx.save();
         ctx.translate(shakeX, shakeY);
         ctx.fillStyle = '#0a0510';
         ctx.fillRect(-10, -10, canvas.width+20, canvas.height+20);
 
+        // Звёзды
         shooterObj.stars.forEach(s => {
             s.y += s.speed;
             if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
@@ -1704,6 +1460,7 @@ function initShooter(level) {
             ctx.fillRect(s.x, s.y, 2, 2);
         });
 
+        // Корабль
         ctx.save();
         ctx.translate(shooterObj.playerX, shooterObj.playerY);
         let sizeMult = 1 + (gameState.shooter.plane * 0.02);
@@ -1713,12 +1470,13 @@ function initShooter(level) {
         ctx.moveTo(0, -25); ctx.lineTo(15, 10); ctx.lineTo(5, 15); ctx.lineTo(0, 10);
         ctx.lineTo(-5, 15); ctx.lineTo(-15, 10); ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#fff';
         ctx.beginPath(); ctx.arc(0, -5, 5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = shooterObj.isFiring ? '#ff8c42' : '#555';
         ctx.fillRect(-5, 15, 10, 8);
         ctx.restore();
 
+        // Стрельба
         const fireRate = Math.max(50, 300 - (gameState.shooter.fireRate * 10));
         if (shooterObj.isFiring && time - shooterObj.lastShot > fireRate) {
             if (shooterObj.turboActive) {
@@ -1732,6 +1490,7 @@ function initShooter(level) {
             playSound('laser');
         }
 
+        // Пули
         ctx.fillStyle = shooterObj.turboActive ? '#ffd700' : '#ff8c42';
         for (let i = shooterObj.bullets.length - 1; i >= 0; i--) {
             let b = shooterObj.bullets[i];
@@ -1740,39 +1499,46 @@ function initShooter(level) {
             if (b.y < 0) shooterObj.bullets.splice(i, 1);
         }
 
-        let spawnRate = Math.max(150, 800 - (gameState.shooter.plane * 5));
-        let mSpeed = 2 + (gameState.shooter.plane * 0.1);
+        // Спавн метеоритов и НЛО (всегда вниз летят)
+        let spawnRate = Math.max(120, 700 - (level * 3) - (gameState.shooter.plane * 3));
+        let mSpeed = 2 + level * 0.15 + (gameState.shooter.plane * 0.05);
 
-        if (!shooterObj.boss && time - spawnTime > spawnRate) {
+        if (!shooterObj.boss && time - spawnTime > spawnRate / difficulty) {
             spawnTime = time;
             if (Math.random() > 0.5) {
-                shooterObj.meteors.push({ x: Math.random() * (canvas.width - 40) + 20, y: -30, speed: mSpeed, size: Math.random() * 20 + 15, hp: 1 });
+                shooterObj.meteors.push({ x: Math.random() * (canvas.width - 40) + 20, y: -30, speed: mSpeed, size: Math.random() * 18 + 14, hp: 1, rot: 0 });
             } else {
-                shooterObj.enemyUfos.push({ x: Math.random() * (canvas.width - 60) + 30, y: -30, speed: mSpeed * 0.8, hp: 2, angle: 0 });
+                shooterObj.enemyUfos.push({ x: Math.random() * (canvas.width - 60) + 30, y: -30, speed: mSpeed * 0.8, hp: 2, angle: 0, zigzag: Math.random() * Math.PI * 2 });
             }
         }
 
+        // Метеориты
         for (let i = shooterObj.meteors.length - 1; i >= 0; i--) {
             let m = shooterObj.meteors[i];
             m.y += m.speed;
+            m.rot += 0.03;
+            ctx.save();
+            ctx.translate(m.x, m.y);
+            ctx.rotate(m.rot);
             ctx.fillStyle = '#8c5a45';
             ctx.beginPath();
             for(let a = 0; a < Math.PI*2; a += Math.PI/6) {
-                let r = m.size + (Math.random()*4 - 2);
-                ctx.lineTo(m.x + Math.cos(a)*r, m.y + Math.sin(a)*r);
+                let r = m.size + (Math.random()*3 - 1.5);
+                ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r);
             }
             ctx.closePath(); ctx.fill();
+            ctx.restore();
+            
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let b = shooterObj.bullets[j];
                 if (Math.hypot(m.x - b.x, m.y - b.y) < m.size + 5) {
                     shooterObj.bullets.splice(j, 1);
                     m.hp--;
                     if (m.hp <= 0) {
-                        for(let p=0; p<8; p++) shooterObj.particles.push({x: m.x, y: m.y, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8, life: 1});
+                        for(let p=0; p<8; p++) shooterObj.particles.push({x: m.x, y: m.y, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8, life: 1, color: '#ff8c42'});
                         shooterObj.meteors.splice(i, 1);
                         shooterObj.score += 1;
-                        const scoreEl = document.getElementById('shScore');
-                        if(scoreEl) scoreEl.innerText = shooterObj.score;
+                        document.getElementById('shScore').innerText = shooterObj.score;
                         chargeTurbo();
                         playSound('explosion');
                     }
@@ -1783,26 +1549,33 @@ function initShooter(level) {
             if (m.y > canvas.height) { shooterObj.meteors.splice(i, 1); }
         }
 
+        // НЛО (летят зигзагом вниз)
         for (let i = shooterObj.enemyUfos.length - 1; i >= 0; i--) {
             let u = shooterObj.enemyUfos[i];
             u.y += u.speed;
-            u.angle += 0.05;
-            u.x += Math.sin(u.angle) * 2;
-            ctx.fillStyle = '#4ade80'; 
-            ctx.beginPath(); ctx.ellipse(u.x, u.y, 20, 10, 0, 0, Math.PI*2); ctx.fill();
+            u.angle += 0.06;
+            u.x += Math.sin(u.angle) * 2.5;
+            if (u.x < 20) u.x = 20;
+            if (u.x > canvas.width - 20) u.x = canvas.width - 20;
+            
+            ctx.fillStyle = '#4ade80';
+            ctx.beginPath(); ctx.ellipse(u.x, u.y, 22, 11, 0, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#86efac';
-            ctx.beginPath(); ctx.arc(u.x, u.y - 5, 8, Math.PI, 0); ctx.fill();
+            ctx.beginPath(); ctx.arc(u.x, u.y - 6, 9, Math.PI, 0); ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(u.x - 5, u.y, 2, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(u.x + 5, u.y, 2, 0, Math.PI*2); ctx.fill();
+            
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let b = shooterObj.bullets[j];
-                if (Math.hypot(u.x - b.x, u.y - b.y) < 20) {
+                if (Math.hypot(u.x - b.x, u.y - b.y) < 22) {
                     shooterObj.bullets.splice(j, 1);
                     u.hp--;
                     if (u.hp <= 0) {
-                        for(let p=0; p<12; p++) shooterObj.particles.push({x: u.x, y: u.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1});
+                        for(let p=0; p<12; p++) shooterObj.particles.push({x: u.x, y: u.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1, color: '#4ade80'});
                         shooterObj.enemyUfos.splice(i, 1);
                         shooterObj.score += 3;
-                        const scoreEl = document.getElementById('shScore');
-                        if(scoreEl) scoreEl.innerText = shooterObj.score;
+                        document.getElementById('shScore').innerText = shooterObj.score;
                         chargeTurbo();
                         playSound('explosion');
                     }
@@ -1813,25 +1586,64 @@ function initShooter(level) {
             if (u.y > canvas.height) { shooterObj.enemyUfos.splice(i, 1); }
         }
 
+        // БОСС
         if (shooterObj.boss) {
             let b = shooterObj.boss;
-            b.x += b.vx;
-            if (b.x < 60 || b.x > canvas.width - 60) b.vx *= -1;
+            b.time = (b.time || 0) + 1;
+            // Движение по кругу/восьмёрке в верхней части экрана
+            b.x = canvas.width / 2 + Math.cos(b.time * 0.02) * (canvas.width * 0.3);
+            b.y = 100 + Math.sin(b.time * 0.03) * 50;
+            
+            // Рисуем босса
+            ctx.save();
+            ctx.translate(b.x, b.y);
             ctx.fillStyle = '#ff5e62';
-            ctx.beginPath(); ctx.ellipse(b.x, b.y, 60, 30, 0, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(0, 0, 65, 32, 0, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#ff8c42';
-            ctx.beginPath(); ctx.arc(b.x, b.y - 10, 25, Math.PI, 0); ctx.fill();
-            ctx.fillStyle = 'red';
-            ctx.fillRect(b.x - 50, b.y - 45, 100, 8);
-            ctx.fillStyle = '#4ade80';
-            ctx.fillRect(b.x - 50, b.y - 45, 100 * (b.hp / b.maxHp), 8);
-            if (time - bossShootTime > 1200) {
+            ctx.beginPath(); ctx.arc(0, -12, 28, Math.PI, 0); ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(-15, -8, 6, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(15, -8, 6, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.beginPath(); ctx.arc(-15, -8, 3, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(15, -8, 3, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+
+            // HP бар над боссом
+            const barWidth = 120;
+            const barX = b.x - barWidth/2;
+            const barY = b.y - 60;
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(barX - 2, barY - 2, barWidth + 4, 14);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(barX, barY, barWidth, 10);
+            const hpPct = Math.max(0, b.hp / b.maxHp);
+            ctx.fillStyle = hpPct > 0.5 ? '#4ade80' : (hpPct > 0.25 ? '#ffd700' : '#ff5e62');
+            ctx.fillRect(barX, barY, barWidth * hpPct, 10);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${Math.ceil(b.hp)} / ${b.maxHp}`, b.x, barY + 9);
+            ctx.textAlign = 'left';
+
+            // Стрельба босса (в игрока)
+            const shootDelay = Math.max(600, 1500 - level * 5);
+            if (time - bossShootTime > shootDelay) {
                 bossShootTime = time;
-                shooterObj.bossProjectiles.push({ x: b.x, y: b.y + 20, speed: 5 });
+                // Наводимся на игрока
+                const dx = shooterObj.playerX - b.x;
+                const dy = shooterObj.playerY - b.y;
+                const dist = Math.hypot(dx, dy);
+                shooterObj.bossProjectiles.push({ 
+                    x: b.x, y: b.y + 20, 
+                    vx: (dx / dist) * 5, vy: (dy / dist) * 5
+                });
             }
+
+            // Пули по боссу
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let bul = shooterObj.bullets[j];
-                if (Math.hypot(b.x - bul.x, b.y - bul.y) < 60) {
+                if (Math.hypot(b.x - bul.x, b.y - bul.y) < 65) {
                     shooterObj.bullets.splice(j, 1);
                     b.hp -= (10 + gameState.shooter.plane * 2);
                     shooterObj.shake = 5;
@@ -1840,25 +1652,87 @@ function initShooter(level) {
             }
         }
 
+        // Снаряды босса
         for (let i = shooterObj.bossProjectiles.length - 1; i >= 0; i--) {
             let p = shooterObj.bossProjectiles[i];
-            p.y += p.speed;
+            p.x += p.vx; p.y += p.vy;
             ctx.fillStyle = '#00d4ff';
-            ctx.beginPath(); ctx.ellipse(p.x, p.y, 15, 5, 0, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(p.x, p.y, 14, 5, Math.atan2(p.vy, p.vx), 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.beginPath(); ctx.arc(p.x, p.y - 3, 6, Math.PI, 0); ctx.fill();
-            if (Math.hypot(p.x - shooterObj.playerX, p.y - shooterObj.playerY) < 25) { endShooter(false); return; }
-            if (p.y > canvas.height) shooterObj.bossProjectiles.splice(i, 1);
+            ctx.beginPath(); ctx.arc(p.x - 3, p.y - 2, 4, 0, Math.PI*2); ctx.fill();
+            if (Math.hypot(p.x - shooterObj.playerX, p.y - shooterObj.playerY) < 22) { endShooter(false); return; }
+            if (p.x < -30 || p.x > canvas.width + 30 || p.y < -30 || p.y > canvas.height + 30) shooterObj.bossProjectiles.splice(i, 1);
         }
 
+        // ТУРБО ВОЛНА
+        if (shooterObj.turboWaveActive) {
+            shooterObj.turboWaveRadius += 12;
+            ctx.strokeStyle = `rgba(255,215,0,${Math.max(0, 1 - shooterObj.turboWaveRadius / (canvas.width * 1.2))})`;
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(shooterObj.playerX, shooterObj.playerY, shooterObj.turboWaveRadius, 0, Math.PI*2);
+            ctx.stroke();
+            ctx.strokeStyle = `rgba(255,140,66,${Math.max(0, 1 - shooterObj.turboWaveRadius / (canvas.width * 1.2))})`;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(shooterObj.playerX, shooterObj.playerY, shooterObj.turboWaveRadius - 10, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Уничтожаем всё в волне (кроме босса - ему 30% урона)
+            for (let i = shooterObj.meteors.length - 1; i >= 0; i--) {
+                let m = shooterObj.meteors[i];
+                if (Math.hypot(m.x - shooterObj.playerX, m.y - shooterObj.playerY) < shooterObj.turboWaveRadius) {
+                    for(let p=0; p<8; p++) shooterObj.particles.push({x: m.x, y: m.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1, color: '#ffd700'});
+                    shooterObj.meteors.splice(i, 1);
+                    shooterObj.score += 1;
+                    playSound('explosion');
+                }
+            }
+            for (let i = shooterObj.enemyUfos.length - 1; i >= 0; i--) {
+                let u = shooterObj.enemyUfos[i];
+                if (Math.hypot(u.x - shooterObj.playerX, u.y - shooterObj.playerY) < shooterObj.turboWaveRadius) {
+                    for(let p=0; p<12; p++) shooterObj.particles.push({x: u.x, y: u.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1, color: '#ffd700'});
+                    shooterObj.enemyUfos.splice(i, 1);
+                    shooterObj.score += 3;
+                    playSound('explosion');
+                }
+            }
+            // Боссу 30% урона
+            if (shooterObj.boss && !shooterObj.boss.waveHit) {
+                let b = shooterObj.boss;
+                if (Math.hypot(b.x - shooterObj.playerX, b.y - shooterObj.playerY) < shooterObj.turboWaveRadius) {
+                    b.hp -= b.maxHp * 0.3;
+                    b.waveHit = true;
+                    shooterObj.shake = 15;
+                    if (b.hp <= 0) { endShooter(true); return; }
+                }
+            }
+            document.getElementById('shScore').innerText = shooterObj.score;
+            
+            if (shooterObj.turboWaveRadius > canvas.width * 1.2) {
+                shooterObj.turboWaveActive = false;
+                shooterObj.turboActive = false;
+                shooterObj.boss && (shooterObj.boss.waveHit = false);
+            }
+        }
+
+        // Частицы
         for (let i = shooterObj.particles.length - 1; i >= 0; i--) {
             let p = shooterObj.particles[i];
-            p.x += p.vx; p.y += p.vy; p.life -= 0.05;
-            ctx.fillStyle = `rgba(255,140,66,${p.life})`;
-            ctx.fillRect(p.x, p.y, 3, 3);
+            p.x += p.vx; p.y += p.vy; p.life -= 0.03;
+            ctx.fillStyle = p.color ? p.color.replace(')', `,${p.life})`).replace('rgb', 'rgba') : `rgba(255,140,66,${p.life})`;
+            if (p.color && p.color.startsWith('#')) {
+                // упрощённо
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.fillRect(p.x, p.y, 4, 4);
+                ctx.globalAlpha = 1;
+            } else {
+                ctx.fillRect(p.x, p.y, 4, 4);
+            }
             if (p.life <= 0) shooterObj.particles.splice(i, 1);
         }
-        
+
         ctx.restore();
         gameAnimFrame = requestAnimationFrame(gameLoop);
     };
@@ -1867,14 +1741,17 @@ function initShooter(level) {
 
 function chargeTurbo() {
     if (shooterObj.turboActive || shooterObj.turboUses >= 2) return;
-    shooterObj.turboCharge += (2 + gameState.shooter.turbo * 0.5);
+    // Заряд набирается примерно за 20 сек (2 заряда = 40 сек)
+    shooterObj.turboCharge += 1.2 + (gameState.shooter.turbo * 0.15);
     if (shooterObj.turboCharge > 100) shooterObj.turboCharge = 100;
     
     const turboBar = document.getElementById('turboBar');
     const turboFill = document.getElementById('turboFill');
+    const turboLabel = document.getElementById('turboLabel');
     const turboBtn = document.getElementById('turboBtn');
     if (turboBar) turboBar.style.display = 'block';
     if (turboFill) turboFill.style.width = shooterObj.turboCharge + '%';
+    if (turboLabel) turboLabel.textContent = `ТУРБО ${Math.floor(shooterObj.turboCharge)}%`;
     if (turboBtn && shooterObj.turboCharge >= 100) {
         turboBtn.classList.add('ready');
         turboBtn.style.display = 'flex';
@@ -1883,47 +1760,53 @@ function chargeTurbo() {
 
 function spawnBoss() {
     const canvas = shooterObj.canvas;
-    let hp = 150 + Math.floor(Math.random() * 50);
-    shooterObj.boss = { x: canvas.width / 2, y: 80, hp: hp, maxHp: hp, vx: 2 };
-    shooterObj.meteors = []; shooterObj.enemyUfos = [];
+    const hp = 150 + (shooterObj.level - 1) * 20 + Math.floor(Math.random() * 50);
+    shooterObj.boss = { x: canvas.width / 2, y: 100, hp: hp, maxHp: hp, time: 0, waveHit: false };
+    shooterObj.meteors = [];
+    shooterObj.enemyUfos = [];
 }
 
 function endShooter(isWin) {
     if (shooterObj.isDead) return;
     shooterObj.isDead = true;
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-    
+
     if (isWin) {
         playSound('win');
-        let coinsEarned = shooterObj.score * (1 + gameState.shooter.income * 0.5);
-        gameState.shooter.coins += Math.floor(coinsEarned);
+        let coinsEarned = Math.floor(shooterObj.score * (1 + gameState.shooter.income * 0.5));
+        gameState.shooter.coins += coinsEarned;
         if (shooterObj.level === gameState.shooter.unlocked && gameState.shooter.unlocked < 800) {
             gameState.shooter.unlocked++;
         }
         saveGameState();
-        alert(`Победа! Вы получили ${Math.floor(coinsEarned)} монет! Открыт уровень ${gameState.shooter.unlocked}.`);
-        openShooterMenu();
+        setTimeout(() => {
+            alert(`🏆 ПОБЕДА!\nОчки: ${shooterObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.shooter.unlocked}`);
+            openShooterMenu();
+        }, 100);
     } else {
         playSound('gameover');
-        let coinsEarned = Math.floor(shooterObj.score * 0.5 * (1 + gameState.shooter.income * 0.2));
+        let coinsEarned = Math.floor(shooterObj.score * 0.3 * (1 + gameState.shooter.income * 0.2));
         gameState.shooter.coins += coinsEarned;
         saveGameState();
-        alert(`Игра окончена! Очки: ${shooterObj.score}. Вы получили ${coinsEarned} монет.`);
-        openShooterMenu();
+        setTimeout(() => {
+            alert(`💀 ПОТРАЧЕНО\nОчки: ${shooterObj.score}\nМонеты: +${coinsEarned}\n\nПопробуй ещё раз!`);
+            openShooterMenu();
+        }, 100);
     }
 }
 
-/* ============ ИГРА 2: КВАДРАТИК (RUNNER) ============ */
+/* ================== ИГРА 2: КВАДРАТИК ================== */
 function openRunnerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
         <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
             <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ff5e62;">Квадратик</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Прыгай через препятствия!</div>
+            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Уровень: ${gameState.runner.unlocked} / 800</div>
             <button class="game-btn" onclick="initRunner()">▶️ Играть</button>
-            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
-        </div>
-    `;
+            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; margin-top:20px; line-height:1.5;">
+                Тапай чтобы прыгать.<br>С каждым уровнем всё сложнее!<br>Уровень длится 6 минут.
+            </div>
+        </div>`;
 }
 
 let runnerObj = {};
@@ -1937,28 +1820,57 @@ function initRunner() {
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
+    const level = gameState.runner.unlocked;
+    // Сложность растёт с уровнем
+    const baseSpeed = 4 + level * 0.15;
+    const spawnRate = Math.max(30, 90 - level * 0.5);
+    
     runnerObj = {
-        canvas, ctx,
-        playerY: canvas.height - 60, playerVy: 0, playerSize: 25,
-        obstacles: [], score: 0, speed: 5, frame: 0, isDead: false, onGround: true,
-        clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
+        canvas, ctx, level,
+        playerX: 70, playerY: canvas.height - 100, playerVy: 0,
+        playerSize: 28, obstacles: [], score: 0, 
+        speed: baseSpeed, frame: 0, isDead: false, onGround: true,
+        timeLeft: 360, lastTimerTick: performance.now(), 
+        spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
     };
+
+    // Таймер UI
+    const uiTop = document.createElement('div');
+    uiTop.className = 'game-ui-top';
+    uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="rnTime">06:00</span></div><div>⭐ <span id="rnScore">0</span></div>`;
+    area.appendChild(uiTop);
 
     const jump = () => {
         if (runnerObj.onGround && !runnerObj.isDead) {
-            runnerObj.playerVy = -12;
+            runnerObj.playerVy = -13 - (level * 0.05);
             runnerObj.onGround = false;
             playSound('jump');
         }
     };
 
     canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, {passive: false});
-    canvas.addEventListener('mousedown', (e) => { jump(); });
+    canvas.addEventListener('mousedown', jump);
 
-    const gameLoop = () => {
+    const gameLoop = (time) => {
         if (runnerObj.isDead) return;
+        
+        // Таймер
+        if (time - runnerObj.lastTimerTick > 1000) {
+            runnerObj.lastTimerTick = time;
+            runnerObj.timeLeft--;
+            if (runnerObj.timeLeft <= 0) {
+                // Уровень пройден!
+                endRunner(true);
+                return;
+            }
+            let m = Math.floor(runnerObj.timeLeft / 60);
+            let s = runnerObj.timeLeft % 60;
+            const timeEl = document.getElementById('rnTime');
+            if(timeEl) timeEl.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
         runnerObj.frame++;
-        runnerObj.playerVy += 0.6;
+        runnerObj.playerVy += 0.7;
         runnerObj.playerY += runnerObj.playerVy;
         const floor = canvas.height - 40;
         if (runnerObj.playerY > floor - runnerObj.playerSize) {
@@ -1970,21 +1882,34 @@ function initRunner() {
         ctx.fillStyle = '#0a0510';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
+        // Небо
+        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, '#1a0a2e');
+        grad.addColorStop(1, '#2a0a3e');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Земля
         ctx.fillStyle = '#1a1a2e';
         ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+        ctx.fillStyle = '#ff5e62';
+        ctx.fillRect(0, canvas.height - 40, canvas.width, 3);
 
+        // Облака
         runnerObj.clouds.forEach(c => {
             c.x -= c.s;
             if (c.x < -50) { c.x = canvas.width + 50; c.y = Math.random() * 150 + 20; }
-            ctx.fillStyle = 'rgba(255,255,255,0.1)';
-            ctx.fillRect(c.x, c.y, 40, 20);
+            ctx.fillStyle = 'rgba(255,255,255,0.08)';
+            ctx.fillRect(c.x, c.y, 50, 20);
         });
 
-        if (runnerObj.frame % Math.max(40, 80 - Math.floor(runnerObj.score / 5)) === 0) {
+        // Спавн препятствий
+        if (runnerObj.frame % Math.max(35, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
+            const oh = Math.random() > 0.4 ? 40 : 60;
             runnerObj.obstacles.push({
                 x: canvas.width,
-                y: canvas.height - 40 - (Math.random() > 0.5 ? 30 : 50),
-                w: 20, h: Math.random() > 0.5 ? 30 : 50,
+                y: canvas.height - 40 - oh,
+                w: 25, h: oh,
                 speed: runnerObj.speed + runnerObj.score * 0.01
             });
         }
@@ -1994,96 +1919,151 @@ function initRunner() {
             o.x -= o.speed;
             ctx.fillStyle = '#ff5e62';
             ctx.fillRect(o.x, o.y, o.w, o.h);
+            ctx.fillStyle = '#ff8c42';
+            ctx.fillRect(o.x, o.y, o.w, 4);
             
             if (o.x + o.w < 0) {
                 runnerObj.obstacles.splice(i, 1);
                 runnerObj.score++;
-                runnerObj.speed = 5 + runnerObj.score * 0.02;
+                runnerObj.speed = baseSpeed + runnerObj.score * 0.02;
+                const scoreEl = document.getElementById('rnScore');
+                if(scoreEl) scoreEl.innerText = runnerObj.score;
             }
             
-            const px = 60, py = runnerObj.playerY - runnerObj.playerSize;
-            if (px + runnerObj.playerSize > o.x && px < o.x + o.w && py + runnerObj.playerSize * 2 > o.y && py < o.y + o.h) {
-                endRunner();
+            const px = runnerObj.playerX;
+            const py = runnerObj.playerY;
+            if (px + runnerObj.playerSize > o.x && px < o.x + o.w && py + runnerObj.playerSize > o.y && py < o.y + o.h) {
+                endRunner(false);
                 return;
             }
         }
 
+        // Игрок — маленький куб с глазами
+        const px = runnerObj.playerX, py = runnerObj.playerY, sz = runnerObj.playerSize;
         ctx.fillStyle = '#00d4ff';
-        ctx.fillRect(60, runnerObj.playerY - runnerObj.playerSize, runnerObj.playerSize * 2, runnerObj.playerSize * 2);
+        ctx.fillRect(px, py, sz, sz);
+        ctx.fillStyle = '#0088aa';
+        ctx.fillRect(px, py, sz, 4);
+        // Глаза
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(65, runnerObj.playerY - runnerObj.playerSize + 8, 6, 6);
-        ctx.fillRect(65 + 20, runnerObj.playerY - runnerObj.playerSize + 8, 6, 6);
-
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 20px sans-serif';
-        ctx.fillText(`Очки: ${runnerObj.score}`, 15, 35);
+        ctx.fillRect(px + 6, py + 8, 7, 7);
+        ctx.fillRect(px + sz - 13, py + 8, 7, 7);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(px + 8, py + 10, 3, 4);
+        ctx.fillRect(px + sz - 11, py + 10, 3, 4);
+        // Улыбка
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(px + sz/2, py + sz - 10, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
 
         gameAnimFrame = requestAnimationFrame(gameLoop);
     };
     gameAnimFrame = requestAnimationFrame(gameLoop);
 }
 
-function endRunner() {
+function endRunner(isWin) {
+    if (runnerObj.isDead) return;
     runnerObj.isDead = true;
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-    playSound('gameover');
-    let coinsEarned = Math.floor(runnerObj.score * 0.5);
-    gameState.shooter.coins += coinsEarned;
-    saveGameState();
-    alert(`Игра окончена! Очки: ${runnerObj.score}. Вы получили ${coinsEarned} монет.`);
-    openRunnerMenu();
+    
+    if (isWin) {
+        playSound('win');
+        const coinsEarned = 20 + runnerObj.score * 2;
+        gameState.shooter.coins += coinsEarned;
+        if (runnerObj.level === gameState.runner.unlocked && gameState.runner.unlocked < 800) {
+            gameState.runner.unlocked++;
+        }
+        saveGameState();
+        setTimeout(() => {
+            alert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nОчки: ${runnerObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.runner.unlocked}`);
+            openRunnerMenu();
+        }, 100);
+    } else {
+        // ПЕЧАЛЬНАЯ ПЕСНЯ + "ПОТРАЧЕНО"
+        playSound('gameover');
+        // Показываем печальный экран
+        const area = document.getElementById('gameArea');
+        const sadScreen = document.createElement('div');
+        sadScreen.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;';
+        sadScreen.innerHTML = `
+            <div style="font-size:72px;font-weight:900;color:#ff5e62;letter-spacing:6px;text-shadow:0 0 30px #ff5e62;animation:shakeSad 0.5s;">ПОТРАЧЕНО</div>
+            <div style="font-size:20px;color:#fff;margin-top:20px;">Очки: ${runnerObj.score}</div>
+            <div style="font-size:14px;color:#888;margin-top:10px;">Печальная песня играет...</div>
+        `;
+        const style = document.createElement('style');
+        style.textContent = '@keyframes shakeSad{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}';
+        sadScreen.appendChild(style);
+        area.appendChild(sadScreen);
+        
+        // Печальная мелодия (несколько нот)
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const sadNotes = [392, 370, 349, 330, 294, 262, 220, 196];
+            sadNotes.forEach((freq, i) => {
+                setTimeout(() => {
+                    try {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.5);
+                    } catch(e) {}
+                }, i * 400);
+            });
+        } catch(e) {}
+        
+        const coinsEarned = Math.floor(runnerObj.score * 0.3);
+        gameState.shooter.coins += coinsEarned;
+        saveGameState();
+        
+        setTimeout(() => {
+            if (sadScreen.parentNode) sadScreen.remove();
+            openRunnerMenu();
+        }, 4000);
+    }
 }
 
-/* ============ СТОРИС И ПРОЧИЙ ФУНКЦИОНАЛ (УПРОЩЁННЫЙ) ============ */
+/* ============ СТОРИС ============ */
 function renderStories() {
     const el = document.getElementById('storiesRow');
     if (!el) return;
     el.innerHTML = '';
-    
     const addBtn = document.createElement('div');
     addBtn.className = 'story-circle';
     addBtn.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
     addBtn.addEventListener('click', () => alert('Истории скоро появятся!'));
     el.appendChild(addBtn);
-    
     ['Алекс', 'Мария', 'Дмитрий', 'Анна', 'Иван', 'Елена'].forEach(name => {
         const div = document.createElement('div');
         div.className = 'story-circle';
         const color = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
         div.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${color}">${name.charAt(0)}</div></div><div class="story-label">${name}</div>`;
-        div.addEventListener('click', () => alert(`История ${name} (просмотр)`));
+        div.addEventListener('click', () => alert(`История ${name}`));
         el.appendChild(div);
     });
 }
 
-function simulatePromotion() {
-    // Пустая функция для совместимости
-}
-
 /* ============ ОБРАБОТЧИКИ МОДАЛОК ============ */
 document.querySelectorAll('[data-close]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const id = btn.dataset.close;
-        document.getElementById(id).classList.remove('show');
-    });
+    btn.addEventListener('click', () => document.getElementById(btn.dataset.close).classList.remove('show'));
 });
-
 document.querySelectorAll('.modal').forEach(m => {
-    m.addEventListener('click', (e) => {
-        if (e.target === m) m.classList.remove('show');
-    });
+    m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('show'); });
 });
 
-/* ============ ПЛЮС (СОЗДАНИЕ) ============ */
-document.getElementById('plusBtn').addEventListener('click', () => {
-    document.getElementById('createModal').classList.add('show');
-});
+document.getElementById('plusBtn').addEventListener('click', () => document.getElementById('createModal').classList.add('show'));
 
 document.querySelectorAll('#createModal .modal-option').forEach(opt => {
     opt.addEventListener('click', () => {
         const action = opt.dataset.action;
         document.getElementById('createModal').classList.remove('show');
-        
         if (action === 'post') openPostModal();
         else if (action === 'group') openGroupModal('group');
         else if (action === 'community') openGroupModal('community');
@@ -2099,31 +2079,19 @@ function openPostModal() {
     document.getElementById('formText').style.display = 'block';
     document.getElementById('formText').value = '';
     document.getElementById('formPhoto').value = '';
-    document.getElementById('formMusic').value = '';
     document.getElementById('postMediaFields').style.display = 'block';
     document.getElementById('formSubmit').onclick = () => {
         const text = document.getElementById('formText').value.trim();
         if (!text) { alert('Введите текст!'); return; }
         const image = document.getElementById('formPhoto').value.trim();
-        const musicUrl = document.getElementById('formMusic').value.trim();
-        
         posts.unshift({
-            id: 'p_' + Date.now(),
-            author: currentUser.name,
-            color: currentUser.color,
-            text: text,
-            time: 'только что',
-            views: 0,
-            likes: 0,
-            reposts: 0,
-            comments: [],
-            image: image || null,
-            music: musicUrl ? { title: 'Трек', artist: 'Исполнитель' } : null
+            id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color,
+            text: text, time: 'только что', views: 0, likes: 0, reposts: 0, comments: [],
+            image: image || null
         });
         try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
         document.getElementById('formModal').classList.remove('show');
-        renderPosts();
-        renderMyPage();
+        renderPosts(); renderMyPage();
     };
     document.getElementById('formModal').classList.add('show');
 }
@@ -2140,34 +2108,22 @@ function openGroupModal(type) {
         const name = document.getElementById('formName').value.trim();
         if (!name) { alert('Введите название!'); return; }
         const newItem = {
-            id: 'g_' + Date.now(),
-            name: name,
+            id: 'g_' + Date.now(), name: name,
             color: AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)],
-            emoji: name.charAt(0).toUpperCase(),
-            type: type,
-            owner: currentUser.name,
+            emoji: name.charAt(0).toUpperCase(), type: type, owner: currentUser.name,
             members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
         };
-        if (type === 'channel') {
-            channels.push(newItem);
-            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-        } else {
-            groups.push(newItem);
-            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-        }
+        if (type === 'channel') { channels.push(newItem); try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} }
+        else { groups.push(newItem); try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} }
         document.getElementById('formModal').classList.remove('show');
-        renderChatsList(currentSearchTab, '');
-        renderMyPage();
+        renderChatsList(currentSearchTab, ''); renderMyPage();
         alert(`"${name}" создан!`);
     };
     document.getElementById('formModal').classList.add('show');
 }
 
-document.getElementById('formCancel').addEventListener('click', () => {
-    document.getElementById('formModal').classList.remove('show');
-});
+document.getElementById('formCancel').addEventListener('click', () => document.getElementById('formModal').classList.remove('show'));
 
-/* ============ ПРОЧИЕ ОБРАБОТЧИКИ ============ */
 document.getElementById('myProfileBtn').addEventListener('click', () => {
     document.getElementById('profileTitle').textContent = currentUser.name;
     document.getElementById('profileStatus').textContent = currentUser.lastSeen;
@@ -2190,9 +2146,7 @@ document.getElementById('changeAvatarBtn').addEventListener('click', () => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
 });
 
-document.getElementById('settingsBtn').addEventListener('click', () => {
-    document.getElementById('logoutModal').classList.add('show');
-});
+document.getElementById('settingsBtn').addEventListener('click', () => document.getElementById('logoutModal').classList.add('show'));
 
 document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
     try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
@@ -2204,10 +2158,7 @@ document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
     avatarPreview.textContent = '?';
 });
 
-// Инициализация если пользователь уже сохранён
-if (currentUser) {
-    startApp();
-}
+if (currentUser) startApp();
 </script>
 </body>
 </html>
