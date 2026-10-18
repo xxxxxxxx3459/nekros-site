@@ -309,6 +309,21 @@
   .upgrade-info p { font-size: 12px; opacity: 0.7; }
   .upgrade-btn { background: #4ade80; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 80px;}
   .upgrade-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+  /* ТУРБО КНОПКА */
+  .turbo-btn {
+      position: absolute; bottom: 20px; right: 20px;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 3px solid #555;
+      color: #555; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center;
+      z-index: 15; transition: 0.3s; pointer-events: none;
+  }
+  .turbo-btn.ready {
+      background: radial-gradient(circle, #ffd700, #ff8c42);
+      border-color: #fff; color: #000; cursor: pointer; pointer-events: auto;
+      box-shadow: 0 0 20px #ff8c42; animation: pulseTurbo 1s infinite;
+  }
+  @keyframes pulseTurbo { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -655,12 +670,20 @@ function playSound(type) {
             gain.gain.setValueAtTime(0.2, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
             osc.start(); osc.stop(now + 0.5);
+        } else if (type === 'win') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.setValueAtTime(600, now + 0.1);
+            osc.frequency.setValueAtTime(800, now + 0.2);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+            osc.start(); osc.stop(now + 0.4);
         }
     } catch(e) { console.log('Audio error', e); }
 }
 
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v42';
+const STORAGE_KEY = 'sunset_user_v44';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -723,13 +746,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v42';
-const GROUPS_KEY = 'sunset_groups_v42';
-const CHANNELS_KEY = 'sunset_channels_v42';
-const POSTS_KEY = 'sunset_posts_v42';
-const LIKES_KEY = 'sunset_likes_v42';
-const STORIES_KEY = 'sunset_stories_v42';
-const GAMES_KEY = 'sunset_games_v42';
+const CHATS_KEY = 'sunset_chats_v44';
+const GROUPS_KEY = 'sunset_groups_v44';
+const CHANNELS_KEY = 'sunset_channels_v44';
+const POSTS_KEY = 'sunset_posts_v44';
+const LIKES_KEY = 'sunset_likes_v44';
+const STORIES_KEY = 'sunset_stories_v44';
+const GAMES_KEY = 'sunset_games_v44';
 
 let currentUser = null;
 let chats = {};
@@ -743,8 +766,8 @@ let currentSearchTab = 'people';
 let pendingAction = null;
 
 let gameState = {
-    shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, maxLevel: 1000 },
-    runner: { level: 1, maxLevel: 1000 }
+    shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, unlocked: 1 },
+    runner: { level: 1, unlocked: 1 }
 };
 
 /* ============ ГЕНЕРАТОР ИМЕН И БАЗА ЮЗЕРОВ ============ */
@@ -861,7 +884,11 @@ function startApp() {
     userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
     userStories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
     const savedGames = JSON.parse(localStorage.getItem(GAMES_KEY) || 'null');
-    if (savedGames) gameState = savedGames;
+    if (savedGames) {
+        if(savedGames.shooter && !savedGames.shooter.unlocked) savedGames.shooter.unlocked = 1;
+        if(savedGames.runner && !savedGames.runner.unlocked) savedGames.runner.unlocked = 1;
+        gameState = savedGames;
+    }
   } catch(e) {}
 
   renderChatsList('people');
@@ -1534,7 +1561,7 @@ function renderGames() {
     grid.innerHTML = '';
 
     const games = [
-        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: 'Сбивай метеориты и НЛО', color: '#00d4ff' },
+        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: 'Сбивай метеориты и Боссов', color: '#00d4ff' },
         { id: 'runner', icon: '🟦', title: 'Квадратик', desc: 'Прыгай через препятствия', color: '#ff5e62' }
     ];
 
@@ -1558,14 +1585,14 @@ let gameLogicInterval = null;
 function startGame(type) {
     currentGame = type;
     document.getElementById('gameOverlay').classList.add('show');
-    playSound('laser'); // Unlock audio context on first click
+    playSound('laser'); 
     
     let title = type === 'shooter' ? '✈️ Космический Шутер' : '🟦 Квадратик';
     document.getElementById('gameTitle').textContent = title;
     document.getElementById('gameLevelDisplay').textContent = '';
 
-    if (type === 'shooter') initShooter();
-    else if (type === 'runner') initRunner();
+    if (type === 'shooter') openShooterMenu();
+    else if (type === 'runner') openRunnerMenu();
 }
 
 function closeGame() {
@@ -1577,15 +1604,88 @@ function closeGame() {
 }
 
 /* ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== */
+function openShooterMenu() {
+    const area = document.getElementById('gameArea');
+    const unlocked = gameState.shooter.unlocked;
+    
+    area.innerHTML = `
+        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
+            <h2 style="color:#00d4ff; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #00d4ff;">Космический Шутер</h2>
+            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Открыто уровней: ${unlocked} / 800</div>
+            
+            <div style="display:flex; gap:15px; margin-bottom:30px; flex-wrap:wrap; justify-content:center;">
+                <button class="game-btn" onclick="openShooterShop()" style="background:#a06cd5;">🛠 Магазин</button>
+                <button class="game-btn" onclick="initShooter(${unlocked})">▶️ Играть (Ур. ${unlocked})</button>
+            </div>
+            
+            <div style="color:#aaa; font-size:12px; max-width:300px; text-align:center;">
+                Каждый уровень длится 6 минут. Продержись до конца, убей Босса и открой следующий уровень!
+            </div>
+            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
+        </div>
+    `;
+}
+
+function openShooterShop() {
+    const area = document.getElementById('gameArea');
+    const s = gameState.shooter;
+    
+    const getCost = (lvl) => Math.floor(10 * Math.pow(2, lvl));
+    const getBtn = (type, lvl) => {
+        if (lvl >= 1000) return `<button class="upgrade-btn" disabled>MAX</button>`;
+        let cost = getCost(lvl);
+        if (s.coins < cost) return `<button class="upgrade-btn" disabled>${cost} 🪙</button>`;
+        return `<button class="upgrade-btn" onclick="buyUpgrade('${type}', ${cost})">${cost} 🪙</button>`;
+    };
+
+    area.innerHTML = `
+        <div class="shop-container">
+            <div class="shop-header"><span>🛠 Улучшения</span><span>${s.coins} 🪙</span></div>
+            <div class="upgrade-item">
+                <div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Увеличивает базовый урон</p></div>
+                ${getBtn('plane', s.plane).replace("buyUpgrade('plane'", "buyUpgrade('plane'")}
+            </div>
+            <div class="upgrade-item">
+                <div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет за очки</p></div>
+                ${getBtn('income', s.income).replace("buyUpgrade('income'", "buyUpgrade('income'")}
+            </div>
+            <div class="upgrade-item">
+                <div class="upgrade-info"><h4>⚡ Скорострельность (Ур. ${s.fireRate})</h4><p>Быстрее стреляет</p></div>
+                ${getBtn('fireRate', s.fireRate).replace("buyUpgrade('fireRate'", "buyUpgrade('fireRate'")}
+            </div>
+            <div class="upgrade-item">
+                <div class="upgrade-info"><h4>🚀 Турбо-снаряд (Ур. ${s.turbo})</h4><p>Быстрее копится заряд</p></div>
+                ${getBtn('turbo', s.turbo).replace("buyUpgrade('turbo'", "buyUpgrade('turbo'")}
+            </div>
+            <button class="game-btn" style="margin-top:20px;" onclick="openShooterMenu()">Назад</button>
+        </div>
+    `;
+}
+
+function buyUpgrade(type, cost) {
+    if (gameState.shooter.coins >= cost) {
+        gameState.shooter.coins -= cost;
+        gameState.shooter[type]++;
+        saveGameState();
+        openShooterShop();
+    }
+}
+
+function saveGameState() {
+    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
+}
+
 let shooterObj = {
     canvas: null, ctx: null, playerX: 150, playerY: 400,
-    bullets: [], meteors: [], aliens: [], particles: [], stars: [],
-    score: 0, coinsEarned: 0, isDead: false, isFiring: false,
-    fireCooldown: 0, lastShot: 0
+    bullets: [], meteors: [], ufos: [], particles: [], stars: [],
+    score: 0, isDead: false, isFiring: false, lastShot: 0,
+    timeLeft: 360, boss: null, level: 1, turboCharge: 0, turboActive: false,
+    shake: 0
 };
 
-function initShooter() {
+function initShooter(level) {
     const area = document.getElementById('gameArea');
+    area.innerHTML = '';
     area.innerHTML = '';
     
     const canvas = document.createElement('canvas');
@@ -1597,15 +1697,35 @@ function initShooter() {
     shooterObj.ctx = canvas.getContext('2d');
     shooterObj.playerX = canvas.width / 2;
     shooterObj.playerY = canvas.height - 60;
-    shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.aliens = []; shooterObj.particles = [];
+    shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.ufos = []; shooterObj.particles = [];
     shooterObj.stars = Array.from({length: 50}, () => ({x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1}));
-    shooterObj.score = 0; shooterObj.coinsEarned = 0; shooterObj.isDead = false;
-    shooterObj.isFiring = false;
+    shooterObj.score = 0; shooterObj.isDead = false; shooterObj.isFiring = false;
+    shooterObj.timeLeft = 360; // 6 минут
+    shooterObj.boss = null;
+    shooterObj.level = level;
+    shooterObj.turboCharge = 0;
+    shooterObj.turboActive = false;
+    shooterObj.shake = 0;
     
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Очки: <span id="shScore">0</span></div><div>Уровень: ${gameState.shooter.plane}</div><div>Монеты: <span id="shCoins">${gameState.shooter.coins}</span></div>`;
+    uiTop.innerHTML = `<div>Ур: ${level} | Время: <span id="shTime">06:00</span></div><div>Очки: <span id="shScore">0</span></div>`;
     area.appendChild(uiTop);
+
+    const turboBtn = document.createElement('button');
+    turboBtn.className = 'turbo-btn';
+    turboBtn.id = 'turboBtn';
+    turboBtn.innerHTML = 'ТУРБО';
+    turboBtn.onclick = () => {
+        if (shooterObj.turboCharge >= 100) {
+            shooterObj.turboActive = true;
+            shooterObj.turboCharge = 0;
+            turboBtn.classList.remove('ready');
+            turboBtn.style.display = 'none';
+            playSound('win');
+        }
+    };
+    area.appendChild(turboBtn);
 
     const movePlayer = (e) => {
         const rect = canvas.getBoundingClientRect();
@@ -1625,25 +1745,48 @@ function initShooter() {
     
     canvas.addEventListener('touchmove', (e) => { e.preventDefault(); movePlayer(e); shooterObj.isFiring = true; }, {passive: false});
     canvas.addEventListener('mousemove', (e) => { movePlayer(e); if (e.buttons === 1) shooterObj.isFiring = true; });
-    
     canvas.addEventListener('touchstart', (e) => { movePlayer(e); shooterObj.isFiring = true; });
     canvas.addEventListener('mousedown', (e) => { movePlayer(e); shooterObj.isFiring = true; });
-    
     canvas.addEventListener('touchend', () => { shooterObj.isFiring = false; });
     canvas.addEventListener('mouseup', () => { shooterObj.isFiring = false; });
 
     let lastTime = performance.now();
+    let lastTimerTick = performance.now();
     let meteorSpawnTime = 0;
-    let alienSpawnTime = 0;
+    let ufoSpawnTime = 0;
 
     const gameLoop = (time) => {
         if (!shooterObj.canvas || shooterObj.isDead) return;
         const dt = time - lastTime;
         lastTime = time;
 
+        // Таймер
+        if (!shooterObj.boss && time - lastTimerTick > 1000) {
+            lastTimerTick = time;
+            shooterObj.timeLeft--;
+            if (shooterObj.timeLeft <= 0) {
+                spawnBoss();
+            }
+            let m = Math.floor(shooterObj.timeLeft / 60);
+            let s = shooterObj.timeLeft % 60;
+            document.getElementById('shTime').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
         const ctx = shooterObj.ctx;
+        
+        // Эффект тряски
+        let shakeX = 0, shakeY = 0;
+        if (shooterObj.shake > 0) {
+            shakeX = (Math.random() - 0.5) * shooterObj.shake;
+            shakeY = (Math.random() - 0.5) * shooterObj.shake;
+            shooterObj.shake -= 0.5;
+        }
+        
+        ctx.save();
+        ctx.translate(shakeX, shakeY);
+
         ctx.fillStyle = '#0a0510';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(-10, -10, canvas.width+20, canvas.height+20);
 
         shooterObj.stars.forEach(s => {
             s.y += s.speed;
@@ -1652,9 +1795,13 @@ function initShooter() {
             ctx.fillRect(s.x, s.y, 2, 2);
         });
 
-        // Рисуем корабль
+        // Корабль
         ctx.save();
         ctx.translate(shooterObj.playerX, shooterObj.playerY);
+        
+        let sizeMult = 1 + (gameState.shooter.plane * 0.02); // Корабль растет
+        ctx.scale(sizeMult, sizeMult);
+        
         ctx.fillStyle = '#00d4ff';
         ctx.beginPath();
         ctx.moveTo(0, -25);
@@ -1676,38 +1823,34 @@ function initShooter() {
         // Стрельба
         const fireRate = Math.max(50, 300 - (gameState.shooter.fireRate * 10));
         if (shooterObj.isFiring && time - shooterObj.lastShot > fireRate) {
-            shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20 });
+            if (shooterObj.turboActive) {
+                shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20, vx: -5, vy: -15 });
+                shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20, vx: 0, vy: -15 });
+                shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20, vx: 5, vy: -15 });
+            } else {
+                shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20, vx: 0, vy: -15 });
+            }
             shooterObj.lastShot = time;
             playSound('laser');
         }
 
-        ctx.fillStyle = '#ff8c42';
+        ctx.fillStyle = shooterObj.turboActive ? '#ffd700' : '#ff8c42';
         for (let i = shooterObj.bullets.length - 1; i >= 0; i--) {
             let b = shooterObj.bullets[i];
-            b.y -= 15;
+            b.x += b.vx; b.y += b.vy;
             ctx.fillRect(b.x - 2, b.y - 10, 4, 15);
             if (b.y < 0) shooterObj.bullets.splice(i, 1);
         }
 
-        // Спавн метеоритов
-        let spawnRate = Math.max(150, 1000 - (gameState.shooter.plane * 2));
-        let mSpeed = 2 + (gameState.shooter.plane * 0.05);
+        // Спавн
+        let spawnRate = Math.max(150, 1000 - (gameState.shooter.plane * 5));
+        let mSpeed = 2 + (gameState.shooter.plane * 0.1);
 
-        if (time - meteorSpawnTime > spawnRate) {
+        if (!shooterObj.boss && time - meteorSpawnTime > spawnRate) {
             meteorSpawnTime = time;
             shooterObj.meteors.push({
                 x: Math.random() * (canvas.width - 40) + 20,
                 y: -30, speed: mSpeed, size: Math.random() * 20 + 15, hp: 1
-            });
-        }
-
-        // Спавн инопланетян (каждые 4 сек)
-        if (time - alienSpawnTime > 4000) {
-            alienSpawnTime = time;
-            let hp = Math.floor(Math.random() * (120 - 15 + 1)) + 15;
-            shooterObj.aliens.push({
-                x: Math.random() * (canvas.width - 60) + 30,
-                y: -50, speed: mSpeed * 0.8, width: 50, height: 25, hp: hp, maxHp: hp
             });
         }
 
@@ -1724,10 +1867,7 @@ function initShooter() {
             }
             ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath(); ctx.arc(m.x - 5, m.y - 5, 4, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(m.x + 6, m.y + 3, 3, 0, Math.PI*2); ctx.fill();
-
+            
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let b = shooterObj.bullets[j];
                 if (Math.hypot(m.x - b.x, m.y - b.y) < m.size + 5) {
@@ -1738,6 +1878,16 @@ function initShooter() {
                         shooterObj.meteors.splice(i, 1);
                         shooterObj.score++;
                         document.getElementById('shScore').innerText = shooterObj.score;
+                        
+                        // Заряд турбо
+                        if (!shooterObj.turboActive) {
+                            shooterObj.turboCharge += (1 + gameState.shooter.turbo * 0.5);
+                            if (shooterObj.turboCharge >= 100) {
+                                const btn = document.getElementById('turboBtn');
+                                btn.classList.add('ready');
+                                btn.style.display = 'flex';
+                            }
+                        }
                         playSound('explosion');
                     }
                     break;
@@ -1745,50 +1895,72 @@ function initShooter() {
             }
 
             if (m.y > shooterObj.playerY - 20 && m.y < shooterObj.playerY + 20 && Math.abs(m.x - shooterObj.playerX) < m.size + 15) {
-                endShooter(); return;
+                endShooter(false); return;
             }
             if (m.y > canvas.height) { shooterObj.meteors.splice(i, 1); }
         }
 
-        // Инопланетяне
-        for (let i = shooterObj.aliens.length - 1; i >= 0; i--) {
-            let a = shooterObj.aliens[i];
-            a.y += a.speed;
-
-            ctx.fillStyle = '#4ade80';
+        // Босс и НЛО
+        if (shooterObj.boss) {
+            let b = shooterObj.boss;
+            
+            // Движение босса
+            b.x += b.vx;
+            if (b.x < 50 || b.x > canvas.width - 50) b.vx *= -1;
+            
+            // Рисуем босса
+            ctx.fillStyle = '#ff5e62';
             ctx.beginPath();
-            ctx.ellipse(a.x, a.y, a.width/2, a.height/2, 0, 0, Math.PI*2);
+            ctx.ellipse(b.x, b.y, 60, 30, 0, 0, Math.PI*2);
             ctx.fill();
-            ctx.fillStyle = '#86efac';
+            ctx.fillStyle = '#ff8c42';
             ctx.beginPath();
-            ctx.arc(a.x, a.y - 5, 15, Math.PI, 0);
+            ctx.arc(b.x, b.y - 10, 25, Math.PI, 0);
             ctx.fill();
             
+            // HP бар босса
             ctx.fillStyle = 'red';
-            ctx.fillRect(a.x - 20, a.y - 25, 40, 4);
+            ctx.fillRect(b.x - 50, b.y - 45, 100, 8);
             ctx.fillStyle = '#4ade80';
-            ctx.fillRect(a.x - 20, a.y - 25, 40 * (a.hp / a.maxHp), 4);
+            ctx.fillRect(b.x - 50, b.y - 45, 100 * (b.hp / b.maxHp), 8);
+
+            // Стрельба НЛО
+            if (time - ufoSpawnTime > 1500) {
+                ufoSpawnTime = time;
+                shooterObj.ufos.push({ x: b.x, y: b.y + 20, speed: 4 });
+            }
 
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
-                let b = shooterObj.bullets[j];
-                if (Math.hypot(a.x - b.x, a.y - b.y) < a.width/2 + 5) {
+                let bul = shooterObj.bullets[j];
+                if (Math.hypot(b.x - bul.x, b.y - bul.y) < 60) {
                     shooterObj.bullets.splice(j, 1);
-                    a.hp -= 10;
-                    if (a.hp <= 0) {
-                        for(let p=0; p<15; p++) shooterObj.particles.push({x: a.x, y: a.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1});
-                        shooterObj.aliens.splice(i, 1);
-                        shooterObj.score += 10;
-                        document.getElementById('shScore').innerText = shooterObj.score;
-                        playSound('explosion');
+                    b.hp -= (10 + gameState.shooter.plane * 2);
+                    shooterObj.shake = 5;
+                    if (b.hp <= 0) {
+                        endShooter(true); return;
                     }
-                    break;
                 }
             }
+        }
 
-            if (a.y > shooterObj.playerY - 20 && a.y < shooterObj.playerY + 20 && Math.abs(a.x - shooterObj.playerX) < a.width/2 + 15) {
-                endShooter(); return;
+        // НЛО (снаряды босса)
+        for (let i = shooterObj.ufos.length - 1; i >= 0; i--) {
+            let u = shooterObj.ufos[i];
+            u.y += u.speed;
+            
+            ctx.fillStyle = '#00d4ff';
+            ctx.beginPath();
+            ctx.ellipse(u.x, u.y, 15, 5, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(u.x, u.y - 3, 6, Math.PI, 0);
+            ctx.fill();
+
+            if (Math.hypot(u.x - shooterObj.playerX, u.y - shooterObj.playerY) < 20) {
+                endShooter(false); return;
             }
-            if (a.y > canvas.height) { shooterObj.aliens.splice(i, 1); }
+            if (u.y > canvas.height) shooterObj.ufos.splice(i, 1);
         }
 
         // Частицы
@@ -1799,93 +1971,78 @@ function initShooter() {
             ctx.fillRect(p.x, p.y, 3, 3);
             if (p.life <= 0) shooterObj.particles.splice(i, 1);
         }
-
+        
+        ctx.restore(); // Конец тряски
         gameAnimFrame = requestAnimationFrame(gameLoop);
     };
     gameAnimFrame = requestAnimationFrame(gameLoop);
 }
 
-function endShooter() {
+function spawnBoss() {
+    let hp = Math.floor(Math.random() * (180 - 120 + 1)) + 120;
+    shooterObj.boss = {
+        x: shooterObj.canvas.width / 2,
+        y: 80,
+        vx: 3,
+        hp: hp,
+        maxHp: hp
+    };
+    shooterObj.meteors = []; // Убираем метеориты, только босс
+    document.getElementById('shTime').innerText = 'БОСС!';
+    document.getElementById('shTime').style.color = 'red';
+}
+
+function endShooter(win) {
     shooterObj.isDead = true;
     cancelAnimationFrame(gameAnimFrame);
-    playSound('gameover');
-    const earned = Math.floor(shooterObj.score * (gameState.shooter.income * 1.5));
+    playSound(win ? 'win' : 'gameover');
+    
+    let earned = Math.floor(shooterObj.score * (gameState.shooter.income * 1.5));
+    if (win) {
+        earned += 50; // Бонус за победу
+        gameState.shooter.unlocked = Math.max(gameState.shooter.unlocked, shooterObj.level + 1);
+    }
     gameState.shooter.coins += earned;
     saveGameState();
 
     const area = document.getElementById('gameArea');
     area.innerHTML = `
-        <div style="text-align:center; padding:20px;">
-            <h2 style="color:#ff5e62; font-size:28px; margin-bottom:10px;">Игра окончена</h2>
-            <div style="font-size:20px; margin-bottom:20px;">Вы заработали: <b>${earned} 🪙</b></div>
-            <button class="game-btn" onclick="openShooterShop()">🛠 Магазин улучшений</button>
-            <button class="game-btn" style="background:#555; margin-top:10px;" onclick="initShooter()">Играть снова</button>
+        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
+            <h2 style="color:${win ? '#4ade80' : '#ff5e62'}; font-size:32px; margin-bottom:10px;">${win ? '🏆 Уровень пройден!' : '💥 Игра окончена'}</h2>
+            <div style="font-size:20px; margin-bottom:20px; color:#fff;">Вы заработали: <b>${earned} 🪙</b></div>
+            ${win ? `<div style="color:#aaa; margin-bottom:20px;">Открыт уровень ${gameState.shooter.unlocked}!</div>` : ''}
+            <button class="game-btn" onclick="openShooterMenu()">В меню</button>
         </div>
     `;
 }
-
-function openShooterShop() {
-    const area = document.getElementById('gameArea');
-    const s = gameState.shooter;
-    
-    const getBtn = (lvl, cost) => {
-        if (lvl >= s.maxLevel) return `<button class="upgrade-btn" disabled>MAX</button>`;
-        if (s.coins < cost) return `<button class="upgrade-btn" disabled>${cost} 🪙</button>`;
-        return `<button class="upgrade-btn" onclick="buyUpgrade('${lvl}', ${cost})">${cost} 🪙</button>`;
-    };
-
-    const planeCost = Math.floor(10 * Math.pow(1.1, s.plane));
-    const incomeCost = Math.floor(15 * Math.pow(1.1, s.income));
-    const fireRateCost = Math.floor(20 * Math.pow(1.1, s.fireRate));
-    const turboCost = Math.floor(50 * Math.pow(1.1, s.turbo));
-
-    area.innerHTML = `
-        <div class="shop-container">
-            <div class="shop-header"><span>🛠 Улучшения (Ур. ${s.plane}/1000)</span><span>${s.coins} 🪙</span></div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Увеличивает сложность и урон</p></div>
-                ${getBtn(s.plane, planeCost).replace("buyUpgrade('${lvl}'", "buyUpgrade('plane'")}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет за очки</p></div>
-                ${getBtn(s.income, incomeCost).replace("buyUpgrade('${lvl}'", "buyUpgrade('income'")}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>⚡ Скорострельность (Ур. ${s.fireRate})</h4><p>Быстрее стреляет</p></div>
-                ${getBtn(s.fireRate, fireRateCost).replace("buyUpgrade('${lvl}'", "buyUpgrade('fireRate'")}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>🚀 Турбо снаряд (Ур. ${s.turbo})</h4><p>Широкий залп</p></div>
-                ${getBtn(s.turbo, turboCost).replace("buyUpgrade('${lvl}'", "buyUpgrade('turbo'")}
-            </div>
-            <button class="game-btn" style="margin-top:20px;" onclick="initShooter()">Начать бой</button>
-            <button class="game-btn" style="background:#555; margin-top:10px;" onclick="closeGame()">Выйти</button>
-        </div>
-    `;
-}
-
-function buyUpgrade(type, cost) {
-    if (gameState.shooter.coins >= cost) {
-        gameState.shooter.coins -= cost;
-        gameState.shooter[type]++;
-        saveGameState();
-        openShooterShop();
-    }
-}
-
-function saveGameState() {
-    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
-}
-
 
 /* ================== ИГРА 2: КВАДРАТИК ================== */
+function openRunnerMenu() {
+    const area = document.getElementById('gameArea');
+    const unlocked = gameState.runner.unlocked;
+    
+    area.innerHTML = `
+        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
+            <h2 style="color:#ff8c42; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ff8c42;">Квадратик</h2>
+            <div style="font-size:18px; margin-bottom:30px; color:#fff;">Открыто уровней: ${unlocked} / 800</div>
+            
+            <button class="game-btn" onclick="initRunner(${unlocked})">▶️ Играть (Ур. ${unlocked})</button>
+            
+            <div style="color:#aaa; font-size:12px; max-width:300px; text-align:center; margin-top:20px;">
+                С каждым уровнем скорость растет, а препятствия становятся опаснее и разнообразнее. Доберись до конца!
+            </div>
+            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
+        </div>
+    `;
+}
+
 let runnerObj = {
     canvas: null, ctx: null, squareY: 0, squareVy: 0, gravity: 0.7,
     obstacles: [], speed: 5, score: 0, level: 1, isDead: false,
     spawnTimer: 0, jumpPower: -13
 };
 
-function initRunner() {
+function initRunner(level) {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
     
@@ -1897,19 +2054,19 @@ function initRunner() {
     runnerObj.canvas = canvas;
     runnerObj.ctx = canvas.getContext('2d');
     
-    // Квадрат стоит ровно на полу
     runnerObj.squareY = canvas.height - 20 - 30; 
     runnerObj.squareVy = 0;
     runnerObj.obstacles = [];
-    runnerObj.speed = 5 + (gameState.runner.level * 0.05);
+    // Скорость зависит от уровня
+    runnerObj.speed = 4 + (level * 0.1);
     runnerObj.score = 0;
-    runnerObj.level = gameState.runner.level;
+    runnerObj.level = level;
     runnerObj.isDead = false;
     runnerObj.spawnTimer = 0;
 
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Уровень: <span id="rnLevel">${runnerObj.level}</span>/1000</div><div>Счет: <span id="rnScore">0</span></div>`;
+    uiTop.innerHTML = `<div>Уровень: ${runnerObj.level}/800</div><div>Счет: <span id="rnScore">0</span></div>`;
     area.appendChild(uiTop);
 
     const jump = (e) => {
@@ -1944,50 +2101,65 @@ function initRunner() {
             runnerObj.squareVy = 0;
         }
 
+        // Квадратик
         ctx.save();
         ctx.translate(50, runnerObj.squareY);
-        
         let grad = ctx.createLinearGradient(0, 0, 30, 30);
         grad.addColorStop(0, '#ff8c42');
         grad.addColorStop(1, '#ff5e62');
-        
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.roundRect(0, 0, 30, 30, 8);
         ctx.fill();
-
         ctx.fillStyle = '#fff';
         ctx.beginPath();
         ctx.arc(10, 10, 4, 0, Math.PI*2);
         ctx.arc(20, 10, 4, 0, Math.PI*2);
         ctx.fill();
-        
         ctx.fillStyle = '#000';
         ctx.beginPath();
         ctx.arc(11, 10, 2, 0, Math.PI*2);
         ctx.arc(21, 10, 2, 0, Math.PI*2);
         ctx.fill();
-        
         ctx.restore();
 
-        let minSpawn = Math.max(20, 100 - (runnerObj.level * 0.5));
-        let maxSpawn = Math.max(40, 150 - (runnerObj.level * 0.5));
+        // Спавн
+        let minSpawn = Math.max(20, 80 - (runnerObj.level * 0.2));
+        let maxSpawn = Math.max(40, 120 - (runnerObj.level * 0.2));
 
         runnerObj.spawnTimer -= dt;
         if (runnerObj.spawnTimer <= 0) {
-            let obsH = Math.random() * 40 + 20;
-            runnerObj.obstacles.push({ x: canvas.width, w: Math.random() * 20 + 20, h: obsH });
+            // Разные виды препятствий
+            let type = Math.floor(Math.random() * 3);
+            let w, h;
+            if (type === 0) { w = 20; h = 30 + Math.random()*30; } // Узкий высокий
+            else if (type === 1) { w = 40; h = 20; } // Широкий низкий
+            else { w = 30; h = 40; } // Средний
+            
+            runnerObj.obstacles.push({ x: canvas.width, w: w, h: h, type: type });
             runnerObj.spawnTimer = Math.random() * (maxSpawn - minSpawn) + minSpawn;
         }
 
-        ctx.fillStyle = '#ff5e62';
         for (let i = runnerObj.obstacles.length - 1; i >= 0; i--) {
             let o = runnerObj.obstacles[i];
             o.x -= runnerObj.speed * dt;
-            ctx.fillRect(o.x, canvas.height - 20 - o.h, o.w, o.h);
+            
+            // Рисуем препятствие
+            ctx.fillStyle = o.type === 1 ? '#a06cd5' : '#ff5e62'; // Разные цвета
+            if (o.type === 0) {
+                // Шип (треугольник)
+                ctx.beginPath();
+                ctx.moveTo(o.x, canvas.height - 20);
+                ctx.lineTo(o.x + o.w/2, canvas.height - 20 - o.h);
+                ctx.lineTo(o.x + o.w, canvas.height - 20);
+                ctx.fill();
+            } else {
+                ctx.fillRect(o.x, canvas.height - 20 - o.h, o.w, o.h);
+            }
 
+            // Коллизия
             if (o.x < 50 + 30 && o.x + o.w > 50 && runnerObj.squareY + 30 > canvas.height - 20 - o.h) {
-                endRunner();
+                endRunner(false);
                 return;
             }
 
@@ -1996,12 +2168,10 @@ function initRunner() {
                 runnerObj.score += 10;
                 document.getElementById('rnScore').innerText = runnerObj.score;
                 
-                if (runnerObj.score % 100 === 0 && runnerObj.level < 1000) {
-                    runnerObj.level++;
-                    gameState.runner.level = runnerObj.level;
-                    saveGameState();
-                    runnerObj.speed += 0.1;
-                    document.getElementById('rnLevel').innerText = runnerObj.level;
+                // Переход на следующий уровень (каждые 100 очков)
+                if (runnerObj.score % 100 === 0 && runnerObj.level < 800) {
+                    endRunner(true);
+                    return;
                 }
             }
         }
@@ -2011,19 +2181,23 @@ function initRunner() {
     gameAnimFrame = requestAnimationFrame(gameLoop);
 }
 
-function endRunner() {
+function endRunner(win) {
     runnerObj.isDead = true;
     cancelAnimationFrame(gameAnimFrame);
-    playSound('gameover');
+    playSound(win ? 'win' : 'gameover');
+    
+    if (win) {
+        gameState.runner.unlocked = Math.max(gameState.runner.unlocked, runnerObj.level + 1);
+        saveGameState();
+    }
     
     const area = document.getElementById('gameArea');
     area.innerHTML = `
-        <div style="text-align:center; padding:20px;">
-            <h2 style="color:#ff5e62; font-size:28px; margin-bottom:10px;">Вы разбились!</h2>
-            <div style="font-size:20px; margin-bottom:20px;">Ваш счет: <b>${runnerObj.score}</b></div>
-            <div style="font-size:16px; opacity:0.8; margin-bottom:20px;">Достигнут уровень: ${runnerObj.level}</div>
-            <button class="game-btn" onclick="initRunner()">Попробовать снова</button>
-            <button class="game-btn" style="background:#555; margin-top:10px;" onclick="closeGame()">Выйти</button>
+        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
+            <h2 style="color:${win ? '#4ade80' : '#ff5e62'}; font-size:32px; margin-bottom:10px;">${win ? '🏆 Уровень пройден!' : '💥 Вы разбились!'}</h2>
+            <div style="font-size:20px; margin-bottom:20px; color:#fff;">Ваш счет: <b>${runnerObj.score}</b></div>
+            ${win ? `<div style="color:#aaa; margin-bottom:20px;">Открыт уровень ${gameState.runner.unlocked}!</div>` : ''}
+            <button class="game-btn" onclick="openRunnerMenu()">В меню</button>
         </div>
     `;
 }
