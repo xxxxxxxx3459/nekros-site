@@ -546,7 +546,7 @@
         <option value="2 года назад">2 года назад</option>
         <option value="3 года назад">3 года назад</option>
     </select>
-    <button class="modal-close" data-close="profileModal">Закрыть</button>
+   <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62; color:#fff; margin-top:15px;">🚪 Выйти из аккаунта</button> <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
 
@@ -2258,6 +2258,10 @@ document.getElementById('myProfileBtn').onclick = function() {
 
 document.querySelector('.create-post-prompt').onclick = function() {
     openPostModal();
+};
+document.getElementById('logoutFromProfileBtn').onclick = function() {
+    document.getElementById('profileModal').classList.remove('show');
+    document.getElementById('logoutModal').classList.add('show');
 };
  if (currentUser) {
     startApp();
