@@ -1224,7 +1224,8 @@ function renderGames() {
     grid.innerHTML = '';
     const games = [
         { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: `Уровень ${gameState.shooter.unlocked}/800` },
-        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: `Уровень ${gameState.runner.unlocked}/800` }
+        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: `Уровень ${gameState.runner.unlocked}/800` },
+        { id: 'platformer', icon: '🍄', title: 'Супер Прыгун', desc: 'Прыгай по врагам и собирай монеты' }
     ];
     games.forEach(g => {
         const div = document.createElement('div');
@@ -1241,10 +1242,15 @@ let gameAnimFrame = null;
 function startGame(type) {
     currentGame = type;
     document.getElementById('gameOverlay').classList.add('show');
-    let title = type === 'shooter' ? '✈️ Космический Шутер' : '🟦 Квадратик';
+    let title = 'Игра';
+    if (type === 'shooter') title = '✈️ Космический Шутер';
+    else if (type === 'runner') title = '🟦 Квадратик';
+    else if (type === 'platformer') title = '🍄 Супер Прыгун';
     document.getElementById('gameTitle').textContent = title;
+    
     if (type === 'shooter') openShooterMenu();
     else if (type === 'runner') openRunnerMenu();
+    else if (type === 'platformer') openPlatformerMenu();
 }
 
 function closeGame() {
@@ -1988,133 +1994,7 @@ function endRunner(isWin) {
     }
 }
 
-function renderStories() {
-    const el = document.getElementById('storiesRow');
-    if (!el) return;
-    el.innerHTML = '';
-    const addBtn = document.createElement('div');
-    addBtn.className = 'story-circle';
-    addBtn.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
-    addBtn.addEventListener('click', () => alert('Истории скоро появятся!'));
-    el.appendChild(addBtn);
-    ['Алекс', 'Мария', 'Дмитрий', 'Анна', 'Иван', 'Елена'].forEach(name => {
-        const div = document.createElement('div');
-        div.className = 'story-circle';
-        const color = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-        div.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${color}">${name.charAt(0)}</div></div><div class="story-label">${name}</div>`;
-        div.addEventListener('click', () => alert(`История ${name}`));
-        el.appendChild(div);
-    });
-}
-
-document.querySelectorAll('[data-close]').forEach(btn => {
-    btn.addEventListener('click', () => document.getElementById(btn.dataset.close).classList.remove('show'));
-});
-document.querySelectorAll('.modal').forEach(m => {
-    m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('show'); });
-});
-
-document.getElementById('plusBtn').addEventListener('click', () => document.getElementById('createModal').classList.add('show'));
-
-document.querySelectorAll('#createModal .modal-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-        const action = opt.dataset.action;
-        document.getElementById('createModal').classList.remove('show');
-        if (action === 'post') openPostModal();
-        else if (action === 'group') openGroupModal('group');
-        else if (action === 'community') openGroupModal('community');
-        else if (action === 'channel') openGroupModal('channel');
-        else if (action === 'story') alert('Истории скоро появятся!');
-    });
-});
-
-function openPostModal() {
-    document.getElementById('formTitle').textContent = 'Новый пост';
-    document.getElementById('formSub').textContent = 'Поделитесь чем-нибудь';
-    document.getElementById('formName').style.display = 'none';
-    document.getElementById('formText').style.display = 'block';
-    document.getElementById('formText').value = '';
-    document.getElementById('formPhoto').value = '';
-    document.getElementById('postMediaFields').style.display = 'block';
-    document.getElementById('formSubmit').onclick = () => {
-        const text = document.getElementById('formText').value.trim();
-        if (!text) { alert('Введите текст!'); return; }
-        const image = document.getElementById('formPhoto').value.trim();
-        posts.unshift({
-            id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color,
-            text: text, time: 'только что', views: 0, likes: 0, reposts: 0, comments: [],
-            image: image || null
-        });
-        try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-        document.getElementById('formModal').classList.remove('show');
-        renderPosts(); renderMyPage();
-    };
-    document.getElementById('formModal').classList.add('show');
-}
-
-function openGroupModal(type) {
-    const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
-    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
-    document.getElementById('formSub').textContent = 'Введите название';
-    document.getElementById('formName').style.display = 'block';
-    document.getElementById('formName').value = '';
-    document.getElementById('formText').style.display = 'none';
-    document.getElementById('postMediaFields').style.display = 'none';
-    document.getElementById('formSubmit').onclick = () => {
-        const name = document.getElementById('formName').value.trim();
-        if (!name) { alert('Введите название!'); return; }
-        const newItem = {
-            id: 'g_' + Date.now(), name: name,
-            color: AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)],
-            emoji: name.charAt(0).toUpperCase(), type: type, owner: currentUser.name,
-            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
-        };
-        if (type === 'channel') { channels.push(newItem); try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} }
-        else { groups.push(newItem); try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} }
-        document.getElementById('formModal').classList.remove('show');
-        renderChatsList(currentSearchTab, ''); renderMyPage();
-        alert(`"${name}" создан!`);
-    };
-    document.getElementById('formModal').classList.add('show');
-}
-
-document.getElementById('formCancel').addEventListener('click', () => document.getElementById('formModal').classList.remove('show'));
-
-document.getElementById('myProfileBtn').addEventListener('click', () => {
-    document.getElementById('profileTitle').textContent = currentUser.name;
-    document.getElementById('profileStatus').textContent = currentUser.lastSeen;
-    document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-    document.getElementById('profileModal').classList.add('show');
-});
-
-document.getElementById('myStatusSelect').addEventListener('change', (e) => {
-    currentUser.lastSeen = e.target.value;
-    document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-});
-
-document.getElementById('changeAvatarBtn').addEventListener('click', () => {
-    let i = AVATAR_COLORS.indexOf(currentUser.color);
-    i = (i + 1) % AVATAR_COLORS.length;
-    currentUser.color = AVATAR_COLORS[i];
-    document.getElementById('myAvatarSmall').style.background = currentUser.color;
-    document.getElementById('promptAvatar').style.background = currentUser.color;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-});
-
-document.getElementById('settingsBtn').addEventListener('click', () => document.getElementById('logoutModal').classList.add('show'));
-
-document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
-    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-    currentUser = null;
-    document.getElementById('logoutModal').classList.remove('show');
-    document.getElementById('panel').classList.remove('show');
-    document.getElementById('register').classList.remove('hide');
-    regName.value = '';
-    avatarPreview.textContent = '?';
-});
-
-if /* ================== ИГРА 3: ПЛАТФОРМЕР ================== */
+/* ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ================== */
 function openPlatformerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
@@ -2122,6 +2002,9 @@ function openPlatformerMenu() {
             <h2 style="color:#ffd700; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ffd700;">Супер Прыгун</h2>
             <div style="font-size:18px; margin-bottom:20px; color:#fff;">Собери монеты и допрыгни до флага!</div>
             <button class="game-btn" onclick="initPlatformer()" style="background:linear-gradient(135deg, #ffd700, #ff8c00); color:#000;">▶️ Играть</button>
+            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; margin-top:20px; line-height:1.5;">
+                Управление: Прыжок (тап).<br>Прыгай врагам на голову!
+            </div>
         </div>`;
 }
 
@@ -2364,32 +2247,10 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// Автоматическое добавление карточки игры в меню
-setTimeout(() => {
-    const originalRender = window.renderGames;
-    if (originalRender) {
-        window.renderGames = function() {
-            originalRender();
-            const grid = document.getElementById('gamesGrid');
-            if (grid && !document.getElementById('plat-card')) {
-                const div = document.createElement('div');
-                div.id = 'plat-card';
-                div.className = 'game-card';
-                div.innerHTML = `<div class="game-icon">🍄</div><div class="game-title">Супер Прыгун</div><div class="game-desc">Прыгай по врагам и собирай монеты</div>`;
-                div.addEventListener('click', () => {
-                    currentGame = 'platformer';
-                    document.getElementById('gameOverlay').classList.add('show');
-                    document.getElementById('gameTitle').textContent = '🍄 Супер Прыгун';
-                    openPlatformerMenu();
-                });
-                grid.appendChild(div);
-            }
-        };
-        // Вызываем сразу, чтобы карточка появилась
-        window.renderGames();
-    }
-}, 100);
-if (currentUser) startApp();
+// Запуск приложения при загрузке
+if (currentUser) {
+    startApp();
+}
 </script>
 </body>
 </html>
