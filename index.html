@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+до<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -539,13 +539,19 @@
     <div class="modal-sub" id="profileStatus"></div>
     <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить цвет профиля</button>
     <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
-    <select class="status-select" id="myStatusSelect">
-        <option value="в сети">в сети</option>
-        <option value="был(а) в сети недавно">был(а) в сети недавно</option>
-        <option value="год назад">год назад</option>
-        <option value="2 года назад">2 года назад</option>
-        <option value="3 года назад">3 года назад</option>
-    </select>
+   <select class="status-select" id="myStatusSelect">
+    <option value="в сети">в сети</option>
+    <option value="был(а) в сети недавно">был(а) в сети недавно</option>
+    <option value="год назад">год назад</option>
+    <option value="2 года назад">2 года назад</option>
+    <option value="3 года назад">3 года назад</option>
+   
+    <option value="4 года назад">4 года назад</option>
+    <option value="5 лет назад">5 лет назад</option>
+    <option value="6 лет назад">6 лет назад</option>
+    <option value="8 лет назад">8 лет назад</option>
+    <option value="12 лет назад">12 лет назад</option>
+</select>
    <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62; color:#fff; margin-top:15px;">🚪 Выйти из аккаунта</button> <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
@@ -2249,13 +2255,35 @@ function endPlatformer(isWin = false) {
 
 // Запуск приложения при загрузке
 /* --- ИСПРАВЛЕНИЕ КЛИКОВ --- */
-document.getElementById('myProfileBtn').onclick = function() {
-    document.getElementById('profileTitle').textContent = currentUser.name;
-    document.getElementById('profileStatus').textContent = currentUser.lastSeen;
-    document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-    document.getElementById('profileModal').classList.add('
-// Ждем полной загрузки страницы, чтобы все кнопки сработали
+
+// Запуск приложения при загрузке
 window.addEventListener('load', function() {
+    // Восстанавливаем кнопку "Продолжить"
+    const btn = document.getElementById('regBtn');
+    if (btn) {
+        btn.onclick = function() {
+            const n = (document.getElementById('regName').value || '').trim();
+            if (n.length < 2) { 
+                document.getElementById('regError').style.display = 'block'; 
+                return; 
+            }
+            document.getElementById('regError').style.display = 'none';
+            let isAdmin = false, premiumLevel = null;
+            const lowerName = n.toLowerCase();
+            if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
+            else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
+            
+            currentUser = { 
+                name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+                premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
+                profileViews: 0, subscribers: 0, pinnedIds: []
+            };
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+            startApp();
+        };
+    }
+
+    // Кнопки профиля и постов
     if (document.getElementById('myProfileBtn')) {
         document.getElementById('myProfileBtn').onclick = function() {
             document.getElementById('profileTitle').textContent = currentUser.name;
@@ -2279,10 +2307,8 @@ window.addEventListener('load', function() {
     }
 });
 
+// Автозапуск, если пользователь уже залогинен
 if (currentUser) {
-    startApp();
-}
- if (currentUser) {
     startApp();
 }
 </script>
