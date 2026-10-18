@@ -219,7 +219,6 @@
   .chat-input-bar { padding: 8px 14px 16px; display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.35); border-top: 1px solid rgba(255,255,255,0.1); }
   .chat-input { flex: 1; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 22px; padding: 12px 18px; font-size: 15px; color: #fff; outline: none; }
   .chat-send { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; color: #fff; font-size: 20px; cursor: pointer; }
-  .chat-menu { background: transparent; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 8px; }
 
   .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 72px; z-index: 25; display: flex; align-items: center; justify-content: space-around; background: rgba(15, 10, 25, 0.9); backdrop-filter: blur(30px); border-top: 1px solid rgba(255,255,255,0.12); }
   .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 10px; cursor: pointer; padding: 8px 0; font-family: inherit; }
@@ -286,7 +285,7 @@
   .game-close { font-size: 24px; cursor: pointer; background: transparent; border: none; color: #fff; }
   .game-area { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
   canvas { display: block; touch-action: none; }
-  .game-ui-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; pointer-events: none; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px #000; z-index: 12; }
+  .game-ui-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; pointer-events: none; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px #000; }
   .game-btn { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border: none; padding: 12px 30px; border-radius: 12px; font-size: 18px; cursor: pointer; font-weight: bold; margin-top: 20px; }
   
   .shop-container { position: absolute; inset: 0; background: rgba(15,10,25,0.95); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; z-index: 20; }
@@ -312,7 +311,7 @@
       width: 80px; height: 80px; border-radius: 50%;
       background: rgba(255,255,255,0.1); border: 3px solid #555;
       color: #555; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center;
-      z-index: 15; transition: 0.3s; pointer-events: none; display: none;
+      z-index: 15; transition: 0.3s; pointer-events: none;
   }
   .turbo-btn.ready {
       background: radial-gradient(circle, #ffd700, #ff8c42);
@@ -326,6 +325,7 @@
 
 <div class="sunset-photo"></div>
 
+<!-- РЕГИСТРАЦИЯ -->
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -337,6 +337,7 @@
   </div>
 </div>
 
+<!-- ПАНЕЛЬ -->
 <div id="panel">
   <div class="header">
     <div class="header-left" id="myProfileBtn">
@@ -354,6 +355,7 @@
 
   <div class="content" id="content">
     
+    <!-- ВКЛАДКА 1: МОЯ СТРАНИЦА -->
     <div class="tab-content active" id="tab-mypage">
         <div class="create-post-prompt" onclick="openPostModal()">
             <div class="my-avatar" id="promptAvatar" style="width:36px; height:36px; font-size:14px;"></div>
@@ -372,6 +374,7 @@
         <div id="myPagePostsList"></div>
     </div>
 
+    <!-- ВКЛАДКА 2: ЧАТЫ -->
     <div class="tab-content" id="tab-chats">
       <div class="search-section">
         <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
@@ -385,22 +388,26 @@
       <div id="chatsList"></div>
     </div>
 
+    <!-- ВКЛАДКА 3: ГЛАВНАЯ (ЛЕНТА) -->
     <div class="tab-content" id="tab-feed">
       <div class="stories-row" id="storiesRow"></div>
       <div class="section-title">📝 Лента новостей</div>
       <div id="postsList"></div>
     </div>
 
+    <!-- ВКЛАДКА 4: МУЗЫКА -->
     <div class="tab-content" id="tab-music">
       <div class="section-title">🎵 Музыка</div>
       <div id="musicList" style="padding-bottom: 20px;"></div>
     </div>
 
+    <!-- ВКЛАДКА 5: ИГРЫ -->
     <div class="tab-content" id="tab-games">
         <div class="section-title">🎮 Игры</div>
         <div class="games-grid" id="gamesGrid"></div>
     </div>
 
+    <!-- ВКЛАДКА 6: ПРОМО -->
     <div class="tab-content" id="tab-promo">
       <div class="section-title">👑 Premium подписки</div>
 
@@ -414,9 +421,11 @@
         </div>
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">⭐</span><span><b>Статус Administrator</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице</span></div>
+          <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице для закрепления постов, групп, каналов</span></div>
           <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц с продвижением</b></span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>822 просмотров в день</b></span></div>
+          <div class="feat"><span class="feat-icon">👁️</span><span><b>Все пользователи видят</b> твою страницу и посты</span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 300%</b> (до 300 тыс. человек в год)</span></div>
+          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>822 просмотров в день с продвижением</b></span></div>
         </div>
         <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="1800">Купить за 1 800 ₽ / год</button>
       </div>
@@ -431,15 +440,18 @@
         </div>
         <div class="premium-features">
           <div class="feat"><span class="feat-icon">💎</span><span><b>Статус Master</b> рядом с именем</span></div>
-          <div class="feat"><span class="feat-icon">📌</span><span><b>8 разделов</b> на твоей странице</span></div>
-          <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
-          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>2740 просмотров в день</b></span></div>
+          <div class="feat"><span class="feat-icon">📌</span><span><b>8 разделов</b> на твоей странице для продвижения своих каналов, групп сообществ</span></div>
+          <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты с продвижением</b></span></div>
+          <div class="feat"><span class="feat-icon">🔗</span><span>Ссылки на сообщества и каналы <b>видны всем</b></span></div>
+          <div class="feat"><span class="feat-icon">🚀</span><span>Продвижение на <b>1000%</b> (до 1 млн человек в год)</span></div>
+          <div class="feat"><span class="feat-icon">📸</span><span>Истории до <b>2740 просмотров в день с продвижением</b></span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
       </div>
     </div>
   </div>
 
+  <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="nav-btn active" data-tab="mypage"><span class="nav-icon">👤</span><span>Моя стр.</span></button>
     <button class="nav-btn" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
@@ -449,6 +461,7 @@
     <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
   </div>
 
+  <!-- ЧАТ -->
   <div id="chat">
     <div class="chat-header">
       <button class="back-btn" id="backBtn">←</button>
@@ -471,6 +484,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА СОЗДАНИЯ -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
@@ -484,6 +498,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ФОРМЫ -->
 <div class="modal" id="formModal">
   <div class="modal-card">
     <div class="modal-title" id="formTitle">Новый пост</div>
@@ -491,7 +506,7 @@
     
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40" style="display:none;">
     
-    <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь..."></textarea>
+    <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь, что у вас нового?"></textarea>
     
     <div id="postMediaFields" style="display:none;">
       <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото (URL) - необязательно">
@@ -503,6 +518,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА НАСТРОЙКИ РАЗДЕЛОВ -->
 <div class="modal" id="managePinnedModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Настройка разделов</div>
@@ -512,6 +528,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ДОБАВЛЕНИЯ УЧАСТНИКОВ -->
 <div class="modal" id="addParticipantsModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Добавить участников</div>
@@ -522,6 +539,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА УПРАВЛЕНИЯ УЧАСТНИКАМИ (УДАЛЕНИЕ) -->
 <div class="modal" id="manageMembersModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Участники</div>
@@ -531,6 +549,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ПРОФИЛЯ (ДЛЯ ЧУЖИХ) -->
 <div class="modal" id="publicProfileModal">
   <div class="modal-card" style="max-height: 90vh;">
     <div style="display:flex; align-items:center; gap:16px; margin-bottom: 20px;">
@@ -547,6 +566,7 @@
   </div>
 </div>
 
+<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ (НАСТРОЙКИ + СТАТУС) -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Мой профиль</div>
@@ -571,15 +591,18 @@
   </div>
 </div>
 
+<!-- МОДАЛКА ВЫХОДА ИЗ АККАУНТА -->
 <div class="modal" id="logoutModal">
   <div class="modal-card">
     <div class="modal-title">Выйти из аккаунта?</div>
     <div class="modal-sub">Вы уверены, что хотите выйти?</div>
+    
     <button class="modal-primary" id="confirmLogoutBtn" style="background:#ff5e62; margin-bottom:10px; padding: 16px; font-weight: 700;">Выйти</button>
     <button class="modal-close" data-close="logoutModal">Отмена</button>
   </div>
 </div>
 
+<!-- МОДАЛКА ЗРИТЕЛЕЙ -->
 <div class="modal" id="storyViewersModal">
   <div class="modal-card" style="max-height: 85vh;">
     <div class="modal-title">Зрители истории</div>
@@ -589,6 +612,7 @@
   </div>
 </div>
 
+<!-- ОВЕРЛЕЙ ДЛЯ ИГР -->
 <div id="gameOverlay">
     <div class="game-topbar">
         <button class="game-close" onclick="closeGame()">✕</button>
@@ -599,16 +623,20 @@
 </div>
 
 <script>
-/* ============ ЗВУКИ ============ */
+/* ============ ЗВУКИ (Web Audio API) ============ */
 let audioCtx = null;
 function playSound(type) {
     try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
+        
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
         const now = audioCtx.currentTime;
+        
         if (type === 'laser') {
             osc.type = 'sine';
             osc.frequency.setValueAtTime(800, now);
@@ -646,7 +674,7 @@ function playSound(type) {
             gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
             osc.start(); osc.stop(now + 0.4);
         }
-    } catch(e) {}
+    } catch(e) { console.log('Audio error', e); }
 }
 
 /* ============ РЕГИСТРАЦИЯ ============ */
@@ -656,6 +684,7 @@ let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)
 
 const avatarPreview = document.getElementById('avatarPreview');
 const regName = document.getElementById('regName');
+const regBtn = document.getElementById('regBtn');
 const regError = document.getElementById('regError');
 
 avatarPreview.style.background = chosenColor;
@@ -675,34 +704,43 @@ function updateAvatarLetter() {
 }
 regName.addEventListener('input', updateAvatarLetter);
 
-function continueToApp() {
+regBtn.addEventListener('click', function() {
   const n = (regName.value || '').trim();
+  
   if (n.length < 2) { 
     regError.style.display = 'block';
     return; 
   }
+  
   regError.style.display = 'none';
   
-  let isAdmin = false, premiumLevel = null;
+  let isAdmin = false;
+  let premiumLevel = null;
   const lowerName = n.toLowerCase();
-  if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-  else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
+  
+  if (lowerName === 'admin') {
+    isAdmin = true;
+    premiumLevel = 'sunset';
+  } else if (lowerName === 'boss') {
+    isAdmin = true;
+    premiumLevel = 'prime';
+  }
 
   currentUser = { 
       name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
       premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
       profileViews: 0, subscribers: 0, pinnedIds: []
   };
+  
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
   startApp();
-}
-
-document.getElementById('regBtn').addEventListener('click', continueToApp);
-regName.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' || e.keyCode === 13) continueToApp();
 });
 
-/* ============ ДАННЫЕ ============ */
+regName.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
+});
+
+/* ============ ОБЩИЕ ДАННЫЕ ============ */
 const CHATS_KEY = 'sunset_chats_v45';
 const GROUPS_KEY = 'sunset_groups_v45';
 const CHANNELS_KEY = 'sunset_channels_v45';
@@ -712,8 +750,12 @@ const STORIES_KEY = 'sunset_stories_v45';
 const GAMES_KEY = 'sunset_games_v45';
 
 let currentUser = null;
-let chats = {}, groups = [], channels = [], posts = [];
-let userStories = [], userLikes = [];
+let chats = {};
+let groups = [];
+let channels = [];
+let posts = [];
+let userStories = [];
+let userLikes = [];
 let activeChat = null;
 let currentSearchTab = 'people';
 let pendingAction = null;
@@ -727,9 +769,6 @@ const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','С�
 const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Арина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия','Кристина','Людмила','Галина','Надежда'];
 const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Егоров','Павлов','Козлов','Степанов','Николаев','Орлов','Андреев','Макаров','Никитин','Захаров','Зайцев','Соловьёв','Борисов','Яковлев','Григорьев','Романов','Воробьёв','Сергеев','Кузьмин','Фролов','Александров','Дмитриев','Королёв','Гусев','Киселёв','Ильин','Максимов','Поляков','Сорокин','Виноградов','Ковалёв','Белов','Медведев','Антонов','Тарасов'];
 
-function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
-function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
 function getRandomFullName() {
     const isMale = Math.random() > 0.5;
     const firstName = isMale ? rnd(FIRST_NAMES_M) : rnd(FIRST_NAMES_F);
@@ -740,13 +779,12 @@ function getRandomFullName() {
 
 const ALL_USERS = [];
 for(let i=0; i<500; i++) {
-    const name = getRandomFullName();
     ALL_USERS.push({ 
-        id: 'u_' + i, name: name, color: rnd(AVATAR_COLORS), 
-        emoji: name.charAt(0), type: 'person',
-        lastSeen: rnd(['в сети', 'был(а) в сети недавно', 'год назад'])
+        id: 'u_' + i, name: getRandomFullName(), color: rnd(AVATAR_COLORS), 
+        emoji: '', type: 'person', lastSeen: rnd(['в сети', 'был(а) в сети недавно', 'год назад'])
     });
 }
+ALL_USERS.forEach(u => u.emoji = u.name.charAt(0));
 
 const PEOPLE_NAMES = [
   ['alex', 'Алекс', '#ff6b6b', 'A'],['maria', 'Мария', '#a06cd5', 'M'],
@@ -814,13 +852,16 @@ const BOT_POSTS = [
     { id: 'bp5', author: 'Елена', color: '#f5a623', text: 'Погуляла в парке, погода сегодня шикарная. Успела покормить белок 🐿️', time: '3 часа назад', views: 104, likes: 31, reposts: 2, comments: [] }
 ];
 
-/* ============ СТАРТ ============ */
+function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
 function startApp() {
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
   document.getElementById('myAvatarSmall').style.background = currentUser.color;
   document.getElementById('myNameLabel').textContent = currentUser.name;
+  
   document.getElementById('promptAvatar').textContent = currentUser.emoji;
   document.getElementById('promptAvatar').style.background = currentUser.color;
 
@@ -915,6 +956,7 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
 function renderMusic() {
     const el = document.getElementById('musicList');
     if (!el) return;
+    
     let html = '';
     SONGS.forEach((s, i) => {
         html += `
@@ -941,7 +983,7 @@ function renderChatsList(tab, q) {
   
   let items = [];
   if (tab === 'people') items = PEOPLE;
-  else if (tab === 'groups') items = groups.filter(g => g.type !== 'community' && g.type !== 'channel').map(g => ({...g, type: 'group'}));
+  else if (tab === 'groups') items = groups.map(g => ({...g, type: 'group'}));
   else if (tab === 'communities') items = [...DEFAULT_COMMUNITIES, ...groups.filter(g => g.type === 'community')];
   else if (tab === 'channels') items = channels.map(c => ({...c, type: 'channel'}));
 
@@ -958,8 +1000,12 @@ function renderChatsList(tab, q) {
     let badge = (item.type === 'group' || item.type === 'community') ? '<span class="badge open">🌍</span>' : '';
     
     let subText = '';
-    if (item.type === 'person') subText = item.lastSeen;
-    else subText = `${item.members ? item.members.length : 0} участников`;
+    if (item.type === 'person') {
+        subText = item.lastSeen;
+    } else {
+        const count = item.members ? item.members.length : 0;
+        subText = `${count} участников`;
+    }
 
     div.innerHTML = `<div class="card-avatar ${item.type === 'group' ? 'group' : ''}" style="background:${item.color}">${item.emoji}</div>
       <div class="card-info"><div class="card-name">${esc(item.name)} ${badge}</div><div class="card-sub">${esc(subText)}</div></div>`;
@@ -994,9 +1040,15 @@ function openChat(item) {
       if (!item.members) item.members = [];
       statusEl.textContent = `${item.members.length} участников`;
       statusEl.className = 'status online';
+      
       document.getElementById('addParticipantsBtn').style.display = 'flex';
       document.getElementById('chatMembersBtn').style.display = 'flex';
-      document.getElementById('deleteChatBtn').style.display = (item.owner === currentUser.name) ? 'flex' : 'none';
+      
+      if (item.owner === currentUser.name) {
+          document.getElementById('deleteChatBtn').style.display = 'flex';
+      } else {
+          document.getElementById('deleteChatBtn').style.display = 'none';
+      }
   }
   
   chatEl.classList.add('show');
@@ -1013,9 +1065,6 @@ function openChat(item) {
 function saveGroups() {
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
     try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-}
-function saveGameState() {
-    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
 function addMsgToDOM(msg) {
@@ -1058,7 +1107,7 @@ document.getElementById('chatSend').addEventListener('click', () => {
   }
 
   setTimeout(() => {
-    const rt = generateReply();
+    const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
     try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
@@ -1082,6 +1131,14 @@ document.getElementById('backBtn').addEventListener('click', () => {
   activeChat = null;
 });
 
+function generateReply(text) {
+  const t = text.toLowerCase();
+  if (t.includes('привет') || t.includes('здравствуй')) return rnd(['Привет!', 'Здравствуй!', 'Хай!']);
+  if (t.includes('как дела')) return rnd(['Отлично!', 'Хорошо, а у тебя?', 'Супер!']);
+  if (t.includes('пока')) return 'До связи!';
+  return rnd(['Интересно!', 'Согласен!', 'Ну да)', 'Ага, понятно', 'Расскажи ещё!']);
+}
+
 /* ============ УДАЛЕНИЕ ЧАТА ============ */
 document.getElementById('deleteChatBtn').addEventListener('click', () => {
     if (!activeChat) return;
@@ -1089,13 +1146,14 @@ document.getElementById('deleteChatBtn').addEventListener('click', () => {
         alert('Вы не можете удалить этот чат, так как вы не его владелец!');
         return;
     }
-    if (confirm(`Вы уверены, что хотите удалить "${activeChat.name}"?`)) {
+    if (confirm(`Вы уверены, что хотите удалить "${activeChat.name}"? Это действие необратимо.`)) {
         if (activeChat.type === 'channel') {
             channels = channels.filter(c => c.id !== activeChat.id);
+            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
         } else {
             groups = groups.filter(g => g.id !== activeChat.id);
+            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
         }
-        saveGroups();
         delete chats[activeChat.id];
         try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
         chatEl.classList.remove('show');
@@ -1106,7 +1164,7 @@ document.getElementById('deleteChatBtn').addEventListener('click', () => {
     }
 });
 
-/* ============ УЧАСТНИКИ ============ */
+/* ============ ПРИГЛАШЕНИЕ И УДАЛЕНИЕ УЧАСТНИКОВ ============ */
 document.getElementById('addParticipantsBtn').addEventListener('click', () => {
     if (!activeChat) return;
     document.getElementById('searchInviteInput').value = '';
@@ -1143,19 +1201,14 @@ function renderParticipantsList(users) {
             btn.style.background = 'transparent';
             btn.disabled = true;
             if (!activeChat.members) activeChat.members = [];
-            if (!activeChat.members.find(m => m.id === user.id)) {
-                activeChat.members.push(user);
-            }
+            if (!activeChat.members.find(m => m.id === user.id)) activeChat.members.push(user);
             saveGroups();
             const sysMsg = { text: `👤 ${user.name} присоединился к чату`, time: nowTime(), from: 'system' };
             if (!chats[activeChat.id]) chats[activeChat.id] = [];
             chats[activeChat.id].push(sysMsg);
             try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
             document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
-            if (activeChat) {
-                addMsgToDOM(sysMsg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
+            if (activeChat) { addMsgToDOM(sysMsg); chatBody.scrollTop = chatBody.scrollHeight; }
         });
         list.appendChild(div);
     });
@@ -1178,19 +1231,21 @@ document.getElementById('chatMembersBtn').addEventListener('click', () => {
                 <button style="background:transparent; border:none; color:#ff5e62; font-size:20px; cursor:pointer; display:${activeChat.owner === currentUser.name ? 'block' : 'none'};">❌</button>
             `;
             const removeBtn = div.querySelector('button');
-            removeBtn.addEventListener('click', () => {
-                if (activeChat.owner !== currentUser.name) { alert('Нет прав!'); return; }
-                activeChat.members.splice(index, 1);
-                saveGroups();
-                document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
-                const sysMsg = { text: `👤 ${member.name} покинул чат`, time: nowTime(), from: 'system' };
-                if (!chats[activeChat.id]) chats[activeChat.id] = [];
-                chats[activeChat.id].push(sysMsg);
-                try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
-                addMsgToDOM(sysMsg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-                document.getElementById('chatMembersBtn').click();
-            });
+            if (removeBtn) {
+                removeBtn.addEventListener('click', () => {
+                    if (activeChat.owner !== currentUser.name) { alert('Вы не можете удалять участников из этого чата!'); return; }
+                    activeChat.members.splice(index, 1);
+                    saveGroups();
+                    document.getElementById('chatStatus').textContent = `${activeChat.members.length} участников`;
+                    const sysMsg = { text: `👤 ${member.name} покинул чат`, time: nowTime(), from: 'system' };
+                    if (!chats[activeChat.id]) chats[activeChat.id] = [];
+                    chats[activeChat.id].push(sysMsg);
+                    try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
+                    addMsgToDOM(sysMsg);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    document.getElementById('chatMembersBtn').click();
+                });
+            }
             list.appendChild(div);
         });
     }
@@ -1215,9 +1270,8 @@ function openPublicProfile(person) {
             const div = document.createElement('div');
             div.className = 'pinned-item';
             const rType = rnd(['group', 'channel']);
-            div.innerHTML = `<div class="pinned-icon">${rType === 'channel' ? '📢' : '👥'}</div>
-                <div class="pinned-name">${esc(person.name.split(' ')[0])} ${rType === 'channel' ? 'TV' : 'Chat'}</div>`;
-            div.addEventListener('click', () => alert('Это чужой раздел!'));
+            div.innerHTML = `<div class="pinned-icon">${rType === 'channel' ? '📢' : '👥'}</div><div class="pinned-name">${esc(person.name.split(' ')[0])} ${rType === 'channel' ? 'TV' : 'Chat'}</div>`;
+            div.addEventListener('click', () => alert('Это чужой раздел, вы можете только подписаться на него!'));
             pubPinned.appendChild(div);
         }
     }
@@ -1234,7 +1288,7 @@ function openPublicProfile(person) {
     document.getElementById('publicProfileModal').classList.add('show');
 }
 
-/* ============ ЛЕНТА ============ */
+/* ============ ЛЕНТА (ГЛАВНАЯ) ============ */
 function renderPosts() {
   const el = document.getElementById('postsList');
   if(el) {
@@ -1250,7 +1304,6 @@ function buildPostEl(p) {
   const div = document.createElement('div');
   div.className = 'post';
   const hasLiked = userLikes.includes(p.id);
-  
   let mediaHtml = '';
   if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
   if (p.music) mediaHtml += `
@@ -1262,7 +1315,6 @@ function buildPostEl(p) {
       </div>
       <div style="color:#ff8c42; font-size:18px;">▶</div>
     </div>`;
-
   div.innerHTML = `
     <div class="post-header">
       <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
@@ -1286,7 +1338,6 @@ function buildPostEl(p) {
       </div>
     </div>
   `;
-
   const likeBtn = div.querySelector('.like-btn');
   likeBtn.addEventListener('click', function() {
     if (userLikes.includes(p.id)) {
@@ -1303,20 +1354,17 @@ function buildPostEl(p) {
     try { localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes)); } catch(e) {}
     savePostsIfMine(p);
   });
-
   div.querySelector('.repost-btn').addEventListener('click', function() {
     p.reposts = (p.reposts || 0) + 1;
     this.innerHTML = `🔄 <span>${p.reposts}</span>`;
-    navigator.clipboard?.writeText('https://sunset.app/post/' + p.id);
+    navigator.clipboard?.writeText('Ссылка на пост: https://sunset.app/post/' + p.id);
     alert('Пост скопирован в буфер обмена!');
     savePostsIfMine(p);
   });
-
   const cb = div.querySelector('.post-comments');
   div.querySelector('.comment-btn').addEventListener('click', () => {
     cb.style.display = cb.style.display === 'none' ? 'block' : 'none';
   });
-
   const input = div.querySelector('.comment-input');
   const send = div.querySelector('.comment-send');
   const list = div.querySelector('.comments-list');
@@ -1329,7 +1377,6 @@ function buildPostEl(p) {
     list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
     savePostsIfMine(p);
   });
-
   return div;
 }
 
@@ -1346,16 +1393,13 @@ function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     const manageBtn = document.getElementById('managePinnedBtn');
     pinnedContainer.innerHTML = '';
-
     let limit = 0;
     if (currentUser.premium === 'prime') limit = 8;
     else if (currentUser.premium === 'sunset') limit = 3;
-
     const myGroups = groups.filter(g => g.owner === currentUser.name && g.type !== 'community');
     const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
     let allLinks = [...myGroups, ...myComm, ...myChannels];
-
     if (limit === 0) {
         pinnedContainer.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления разделов здесь</div>';
         manageBtn.style.display = 'none';
@@ -1368,10 +1412,7 @@ function renderMyPage() {
             if (i < pinnedLinks.length) {
                 const link = pinnedLinks[i];
                 div.className = 'pinned-item';
-                div.innerHTML = `
-                    <div class="pinned-icon">${link.type === 'channel' ? '📢' : (link.type === 'community' ? '🌍' : '👥')}</div>
-                    <div class="pinned-name">${esc(link.name)}</div>
-                `;
+                div.innerHTML = `<div class="pinned-icon">${link.type === 'channel' ? '📢' : (link.type === 'community' ? '🌍' : '👥')}</div><div class="pinned-name">${esc(link.name)}</div>`;
                 div.addEventListener('click', () => openChat(link));
             } else {
                 div.className = 'pinned-item';
@@ -1403,11 +1444,9 @@ function openManagePinned() {
     const myComm = groups.filter(g => g.owner === currentUser.name && g.type === 'community');
     const myChannels = channels.filter(c => c.owner === currentUser.name);
     let allLinks = [...myGroups, ...myComm, ...myChannels];
-
     document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit} слотов`;
     const list = document.getElementById('managePinnedList');
     list.innerHTML = '';
-
     if (allLinks.length === 0) {
         list.innerHTML = '<div style="text-align:center; padding:20px; color:rgba(255,255,255,0.5);">У вас пока нет созданных групп, каналов или сообществ.</div>';
     } else {
@@ -1420,10 +1459,7 @@ function openManagePinned() {
             else if (link.type === 'community') typeText = 'Сообщество';
             div.innerHTML = `
                 <div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div>
-                <div class="viewer-info">
-                    <div class="viewer-name">${esc(link.name)}</div>
-                    <div class="viewer-time">${typeText}</div>
-                </div>
+                <div class="viewer-info"><div class="viewer-name">${esc(link.name)}</div><div class="viewer-time">${typeText}</div></div>
                 <input type="checkbox" ${isPinned ? 'checked' : ''} style="width:20px; height:20px; accent-color:#ff8c42; cursor:pointer;">
             `;
             const checkbox = div.querySelector('input');
@@ -1455,17 +1491,13 @@ function renderGames() {
     if (!grid) return;
     grid.innerHTML = '';
     const games = [
-        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: 'Сбивай метеориты и Боссов' },
-        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: 'Прыгай через препятствия' }
+        { id: 'shooter', icon: '✈️', title: 'Космический Шутер', desc: 'Сбивай метеориты и Боссов', color: '#00d4ff' },
+        { id: 'runner', icon: '🟦', title: 'Квадратик', desc: 'Прыгай через препятствия', color: '#ff5e62' }
     ];
     games.forEach(g => {
         const div = document.createElement('div');
         div.className = 'game-card';
-        div.innerHTML = `
-            <div class="game-icon">${g.icon}</div>
-            <div class="game-title">${g.title}</div>
-            <div class="game-desc">${g.desc}</div>
-        `;
+        div.innerHTML = `<div class="game-icon">${g.icon}</div><div class="game-title">${g.title}</div><div class="game-desc">${g.desc}</div>`;
         div.addEventListener('click', () => startGame(g.id));
         grid.appendChild(div);
     });
@@ -1473,6 +1505,7 @@ function renderGames() {
 
 let currentGame = null;
 let gameAnimFrame = null;
+let gameLogicInterval = null;
 
 function startGame(type) {
     currentGame = type;
@@ -1488,11 +1521,12 @@ function startGame(type) {
 function closeGame() {
     document.getElementById('gameOverlay').classList.remove('show');
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
+    if (gameLogicInterval) clearInterval(gameLogicInterval);
     currentGame = null;
     renderGames();
 }
 
-/* ============ КОСМИЧЕСКИЙ ШУТЕР ============ */
+/* ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== */
 function openShooterMenu() {
     const area = document.getElementById('gameArea');
     const unlocked = gameState.shooter.unlocked;
@@ -1500,13 +1534,12 @@ function openShooterMenu() {
         <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
             <h2 style="color:#00d4ff; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #00d4ff;">Космический Шутер</h2>
             <div style="font-size:18px; margin-bottom:20px; color:#fff;">Открыто уровней: ${unlocked} / 800</div>
-            <div style="font-size:14px; margin-bottom:20px; color:#4ade80;">🪙 ${gameState.shooter.coins} монет</div>
             <div style="display:flex; gap:15px; margin-bottom:30px; flex-wrap:wrap; justify-content:center;">
                 <button class="game-btn" onclick="openShooterShop()" style="background:#a06cd5;">🛠 Магазин</button>
                 <button class="game-btn" onclick="initShooter(${unlocked})">▶️ Играть (Ур. ${unlocked})</button>
             </div>
             <div style="color:#aaa; font-size:12px; max-width:300px; text-align:center;">
-                Каждый уровень длится 6 минут. Продержись до конца и убей Босса!
+                Каждый уровень длится 6 минут. Продержись до конца, убей Босса и открой следующий уровень!
             </div>
             <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
         </div>
@@ -1526,22 +1559,10 @@ function openShooterShop() {
     area.innerHTML = `
         <div class="shop-container">
             <div class="shop-header"><span>🛠 Улучшения</span><span>${s.coins} 🪙</span></div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Больше урона</p></div>
-                ${getBtn('plane', s.plane)}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет</p></div>
-                ${getBtn('income', s.income)}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>⚡ Скорострельность (Ур. ${s.fireRate})</h4><p>Быстрее стреляет</p></div>
-                ${getBtn('fireRate', s.fireRate)}
-            </div>
-            <div class="upgrade-item">
-                <div class="upgrade-info"><h4>🚀 Турбо (Ур. ${s.turbo})</h4><p>Быстрее копится заряд</p></div>
-                ${getBtn('turbo', s.turbo)}
-            </div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>✈️ Корабль (Ур. ${s.plane})</h4><p>Увеличивает базовый урон</p></div>${getBtn('plane', s.plane)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>💰 Доход (Ур. ${s.income})</h4><p>Больше монет за очки</p></div>${getBtn('income', s.income)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>⚡ Скорострельность (Ур. ${s.fireRate})</h4><p>Быстрее стреляет</p></div>${getBtn('fireRate', s.fireRate)}</div>
+            <div class="upgrade-item"><div class="upgrade-info"><h4>🚀 Турбо-снаряд (Ур. ${s.turbo})</h4><p>Быстрее копится заряд</p></div>${getBtn('turbo', s.turbo)}</div>
             <button class="game-btn" style="margin-top:20px;" onclick="openShooterMenu()">Назад</button>
         </div>
     `;
@@ -1556,30 +1577,31 @@ function buyUpgrade(type, cost) {
     }
 }
 
+function saveGameState() {
+    try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
+}
+
 let shooterObj = {
     canvas: null, ctx: null, playerX: 150, playerY: 400,
     bullets: [], meteors: [], enemyUfos: [], bossProjectiles: [], particles: [], stars: [],
     score: 0, isDead: false, isFiring: false, lastShot: 0,
     timeLeft: 360, boss: null, level: 1, 
-    turboCharge: 0, turboActive: false, turboUses: 0, _turboStart: null,
+    turboCharge: 0, turboActive: false, turboUses: 0,
     shake: 0
 };
 
 function initShooter(level) {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
-    
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
     canvas.height = window.innerHeight - 150;
     area.appendChild(canvas);
-    
     shooterObj.canvas = canvas;
     shooterObj.ctx = canvas.getContext('2d');
     shooterObj.playerX = canvas.width / 2;
     shooterObj.playerY = canvas.height - 60;
-    shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.enemyUfos = []; 
-    shooterObj.bossProjectiles = []; shooterObj.particles = [];
+    shooterObj.bullets = []; shooterObj.meteors = []; shooterObj.enemyUfos = []; shooterObj.bossProjectiles = []; shooterObj.particles = [];
     shooterObj.stars = Array.from({length: 50}, () => ({x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1}));
     shooterObj.score = 0; shooterObj.isDead = false; shooterObj.isFiring = false;
     shooterObj.timeLeft = 360;
@@ -1588,9 +1610,8 @@ function initShooter(level) {
     shooterObj.turboCharge = 0;
     shooterObj.turboActive = false;
     shooterObj.turboUses = 0;
-    shooterObj._turboStart = null;
     shooterObj.shake = 0;
-    
+
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
     uiTop.innerHTML = `<div>Ур: ${level} | Время: <span id="shTime">06:00</span></div><div>Очки: <span id="shScore">0</span></div>`;
@@ -1599,7 +1620,6 @@ function initShooter(level) {
     const turboBar = document.createElement('div');
     turboBar.className = 'turbo-bar-container';
     turboBar.id = 'turboBar';
-    turboBar.style.display = 'block';
     turboBar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div>';
     area.appendChild(turboBar);
 
@@ -1610,11 +1630,9 @@ function initShooter(level) {
     turboBtn.onclick = () => {
         if (shooterObj.turboCharge >= 100 && shooterObj.turboUses < 2) {
             shooterObj.turboActive = true;
-            shooterObj._turboStart = performance.now();
             shooterObj.turboCharge = 0;
             shooterObj.turboUses++;
-            const fill = document.getElementById('turboFill');
-            if (fill) fill.style.width = '0%';
+            document.getElementById('turboFill').style.width = '0%';
             turboBtn.classList.remove('ready');
             turboBtn.style.display = 'none';
             playSound('win');
@@ -1653,13 +1671,8 @@ function initShooter(level) {
 
     const gameLoop = (time) => {
         if (!shooterObj.canvas || shooterObj.isDead) return;
+        const dt = time - lastTime;
         lastTime = time;
-
-        if (shooterObj.turboActive && shooterObj._turboStart &&
-            performance.now() - shooterObj._turboStart > 5000) {
-            shooterObj.turboActive = false;
-            shooterObj._turboStart = null;
-        }
 
         if (!shooterObj.boss && time - lastTimerTick > 1000) {
             lastTimerTick = time;
@@ -1667,8 +1680,8 @@ function initShooter(level) {
             if (shooterObj.timeLeft <= 0) spawnBoss();
             let m = Math.floor(shooterObj.timeLeft / 60);
             let s = shooterObj.timeLeft % 60;
-            const el = document.getElementById('shTime');
-            if (el) el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            const timeEl = document.getElementById('shTime');
+            if(timeEl) timeEl.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
         const ctx = shooterObj.ctx;
@@ -1681,7 +1694,6 @@ function initShooter(level) {
         
         ctx.save();
         ctx.translate(shakeX, shakeY);
-
         ctx.fillStyle = '#0a0510';
         ctx.fillRect(-10, -10, canvas.width+20, canvas.height+20);
 
@@ -1698,18 +1710,11 @@ function initShooter(level) {
         ctx.scale(sizeMult, sizeMult);
         ctx.fillStyle = '#00d4ff';
         ctx.beginPath();
-        ctx.moveTo(0, -25);
-        ctx.lineTo(15, 10);
-        ctx.lineTo(5, 15);
-        ctx.lineTo(0, 10);
-        ctx.lineTo(-5, 15);
-        ctx.lineTo(-15, 10);
-        ctx.closePath();
+        ctx.moveTo(0, -25); ctx.lineTo(15, 10); ctx.lineTo(5, 15); ctx.lineTo(0, 10);
+        ctx.lineTo(-5, 15); ctx.lineTo(-15, 10); ctx.closePath();
         ctx.fill();
         ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(0, -5, 5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(0, -5, 5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = shooterObj.isFiring ? '#ff8c42' : '#555';
         ctx.fillRect(-5, 15, 10, 8);
         ctx.restore();
@@ -1741,15 +1746,9 @@ function initShooter(level) {
         if (!shooterObj.boss && time - spawnTime > spawnRate) {
             spawnTime = time;
             if (Math.random() > 0.5) {
-                shooterObj.meteors.push({
-                    x: Math.random() * (canvas.width - 40) + 20,
-                    y: -30, speed: mSpeed, size: Math.random() * 20 + 15, hp: 1
-                });
+                shooterObj.meteors.push({ x: Math.random() * (canvas.width - 40) + 20, y: -30, speed: mSpeed, size: Math.random() * 20 + 15, hp: 1 });
             } else {
-                shooterObj.enemyUfos.push({
-                    x: Math.random() * (canvas.width - 60) + 30,
-                    y: -30, speed: mSpeed * 0.8, hp: 2, angle: 0
-                });
+                shooterObj.enemyUfos.push({ x: Math.random() * (canvas.width - 60) + 30, y: -30, speed: mSpeed * 0.8, hp: 2, angle: 0 });
             }
         }
 
@@ -1762,9 +1761,7 @@ function initShooter(level) {
                 let r = m.size + (Math.random()*4 - 2);
                 ctx.lineTo(m.x + Math.cos(a)*r, m.y + Math.sin(a)*r);
             }
-            ctx.closePath();
-            ctx.fill();
-            
+            ctx.closePath(); ctx.fill();
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let b = shooterObj.bullets[j];
                 if (Math.hypot(m.x - b.x, m.y - b.y) < m.size + 5) {
@@ -1774,19 +1771,16 @@ function initShooter(level) {
                         for(let p=0; p<8; p++) shooterObj.particles.push({x: m.x, y: m.y, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8, life: 1});
                         shooterObj.meteors.splice(i, 1);
                         shooterObj.score += 1;
-                        const sc = document.getElementById('shScore');
-                        if (sc) sc.innerText = shooterObj.score;
+                        const scoreEl = document.getElementById('shScore');
+                        if(scoreEl) scoreEl.innerText = shooterObj.score;
                         chargeTurbo();
                         playSound('explosion');
                     }
                     break;
                 }
             }
-
-            if (m.y > shooterObj.playerY - 20 && m.y < shooterObj.playerY + 20 && Math.abs(m.x - shooterObj.playerX) < m.size + 15) {
-                endShooter(false); return;
-            }
-            if (m.y > canvas.height) shooterObj.meteors.splice(i, 1);
+            if (m.y > shooterObj.playerY - 20 && m.y < shooterObj.playerY + 20 && Math.abs(m.x - shooterObj.playerX) < m.size + 15) { endShooter(false); return; }
+            if (m.y > canvas.height) { shooterObj.meteors.splice(i, 1); }
         }
 
         for (let i = shooterObj.enemyUfos.length - 1; i >= 0; i--) {
@@ -1794,16 +1788,10 @@ function initShooter(level) {
             u.y += u.speed;
             u.angle += 0.05;
             u.x += Math.sin(u.angle) * 2;
-            
             ctx.fillStyle = '#4ade80'; 
-            ctx.beginPath();
-            ctx.ellipse(u.x, u.y, 20, 10, 0, 0, Math.PI*2);
-            ctx.fill();
+            ctx.beginPath(); ctx.ellipse(u.x, u.y, 20, 10, 0, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#86efac';
-            ctx.beginPath();
-            ctx.arc(u.x, u.y - 5, 8, Math.PI, 0);
-            ctx.fill();
-            
+            ctx.beginPath(); ctx.arc(u.x, u.y - 5, 8, Math.PI, 0); ctx.fill();
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let b = shooterObj.bullets[j];
                 if (Math.hypot(u.x - b.x, u.y - b.y) < 20) {
@@ -1813,54 +1801,41 @@ function initShooter(level) {
                         for(let p=0; p<12; p++) shooterObj.particles.push({x: u.x, y: u.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 1});
                         shooterObj.enemyUfos.splice(i, 1);
                         shooterObj.score += 3;
-                        const sc = document.getElementById('shScore');
-                        if (sc) sc.innerText = shooterObj.score;
+                        const scoreEl = document.getElementById('shScore');
+                        if(scoreEl) scoreEl.innerText = shooterObj.score;
                         chargeTurbo();
                         playSound('explosion');
                     }
                     break;
                 }
             }
-
-            if (u.y > shooterObj.playerY - 20 && u.y < shooterObj.playerY + 20 && Math.abs(u.x - shooterObj.playerX) < 20) {
-                endShooter(false); return;
-            }
-            if (u.y > canvas.height) shooterObj.enemyUfos.splice(i, 1);
+            if (u.y > shooterObj.playerY - 20 && u.y < shooterObj.playerY + 20 && Math.abs(u.x - shooterObj.playerX) < 20) { endShooter(false); return; }
+            if (u.y > canvas.height) { shooterObj.enemyUfos.splice(i, 1); }
         }
 
         if (shooterObj.boss) {
             let b = shooterObj.boss;
             b.x += b.vx;
             if (b.x < 60 || b.x > canvas.width - 60) b.vx *= -1;
-            
             ctx.fillStyle = '#ff5e62';
-            ctx.beginPath();
-            ctx.ellipse(b.x, b.y, 60, 30, 0, 0, Math.PI*2);
-            ctx.fill();
+            ctx.beginPath(); ctx.ellipse(b.x, b.y, 60, 30, 0, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#ff8c42';
-            ctx.beginPath();
-            ctx.arc(b.x, b.y - 10, 25, Math.PI, 0);
-            ctx.fill();
-            
+            ctx.beginPath(); ctx.arc(b.x, b.y - 10, 25, Math.PI, 0); ctx.fill();
             ctx.fillStyle = 'red';
             ctx.fillRect(b.x - 50, b.y - 45, 100, 8);
             ctx.fillStyle = '#4ade80';
-            ctx.fillRect(b.x - 50, b.y - 45, 100 * Math.max(0, b.hp / b.maxHp), 8);
-
+            ctx.fillRect(b.x - 50, b.y - 45, 100 * (b.hp / b.maxHp), 8);
             if (time - bossShootTime > 1200) {
                 bossShootTime = time;
                 shooterObj.bossProjectiles.push({ x: b.x, y: b.y + 20, speed: 5 });
             }
-
             for (let j = shooterObj.bullets.length - 1; j >= 0; j--) {
                 let bul = shooterObj.bullets[j];
                 if (Math.hypot(b.x - bul.x, b.y - bul.y) < 60) {
                     shooterObj.bullets.splice(j, 1);
                     b.hp -= (10 + gameState.shooter.plane * 2);
                     shooterObj.shake = 5;
-                    if (b.hp <= 0) {
-                        endShooter(true); return;
-                    }
+                    if (b.hp <= 0) { endShooter(true); return; }
                 }
             }
         }
@@ -1869,17 +1844,10 @@ function initShooter(level) {
             let p = shooterObj.bossProjectiles[i];
             p.y += p.speed;
             ctx.fillStyle = '#00d4ff';
-            ctx.beginPath();
-            ctx.ellipse(p.x, p.y, 15, 5, 0, 0, Math.PI*2);
-            ctx.fill();
+            ctx.beginPath(); ctx.ellipse(p.x, p.y, 15, 5, 0, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(p.x, p.y - 3, 6, Math.PI, 0);
-            ctx.fill();
-
-            if (Math.hypot(p.x - shooterObj.playerX, p.y - shooterObj.playerY) < 25) {
-                endShooter(false); return;
-            }
+            ctx.beginPath(); ctx.arc(p.x, p.y - 3, 6, Math.PI, 0); ctx.fill();
+            if (Math.hypot(p.x - shooterObj.playerX, p.y - shooterObj.playerY) < 25) { endShooter(false); return; }
             if (p.y > canvas.height) shooterObj.bossProjectiles.splice(i, 1);
         }
 
@@ -1900,80 +1868,67 @@ function initShooter(level) {
 function chargeTurbo() {
     if (shooterObj.turboActive || shooterObj.turboUses >= 2) return;
     shooterObj.turboCharge += (2 + gameState.shooter.turbo * 0.5);
-    if (shooterObj.turboCharge >= 100) {
-        shooterObj.turboCharge = 100;
-        const btn = document.getElementById('turboBtn');
-        if (btn) {
-            btn.classList.add('ready');
-            btn.style.display = 'flex';
-        }
+    if (shooterObj.turboCharge > 100) shooterObj.turboCharge = 100;
+    
+    const turboBar = document.getElementById('turboBar');
+    const turboFill = document.getElementById('turboFill');
+    const turboBtn = document.getElementById('turboBtn');
+    if (turboBar) turboBar.style.display = 'block';
+    if (turboFill) turboFill.style.width = shooterObj.turboCharge + '%';
+    if (turboBtn && shooterObj.turboCharge >= 100) {
+        turboBtn.classList.add('ready');
+        turboBtn.style.display = 'flex';
     }
-    const fill = document.getElementById('turboFill');
-    if (fill) fill.style.width = Math.min(100, shooterObj.turboCharge) + '%';
-    const bar = document.getElementById('turboBar');
-    if (bar && shooterObj.turboUses < 2) bar.style.display = 'block';
 }
 
 function spawnBoss() {
-    shooterObj.meteors = [];
-    shooterObj.enemyUfos = [];
     const canvas = shooterObj.canvas;
-    const hp = 150 + Math.floor(Math.random() * 51);
-    shooterObj.boss = { x: canvas.width / 2, y: 80, vx: 2, hp: hp, maxHp: hp };
-    const el = document.getElementById('shTime');
-    if (el) el.innerText = 'БОСС!';
-    playSound('gameover');
+    let hp = 150 + Math.floor(Math.random() * 50);
+    shooterObj.boss = { x: canvas.width / 2, y: 80, hp: hp, maxHp: hp, vx: 2 };
+    shooterObj.meteors = []; shooterObj.enemyUfos = [];
 }
 
 function endShooter(isWin) {
+    if (shooterObj.isDead) return;
     shooterObj.isDead = true;
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-    const area = document.getElementById('gameArea');
-    const earned = Math.floor(shooterObj.score * (1 + gameState.shooter.income * 0.3));
-    gameState.shooter.coins += earned;
-
+    
     if (isWin) {
         playSound('win');
-        const nextLvl = Math.min(800, shooterObj.level + 1);
-        if (nextLvl > gameState.shooter.unlocked) gameState.shooter.unlocked = nextLvl;
+        let coinsEarned = shooterObj.score * (1 + gameState.shooter.income * 0.5);
+        gameState.shooter.coins += Math.floor(coinsEarned);
+        if (shooterObj.level === gameState.shooter.unlocked && gameState.shooter.unlocked < 800) {
+            gameState.shooter.unlocked++;
+        }
         saveGameState();
-        area.innerHTML = `
-            <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.95);">
-                <h2 style="color:#ffd700; font-size:32px; margin-bottom:10px; text-shadow:0 0 20px #ffd700;">ПОБЕДА!</h2>
-                <div style="font-size:20px; margin-bottom:10px; color:#fff;">Босс повержен!</div>
-                <div style="font-size:18px; margin-bottom:20px; color:#4ade80;">+${earned} 🪙</div>
-                <div style="font-size:14px; margin-bottom:20px; color:#aaa;">Открыт уровень ${nextLvl}</div>
-                <button class="game-btn" onclick="openShooterMenu()">Продолжить</button>
-            </div>`;
+        alert(`Победа! Вы получили ${Math.floor(coinsEarned)} монет! Открыт уровень ${gameState.shooter.unlocked}.`);
+        openShooterMenu();
     } else {
         playSound('gameover');
+        let coinsEarned = Math.floor(shooterObj.score * 0.5 * (1 + gameState.shooter.income * 0.2));
+        gameState.shooter.coins += coinsEarned;
         saveGameState();
-        area.innerHTML = `
-            <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.95);">
-                <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px; text-shadow:0 0 20px #ff5e62;">ПОРАЖЕНИЕ</h2>
-                <div style="font-size:18px; margin-bottom:20px; color:#4ade80;">+${earned} 🪙</div>
-                <button class="game-btn" onclick="initShooter(${shooterObj.level})">Попробовать снова</button>
-                <button class="game-close" style="margin-top:15px; font-size:16px; text-decoration:underline;" onclick="openShooterMenu()">В меню</button>
-            </div>`;
+        alert(`Игра окончена! Очки: ${shooterObj.score}. Вы получили ${coinsEarned} монет.`);
+        openShooterMenu();
     }
 }
 
-/* ============ КВАДРАТИК ============ */
+/* ============ ИГРА 2: КВАДРАТИК (RUNNER) ============ */
 function openRunnerMenu() {
     const area = document.getElementById('gameArea');
-    const unlocked = gameState.runner.unlocked || 1;
     area.innerHTML = `
         <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
             <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ff5e62;">Квадратик</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Открыто уровней: ${unlocked} / 50</div>
-            <button class="game-btn" onclick="initRunner(${unlocked})">▶️ Играть (Ур. ${unlocked})</button>
-            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">Назад</button>
-        </div>`;
+            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Прыгай через препятствия!</div>
+            <button class="game-btn" onclick="initRunner()">▶️ Играть</button>
+            <button class="game-close" style="margin-top:30px; font-size:16px; text-decoration:underline;" onclick="closeGame()">В главное меню</button>
+        </div>
+    `;
 }
 
 let runnerObj = {};
 
-function initRunner(level) {
+function initRunner() {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
@@ -1981,117 +1936,163 @@ function initRunner(level) {
     canvas.height = window.innerHeight - 150;
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
-    const groundY = canvas.height - 80;
+    
     runnerObj = {
-        canvas, ctx, groundY,
-        player: { x: 80, y: groundY, vy: 0, size: 30, onGround: true },
-        obstacles: [], speed: 5 + level * 0.4, score: 0, isDead: false, level,
-        targetScore: 15 + level * 3
+        canvas, ctx,
+        playerY: canvas.height - 60, playerVy: 0, playerSize: 25,
+        obstacles: [], score: 0, speed: 5, frame: 0, isDead: false, onGround: true,
+        clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
     };
-    const uiTop = document.createElement('div');
-    uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Ур: ${level}</div><div>Очки: <span id="rnScore">0</span> / ${runnerObj.targetScore}</div>`;
-    area.appendChild(uiTop);
 
     const jump = () => {
-        if (runnerObj.isDead) return;
-        if (runnerObj.player.onGround) {
-            runnerObj.player.vy = -14;
-            runnerObj.player.onGround = false;
+        if (runnerObj.onGround && !runnerObj.isDead) {
+            runnerObj.playerVy = -12;
+            runnerObj.onGround = false;
             playSound('jump');
         }
     };
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); jump(); }, {passive:false});
-    canvas.addEventListener('mousedown', jump);
 
-    let spawnTime = 0;
-    const spawnInterval = Math.max(700, 1500 - level * 30);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, {passive: false});
+    canvas.addEventListener('mousedown', (e) => { jump(); });
 
-    const loop = (time) => {
-        if (!runnerObj.canvas || runnerObj.isDead) return;
-        ctx.fillStyle = '#1a0a1e';
+    const gameLoop = () => {
+        if (runnerObj.isDead) return;
+        runnerObj.frame++;
+        runnerObj.playerVy += 0.6;
+        runnerObj.playerY += runnerObj.playerVy;
+        const floor = canvas.height - 40;
+        if (runnerObj.playerY > floor - runnerObj.playerSize) {
+            runnerObj.playerY = floor - runnerObj.playerSize;
+            runnerObj.playerVy = 0;
+            runnerObj.onGround = true;
+        }
+        
+        ctx.fillStyle = '#0a0510';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#ff5e62';
-        ctx.fillRect(0, groundY + 15, canvas.width, 30);
+        
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
 
-        const p = runnerObj.player;
-        p.vy += 0.8;
-        p.y += p.vy;
-        if (p.y >= groundY) { p.y = groundY; p.vy = 0; p.onGround = true; }
-        ctx.fillStyle = '#00d4ff';
-        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+        runnerObj.clouds.forEach(c => {
+            c.x -= c.s;
+            if (c.x < -50) { c.x = canvas.width + 50; c.y = Math.random() * 150 + 20; }
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(c.x, c.y, 40, 20);
+        });
 
-        if (time - spawnTime > spawnInterval) {
-            spawnTime = time;
-            const h = Math.random() > 0.5 ? 40 : 60;
-            runnerObj.obstacles.push({ x: canvas.width + 30, y: groundY + 15 - h, w: 25, h });
+        if (runnerObj.frame % Math.max(40, 80 - Math.floor(runnerObj.score / 5)) === 0) {
+            runnerObj.obstacles.push({
+                x: canvas.width,
+                y: canvas.height - 40 - (Math.random() > 0.5 ? 30 : 50),
+                w: 20, h: Math.random() > 0.5 ? 30 : 50,
+                speed: runnerObj.speed + runnerObj.score * 0.01
+            });
         }
 
         for (let i = runnerObj.obstacles.length - 1; i >= 0; i--) {
-            const o = runnerObj.obstacles[i];
-            o.x -= runnerObj.speed;
-            ctx.fillStyle = '#ff8c42';
+            let o = runnerObj.obstacles[i];
+            o.x -= o.speed;
+            ctx.fillStyle = '#ff5e62';
             ctx.fillRect(o.x, o.y, o.w, o.h);
-            if (p.x + p.size/2 > o.x && p.x - p.size/2 < o.x + o.w &&
-                p.y + p.size/2 > o.y && p.y - p.size/2 < o.y + o.h) {
-                endRunner(false); return;
-            }
+            
             if (o.x + o.w < 0) {
                 runnerObj.obstacles.splice(i, 1);
                 runnerObj.score++;
-                const el = document.getElementById('rnScore');
-                if (el) el.innerText = runnerObj.score;
+                runnerObj.speed = 5 + runnerObj.score * 0.02;
+            }
+            
+            const px = 60, py = runnerObj.playerY - runnerObj.playerSize;
+            if (px + runnerObj.playerSize > o.x && px < o.x + o.w && py + runnerObj.playerSize * 2 > o.y && py < o.y + o.h) {
+                endRunner();
+                return;
             }
         }
-        if (runnerObj.score >= runnerObj.targetScore) { endRunner(true); return; }
-        gameAnimFrame = requestAnimationFrame(loop);
+
+        ctx.fillStyle = '#00d4ff';
+        ctx.fillRect(60, runnerObj.playerY - runnerObj.playerSize, runnerObj.playerSize * 2, runnerObj.playerSize * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(65, runnerObj.playerY - runnerObj.playerSize + 8, 6, 6);
+        ctx.fillRect(65 + 20, runnerObj.playerY - runnerObj.playerSize + 8, 6, 6);
+
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText(`Очки: ${runnerObj.score}`, 15, 35);
+
+        gameAnimFrame = requestAnimationFrame(gameLoop);
     };
-    gameAnimFrame = requestAnimationFrame(loop);
+    gameAnimFrame = requestAnimationFrame(gameLoop);
 }
 
-function endRunner(isWin) {
+function endRunner() {
     runnerObj.isDead = true;
     if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-    const area = document.getElementById('gameArea');
-    if (isWin) {
-        playSound('win');
-        const next = Math.min(50, runnerObj.level + 1);
-        if (next > gameState.runner.unlocked) gameState.runner.unlocked = next;
-        saveGameState();
-        area.innerHTML = `
-            <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.95);">
-                <h2 style="color:#ffd700; font-size:32px; margin-bottom:10px;">ПОБЕДА!</h2>
-                <div style="font-size:14px; margin-bottom:20px; color:#aaa;">Открыт уровень ${next}</div>
-                <button class="game-btn" onclick="openRunnerMenu()">Продолжить</button>
-            </div>`;
-    } else {
-        playSound('gameover');
-        area.innerHTML = `
-            <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.95);">
-                <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px;">ПОРАЖЕНИЕ</h2>
-                <button class="game-btn" onclick="initRunner(${runnerObj.level})">Попробовать снова</button>
-                <button class="game-close" style="margin-top:15px; font-size:16px; text-decoration:underline;" onclick="openRunnerMenu()">В меню</button>
-            </div>`;
-    }
+    playSound('gameover');
+    let coinsEarned = Math.floor(runnerObj.score * 0.5);
+    gameState.shooter.coins += coinsEarned;
+    saveGameState();
+    alert(`Игра окончена! Очки: ${runnerObj.score}. Вы получили ${coinsEarned} монет.`);
+    openRunnerMenu();
 }
 
-/* ============ СОЗДАНИЕ КОНТЕНТА ============ */
+/* ============ СТОРИС И ПРОЧИЙ ФУНКЦИОНАЛ (УПРОЩЁННЫЙ) ============ */
+function renderStories() {
+    const el = document.getElementById('storiesRow');
+    if (!el) return;
+    el.innerHTML = '';
+    
+    const addBtn = document.createElement('div');
+    addBtn.className = 'story-circle';
+    addBtn.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
+    addBtn.addEventListener('click', () => alert('Истории скоро появятся!'));
+    el.appendChild(addBtn);
+    
+    ['Алекс', 'Мария', 'Дмитрий', 'Анна', 'Иван', 'Елена'].forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'story-circle';
+        const color = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+        div.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${color}">${name.charAt(0)}</div></div><div class="story-label">${name}</div>`;
+        div.addEventListener('click', () => alert(`История ${name} (просмотр)`));
+        el.appendChild(div);
+    });
+}
+
+function simulatePromotion() {
+    // Пустая функция для совместимости
+}
+
+/* ============ ОБРАБОТЧИКИ МОДАЛОК ============ */
+document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.close;
+        document.getElementById(id).classList.remove('show');
+    });
+});
+
+document.querySelectorAll('.modal').forEach(m => {
+    m.addEventListener('click', (e) => {
+        if (e.target === m) m.classList.remove('show');
+    });
+});
+
+/* ============ ПЛЮС (СОЗДАНИЕ) ============ */
 document.getElementById('plusBtn').addEventListener('click', () => {
     document.getElementById('createModal').classList.add('show');
 });
 
-document.querySelectorAll('[data-action]').forEach(opt => {
+document.querySelectorAll('#createModal .modal-option').forEach(opt => {
     opt.addEventListener('click', () => {
         const action = opt.dataset.action;
         document.getElementById('createModal').classList.remove('show');
+        
         if (action === 'post') openPostModal();
-        else if (action === 'story') createStory();
-        else openFormModal(action);
+        else if (action === 'group') openGroupModal('group');
+        else if (action === 'community') openGroupModal('community');
+        else if (action === 'channel') openGroupModal('channel');
+        else if (action === 'story') alert('Истории скоро появятся!');
     });
 });
 
 function openPostModal() {
-    pendingAction = 'post';
     document.getElementById('formTitle').textContent = 'Новый пост';
     document.getElementById('formSub').textContent = 'Поделитесь чем-нибудь';
     document.getElementById('formName').style.display = 'none';
@@ -2100,164 +2101,112 @@ function openPostModal() {
     document.getElementById('formPhoto').value = '';
     document.getElementById('formMusic').value = '';
     document.getElementById('postMediaFields').style.display = 'block';
-    document.getElementById('formMusic').style.display = (currentUser.premium === 'prime') ? 'block' : 'none';
+    document.getElementById('formSubmit').onclick = () => {
+        const text = document.getElementById('formText').value.trim();
+        if (!text) { alert('Введите текст!'); return; }
+        const image = document.getElementById('formPhoto').value.trim();
+        const musicUrl = document.getElementById('formMusic').value.trim();
+        
+        posts.unshift({
+            id: 'p_' + Date.now(),
+            author: currentUser.name,
+            color: currentUser.color,
+            text: text,
+            time: 'только что',
+            views: 0,
+            likes: 0,
+            reposts: 0,
+            comments: [],
+            image: image || null,
+            music: musicUrl ? { title: 'Трек', artist: 'Исполнитель' } : null
+        });
+        try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
+        document.getElementById('formModal').classList.remove('show');
+        renderPosts();
+        renderMyPage();
+    };
     document.getElementById('formModal').classList.add('show');
 }
 
-function openFormModal(action) {
-    pendingAction = action;
+function openGroupModal(type) {
     const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
-    document.getElementById('formTitle').textContent = titles[action] || 'Создать';
+    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
     document.getElementById('formSub').textContent = 'Введите название';
     document.getElementById('formName').style.display = 'block';
     document.getElementById('formName').value = '';
     document.getElementById('formText').style.display = 'none';
     document.getElementById('postMediaFields').style.display = 'none';
+    document.getElementById('formSubmit').onclick = () => {
+        const name = document.getElementById('formName').value.trim();
+        if (!name) { alert('Введите название!'); return; }
+        const newItem = {
+            id: 'g_' + Date.now(),
+            name: name,
+            color: AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)],
+            emoji: name.charAt(0).toUpperCase(),
+            type: type,
+            owner: currentUser.name,
+            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
+        };
+        if (type === 'channel') {
+            channels.push(newItem);
+            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
+        } else {
+            groups.push(newItem);
+            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+        }
+        document.getElementById('formModal').classList.remove('show');
+        renderChatsList(currentSearchTab, '');
+        renderMyPage();
+        alert(`"${name}" создан!`);
+    };
     document.getElementById('formModal').classList.add('show');
 }
 
-document.getElementById('formSubmit').addEventListener('click', () => {
-    if (pendingAction === 'post') {
-        const text = document.getElementById('formText').value.trim();
-        if (!text) { alert('Напишите текст поста'); return; }
-        const photo = document.getElementById('formPhoto').value.trim();
-        const music = document.getElementById('formMusic').value.trim();
-        const newPost = {
-            id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color,
-            text: text, time: 'только что', views: 0, likes: 0, reposts: 0, comments: []
-        };
-        if (photo) newPost.image = photo;
-        if (music) newPost.music = { title: 'Трек', artist: music };
-        posts.push(newPost);
-        try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-        renderPosts(); renderMyPage();
-        document.getElementById('formModal').classList.remove('show');
-    } else {
-        const name = document.getElementById('formName').value.trim();
-        if (name.length < 2) { alert('Введите название (мин. 2 символа)'); return; }
-        const newItem = {
-            id: 'g_' + Date.now(), name: name, color: rnd(AVATAR_COLORS),
-            emoji: name.charAt(0).toUpperCase(), desc: '',
-            type: pendingAction === 'channel' ? 'channel' : (pendingAction === 'community' ? 'community' : 'group'),
-            owner: currentUser.name, members: []
-        };
-        if (newItem.type === 'channel') channels.push(newItem);
-        else groups.push(newItem);
-        saveGroups();
-        renderChatsList(currentSearchTab, ''); renderMyPage();
-        document.getElementById('formModal').classList.remove('show');
-    }
-});
 document.getElementById('formCancel').addEventListener('click', () => {
     document.getElementById('formModal').classList.remove('show');
 });
 
-/* ============ ИСТОРИИ ============ */
-function createStory() {
-    const txt = prompt('Текст истории:');
-    if (txt === null) return;
-    userStories.push({
-        id: 's_' + Date.now(), author: currentUser.name, color: currentUser.color,
-        emoji: currentUser.emoji, text: txt || 'Новая история', views: 0, viewers: [], time: 'только что'
-    });
-    try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
-    renderStories();
-}
-
-function renderStories() {
-    const row = document.getElementById('storiesRow');
-    if (!row) return;
-    row.innerHTML = '';
-    const my = document.createElement('div');
-    my.className = 'story-circle';
-    my.innerHTML = `<div class="story-ring my-add"><div class="story-img" style="background:${currentUser.color}">+</div></div><div class="story-label">Добавить</div>`;
-    my.addEventListener('click', createStory);
-    row.appendChild(my);
-
-    userStories.filter(s => s.author === currentUser.name).forEach(s => {
-        const d = document.createElement('div');
-        d.className = 'story-circle';
-        d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${s.color}">${s.emoji}</div></div><div class="story-label">${esc(s.text.slice(0,12))}</div>`;
-        d.addEventListener('click', () => {
-            s.views = (s.views || 0) + 1;
-            try { localStorage.setItem(STORIES_KEY, JSON.stringify(userStories)); } catch(e) {}
-            alert(`История: ${s.text}\nПросмотров: ${s.views}`);
-        });
-        row.appendChild(d);
-    });
-
-    PEOPLE.slice(0, 6).forEach(p => {
-        const d = document.createElement('div');
-        d.className = 'story-circle';
-        d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${p.color}">${p.emoji}</div></div><div class="story-label">${esc(p.name)}</div>`;
-        d.addEventListener('click', () => alert(`История ${p.name}`));
-        row.appendChild(d);
-    });
-}
-
-/* ============ НАСТРОЙКИ ============ */
-document.getElementById('settingsBtn').addEventListener('click', () => {
+/* ============ ПРОЧИЕ ОБРАБОТЧИКИ ============ */
+document.getElementById('myProfileBtn').addEventListener('click', () => {
+    document.getElementById('profileTitle').textContent = currentUser.name;
+    document.getElementById('profileStatus').textContent = currentUser.lastSeen;
+    document.getElementById('myStatusSelect').value = currentUser.lastSeen;
     document.getElementById('profileModal').classList.add('show');
-    document.getElementById('profileTitle').textContent = 'Настройки';
-    document.getElementById('profileStatus').textContent = currentUser.name;
-    document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
-    document.getElementById('profileContent').innerHTML = `
-        <div class="stats-box">
-            <div class="stats-row"><span>Имя:</span><span class="stats-value">${esc(currentUser.name)}</span></div>
-            <div class="stats-row"><span>Premium:</span><span class="stats-value">${currentUser.premium ? (currentUser.premium === 'prime' ? '💎 Prime' : '⭐ Sunset') : 'Нет'}</span></div>
-            <div class="stats-row"><span>Постов:</span><span class="stats-value">${posts.filter(p => p.author === currentUser.name).length}</span></div>
-        </div>
-        <button class="profile-action-btn" onclick="document.getElementById('profileModal').classList.remove('show'); document.getElementById('logoutModal').classList.add('show');">🚪 Выйти из аккаунта</button>`;
 });
 
-document.getElementById('myStatusSelect').addEventListener('change', e => {
+document.getElementById('myStatusSelect').addEventListener('change', (e) => {
     currentUser.lastSeen = e.target.value;
+    document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    updatePremiumBadge();
 });
 
 document.getElementById('changeAvatarBtn').addEventListener('click', () => {
     let i = AVATAR_COLORS.indexOf(currentUser.color);
     i = (i + 1) % AVATAR_COLORS.length;
     currentUser.color = AVATAR_COLORS[i];
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
     document.getElementById('myAvatarSmall').style.background = currentUser.color;
     document.getElementById('promptAvatar').style.background = currentUser.color;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+});
+
+document.getElementById('settingsBtn').addEventListener('click', () => {
+    document.getElementById('logoutModal').classList.add('show');
 });
 
 document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
     try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-    location.reload();
+    currentUser = null;
+    document.getElementById('logoutModal').classList.remove('show');
+    document.getElementById('panel').classList.remove('show');
+    document.getElementById('register').classList.remove('hide');
+    regName.value = '';
+    avatarPreview.textContent = '?';
 });
 
-document.getElementById('myProfileBtn').addEventListener('click', () => {
-    document.querySelector('[data-tab="mypage"]').click();
-});
-
-/* ============ ЗАКРЫТИЕ МОДАЛОК ============ */
-document.querySelectorAll('[data-close]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const el = document.getElementById(btn.dataset.close);
-        if (el) el.classList.remove('show');
-    });
-});
-document.querySelectorAll('.modal').forEach(m => {
-    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
-});
-
-/* ============ СИМУЛЯЦИЯ ============ */
-function simulatePromotion() {
-    setInterval(() => {
-        BOT_POSTS.forEach(p => { p.views = (p.views || 0) + Math.floor(Math.random() * 2); });
-    }, 8000);
-}
-
-function generateReply() {
-    return rnd([
-        'Привет! Как дела?','Класс!','Согласен полностью!','Интересно 🤔',
-        'Ахахаха 😂','Ого!','Расскажи подробнее','Ну не знаю...',
-        'Точно!','Круто!','😊','👍','Да, это здорово!','Мне тоже так кажется'
-    ]);
+// Инициализация если пользователь уже сохранён
+if (currentUser) {
+    startApp();
 }
 </script>
 </body>
