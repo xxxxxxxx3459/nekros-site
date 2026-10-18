@@ -555,7 +555,7 @@
   </div>
 </div>
 
-<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ (НАСТРОЙКИ) -->
+<!-- МОДАЛКА СВОЕГО ПРОФИЛЯ (НАСТРОЙКИ + СТАТУС) -->
 <div class="modal" id="profileModal">
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Мой профиль</div>
@@ -577,6 +577,17 @@
 
     <div id="profileContent"></div>
     <button class="modal-close" data-close="profileModal">Закрыть</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА ВЫХОДА ИЗ АККАУНТА -->
+<div class="modal" id="logoutModal">
+  <div class="modal-card">
+    <div class="modal-title">Выйти из аккаунта?</div>
+    <div class="modal-sub">Вы уверены, что хотите выйти?</div>
+    
+    <button class="modal-primary" id="confirmLogoutBtn" style="background:#ff5e62; margin-bottom:10px; padding: 16px; font-weight: 700;">Выйти</button>
+    <button class="modal-close" data-close="logoutModal">Отмена</button>
   </div>
 </div>
 
@@ -602,7 +613,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v38'; // Обновлена версия
+const STORAGE_KEY = 'sunset_user_v39';
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -665,13 +676,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v38';
-const GROUPS_KEY = 'sunset_groups_v38';
-const CHANNELS_KEY = 'sunset_channels_v38';
-const POSTS_KEY = 'sunset_posts_v38';
-const LIKES_KEY = 'sunset_likes_v38';
-const STORIES_KEY = 'sunset_stories_v38';
-const GAMES_KEY = 'sunset_games_v38';
+const CHATS_KEY = 'sunset_chats_v39';
+const GROUPS_KEY = 'sunset_groups_v39';
+const CHANNELS_KEY = 'sunset_channels_v39';
+const POSTS_KEY = 'sunset_posts_v39';
+const LIKES_KEY = 'sunset_likes_v39';
+const STORIES_KEY = 'sunset_stories_v39';
+const GAMES_KEY = 'sunset_games_v39';
 
 let currentUser = null;
 let chats = {};
@@ -809,7 +820,7 @@ function startApp() {
   renderChatsList('people');
   renderPosts();
   renderStories();
-  renderMusic(); // Вызов музыки
+  renderMusic(); 
   renderGames();
   renderMyPage(); 
   simulatePromotion();
@@ -860,7 +871,7 @@ document.querySelectorAll('.nav-btn').forEach(b => {
 
     if (tab === 'mypage') renderMyPage();
     if (tab === 'games') renderGames();
-    if (tab === 'music') renderMusic(); // Обновляем при переходе
+    if (tab === 'music') renderMusic(); 
   });
 });
 
@@ -1464,10 +1475,7 @@ function renderPosts() {
   if(el) {
       el.innerHTML = '';
       
-      // Объединяем посты пользователя с постами ботов (новостями)
       const allFeed = [...posts, ...BOT_POSTS];
-      
-      // Перемешиваем, чтобы было живее
       allFeed.sort(() => Math.random() - 0.5);
       
       allFeed.forEach(p => el.appendChild(buildPostEl(p)));
@@ -1952,6 +1960,58 @@ function endRunner() {
         </div>
     `;
 }
+
+/* ============ СОБЫТИЯ (ВЫХОД И ПРОФИЛЬ) ============ */
+// Кнопка шестеренки - вызываем модалку выхода
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('logoutModal').classList.add('show');
+});
+
+// Кнопка "Выйти" в модалке
+document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
+  localStorage.clear();
+  location.reload();
+});
+
+// Кнопка профиля - открывает окно с настройками и статусом
+document.getElementById('myProfileBtn').addEventListener('click', () => {
+  document.getElementById('profileTitle').textContent = currentUser.name;
+  let premText = currentUser.premium === 'prime' ? '💎 Master' : (currentUser.premium === 'sunset' ? '⭐ Administrator' : 'Обычный пользователь');
+  document.getElementById('profileStatus').textContent = premText;
+  document.getElementById('myStatusSelect').value = currentUser.lastSeen || 'в сети';
+
+  const pp = document.getElementById('profileContent');
+  pp.innerHTML = '';
+  
+  if (currentUser.premium) {
+    pp.innerHTML = `<div class="stats-box">
+        <div class="stats-row"><span>Общий охват (за год):</span> <span class="stats-value">${(currentUser.profileViews || 0).toLocaleString('ru-RU')}</span></div>
+        <div class="stats-row"><span>Новые подписчики:</span> <span class="stats-value">+${(currentUser.subscribers || 0).toLocaleString('ru-RU')}</span></div>
+        <div class="stats-row"><span>Тариф продвижения:</span> <span class="stats-value">${currentUser.premium === 'prime' ? '1 млн/год' : '300 тыс/год'}</span></div>
+    </div>`;
+  }
+  document.getElementById('profileModal').classList.add('show');
+});
+
+// Смена статуса в селекте
+document.getElementById('myStatusSelect').addEventListener('change', function() {
+    currentUser.lastSeen = this.value;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    if (!currentUser.premium) document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
+    renderMyPage(); 
+});
+
+// Смена аватарки
+document.getElementById('changeAvatarBtn').addEventListener('click', () => {
+    const newEmoji = prompt('Введите новую букву или эмодзи:', currentUser.emoji);
+    if (newEmoji) {
+        currentUser.emoji = newEmoji.charAt(0);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+        document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
+        document.getElementById('promptAvatar').textContent = currentUser.emoji;
+        renderMyPage();
+    }
+});
 
 </script>
 </body>
