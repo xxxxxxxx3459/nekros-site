@@ -602,7 +602,7 @@
 
 <script>
 /* ============ РЕГИСТРАЦИЯ И АДМИН ============ */
-const STORAGE_KEY = 'sunset_user_v37';
+const STORAGE_KEY = 'sunset_user_v38'; // Обновлена версия
 const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
 let chosenColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 
@@ -665,13 +665,13 @@ regName.addEventListener('keydown', function(e) {
 });
 
 /* ============ ОБЩИЕ ДАННЫЕ ============ */
-const CHATS_KEY = 'sunset_chats_v37';
-const GROUPS_KEY = 'sunset_groups_v37';
-const CHANNELS_KEY = 'sunset_channels_v37';
-const POSTS_KEY = 'sunset_posts_v37';
-const LIKES_KEY = 'sunset_likes_v37';
-const STORIES_KEY = 'sunset_stories_v37';
-const GAMES_KEY = 'sunset_games_v37';
+const CHATS_KEY = 'sunset_chats_v38';
+const GROUPS_KEY = 'sunset_groups_v38';
+const CHANNELS_KEY = 'sunset_channels_v38';
+const POSTS_KEY = 'sunset_posts_v38';
+const LIKES_KEY = 'sunset_likes_v38';
+const STORIES_KEY = 'sunset_stories_v38';
+const GAMES_KEY = 'sunset_games_v38';
 
 let currentUser = null;
 let chats = {};
@@ -727,47 +727,47 @@ const DEFAULT_COMMUNITIES = [
 
 /* ============ 100 ПЕСЕН ============ */
 const SONGS = [
-  ['Imagine Dragons', 'Believer'],['Ed Sheeran', 'Shape of You'],['The Weeknd', 'Blinding Lights'],
-  ['Dua Lipa', 'Levitating'],['Billie Eilish', 'Bad Guy'],['Post Malone', 'Circles'],
-  ['Harry Styles', 'As It Was'],['The Kid LAROI', 'Stay'],['Glass Animals', 'Heat Waves'],
-  ['Lil Nas X', 'Montero'],['Olivia Rodrigo', 'Drivers License'],['Adele', 'Easy On Me'],
-  ['Coldplay', 'Yellow'],['Coldplay', 'Viva La Vida'],['Maroon 5', 'Sugar'],
-  ['The Chainsmokers', 'Closer'],['Avicii', 'Wake Me Up'],['Alan Walker', 'Faded'],
-  ['Marshmello', 'Happier'],['DJ Snake', 'Let Me Love You'],['Ed Sheeran', 'Perfect'],
-  ['Shawn Mendes', 'Senorita'],['Camila Cabello', 'Havana'],['Ariana Grande', '7 Rings'],
-  ['Katy Perry', 'Roar'],['Rihanna', 'Diamonds'],['Beyoncé', 'Halo'],
-  ['Lady Gaga', 'Bad Romance'],['Bruno Mars', 'Uptown Funk'],['Justin Bieber', 'Sorry'],
-  ['Taylor Swift', 'Shake It Off'],['Taylor Swift', 'Anti-Hero'],['Dua Lipa', 'Dont Start Now'],
-  ['Doja Cat', 'Say So'],['Sia', 'Chandelier'],['Sia', 'Snowman'],
-  ['Ava Max', 'Sweet But Psycho'],['Tones and I', 'Dance Monkey'],
-  ['Harry Styles', 'Watermelon Sugar'],['Billie Eilish', 'Lovely'],['Olivia Rodrigo', 'Good 4 U'],
-  ['Imagine Dragons', 'Thunder'],['Imagine Dragons', 'Radioactive'],['OneRepublic', 'Counting Stars'],
-  ['Passenger', 'Let Her Go'],['Sam Smith', 'Stay With Me'],['Lewis Capaldi', 'Someone You Loved'],
-  ['Adele', 'Hello'],['Adele', 'Rolling in the Deep'],['Lana Del Rey', 'Summertime Sadness'],
-  ['Hozier', 'Take Me to Church'],['Tom Odell', 'Another Love'],
-  ['Linkin Park', 'Numb'],['Linkin Park', 'In the End'],
-  ['Nirvana', 'Smells Like Teen Spirit'],['Queen', 'Bohemian Rhapsody'],
-  ['AC/DC', 'Thunderstruck'],['Arctic Monkeys', 'Do I Wanna Know?'],
-  ['The Neighbourhood', 'Sweater Weather'],['Arctic Monkeys', '505'],
-  ['Radiohead', 'Creep'],['Coldplay', 'The Scientist'],['Coldplay', 'Fix You'],
-  ['James Arthur', 'Say You Wont Let Go'],['John Legend', 'All of Me'],
-  ['Ed Sheeran', 'Photograph'],['Ed Sheeran', 'Thinking Out Loud'],
-  ['Zayn', 'Pillowtalk'],['The Weeknd', 'Save Your Tears'],
-  ['The Weeknd', 'Starboy'],['Post Malone', 'Sunflower'],
-  ['Post Malone', 'Rockstar'],['Travis Scott', 'SICKO MODE'],
-  ['Drake', 'Gods Plan'],['Drake', 'One Dance'],
-  ['Kanye West', 'Stronger'],['Eminem', 'Lose Yourself'],
-  ['Eminem', 'Stan'],['50 Cent', 'In Da Club'],
-  ['Snoop Dogg', 'Drop It Like Its Hot'],['Dr. Dre', 'Still D.R.E.'],
-  ['2Pac', 'California Love'],['Notorious B.I.G.', 'Juicy'],
-  ['Miyagi & Andy Panda', 'Kosandra'],['Miyagi & Andy Panda', 'Utopia'],
-  ['Баста', 'Сансара'],['Баста', 'Моя вселенная'],
-  ['Скриптонит', 'Положение'],['Скриптонит', 'Вечно молодой'],
-  ['Оксимирон', 'Город под подошвой'],['Оксимирон', 'Переплетено'],
-  ['ЛСП', 'Монетка'],['ЛСП', 'Тик-так'],
-  ['FACE', 'Юморист'],['FACE', 'Бургер'],
-  ['Моргенштерн', 'Cadillac'],['Моргенштерн', 'Новый мерин'],
-  ['Тимати', 'Где ты, где я'],['Тимати', 'В клубе']
+  ["Imagine Dragons", "Believer"],["Ed Sheeran", "Shape of You"],["The Weeknd", "Blinding Lights"],
+  ["Dua Lipa", "Levitating"],["Billie Eilish", "Bad Guy"],["Post Malone", "Circles"],
+  ["Harry Styles", "As It Was"],["The Kid LAROI", "Stay"],["Glass Animals", "Heat Waves"],
+  ["Lil Nas X", "Montero"],["Olivia Rodrigo", "Drivers License"],["Adele", "Easy On Me"],
+  ["Coldplay", "Yellow"],["Coldplay", "Viva La Vida"],["Maroon 5", "Sugar"],
+  ["The Chainsmokers", "Closer"],["Avicii", "Wake Me Up"],["Alan Walker", "Faded"],
+  ["Marshmello", "Happier"],["DJ Snake", "Let Me Love You"],["Ed Sheeran", "Perfect"],
+  ["Shawn Mendes", "Senorita"],["Camila Cabello", "Havana"],["Ariana Grande", "7 Rings"],
+  ["Katy Perry", "Roar"],["Rihanna", "Diamonds"],["Beyoncé", "Halo"],
+  ["Lady Gaga", "Bad Romance"],["Bruno Mars", "Uptown Funk"],["Justin Bieber", "Sorry"],
+  ["Taylor Swift", "Shake It Off"],["Taylor Swift", "Anti-Hero"],["Dua Lipa", "Dont Start Now"],
+  ["Doja Cat", "Say So"],["Sia", "Chandelier"],["Sia", "Snowman"],
+  ["Ava Max", "Sweet But Psycho"],["Tones and I", "Dance Monkey"],
+  ["Harry Styles", "Watermelon Sugar"],["Billie Eilish", "Lovely"],["Olivia Rodrigo", "Good 4 U"],
+  ["Imagine Dragons", "Thunder"],["Imagine Dragons", "Radioactive"],["OneRepublic", "Counting Stars"],
+  ["Passenger", "Let Her Go"],["Sam Smith", "Stay With Me"],["Lewis Capaldi", "Someone You Loved"],
+  ["Adele", "Hello"],["Adele", "Rolling in the Deep"],["Lana Del Rey", "Summertime Sadness"],
+  ["Hozier", "Take Me to Church"],["Tom Odell", "Another Love"],
+  ["Linkin Park", "Numb"],["Linkin Park", "In the End"],
+  ["Nirvana", "Smells Like Teen Spirit"],["Queen", "Bohemian Rhapsody"],
+  ["AC/DC", "Thunderstruck"],["Arctic Monkeys", "Do I Wanna Know?"],
+  ["The Neighbourhood", "Sweater Weather"],["Arctic Monkeys", "505"],
+  ["Radiohead", "Creep"],["Coldplay", "The Scientist"],["Coldplay", "Fix You"],
+  ["James Arthur", "Say You Wont Let Go"],["John Legend", "All of Me"],
+  ["Ed Sheeran", "Photograph"],["Ed Sheeran", "Thinking Out Loud"],
+  ["Zayn", "Pillowtalk"],["The Weeknd", "Save Your Tears"],
+  ["The Weeknd", "Starboy"],["Post Malone", "Sunflower"],
+  ["Post Malone", "Rockstar"],["Travis Scott", "SICKO MODE"],
+  ["Drake", "Gods Plan"],["Drake", "One Dance"],
+  ["Kanye West", "Stronger"],["Eminem", "Lose Yourself"],
+  ["Eminem", "Stan"],["50 Cent", "In Da Club"],
+  ["Snoop Dogg", "Drop It Like Its Hot"],["Dr. Dre", "Still D.R.E."],
+  ["2Pac", "California Love"],["Notorious B.I.G.", "Juicy"],
+  ["Miyagi & Andy Panda", "Kosandra"],["Miyagi & Andy Panda", "Utopia"],
+  ["Баста", "Сансара"],["Баста", "Моя вселенная"],
+  ["Скриптонит", "Положение"],["Скриптонит", "Вечно молодой"],
+  ["Оксимирон", "Город под подошвой"],["Оксимирон", "Переплетено"],
+  ["ЛСП", "Монетка"],["ЛСП", "Тик-так"],
+  ["FACE", "Юморист"],["FACE", "Бургер"],
+  ["Моргенштерн", "Cadillac"],["Моргенштерн", "Новый мерин"],
+  ["Тимати", "Где ты, где я"],["Тимати", "В клубе"]
 ];
 
 // Базовые новости для ленты, чтобы не было пусто
@@ -809,7 +809,7 @@ function startApp() {
   renderChatsList('people');
   renderPosts();
   renderStories();
-  renderMusic();
+  renderMusic(); // Вызов музыки
   renderGames();
   renderMyPage(); 
   simulatePromotion();
@@ -860,6 +860,7 @@ document.querySelectorAll('.nav-btn').forEach(b => {
 
     if (tab === 'mypage') renderMyPage();
     if (tab === 'games') renderGames();
+    if (tab === 'music') renderMusic(); // Обновляем при переходе
   });
 });
 
@@ -879,22 +880,23 @@ document.getElementById('mainSearchInput').addEventListener('input', e => {
 function renderMusic() {
     const el = document.getElementById('musicList');
     if (!el) return;
-    el.innerHTML = '';
+    
+    let html = '';
     SONGS.forEach((s, i) => {
-        const d = document.createElement('div');
-        d.className = 'track';
-        d.innerHTML = `
-            <div class="track-left">
-                <div class="track-num">${i + 1}</div>
-                <div class="track-info">
-                    <div class="track-name">${esc(s[1])}</div>
-                    <div class="track-artist">${esc(s[0])}</div>
+        html += `
+            <div class="track" onclick="alert('🎵 Воспроизведение: ${s[0]} - ${s[1]}')">
+                <div class="track-left">
+                    <div class="track-num">${i + 1}</div>
+                    <div class="track-info">
+                        <div class="track-name">${esc(s[1])}</div>
+                        <div class="track-artist">${esc(s[0])}</div>
+                    </div>
                 </div>
+                <div class="track-play">▶</div>
             </div>
-            <div class="track-play">▶</div>`;
-        d.addEventListener('click', () => alert(`🎵 Воспроизведение: ${s[0]} - ${s[1]}`));
-        el.appendChild(d);
+        `;
     });
+    el.innerHTML = html;
 }
 
 /* ============ СПИСОК ЧАТОВ ============ */
