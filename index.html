@@ -1792,8 +1792,8 @@ function initRunner() {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
-    canvas.height = window.innerHeight - 150;
+    canvas.width = window.innerWidth;
+canvas.height = window.innerHeight - 100;
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
@@ -1803,7 +1803,7 @@ function initRunner() {
     
     runnerObj = {
         canvas, ctx, level,
-        playerX: 70, playerY: canvas.height - 100, playerVy: 0,
+        playerX: 50, playerY: canvas.height - 100, playerVy: 0,
         playerSize: 28, obstacles: [], score: 0, 
         speed: baseSpeed, frame: 0, isDead: false, onGround: true,
         timeLeft: 360, lastTimerTick: performance.now(), 
@@ -2253,16 +2253,35 @@ document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = currentUser.name;
     document.getElementById('profileStatus').textContent = currentUser.lastSeen;
     document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-    document.getElementById('profileModal').classList.add('show');
-};
+    document.getElementById('profileModal').classList.add('
+// Ждем полной загрузки страницы, чтобы все кнопки сработали
+window.addEventListener('load', function() {
+    if (document.getElementById('myProfileBtn')) {
+        document.getElementById('myProfileBtn').onclick = function() {
+            document.getElementById('profileTitle').textContent = currentUser.name;
+            document.getElementById('profileStatus').textContent = currentUser.lastSeen;
+            document.getElementById('myStatusSelect').value = currentUser.lastSeen;
+            document.getElementById('profileModal').classList.add('show');
+        };
+    }
 
-document.querySelector('.create-post-prompt').onclick = function() {
-    openPostModal();
-};
-document.getElementById('logoutFromProfileBtn').onclick = function() {
-    document.getElementById('profileModal').classList.remove('show');
-    document.getElementById('logoutModal').classList.add('show');
-};
+    if (document.querySelector('.create-post-prompt')) {
+        document.querySelector('.create-post-prompt').onclick = function() {
+            openPostModal();
+        };
+    }
+
+    if (document.getElementById('logoutFromProfileBtn')) {
+        document.getElementById('logoutFromProfileBtn').onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+});
+
+if (currentUser) {
+    startApp();
+}
  if (currentUser) {
     startApp();
 }
