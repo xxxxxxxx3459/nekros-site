@@ -480,10 +480,10 @@
     <div class="modal-sub" id="formSub">Поделитесь чем-нибудь</div>
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40" style="display:none;">
     <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь..."></textarea>
-    <div id="postMediaFields" style="display:none;">
-      <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото (URL)">
-      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (URL)">
-    </div>
+   <div id="postMediaFields" style="display:none; margin-top:10px;">
+        <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото или видео (YouTube)">
+        <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку">
+      </div>
     <button class="modal-primary" id="formSubmit">Опубликовать</button>
     <button class="modal-close" id="formCancel">Отмена</button>
   </div>
@@ -2248,7 +2248,18 @@ function endPlatformer(isWin = false) {
 }
 
 // Запуск приложения при загрузке
-if (currentUser) {
+/* --- ИСПРАВЛЕНИЕ КЛИКОВ --- */
+document.getElementById('myProfileBtn').onclick = function() {
+    document.getElementById('profileTitle').textContent = currentUser.name;
+    document.getElementById('profileStatus').textContent = currentUser.lastSeen;
+    document.getElementById('myStatusSelect').value = currentUser.lastSeen;
+    document.getElementById('profileModal').classList.add('show');
+};
+
+document.querySelector('.create-post-prompt').onclick = function() {
+    openPostModal();
+};
+ if (currentUser) {
     startApp();
 }
 </script>
