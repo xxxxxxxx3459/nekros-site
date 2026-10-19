@@ -1,4 +1,4 @@
-до<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -275,7 +275,7 @@
   .promo-price.prime-btn { background: linear-gradient(135deg, #00d4ff, #7b2ff7); }
   .promo-price.sunset-btn { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
 
-  #gameOverlay { position: fixed; inset: 0; z-index: 300; background: #0a0510; display: none; flex-direction: column; color: #fff; overflow: hidden; }
+  #gameOverlay { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 300; background: #0a0510; display: none; flex-direction: column; color: #fff; overflow: hidden; }
   #gameOverlay.show { display: flex; }
   .game-topbar { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); z-index: 10; }
   .game-close { font-size: 24px; cursor: pointer; background: transparent; border: none; color: #fff; }
@@ -332,7 +332,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-   <button type="button" class="reg-btn" id="regBtn" onclick="continueToApp()">Продолжить →</button>
+    <button type="button" class="reg-btn" id="regBtn" onclick="continueToApp()">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -410,6 +410,7 @@
           <div class="feat"><span class="feat-icon">📌</span><span><b>3 раздела</b> на твоей странице</span></div>
           <div class="feat"><span class="feat-icon">📝</span><span><b>200 постов в месяц</b></span></div>
           <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 300%</b></span></div>
+          <div class="feat"><span class="feat-icon">🎵</span><span><b>Возможность прикреплять музыку</b> к постам</span></div>
         </div>
         <button class="promo-price sunset-btn" data-buy="sunset_year" data-price="1800">Купить за 1 800 ₽ / год</button>
       </div>
@@ -426,6 +427,7 @@
           <div class="feat"><span class="feat-icon">📌</span><span><b>8 разделов</b> на странице</span></div>
           <div class="feat"><span class="feat-icon">♾️</span><span><b>Бесконечные посты</b></span></div>
           <div class="feat"><span class="feat-icon">🚀</span><span><b>Продвижение на 1000%</b></span></div>
+          <div class="feat"><span class="feat-icon">🎵</span><span><b>Возможность прикреплять музыку</b> к постам</span></div>
         </div>
         <button class="promo-price prime-btn" data-buy="prime_year" data-price="2600">Купить за 2 600 ₽ / год</button>
       </div>
@@ -480,10 +482,10 @@
     <div class="modal-sub" id="formSub">Поделитесь чем-нибудь</div>
     <input type="text" class="modal-input" id="formName" placeholder="Название" maxlength="40" style="display:none;">
     <textarea class="modal-textarea" id="formText" placeholder="Привет! Расскажите что-нибудь..."></textarea>
-   <div id="postMediaFields" style="display:none; margin-top:10px;">
+    <div id="postMediaFields" style="display:none; margin-top:10px;">
         <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото или видео (YouTube)">
-        <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку">
-      </div>
+        <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (Premium)">
+    </div>
     <button class="modal-primary" id="formSubmit">Опубликовать</button>
     <button class="modal-close" id="formCancel">Отмена</button>
   </div>
@@ -539,20 +541,20 @@
     <div class="modal-sub" id="profileStatus"></div>
     <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить цвет профиля</button>
     <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
-   <select class="status-select" id="myStatusSelect">
-    <option value="в сети">в сети</option>
-    <option value="был(а) в сети недавно">был(а) в сети недавно</option>
-    <option value="год назад">год назад</option>
-    <option value="2 года назад">2 года назад</option>
-    <option value="3 года назад">3 года назад</option>
-   
-    <option value="4 года назад">4 года назад</option>
-    <option value="5 лет назад">5 лет назад</option>
-    <option value="6 лет назад">6 лет назад</option>
-    <option value="8 лет назад">8 лет назад</option>
-    <option value="12 лет назад">12 лет назад</option>
-</select>
-   <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62; color:#fff; margin-top:15px;">🚪 Выйти из аккаунта</button> <button class="modal-close" data-close="profileModal">Закрыть</button>
+    <select class="status-select" id="myStatusSelect">
+      <option value="в сети">в сети</option>
+      <option value="был(а) в сети недавно">был(а) в сети недавно</option>
+      <option value="год назад">год назад</option>
+      <option value="2 года назад">2 года назад</option>
+      <option value="3 года назад">3 года назад</option>
+      <option value="4 года назад">4 года назад</option>
+      <option value="5 лет назад">5 лет назад</option>
+      <option value="6 лет назад">6 лет назад</option>
+      <option value="8 лет назад">8 лет назад</option>
+      <option value="12 лет назад">12 лет назад</option>
+    </select>
+    <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62; color:#fff; margin-top:15px;">🚪 Выйти из аккаунта</button> 
+    <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
 
@@ -670,26 +672,6 @@ function updateAvatarLetter() {
 }
 regName.addEventListener('input', updateAvatarLetter);
 
-regBtn.addEventListener('click', function() {
-  const n = (regName.value || '').trim();
-  if (n.length < 2) { regError.style.display = 'block'; return; }
-  regError.style.display = 'none';
-  
-  let isAdmin = false;
-  let premiumLevel = null;
-  const lowerName = n.toLowerCase();
-  if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-  else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-
-  currentUser = { 
-      name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-      premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-      profileViews: 0, subscribers: 0, pinnedIds: []
-  };
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-  startApp();
-});
-
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
@@ -799,6 +781,7 @@ function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function startApp() {
+  if (!currentUser) return;
   document.getElementById('register').classList.add('hide');
   document.getElementById('panel').classList.add('show');
   document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
@@ -846,15 +829,28 @@ function updatePremiumBadge() {
   }
 }
 
-try {
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-  if (saved && saved.name) {
-    currentUser = saved;
-    if(!currentUser.lastSeen) currentUser.lastSeen = 'в сети';
-    if(!currentUser.pinnedIds) currentUser.pinnedIds = [];
-    setTimeout(startApp, 100);
-  }
-} catch(e) {}
+function continueToApp() {
+    const nameInput = document.getElementById('regName');
+    const n = (nameInput.value || '').trim();
+    if (n.length < 2) {
+        document.getElementById('regError').style.display = 'block';
+        return;
+    }
+    document.getElementById('regError').style.display = 'none';
+    
+    let isAdmin = false, premiumLevel = null;
+    const lowerName = n.toLowerCase();
+    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
+    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
+
+    currentUser = { 
+        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
+        profileViews: 0, subscribers: 0, pinnedIds: []
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    startApp();
+}
 
 document.querySelectorAll('.nav-btn').forEach(b => {
   b.addEventListener('click', () => {
@@ -1093,7 +1089,28 @@ function buildPostEl(p) {
   div.className = 'post';
   const hasLiked = userLikes.includes(p.id);
   let mediaHtml = '';
-  if (p.image) mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
+  
+  if (p.image && (p.image.includes('youtube') || p.image.includes('youtu.be'))) {
+      let videoId = '';
+      if (p.image.includes('v=')) videoId = p.image.split('v=')[1].split('&')[0];
+      else if (p.image.includes('youtu.be/')) videoId = p.image.split('youtu.be/')[1].split('?')[0];
+      if (videoId) mediaHtml += `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius:14px; margin-bottom:14px;"></iframe>`;
+  } else if (p.image) {
+      mediaHtml += `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
+  }
+
+  if (p.music) {
+      mediaHtml += `
+        <div class="post-music" style="display:flex; align-items:center; gap:12px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:14px; margin-bottom:14px; border:1px solid rgba(255,255,255,0.05);">
+          <div class="post-music-icon" style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #ff8c42, #ff5e62); display:flex; align-items:center; justify-content:center; font-size:16px;">🎵</div>
+          <div class="post-music-info" style="flex:1;">
+            <div class="post-music-title" style="color:#fff; font-size:13px; font-weight:600;">Музыка из поста</div>
+            <div class="post-music-artist" style="color:rgba(255,255,255,0.6); font-size:11px;">Нажми чтобы открыть</div>
+          </div>
+          <div onclick="window.open('${esc(p.music)}', '_blank')" style="color:#ff8c42; font-size:18px; cursor:pointer;">▶</div>
+        </div>`;
+  }
+
   div.innerHTML = `
     <div class="post-header">
       <div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div>
@@ -1143,6 +1160,60 @@ function buildPostEl(p) {
 function savePostsIfMine(p) {
   const idx = posts.findIndex(x => x.id === p.id);
   if (idx !== -1) { posts[idx] = p; try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {} }
+}
+
+function openPostModal() {
+    document.getElementById('formTitle').textContent = 'Новый пост';
+    document.getElementById('formSub').textContent = 'Поделитесь чем-нибудь';
+    document.getElementById('formName').style.display = 'none';
+    document.getElementById('formText').style.display = 'block';
+    document.getElementById('formText').value = '';
+    document.getElementById('formPhoto').value = '';
+    document.getElementById('formMusic').value = '';
+    document.getElementById('postMediaFields').style.display = 'block';
+    
+    const musicInput = document.getElementById('formMusic');
+    if (currentUser.premium === 'sunset' || currentUser.premium === 'prime') {
+        musicInput.disabled = false;
+        musicInput.placeholder = "Ссылка на музыку (доступно для Premium)";
+        musicInput.style.opacity = "1";
+    } else {
+        musicInput.disabled = true;
+        musicInput.placeholder = "🔒 Музыка только для Premium";
+        musicInput.style.opacity = "0.5";
+    }
+
+    document.getElementById('formSubmit').onclick = () => {
+        const text = document.getElementById('formText').value.trim();
+        if (!text) { alert('Введите текст!'); return; }
+        
+        const image = document.getElementById('formPhoto').value.trim();
+        const music = document.getElementById('formMusic').value.trim();
+        
+        if (music && currentUser.premium !== 'sunset' && currentUser.premium !== 'prime') {
+            alert('🚫 Ошибка: Добавлять музыку могут только пользователи Premium!');
+            return;
+        }
+
+        posts.unshift({
+            id: 'p_' + Date.now(), 
+            author: currentUser.name, 
+            color: currentUser.color,
+            text: text, 
+            time: 'только что', 
+            views: 0, 
+            likes: 0, 
+            reposts: 0, 
+            comments: [],
+            image: image || null,
+            music: music || null
+        });
+        try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
+        document.getElementById('formModal').classList.remove('show');
+        renderPosts(); 
+        renderMyPage();
+    };
+    document.getElementById('formModal').classList.add('show');
 }
 
 function renderMyPage() {
@@ -1222,7 +1293,6 @@ function openManagePinned() {
     });
     document.getElementById('managePinnedModal').classList.add('show');
 }
-document.getElementById('managePinnedBtn').addEventListener('click', openManagePinned);
 
 function renderGames() {
     const grid = document.getElementById('gamesGrid');
@@ -1799,7 +1869,7 @@ function initRunner() {
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 100;
+    canvas.height = window.innerHeight - 60;
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
@@ -2254,135 +2324,16 @@ function endPlatformer(isWin = false) {
 }
 
 // Запуск приложения при загрузке
-/* --- ИСПРАВЛЕНИЕ КЛИКОВ --- */
-
-// Запуск приложения при загрузке
 window.addEventListener('load', function() {
-    // Восстанавливаем кнопку "Продолжить"
-    const btn = document.getElementById('regBtn');
-    if (btn) {
-        btn.onclick = function() {
-            const n = (document.getElementById('regName').value || '').trim();
-            if (n.length < 2) { 
-                document.getElementById('regError').style.display = 'block'; 
-                return; 
-            }
-            document.getElementById('regError').style.display = 'none';
-            let isAdmin = false, premiumLevel = null;
-            const lowerName = n.toLowerCase();
-            if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-            else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-            
-            currentUser = { 
-                name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-                premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-                profileViews: 0, subscribers: 0, pinnedIds: []
-            };
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && saved.name) {
+            currentUser = saved;
             startApp();
-        };
-    }
-
-    // Кнопки профиля и постов
-    if (document.getElementById('myProfileBtn')) {
-        document.getElementById('myProfileBtn').onclick = function() {
-            document.getElementById('profileTitle').textContent = currentUser.name;
-            document.getElementById('profileStatus').textContent = currentUser.lastSeen;
-            document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-            document.getElementById('profileModal').classList.add('show');
-        };
-    }
-
-    if (document.querySelector('.create-post-prompt')) {
-        document.querySelector('.create-post-prompt').onclick = function() {
-            openPostModal();
-        };
-    }
-
-    if (document.getElementById('logoutFromProfileBtn')) {
-        document.getElementById('logoutFromProfileBtn').onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
+        }
+    } catch(e) {}
 });
 
-// Автозапуск, если пользователь уже залогинен
-// --- ОЖИВЛЯЕМ КНОПКИ ПРИНУДИТЕЛЬНО ---
-setTimeout(() => {
-    const plusBtn = document.getElementById('plusBtn');
-    if (plusBtn) {
-        plusBtn.onclick = function() {
-            document.getElementById('createModal').classList.add('show');
-        };
-    }
-
-    const postBtn = document.querySelector('.create-post-prompt');
-    if (postBtn) {
-        postBtn.onclick = function() {
-            openPostModal();
-        };
-    }
-
-    const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) { const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            if (confirm('Выйти из аккаунта?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        };
-    } const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            if (confirm('Выйти из аккаунта?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        };
-    } const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            if (confirm('Выйти из аккаунта?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        };
-    const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            if (confirm('Выйти из аккаунта?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        };
-    }
- }, 1000); // Ждем 1 секунду, пока всё прогрузится if (currentUser) {
 // Универсальное закрытие всех окон
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
@@ -2395,58 +2346,7 @@ document.addEventListener('click', function(e) {
             if (parentModal) parentModal.classList.remove('show');
         }
     }
-});  
-function continueToApp() {
-    const nameInput = document.getElementById('regName');
-    const n = (nameInput.value || '').trim();
-    
-    if (n.length < 2) {
-        document.getElementById('regError').style.display = 'block';
-        return;
-    }
-    document.getElementById('regError').style.display = 'none';
-    
-    // Формируем пользователя
-    currentUser = { 
-        name: n, 
-        color: '#ff6b6b', 
-        emoji: n.charAt(0).toUpperCase(), 
-        premium: n.toLowerCase() === 'boss' ? 'prime' : (n.toLowerCase() === 'admin' ? 'sunset' : null), 
-        isAdmin: n.toLowerCase() === 'boss' || n.toLowerCase() === 'admin', 
-        lastSeen: 'в сети',
-        profileViews: 0, 
-        subscribers: 0, 
-        pinnedIds: []
-    };
-    
-    // Сохраняем
-    try { localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser)); } catch(e) {}
-    
-    // Принудительно перекидываем экраны
-    document.getElementById('register').classList.add('hide');
-    document.getElementById('panel').classList.add('show');
-    
-    // Запускаем игру
-    if (typeof startApp === 'function') {
-        startApp();
-    } else {
-        alert('Кнопка сработала, но функция startApp() сломана!');
-    }
-}
-
-// Проверка при загрузке
-window.addEventListener('load', function() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
-        if (saved && saved.name) {
-            currentUser = saved;
-            document.getElementById('register').classList.add('hide');
-            document.getElementById('panel').classList.add('show');
-            if (typeof startApp === 'function') startApp();
-        }
-    } catch(e) {}
 });
 </script>
 </body>
 </html>
-
