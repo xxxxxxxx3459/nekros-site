@@ -2529,7 +2529,7 @@ window.addEventListener('load', function() {
 if (currentUser) {
     startApp();
 }
- // --- ИСПРАВЛЕНИЕ КНОПКИ ВЫХОДА ---
+// --- ИСПРАВЛЕНИЕ КНОПКИ ВЫХОДА ---
 setTimeout(() => {
     const logoutBtn = document.getElementById('logoutFromProfileBtn');
     if (logoutBtn) {
@@ -2547,7 +2547,8 @@ setTimeout(() => {
         };
     }
 }, 1000);
- // --- ЗАГРУЗКА ФОТО ИЗ ГАЛЕРЕИ ---
+
+// --- ЗАГРУЗКА ФОТО ИЗ ГАЛЕРЕИ ---
 function uploadProfilePhoto() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -2577,10 +2578,9 @@ function uploadProfilePhoto() {
     };
     input.click();
 }
- // --- ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ ПОДПИСОК И КНОПОК ---
+
+// --- ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ ПОДПИСОК, КНОПОК И МЕНЮ ПЛЮС ---
 window.addEventListener('load', function() {
-    
-    // Ждем полсекунды, чтобы страница прогрузилась
     setTimeout(() => {
         
         // 1. Убираем "Master" и "Administrator", пишем просто название подписки
@@ -2604,20 +2604,29 @@ window.addEventListener('load', function() {
         }
 
         // 3. Чиним кнопки внутри Плюса (Сообщество, Группа, Канал, История)
+        // Убираем скрытие "Пост", чтобы он тоже был доступен
+        const postOption = document.querySelector('#createModal [data-action="post"]');
+        if (postOption) postOption.style.display = 'block'; 
+
+        const commOption = document.querySelector('#createModal [data-action="community"]');
+        if (commOption) commOption.style.display = 'block'; // Возвращаем Сообщество
+
         document.querySelectorAll('#createModal .modal-option').forEach(opt => {
             opt.onclick = function() {
                 const action = this.getAttribute('data-action');
                 document.getElementById('createModal').classList.remove('show');
                 
-                if (action === 'story') alert('Истории скоро появятся!');
+                if (action === 'post') openPostModal();
+                else if (action === 'story') alert('Истории скоро появятся!');
                 else if (action === 'group') openGroupModal('group');
                 else if (action === 'community') openGroupModal('community');
                 else if (action === 'channel') openGroupModal('channel');
             };
         });
 
-    }, 500); // Ждем 0.5 сек
+    }, 500); 
 });
+
 </script>
 </body>
 </html>
