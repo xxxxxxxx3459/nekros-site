@@ -2332,7 +2332,20 @@ setTimeout(() => {
         };
     }
 }, 1000); // Ждем 1 секунду, пока всё прогрузится if (currentUser) {
-  if (currentUser) { startApp();
+// Универсальное закрытие всех окон
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
+        let modalId = e.target.getAttribute('data-close');
+        if (modalId) {
+            let modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('show');
+        } else {
+            let parentModal = e.target.closest('.modal');
+            if (parentModal) parentModal.classList.remove('show');
+        }
+    }
+});  
+ if (currentUser) { startApp();
 }
 </script>
 </body>
