@@ -2323,8 +2323,10 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// Запуск приложения при загрузке
+// Запуск приложения при загрузке и привязка всех кнопок
 window.addEventListener('load', function() {
+    
+    // 1. Показываем игру, если ник уже сохранен
     try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
         if (saved && saved.name) {
@@ -2332,6 +2334,63 @@ window.addEventListener('load', function() {
             startApp();
         }
     } catch(e) {}
+
+    // 2. Кнопка Плюс (Создать группу/канал/сообщество/пост)
+    const plusBtn = document.getElementById('plusBtn');
+    if (plusBtn) {
+        plusBtn.onclick = function() {
+            document.getElementById('createModal').classList.add('show');
+        };
+    }
+
+    // 3. Плашка "Привет! Расскажите что-нибудь..."
+    const postPrompt = document.querySelector('.create-post-prompt');
+    if (postPrompt) {
+        postPrompt.onclick = function() {
+            openPostModal();
+        };
+    }
+
+    // 4. Нажатие на свой профиль (Аватарка слева вверху)
+    const myProfileBtn = document.getElementById('myProfileBtn');
+    if (myProfileBtn) {
+        myProfileBtn.onclick = function() {
+            if (!currentUser) return;
+            document.getElementById('profileTitle').textContent = currentUser.name;
+            document.getElementById('profileStatus').textContent = currentUser.lastSeen;
+            document.getElementById('myStatusSelect').value = currentUser.lastSeen;
+            document.getElementById('profileModal').classList.add('show');
+        };
+    }
+
+    // 5. Изменение статуса в профиле
+    const statusSelect = document.getElementById('myStatusSelect');
+    if (statusSelect) {
+        statusSelect.onchange = function(e) {
+            if (!currentUser) return;
+            currentUser.lastSeen = e.target.value;
+            
+            // Обновляем надпись на главной
+            const statusLabel = document.getElementById('myStatusLabel');
+            if (currentUser.premium === 'prime') statusLabel.textContent = '💎 Master';
+            else if (currentUser.premium === 'sunset') statusLabel.textContent = '⭐ Administrator';
+            else statusLabel.textContent = currentUser.lastSeen;
+            
+            // Сохраняем в память
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+        };
+    }
+
+    // 6. Шестеренка (Выход)
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            if (confirm('Выйти из аккаунта?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+    }
 });
 
 // Универсальное закрытие всех окон
