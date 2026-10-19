@@ -2425,9 +2425,7 @@ window.addEventListener('load', function() {
         const postOption = document.querySelector('#createModal [data-action="post"]');
         if (postOption) postOption.style.display = 'none';
 
-        const commOption = document.querySelector('#createModal [data-action="community"]');
-        if (commOption) commOption.style.display = 'none';
-
+        
         const groupOption = document.querySelector('#createModal [data-action="group"]');
         if (groupOption) {
             const desc = groupOption.querySelector('.opt-desc');
@@ -2579,6 +2577,47 @@ function uploadProfilePhoto() {
     };
     input.click();
 }
+ // --- ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ ПОДПИСОК И КНОПОК ---
+window.addEventListener('load', function() {
+    
+    // Ждем полсекунды, чтобы страница прогрузилась
+    setTimeout(() => {
+        
+        // 1. Убираем "Master" и "Administrator", пишем просто название подписки
+        const statusLabel = document.getElementById('myStatusLabel');
+        if (statusLabel && currentUser) {
+            if (currentUser.premium === 'prime') {
+                statusLabel.textContent = 'Prime Premium';
+            } else if (currentUser.premium === 'sunset') {
+                statusLabel.textContent = 'Sunset Premium';
+            } else {
+                statusLabel.textContent = currentUser.lastSeen || 'в сети';
+            }
+        }
+
+        // 2. Включаем кнопку Плюс
+        const plusBtn = document.getElementById('plusBtn');
+        if (plusBtn) {
+            plusBtn.onclick = function() {
+                document.getElementById('createModal').classList.add('show');
+            };
+        }
+
+        // 3. Чиним кнопки внутри Плюса (Сообщество, Группа, Канал, История)
+        document.querySelectorAll('#createModal .modal-option').forEach(opt => {
+            opt.onclick = function() {
+                const action = this.getAttribute('data-action');
+                document.getElementById('createModal').classList.remove('show');
+                
+                if (action === 'story') alert('Истории скоро появятся!');
+                else if (action === 'group') openGroupModal('group');
+                else if (action === 'community') openGroupModal('community');
+                else if (action === 'channel') openGroupModal('channel');
+            };
+        });
+
+    }, 500); // Ждем 0.5 сек
+});
 </script>
 </body>
 </html>
