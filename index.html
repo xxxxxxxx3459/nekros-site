@@ -2325,13 +2325,64 @@ setTimeout(() => {
     }
 
     const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) { const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            if (confirm('Выйти из аккаунта?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+    } const logoutBtn = document.getElementById('logoutFromProfileBtn');
     if (logoutBtn) {
         logoutBtn.onclick = function() {
             document.getElementById('profileModal').classList.remove('show');
             document.getElementById('logoutModal').classList.add('show');
         };
     }
-}, 1000); // Ждем 1 секунду, пока всё прогрузится if (currentUser) {
+
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            if (confirm('Выйти из аккаунта?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+    } const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            if (confirm('Выйти из аккаунта?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+    const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            if (confirm('Выйти из аккаунта?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+    }
+ }, 1000); // Ждем 1 секунду, пока всё прогрузится if (currentUser) {
 // Универсальное закрытие всех окон
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
