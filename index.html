@@ -332,7 +332,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn" onclick="continueToApp()">Продолжить →</button>
+    <button type="button" class="reg-btn" id="regBtn" onclick="localStorage.setItem('sunset_user_v50', JSON.stringify({name: document.getElementById('regName').value || 'Игрок', color: '#ff6b6b', emoji: 'B', lastSeen: 'в сети', premium: 'prime', pinnedIds: []})); location.reload();">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
