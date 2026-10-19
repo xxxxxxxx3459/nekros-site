@@ -2519,96 +2519,75 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// Запуск приложения при загрузке и привязка всех кнопок
+// ФИНАЛЬНЫЙ ЗАПУСК
 window.addEventListener('load', function() {
-    
-    // 1. Показываем игру, если ник уже сохранен
+    // Проверяем, сохранен ли ник, и если да — запускаем игру
     try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
         if (saved && saved.name) {
             currentUser = saved;
-            startApp();
+            if (typeof startApp === 'function') {
+                startApp();
+            }
         }
-    } catch(e) {}
-
-    // 2. Кнопка Плюс (Создать группу/канал/сообщество/пост)
-    const plusBtn = document.getElementById('plusBtn');
-    if (plusBtn) {
-        plusBtn.onclick = function() {
-            document.getElementById('createModal').classList.add('show');
-        };
+    } catch(e) {
+        console.log("Ошибка загрузки:", e);
     }
 
-    // 3. Плашка "Привет! Расскажите что-нибудь..."
-    const postPrompt = document.querySelector('.create-post-prompt');
-    if (postPrompt) {
-        postPrompt.onclick = function() {
-            openPostModal();
-        };
-    }
-
-    // 4. Нажатие на свой профиль (Аватарка слева вверху)
-    const myProfileBtn = document.getElementById('myProfileBtn');
-    if (myProfileBtn) {
-        myProfileBtn.onclick = function() {
-            if (!currentUser) return;
-            document.getElementById('profileTitle').textContent = currentUser.name;
-            document.getElementById('profileStatus').textContent = currentUser.lastSeen;
-            document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-            document.getElementById('profileModal').classList.add('show');
-        };
-    }
-
-    // 5. Изменение статуса в профиле
-    const statusSelect = document.getElementById('myStatusSelect');
-    if (statusSelect) {
-        statusSelect.onchange = function(e) {
-            if (!currentUser) return;
-            currentUser.lastSeen = e.target.value;
-            
-            // Обновляем надпись на главной
-            const statusLabel = document.getElementById('myStatusLabel');
-            if (currentUser.premium === 'prime') statusLabel.textContent = '💎 Master';
-            else if (currentUser.premium === 'sunset') statusLabel.textContent = '⭐ Administrator';
-            else statusLabel.textContent = currentUser.lastSeen;
-            
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-        };
-    }
-
-    // 6. Кнопка "Выйти из аккаунта" (в профиле)
-    const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-
-    // 7. Шестеренка (Открывает настройки)
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            document.getElementById('settingsModal').classList.add('show');
-        };
-    }
-
-    // 8. Скрываем "Пост" и "Сообщество" из меню Плюс, меняем текст Группы
+    // Привязываем кнопки (Плюс, Шестеренка, Профиль, Выход)
     setTimeout(() => {
-        const postOption = document.querySelector('#createModal [data-action="post"]');
-        if (postOption) postOption.style.display = 'none';
+        const plusBtn = document.getElementById('plusBtn');
+        if (plusBtn) plusBtn.onclick = () => document.getElementById('createModal').classList.add('show');
 
-        
-        const groupOption = document.querySelector('#createModal [data-action="group"]');
-        if (groupOption) {
-            const desc = groupOption.querySelector('.opt-desc');
-            if (desc) desc.textContent = 'Создать группу';
+        const postPrompt = document.querySelector('.create-post-prompt');
+        if (postPrompt) postPrompt.onclick = () => openPostModal();
+
+        const myProfileBtn = document.getElementById('myProfileBtn');
+        if (myProfileBtn) {
+            myProfileBtn.onclick = () => {
+                if (!currentUser) return;
+                document.getElementById('profileTitle').textContent = currentUser.name;
+                document.getElementById('profileStatus').textContent = currentUser.lastSeen;
+                document.getElementById('myStatusSelect').value = currentUser.lastSeen;
+                document.getElementById('profileModal').classList.add('show');
+            };
         }
-    }, 1000);
+
+        const settingsBtn = document.getElementById('settingsBtn');
+        if (settingsBtn) settingsBtn.onclick = () => document.getElementById('settingsModal').classList.add('show');
+
+        const logoutBtn = document.getElementById('logoutFromProfileBtn');
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                document.getElementById('profileModal').classList.remove('show');
+                document.getElementById('logoutModal').classList.add('show');
+            };
+        }
+
+        const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+        if (confirmLogoutBtn) {
+            confirmLogoutBtn.onclick = () => {
+                localStorage.removeItem('sunset_user_v50');
+                location.reload();
+            };
+        }
+
+        // Оживляем кнопки в меню Плюса
+        document.querySelectorAll('#createModal .modal-option').forEach(opt => {
+            opt.onclick = function() {
+                const action = this.getAttribute('data-action');
+                document.getElementById('createModal').classList.remove('show');
+                if (action === 'post') openPostModal();
+                else if (action === 'story') alert('Истории скоро появятся!');
+                else if (action === 'group') openGroupModal('group');
+                else if (action === 'community') openGroupModal('community');
+                else if (action === 'channel') openGroupModal('channel');
+            };
+        });
+    }, 500);
 });
 
-
-// Универсальное закрытие всех окон (по клику на крестик или кнопку "Отмена")
+// Универсальное закрытие окон (крестики)
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
         let modalId = e.target.getAttribute('data-close');
@@ -2621,369 +2600,9 @@ document.addEventListener('click', function(e) {
         }
     }
 });
-
-
-// --- ЛОГИКА НАСТРОЕК И СМЕНЫ ФОТО ---
-function saveSettings() {
-    const timeVal = document.getElementById('timeSelect').value;
-    const wallVal = document.getElementById('wallpaperSelect').value;
-    const privacyVal = document.getElementById('privacyGroups').checked;
-    
-    localStorage.setItem('sunset_settings', JSON.stringify({ time: timeVal, wall: wallVal, privacy: privacyVal }));
-
-    let clock = document.getElementById('myClock');
-    if (timeVal === 'show') {
-        if (!clock) {
-            clock = document.createElement('div');
-            clock.id = 'myClock';
-            clock.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); font-size:16px; color:#fff; font-weight:bold; z-index:999; background:rgba(0,0,0,0.4); padding:4px 12px; border-radius:20px; display:none;';
-            document.body.appendChild(clock);
-        }
-        clock.style.display = 'block';
-        setInterval(() => {
-            const d = new Date();
-            clock.textContent = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-        }, 1000);
-    } else if (clock) {
-        clock.style.display = 'none';
-    }
-
-    const wallpapers = {
-        'default': 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90',
-        'ocean': 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90',
-        'space': 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=1920&q=90',
-        'cyber': 'https://images.unsplash.com/photo-1515630278258-407f66498911?w=1920&q=90'
-    };
-    
-    const wpElement = document.querySelector('.sunset-photo');
-    if (wpElement) wpElement.style.backgroundImage = `url('${wallpapers[wallVal]}')`;
-
-    document.getElementById('settingsModal').classList.remove('show');
-}
-
-function changeProfilePhoto() {
-    const photos = [
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200",
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200",
-        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200"
-    ];
-    
-    let num = prompt("Введите номер фото от 1 до " + photos.length + ":");
-    if (num) {
-        let idx = parseInt(num) - 1;
-        if (photos[idx]) {
-            currentUser.photo = photos[idx];
-            currentUser.emoji = `<img src="${photos[idx]}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-            
-            document.getElementById('myAvatarSmall').innerHTML = currentUser.emoji;
-            document.getElementById('promptAvatar').innerHTML = currentUser.emoji;
-            renderMyPage();
-            renderPosts();
-            alert("Фото обновлено!");
-        }
-    }
-}
-
-// Загрузка сохраненных настроек при старте
-window.addEventListener('load', function() {
-    const savedSet = JSON.parse(localStorage.getItem('sunset_settings') || 'null');
-    if (savedSet) {
-        if (document.getElementById('timeSelect')) document.getElementById('timeSelect').value = savedSet.time;
-        if (document.getElementById('wallpaperSelect')) document.getElementById('wallpaperSelect').value = savedSet.wall;
-        if (document.getElementById('privacyGroups')) document.getElementById('privacyGroups').checked = savedSet.privacy;
-        saveSettings();
-    }
-});
-
-// Автозапуск, если пользователь уже залогинен
-if (currentUser) {
-    startApp();
-}
-// --- ИСПРАВЛЕНИЕ КНОПКИ ВЫХОДА ---
-setTimeout(() => {
-    const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-
-    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
-    if (confirmLogoutBtn) {
-        confirmLogoutBtn.onclick = function() {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        };
-    }
-}, 1000);
-
-// --- ЗАГРУЗКА ФОТО ИЗ ГАЛЕРЕИ ---
-function uploadProfilePhoto() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imageUrl = event.target.result;
-                
-                currentUser.photo = imageUrl;
-                currentUser.emoji = `<img src="${imageUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-                
-                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-                
-                document.getElementById('myAvatarSmall').innerHTML = currentUser.emoji;
-                document.getElementById('promptAvatar').innerHTML = currentUser.emoji;
-                
-                renderMyPage();
-                renderPosts();
-                document.getElementById('profileModal').classList.remove('show');
-                alert("Фото успешно обновлено!");
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    input.click();
-}
-
-// --- ИСПРАВЛЕНИЕ СТАТУСОВ, КНОПОК И СОЗДАНИЯ ---
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        
-        // 1. Статусы под именем
-        const statusLabel = document.getElementById('myStatusLabel');
-        if (statusLabel && currentUser) {
-            if (currentUser.premium === 'prime') statusLabel.textContent = 'Prime Premium';
-            else if (currentUser.premium === 'sunset') statusLabel.textContent = 'Sunset Premium';
-            else statusLabel.textContent = currentUser.lastSeen || 'в сети';
-        }
-
-        // 2. Включаем кнопку Плюс
-        const plusBtn = document.getElementById('plusBtn');
-        if (plusBtn) {
-            plusBtn.onclick = function() {
-                document.getElementById('createModal').classList.add('show');
-            };
-        }
-
-        // 3. Оживляем кнопки внутри Плюса
-        document.querySelectorAll('#createModal .modal-option').forEach(opt => {
-            opt.onclick = function() {
-                const action = this.getAttribute('data-action');
-                document.getElementById('createModal').classList.remove('show');
-                
-                if (action === 'post') openPostModal();
-                else if (action === 'story') alert('Истории скоро появятся!');
-                else if (action === 'group') openGroupModal('group');
-                else if (action === 'community') openGroupModal('community');
-                else if (action === 'channel') openGroupModal('channel');
-            };
-        });
-
-    }, 500); 
-});
-
-// --- ФУНКЦИЯ СОЗДАНИЯ ГРУПП, СООБЩЕСТВ И КАНАЛОВ (С ЧЕКБОКСОМ ЗВОНКОВ) ---
-function openGroupModal(type) {
-    const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
-    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
-    document.getElementById('formSub').textContent = 'Введите название';
-    document.getElementById('formName').style.display = 'block';
-    document.getElementById('formName').value = '';
-    document.getElementById('formText').style.display = 'none';
-    document.getElementById('postMediaFields').style.display = 'none';
-    
-    // Показываем чекбокс для звонков (создаем его динамически, если нет)
-    let callCheck = document.getElementById('allowCallsCheck');
-    if (!callCheck) {
-        callCheck = document.createElement('div');
-        callCheck.id = 'allowCallsCheck';
-        callCheck.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:15px;';
-        callCheck.innerHTML = `
-            <input type="checkbox" id="callsPermission" style="width:20px; height:20px;" checked>
-            <span style="color:#fff; font-size:14px;">Разрешить звонки</span>
-        `;
-        document.getElementById('formModal').querySelector('.modal-card').insertBefore(callCheck, document.getElementById('formSubmit'));
-    }
-
-    document.getElementById('formSubmit').onclick = () => {
-        const name = document.getElementById('formName').value.trim();
-        if (!name) { alert('Введите название!'); return; }
-        
-        const allowCalls = document.getElementById('callsPermission').checked;
-
-        const newItem = {
-            id: 'g_' + Date.now(), 
-            name: name,
-            color: '#ff6b6b',
-            emoji: name.charAt(0).toUpperCase(), 
-            type: type, 
-            owner: currentUser.name,
-            callsAllowed: allowCalls,
-            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
-        };
-        
-        if (type === 'channel') { 
-            channels.push(newItem); 
-            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} 
-        } else { 
-            groups.push(newItem); 
-            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} 
-        }
-        
-        document.getElementById('formModal').classList.remove('show');
-        renderChatsList(currentSearchTab, ''); 
-        renderMyPage();
-        alert(`"${name}" успешно создан! Звонки: ${allowCalls ? 'Разрешены' : 'Запрещены'}`);
-    };
-    
-    document.getElementById('formModal').classList.add('show');
-}
-
-// --- КНОПКА ВЫХОДА ---
-setTimeout(() => {
-    const logoutBtn = document.getElementById('logoutFromProfileBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = function() {
-            document.getElementById('profileModal').classList.remove('show');
-            document.getElementById('logoutModal').classList.add('show');
-        };
-    }
-    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
-    if (confirmLogoutBtn) {
-        confirmLogoutBtn.onclick = function() {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        };
-    }
-}, 1000);
- 
-// --- СОЗДАЕМ ИСТОРИИ ЗАНОВО ---
-function renderStories() {
-    const el = document.getElementById('storiesRow');
-    if (!el) return;
-    el.innerHTML = '';
-    
-    // Кнопка добавления
-    const addBtn = document.createElement('div');
-    addBtn.className = 'story-circle';
-    addBtn.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
-    addBtn.onclick = function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'video/*,image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    let stories = JSON.parse(localStorage.getItem('sunset_stories') || '[]');
-                    stories.push({ id: Date.now(), url: event.target.result, type: file.type, author: currentUser.name });
-                    localStorage.setItem('sunset_stories', JSON.stringify(stories));
-                    alert('История добавлена!');
-                    renderStories(); // Перерисовываем
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-        input.click();
-    };
-    el.appendChild(addBtn);
-
-    // Показываем уже добавленные истории
-    let stories = JSON.parse(localStorage.getItem('sunset_stories') || '[]');
-    stories.forEach(story => {
-        const div = document.createElement('div');
-        div.className = 'story-circle';
-        div.innerHTML = `<div class="story-ring"><div class="story-img" style="background:#333;">🎬</div></div><div class="story-label">${story.author}</div>`;
-        div.onclick = () => alert('Просмотр истории: ' + story.url);
-        el.appendChild(div);
-    });
-}
-
-// Вызываем её при старте, чтобы истории появились
-setTimeout(() => {
-    if (typeof renderStories === 'function') renderStories();
-}, 1000);
- // --- ИСПРАВЛЕНИЕ СОЗДАНИЯ ГРУПП, СООБЩЕСТВ И КАНАЛОВ ---
-function openGroupModal(type) {
-    const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
-    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
-    document.getElementById('formSub').textContent = 'Введите название';
-    document.getElementById('formName').style.display = 'block';
-    document.getElementById('formName').value = '';
-    document.getElementById('formText').style.display = 'none';
-    document.getElementById('postMediaFields').style.display = 'none';
-    
-    // Убираем старый чекбокс, если есть
-    let oldCheck = document.getElementById('allowCallsCheck');
-    if (oldCheck) oldCheck.remove();
-
-    // Добавляем чекбокс звонков
-    let callCheck = document.createElement('div');
-    callCheck.id = 'allowCallsCheck';
-    callCheck.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:15px;';
-    callCheck.innerHTML = `
-        <input type="checkbox" id="callsPermission" style="width:20px; height:20px;" checked>
-        <span style="color:#fff; font-size:14px;">Разрешить звонки</span>
-    `;
-    document.getElementById('formModal').querySelector('.modal-card').insertBefore(callCheck, document.getElementById('formSubmit'));
-
-    document.getElementById('formSubmit').onclick = () => {
-        const name = document.getElementById('formName').value.trim();
-        if (!name) { alert('Введите название!'); return; }
-        
-        const allowCalls = document.getElementById('callsPermission').checked;
-
-        const newItem = {
-            id: 'g_' + Date.now(), 
-            name: name,
-            color: '#ff6b6b',
-            emoji: name.charAt(0).toUpperCase(), 
-            type: type, 
-            owner: currentUser.name,
-            callsAllowed: allowCalls,
-            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
-        };
-        
-        if (type === 'channel') { 
-            channels.push(newItem); 
-            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} 
-        } else { 
-            groups.push(newItem); 
-            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} 
-        }
-        
-        document.getElementById('formModal').classList.remove('show');
-        renderChatsList(currentSearchTab, ''); 
-        renderMyPage();
-        alert(`"${name}" успешно создан!`);
-    };
-    
-    document.getElementById('formModal').classList.add('show');
-}
-// ПРИНУДИТЕЛЬНЫЙ ЗАПУСК ПРИ ЗАГРУЗКЕ
-window.addEventListener('load', function() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
-        if (saved && saved.name) {
-            currentUser = saved;
-            if (typeof startApp === 'function') {
-                startApp();
-            } else {
-                console.log("Ошибка: startApp не найдена!");
-            }
-        }
-    } catch(e) {
-        console.log("Ошибка при загрузке:", e);
-    }
-});
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
