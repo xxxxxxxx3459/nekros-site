@@ -539,7 +539,7 @@
   <div class="modal-card" style="max-height: 95vh;">
     <div class="modal-title" id="profileTitle">Мой профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
-    <button class="profile-action-btn" id="changeAvatarBtn">📸 Сменить цвет профиля</button>
+    <button class="profile-action-btn" id="changeAvatarBtn" onclick="uploadProfilePhoto()">🖼️ Загрузить фото профиля</button>
     <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
     <select class="status-select" id="myStatusSelect">
       <option value="в сети">в сети</option>
@@ -2530,6 +2530,54 @@ window.addEventListener('load', function() {
 // Автозапуск, если пользователь уже залогинен
 if (currentUser) {
     startApp();
+}
+ // --- ИСПРАВЛЕНИЕ КНОПКИ ВЫХОДА ---
+setTimeout(() => {
+    const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+
+    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.onclick = function() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        };
+    }
+}, 1000);
+ // --- ЗАГРУЗКА ФОТО ИЗ ГАЛЕРЕИ ---
+function uploadProfilePhoto() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imageUrl = event.target.result;
+                
+                currentUser.photo = imageUrl;
+                currentUser.emoji = `<img src="${imageUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+                
+                document.getElementById('myAvatarSmall').innerHTML = currentUser.emoji;
+                document.getElementById('promptAvatar').innerHTML = currentUser.emoji;
+                
+                renderMyPage();
+                renderPosts();
+                document.getElementById('profileModal').classList.remove('show');
+                alert("Фото успешно обновлено!");
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
 }
 </script>
 </body>
