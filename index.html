@@ -841,24 +841,18 @@ function updatePremiumBadge() {
   const old = av.querySelector('.premium-badge');
   if (old) old.remove();
   const st = document.getElementById('myStatusLabel');
+  
+  // Убираем старые бейджи, чтобы не было дублей
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
-    st.textContent = '💎 Master'; 
+    st.textContent = 'Prime Premium';
   } else if (currentUser.premium === 'sunset') {
     const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; av.appendChild(b);
-    st.textContent = '⭐ Administrator'; 
+    st.textContent = 'Sunset Premium';
   } else {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
 }
-
-function continueToApp() {
-    const nameInput = document.getElementById('regName');
-    const n = (nameInput.value || '').trim();
-    if (n.length < 2) {
-        document.getElementById('regError').style.display = 'block';
-        return;
-    }
     document.getElementById('regError').style.display = 'none';
     
     let isAdmin = false, premiumLevel = null;
@@ -2579,20 +2573,16 @@ function uploadProfilePhoto() {
     input.click();
 }
 
-// --- ИСПРАВЛЕНИЕ ОТОБРАЖЕНИЯ ПОДПИСОК, КНОПОК И МЕНЮ ПЛЮС ---
+// --- ИСПРАВЛЕНИЕ СТАТУСОВ, КНОПОК И СОЗДАНИЯ ---
 window.addEventListener('load', function() {
     setTimeout(() => {
         
-        // 1. Убираем "Master" и "Administrator", пишем просто название подписки
+        // 1. Статусы под именем
         const statusLabel = document.getElementById('myStatusLabel');
         if (statusLabel && currentUser) {
-            if (currentUser.premium === 'prime') {
-                statusLabel.textContent = 'Prime Premium';
-            } else if (currentUser.premium === 'sunset') {
-                statusLabel.textContent = 'Sunset Premium';
-            } else {
-                statusLabel.textContent = currentUser.lastSeen || 'в сети';
-            }
+            if (currentUser.premium === 'prime') statusLabel.textContent = 'Prime Premium';
+            else if (currentUser.premium === 'sunset') statusLabel.textContent = 'Sunset Premium';
+            else statusLabel.textContent = currentUser.lastSeen || 'в сети';
         }
 
         // 2. Включаем кнопку Плюс
@@ -2603,14 +2593,7 @@ window.addEventListener('load', function() {
             };
         }
 
-        // 3. Чиним кнопки внутри Плюса (Сообщество, Группа, Канал, История)
-        // Убираем скрытие "Пост", чтобы он тоже был доступен
-        const postOption = document.querySelector('#createModal [data-action="post"]');
-        if (postOption) postOption.style.display = 'block'; 
-
-        const commOption = document.querySelector('#createModal [data-action="community"]');
-        if (commOption) commOption.style.display = 'block'; // Возвращаем Сообщество
-
+        // 3. Оживляем кнопки внутри Плюса
         document.querySelectorAll('#createModal .modal-option').forEach(opt => {
             opt.onclick = function() {
                 const action = this.getAttribute('data-action');
@@ -2626,6 +2609,85 @@ window.addEventListener('load', function() {
 
     }, 500); 
 });
+
+// --- ФУНКЦИЯ СОЗДАНИЯ ГРУПП, СООБЩЕСТВ И КАНАЛОВ (С ЧЕКБОКСОМ ЗВОНКОВ) ---
+function openGroupModal(type) {
+    const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
+    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
+    document.getElementById('formSub').textContent = 'Введите название';
+    document.getElementById('formName').style.display = 'block';
+    document.getElementById('formName').value = '';
+    document.getElementById('formText').style.display = 'none';
+    document.getElementById('postMediaFields').style.display = 'none';
+    
+    // Показываем чекбокс для звонков (создаем его динамически, если нет)
+    let callCheck = document.getElementById('allowCallsCheck');
+    if (!callCheck) {
+        callCheck = document.createElement('div');
+        callCheck.id = 'allowCallsCheck';
+        callCheck.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:15px;';
+        callCheck.innerHTML = `
+            <input type="checkbox" id="callsPermission" style="width:20px; height:20px;" checked>
+            <span style="color:#fff; font-size:14px;">Разрешить звонки</span>
+        `;
+        document.getElementById('formModal').querySelector('.modal-card').insertBefore(callCheck, document.getElementById('formSubmit'));
+    }
+
+    document.getElementById('formSubmit').onclick = () => {
+        const name = document.getElementById('formName').value.trim();
+        if (!name) { alert('Введите название!'); return; }
+        
+        const allowCalls = document.getElementById('callsPermission').checked;
+
+        const newItem = {
+            id: 'g_' + Date.now(), 
+            name: name,
+            color: '#ff6b6b',
+            emoji: name.charAt(0).toUpperCase(), 
+            type: type, 
+            owner: currentUser.name,
+            callsAllowed: allowCalls,
+            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
+        };
+        
+        if (type === 'channel') { 
+            channels.push(newItem); 
+            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} 
+        } else { 
+            groups.push(newItem); 
+            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} 
+        }
+        
+        document.getElementById('formModal').classList.remove('show');
+        renderChatsList(currentSearchTab, ''); 
+        renderMyPage();
+        alert(`"${name}" успешно создан! Звонки: ${allowCalls ? 'Разрешены' : 'Запрещены'}`);
+    };
+    
+    document.getElementById('formModal').classList.add('show');
+}
+
+// --- КНОПКА ВЫХОДА ---
+setTimeout(() => {
+    const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.onclick = function() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        };
+    }
+}, 1000);
+
+</script>
+</body>
+</html>
 
 </script>
 </body>
