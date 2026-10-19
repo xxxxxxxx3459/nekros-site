@@ -1933,7 +1933,10 @@ function initRunner() {
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 60;
+    canvas.height = window.innerHeight;
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
@@ -1943,8 +1946,7 @@ function initRunner() {
     
     runnerObj = {
         canvas, ctx, level,
-        playerX: 50, playerY: canvas.height - 100, playerVy: 0,
-        playerSize: 28, obstacles: [], score: 0, 
+        playerX: canvas.width / 2, playerY: canvas.height - 150, playerVy: 0,
         speed: baseSpeed, frame: 0, isDead: false, onGround: true,
         timeLeft: 360, lastTimerTick: performance.now(), 
         spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
