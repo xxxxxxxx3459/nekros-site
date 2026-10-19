@@ -1084,9 +1084,43 @@ function openPublicProfile(person) {
     const av = document.getElementById('pubProfileAvatar');
     av.textContent = person.emoji; av.style.background = person.color;
     document.getElementById('pubPinnedSections').innerHTML = '<div class="pinned-empty">Нет закрепленных разделов</div>';
+    
     const subBtn = document.getElementById('pubSubscribeBtn');
-    subBtn.textContent = 'Подписаться'; subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)'; subBtn.style.color = '#fff';
-    subBtn.onclick = () => { subBtn.textContent = 'Вы подписаны'; subBtn.style.background = 'rgba(255,255,255,0.1)'; subBtn.style.color = '#86efac'; };
+    
+    // Проверяем, подписан ли уже
+    let subscriptions = JSON.parse(localStorage.getItem('sunset_subscriptions') || '[]');
+    let isSubscribed = subscriptions.includes(person.id);
+    
+    if (isSubscribed) {
+        subBtn.textContent = 'Отписаться';
+        subBtn.style.background = 'rgba(255,255,255,0.1)';
+        subBtn.style.color = '#ff5e62';
+    } else {
+        subBtn.textContent = 'Подписаться';
+        subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
+        subBtn.style.color = '#fff';
+    }
+
+    subBtn.onclick = () => {
+        if (isSubscribed) {
+            subscriptions = subscriptions.filter(id => id !== person.id);
+            alert(`Вы отписались от ${person.name}`);
+            subBtn.textContent = 'Подписаться';
+            subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
+            subBtn.style.color = '#fff';
+            isSubscribed = false;
+        } else {
+            subscriptions.push(person.id);
+            alert(`Вы подписались на ${person.name}! Теперь его посты будут в ленте.`);
+            subBtn.textContent = 'Отписаться';
+            subBtn.style.background = 'rgba(255,255,255,0.1)';
+            subBtn.style.color = '#ff5e62';
+            isSubscribed = true;
+        }
+        localStorage.setItem('sunset_subscriptions', JSON.stringify(subscriptions));
+        renderPosts(); // Обновляем ленту
+    };
+    
     document.getElementById('publicProfileModal').classList.add('show');
 }
 
@@ -2684,10 +2718,111 @@ setTimeout(() => {
         };
     }
 }, 1000);
+ 
+// --- СОЗДАЕМ ИСТОРИИ ЗАНОВО ---
+function renderStories() {
+    const el = document.getElementById('storiesRow');
+    if (!el) return;
+    el.innerHTML = '';
+    
+    // Кнопка добавления
+    const addBtn = document.createElement('div');
+    addBtn.className = 'story-circle';
+    addBtn.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
+    addBtn.onclick = function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'video/*,image/*';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    let stories = JSON.parse(localStorage.getItem('sunset_stories') || '[]');
+                    stories.push({ id: Date.now(), url: event.target.result, type: file.type, author: currentUser.name });
+                    localStorage.setItem('sunset_stories', JSON.stringify(stories));
+                    alert('История добавлена!');
+                    renderStories(); // Перерисовываем
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    };
+    el.appendChild(addBtn);
 
-</script>
-</body>
-</html>
+    // Показываем уже добавленные истории
+    let stories = JSON.parse(localStorage.getItem('sunset_stories') || '[]');
+    stories.forEach(story => {
+        const div = document.createElement('div');
+        div.className = 'story-circle';
+        div.innerHTML = `<div class="story-ring"><div class="story-img" style="background:#333;">🎬</div></div><div class="story-label">${story.author}</div>`;
+        div.onclick = () => alert('Просмотр истории: ' + story.url);
+        el.appendChild(div);
+    });
+}
+
+// Вызываем её при старте, чтобы истории появились
+setTimeout(() => {
+    if (typeof renderStories === 'function') renderStories();
+}, 1000);
+ // --- ИСПРАВЛЕНИЕ СОЗДАНИЯ ГРУПП, СООБЩЕСТВ И КАНАЛОВ ---
+function openGroupModal(type) {
+    const titles = { group: 'Новая группа', community: 'Новое сообщество', channel: 'Новый канал' };
+    document.getElementById('formTitle').textContent = titles[type] || 'Создать';
+    document.getElementById('formSub').textContent = 'Введите название';
+    document.getElementById('formName').style.display = 'block';
+    document.getElementById('formName').value = '';
+    document.getElementById('formText').style.display = 'none';
+    document.getElementById('postMediaFields').style.display = 'none';
+    
+    // Убираем старый чекбокс, если есть
+    let oldCheck = document.getElementById('allowCallsCheck');
+    if (oldCheck) oldCheck.remove();
+
+    // Добавляем чекбокс звонков
+    let callCheck = document.createElement('div');
+    callCheck.id = 'allowCallsCheck';
+    callCheck.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:15px;';
+    callCheck.innerHTML = `
+        <input type="checkbox" id="callsPermission" style="width:20px; height:20px;" checked>
+        <span style="color:#fff; font-size:14px;">Разрешить звонки</span>
+    `;
+    document.getElementById('formModal').querySelector('.modal-card').insertBefore(callCheck, document.getElementById('formSubmit'));
+
+    document.getElementById('formSubmit').onclick = () => {
+        const name = document.getElementById('formName').value.trim();
+        if (!name) { alert('Введите название!'); return; }
+        
+        const allowCalls = document.getElementById('callsPermission').checked;
+
+        const newItem = {
+            id: 'g_' + Date.now(), 
+            name: name,
+            color: '#ff6b6b',
+            emoji: name.charAt(0).toUpperCase(), 
+            type: type, 
+            owner: currentUser.name,
+            callsAllowed: allowCalls,
+            members: [{ id: 'me', name: currentUser.name, color: currentUser.color, emoji: currentUser.emoji }]
+        };
+        
+        if (type === 'channel') { 
+            channels.push(newItem); 
+            try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} 
+        } else { 
+            groups.push(newItem); 
+            try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} 
+        }
+        
+        document.getElementById('formModal').classList.remove('show');
+        renderChatsList(currentSearchTab, ''); 
+        renderMyPage();
+        alert(`"${name}" успешно создан!`);
+    };
+    
+    document.getElementById('formModal').classList.add('show');
+}
 
 </script>
 </body>
