@@ -2453,19 +2453,28 @@ document.addEventListener('click', function(e) {
 // СКРЫВАЕМ ЛИШНЕЕ И МЕНЯЕМ ТЕКСТ В МЕНЮ ПЛЮС
 setTimeout(() => {
     const postOption = document.querySelector('#createModal [data-action="post"]');
-    if (postOption) postOption.style.display = 'none'; // Скрываем "Пост"
+    if (postOption) postOption.style.display = 'none';
 
     const commOption = document.querySelector('#createModal [data-action="community"]');
-    if (commOption) commOption.style.display = 'none'; // Скрываем "Сообщество"
+    if (commOption) commOption.style.display = 'none';
 
     const groupOption = document.querySelector('#createModal [data-action="group"]');
     if (groupOption) {
         const desc = groupOption.querySelector('.opt-desc');
-        if (desc) desc.textContent = 'Создать группу'; // Меняем текст
+        if (desc) desc.textContent = 'Создать группу';
     }
-}, 1000); 
- // --- ЛОГИКА НАСТРОЕК И СМЕНЫ ФОТО ---
+    
+    // Привязка шестеренки к открытию настроек
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            document.getElementById('settingsModal').classList.add('show');
+        };
+    }
+}, 1000);
 
+
+// --- ЛОГИКА НАСТРОЕК И СМЕНЫ ФОТО ---
 function saveSettings() {
     const timeVal = document.getElementById('timeSelect').value;
     const wallVal = document.getElementById('wallpaperSelect').value;
@@ -2529,16 +2538,8 @@ function changeProfilePhoto() {
     }
 }
 
-// Привязка шестеренки к открытию настроек
-setTimeout(() => {
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            document.getElementById('settingsModal').classList.add('show');
-        };
-    }
-    
-    // Загрузка сохраненных настроек при старте
+// Загрузка сохраненных настроек при старте
+window.addEventListener('load', function() {
     const savedSet = JSON.parse(localStorage.getItem('sunset_settings') || 'null');
     if (savedSet) {
         if (document.getElementById('timeSelect')) document.getElementById('timeSelect').value = savedSet.time;
@@ -2546,7 +2547,8 @@ setTimeout(() => {
         if (document.getElementById('privacyGroups')) document.getElementById('privacyGroups').checked = savedSet.privacy;
         saveSettings();
     }
-}, 1000);
- </script>
+});
+
+</script>
 </body>
 </html>
