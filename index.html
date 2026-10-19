@@ -2397,41 +2397,54 @@ document.addEventListener('click', function(e) {
     }
 });  
 function continueToApp() {
-    const n = (document.getElementById('regName').value || '').trim();
-    if (n.length < 2) { 
-        document.getElementById('regError').style.display = 'block'; 
-        return; 
+    const nameInput = document.getElementById('regName');
+    const n = (nameInput.value || '').trim();
+    
+    if (n.length < 2) {
+        document.getElementById('regError').style.display = 'block';
+        return;
     }
     document.getElementById('regError').style.display = 'none';
     
-    let isAdmin = false, premiumLevel = null;
-    const lowerName = n.toLowerCase();
-    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-    
+    // Формируем пользователя
     currentUser = { 
-        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-        profileViews: 0, subscribers: 0, pinnedIds: []
+        name: n, 
+        color: '#ff6b6b', 
+        emoji: n.charAt(0).toUpperCase(), 
+        premium: n.toLowerCase() === 'boss' ? 'prime' : (n.toLowerCase() === 'admin' ? 'sunset' : null), 
+        isAdmin: n.toLowerCase() === 'boss' || n.toLowerCase() === 'admin', 
+        lastSeen: 'в сети',
+        profileViews: 0, 
+        subscribers: 0, 
+        pinnedIds: []
     };
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    startApp();
-}
-// АВАРИЙНЫЙ ЗАПУСК (Читаем память и стартуем принудительно)
-window.addEventListener('load', function() {
-    if (!currentUser) {
-        try {
-            const savedUser = localStorage.getItem('sunset_user_v50');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-            }
-        } catch(e) {}
-    }
     
-    if (currentUser && currentUser.name) {
-        // Если пользователь найден в памяти — запускаем игру
+    // Сохраняем
+    try { localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser)); } catch(e) {}
+    
+    // Принудительно перекидываем экраны
+    document.getElementById('register').classList.add('hide');
+    document.getElementById('panel').classList.add('show');
+    
+    // Запускаем игру
+    if (typeof startApp === 'function') {
         startApp();
+    } else {
+        alert('Кнопка сработала, но функция startApp() сломана!');
     }
+}
+
+// Проверка при загрузке
+window.addEventListener('load', function() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
+        if (saved && saved.name) {
+            currentUser = saved;
+            document.getElementById('register').classList.add('hide');
+            document.getElementById('panel').classList.add('show');
+            if (typeof startApp === 'function') startApp();
+        }
+    } catch(e) {}
 });
 </script>
 </body>
