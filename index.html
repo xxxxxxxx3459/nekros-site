@@ -2399,79 +2399,57 @@ window.addEventListener('load', function() {
             else if (currentUser.premium === 'sunset') statusLabel.textContent = '⭐ Administrator';
             else statusLabel.textContent = currentUser.lastSeen;
             
-            // Сохраняем в память
             try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
         };
     }
 
-    // 6. Шестеренка (Выход)
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-        settingsBtn.onclick = function() {
-            if (confirm('Выйти из аккаунта?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
+    // 6. Кнопка "Выйти из аккаунта" (в профиле)
+    const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
         };
     }
 
-
-// Универсальное закрытие всех окон
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
-        let modalId = e.target.getAttribute('data-close');
-        if (modalId) {
-            let modal = document.getElementById(modalId);
-            if (modal) modal.classList.remove('show');
-        } else {
-            let parentModal = e.target.closest('.modal');
-            if (parentModal) parentModal.classList.remove('show');
-        }
-    }
-const logoutBtn = document.getElementById('logoutFromProfileBtn');
-if (logoutBtn) {
-    logoutBtn.onclick = function() {
-        document.getElementById('profileModal').classList.remove('show');
-        document.getElementById('logoutModal').classList.add('show');
-    };
-}); 
-
- }); 
-// Универсальное закрытие всех окон (это должно быть снаружи)
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
-        let modalId = e.target.getAttribute('data-close');
-        if (modalId) {
-            let modal = document.getElementById(modalId);
-            if (modal) modal.classList.remove('show');
-        } else {
-            let parentModal = e.target.closest('.modal');
-            if (parentModal) parentModal.classList.remove('show');
-        }
-    }
- });
-// СКРЫВАЕМ ЛИШНЕЕ И МЕНЯЕМ ТЕКСТ В МЕНЮ ПЛЮС
-setTimeout(() => {
-    const postOption = document.querySelector('#createModal [data-action="post"]');
-    if (postOption) postOption.style.display = 'none';
-
-    const commOption = document.querySelector('#createModal [data-action="community"]');
-    if (commOption) commOption.style.display = 'none';
-
-    const groupOption = document.querySelector('#createModal [data-action="group"]');
-    if (groupOption) {
-        const desc = groupOption.querySelector('.opt-desc');
-        if (desc) desc.textContent = 'Создать группу';
-    }
-    
-    // Привязка шестеренки к открытию настроек
+    // 7. Шестеренка (Открывает настройки)
     const settingsBtn = document.getElementById('settingsBtn');
     if (settingsBtn) {
         settingsBtn.onclick = function() {
             document.getElementById('settingsModal').classList.add('show');
         };
     }
-}, 1000);
+
+    // 8. Скрываем "Пост" и "Сообщество" из меню Плюс, меняем текст Группы
+    setTimeout(() => {
+        const postOption = document.querySelector('#createModal [data-action="post"]');
+        if (postOption) postOption.style.display = 'none';
+
+        const commOption = document.querySelector('#createModal [data-action="community"]');
+        if (commOption) commOption.style.display = 'none';
+
+        const groupOption = document.querySelector('#createModal [data-action="group"]');
+        if (groupOption) {
+            const desc = groupOption.querySelector('.opt-desc');
+            if (desc) desc.textContent = 'Создать группу';
+        }
+    }, 1000);
+});
+
+
+// Универсальное закрытие всех окон (по клику на крестик или кнопку "Отмена")
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
+        let modalId = e.target.getAttribute('data-close');
+        if (modalId) {
+            let modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('show');
+        } else {
+            let parentModal = e.target.closest('.modal');
+            if (parentModal) parentModal.classList.remove('show');
+        }
+    }
+});
 
 
 // --- ЛОГИКА НАСТРОЕК И СМЕНЫ ФОТО ---
@@ -2549,6 +2527,10 @@ window.addEventListener('load', function() {
     }
 });
 
+// Автозапуск, если пользователь уже залогинен
+if (currentUser) {
+    startApp();
+}
 </script>
 </body>
 </html>
