@@ -853,7 +853,20 @@ function updatePremiumBadge() {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
 }
+
+ 
+
+function continueToApp() {
+    const nameInput = document.getElementById('regName');
+    const n = (nameInput.value || '').trim();
+    if (n.length < 2) {
+        document.getElementById('regError').style.display = 'block';
+        return;
+    }
     document.getElementById('regError').style.display = 'none';
+    
+
+    
     
     let isAdmin = false, premiumLevel = null;
     const lowerName = n.toLowerCase();
