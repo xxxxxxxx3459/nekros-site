@@ -469,7 +469,7 @@
     <div class="modal-sub">Выбери что хочешь сделать</div>
     <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Текст, фото и музыка</div></div>
     <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты</div></div>
-    <div class="modal-option" data-action="group"><div class="opt-title">👥 Группа</div><div class="opt-desc">Создать сообщество</div></div>
+    <div class="modal-option" data-action="group"><div class="opt-title">👥 Группа</div><div class="opt-desc">Создать группу</div></div>
     <div class="modal-option" data-action="community"><div class="opt-title">🌍 Сообщество</div><div class="opt-desc">Глобальное сообщество</div></div>
     <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Трансляция постов</div></div>
     <button class="modal-close" data-close="createModal">Отмена</button>
@@ -555,6 +555,29 @@
     </select>
     <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62; color:#fff; margin-top:15px;">🚪 Выйти из аккаунта</button> 
     <button class="modal-close" data-close="profileModal">Закрыть</button>
+  </div>
+</div>
+ <div class="modal" id="settingsModal">
+  <div class="modal-card" style="max-height: 90vh;">
+    <div class="modal-title">⚙️ Настройки</div>
+    <label style="font-size: 13px; opacity: 0.8; display: block; margin-top: 10px;">Время:</label>
+    <select class="status-select" id="timeSelect">
+        <option value="hide">Скрыть время</option>
+        <option value="show">Показывать время</option>
+    </select>
+    <label style="font-size: 13px; opacity: 0.8; display: block; margin-top: 10px;">Обои:</label>
+    <select class="status-select" id="wallpaperSelect">
+        <option value="default">🌅 Закат</option>
+        <option value="ocean">🌊 Океан</option>
+        <option value="space">🌌 Космос</option>
+        <option value="cyber">🌆 Киберпанк</option>
+    </select>
+    <div style="display:flex; align-items:center; gap:10px; margin:15px 0;">
+        <input type="checkbox" id="privacyGroups" style="width:20px; height:20px;">
+        <span style="color:#fff; font-size:14px;">Запретить добавлять в группы</span>
+    </div>
+    <button class="modal-primary" onclick="saveSettings()">Сохранить</button>
+    <button class="modal-close" data-close="settingsModal">Закрыть</button>
   </div>
 </div>
 
@@ -2391,7 +2414,7 @@ window.addEventListener('load', function() {
             }
         };
     }
-});
+
 
 // Универсальное закрытие всех окон
 document.addEventListener('click', function(e) {
@@ -2405,7 +2428,125 @@ document.addEventListener('click', function(e) {
             if (parentModal) parentModal.classList.remove('show');
         }
     }
-});
-</script>
+const logoutBtn = document.getElementById('logoutFromProfileBtn');
+if (logoutBtn) {
+    logoutBtn.onclick = function() {
+        document.getElementById('profileModal').classList.remove('show');
+        document.getElementById('logoutModal').classList.add('show');
+    };
+}); 
+
+ }); 
+// Универсальное закрытие всех окон (это должно быть снаружи)
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
+        let modalId = e.target.getAttribute('data-close');
+        if (modalId) {
+            let modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('show');
+        } else {
+            let parentModal = e.target.closest('.modal');
+            if (parentModal) parentModal.classList.remove('show');
+        }
+    }
+ });
+// СКРЫВАЕМ ЛИШНЕЕ И МЕНЯЕМ ТЕКСТ В МЕНЮ ПЛЮС
+setTimeout(() => {
+    const postOption = document.querySelector('#createModal [data-action="post"]');
+    if (postOption) postOption.style.display = 'none'; // Скрываем "Пост"
+
+    const commOption = document.querySelector('#createModal [data-action="community"]');
+    if (commOption) commOption.style.display = 'none'; // Скрываем "Сообщество"
+
+    const groupOption = document.querySelector('#createModal [data-action="group"]');
+    if (groupOption) {
+        const desc = groupOption.querySelector('.opt-desc');
+        if (desc) desc.textContent = 'Создать группу'; // Меняем текст
+    }
+}, 1000); 
+ // --- ЛОГИКА НАСТРОЕК И СМЕНЫ ФОТО ---
+
+function saveSettings() {
+    const timeVal = document.getElementById('timeSelect').value;
+    const wallVal = document.getElementById('wallpaperSelect').value;
+    const privacyVal = document.getElementById('privacyGroups').checked;
+    
+    localStorage.setItem('sunset_settings', JSON.stringify({ time: timeVal, wall: wallVal, privacy: privacyVal }));
+
+    let clock = document.getElementById('myClock');
+    if (timeVal === 'show') {
+        if (!clock) {
+            clock = document.createElement('div');
+            clock.id = 'myClock';
+            clock.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); font-size:16px; color:#fff; font-weight:bold; z-index:999; background:rgba(0,0,0,0.4); padding:4px 12px; border-radius:20px; display:none;';
+            document.body.appendChild(clock);
+        }
+        clock.style.display = 'block';
+        setInterval(() => {
+            const d = new Date();
+            clock.textContent = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        }, 1000);
+    } else if (clock) {
+        clock.style.display = 'none';
+    }
+
+    const wallpapers = {
+        'default': 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90',
+        'ocean': 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90',
+        'space': 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=1920&q=90',
+        'cyber': 'https://images.unsplash.com/photo-1515630278258-407f66498911?w=1920&q=90'
+    };
+    
+    const wpElement = document.querySelector('.sunset-photo');
+    if (wpElement) wpElement.style.backgroundImage = `url('${wallpapers[wallVal]}')`;
+
+    document.getElementById('settingsModal').classList.remove('show');
+}
+
+function changeProfilePhoto() {
+    const photos = [
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200",
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200",
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200"
+    ];
+    
+    let num = prompt("Введите номер фото от 1 до " + photos.length + ":");
+    if (num) {
+        let idx = parseInt(num) - 1;
+        if (photos[idx]) {
+            currentUser.photo = photos[idx];
+            currentUser.emoji = `<img src="${photos[idx]}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+            
+            document.getElementById('myAvatarSmall').innerHTML = currentUser.emoji;
+            document.getElementById('promptAvatar').innerHTML = currentUser.emoji;
+            renderMyPage();
+            renderPosts();
+            alert("Фото обновлено!");
+        }
+    }
+}
+
+// Привязка шестеренки к открытию настроек
+setTimeout(() => {
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.onclick = function() {
+            document.getElementById('settingsModal').classList.add('show');
+        };
+    }
+    
+    // Загрузка сохраненных настроек при старте
+    const savedSet = JSON.parse(localStorage.getItem('sunset_settings') || 'null');
+    if (savedSet) {
+        if (document.getElementById('timeSelect')) document.getElementById('timeSelect').value = savedSet.time;
+        if (document.getElementById('wallpaperSelect')) document.getElementById('wallpaperSelect').value = savedSet.wall;
+        if (document.getElementById('privacyGroups')) document.getElementById('privacyGroups').checked = savedSet.privacy;
+        saveSettings();
+    }
+}, 1000);
+ </script>
 </body>
 </html>
