@@ -2308,8 +2308,31 @@ window.addEventListener('load', function() {
 });
 
 // Автозапуск, если пользователь уже залогинен
-if (currentUser) {
-    startApp();
+// --- ОЖИВЛЯЕМ КНОПКИ ПРИНУДИТЕЛЬНО ---
+setTimeout(() => {
+    const plusBtn = document.getElementById('plusBtn');
+    if (plusBtn) {
+        plusBtn.onclick = function() {
+            document.getElementById('createModal').classList.add('show');
+        };
+    }
+
+    const postBtn = document.querySelector('.create-post-prompt');
+    if (postBtn) {
+        postBtn.onclick = function() {
+            openPostModal();
+        };
+    }
+
+    const logoutBtn = document.getElementById('logoutFromProfileBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = function() {
+            document.getElementById('profileModal').classList.remove('show');
+            document.getElementById('logoutModal').classList.add('show');
+        };
+    }
+}, 1000); // Ждем 1 секунду, пока всё прогрузится if (currentUser) {
+  if (currentUser) { startApp();
 }
 </script>
 </body>
