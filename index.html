@@ -1919,7 +1919,9 @@ function openRunnerMenu() {
         <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
             <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ff5e62;">Квадратик</h2>
             <div style="font-size:18px; margin-bottom:20px; color:#fff;">Уровень: ${gameState.runner.unlocked} / 800</div>
-            <button class="game-btn" onclick="initRunner()">▶️ Играть</button>
+            
+            <button class="game-btn" onclick="initRunner()" style="background:linear-gradient(135deg, #ff8c42, #ff5e62); color:#fff; padding: 12px 30px; font-size: 18px; border-radius: 12px; margin-top: 10px;">▶️ Играть</button>
+            
             <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; margin-top:20px; line-height:1.5;">
                 Тапай чтобы прыгать.<br>С каждым уровнем всё сложнее!<br>Уровень длится 6 минут.
             </div>
@@ -1932,11 +1934,10 @@ function initRunner() {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
+    canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
+    canvas.height = window.innerHeight - 150;
+    canvas.style.borderRadius = '20px';
+    canvas.style.marginTop = '20px';
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     
