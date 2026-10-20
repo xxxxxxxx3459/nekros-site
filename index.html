@@ -699,7 +699,7 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-
+regBtn.addEventListener('click', continueToApp);
 /* ============ ДАННЫЕ ============ */
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
@@ -2083,124 +2083,7 @@ function initRunner() {
     gameAnimFrame = requestAnimationFrame(gameLoop);
 }
 
-    const uiTop = document.createElement('div');
-    uiTop.className = 'game-ui-top';
-    uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="rnTime">06:00</span></div><div>⭐ <span id="rnScore">0</span></div>`;
-    area.appendChild(uiTop);
-
-    const jump = () => {
-        if (runnerObj.onGround && !runnerObj.isDead) {
-            runnerObj.playerVy = -13 - (level * 0.05);
-            runnerObj.onGround = false;
-            playSound('jump');
-        }
-    };
-
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, {passive: false});
-    canvas.addEventListener('mousedown', jump);
-
-    const gameLoop = (time) => {
-        if (runnerObj.isDead) return;
-        
-        if (time - runnerObj.lastTimerTick > 1000) {
-            runnerObj.lastTimerTick = time;
-            runnerObj.timeLeft--;
-            if (runnerObj.timeLeft <= 0) {
-                endRunner(true);
-                return;
-            }
-            let m = Math.floor(runnerObj.timeLeft / 60);
-            let s = runnerObj.timeLeft % 60;
-            const timeEl = document.getElementById('rnTime');
-            if(timeEl) timeEl.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        }
-
-        runnerObj.frame++;
-        runnerObj.playerVy += 0.7;
-        runnerObj.playerY += runnerObj.playerVy;
-        const floor = canvas.height - 40;
-        if (runnerObj.playerY > floor - runnerObj.playerSize) {
-            runnerObj.playerY = floor - runnerObj.playerSize;
-            runnerObj.playerVy = 0;
-            runnerObj.onGround = true;
-        }
-        
-        ctx.fillStyle = '#0a0510';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        grad.addColorStop(0, '#1a0a2e');
-        grad.addColorStop(1, '#2a0a3e');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
-        ctx.fillStyle = '#ff5e62';
-        ctx.fillRect(0, canvas.height - 40, canvas.width, 3);
-
-        runnerObj.clouds.forEach(c => {
-            c.x -= c.s;
-            if (c.x < -50) { c.x = canvas.width + 50; c.y = Math.random() * 150 + 20; }
-            ctx.fillStyle = 'rgba(255,255,255,0.08)';
-            ctx.fillRect(c.x, c.y, 50, 20);
-        });
-
-        if (runnerObj.frame % Math.max(35, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
-            const oh = Math.random() > 0.4 ? 40 : 60;
-            runnerObj.obstacles.push({
-                x: canvas.width,
-                y: canvas.height - 40 - oh,
-                w: 25, h: oh,
-                speed: runnerObj.speed + runnerObj.score * 0.01
-            });
-        }
-
-        for (let i = runnerObj.obstacles.length - 1; i >= 0; i--) {
-            let o = runnerObj.obstacles[i];
-            o.x -= o.speed;
-            ctx.fillStyle = '#ff5e62';
-            ctx.fillRect(o.x, o.y, o.w, o.h);
-            ctx.fillStyle = '#ff8c42';
-            ctx.fillRect(o.x, o.y, o.w, 4);
-            
-            if (o.x + o.w < 0) {
-                runnerObj.obstacles.splice(i, 1);
-                runnerObj.score++;
-                runnerObj.speed = baseSpeed + runnerObj.score * 0.02;
-                const scoreEl = document.getElementById('rnScore');
-                if(scoreEl) scoreEl.innerText = runnerObj.score;
-            }
-            
-            const px = runnerObj.playerX;
-            const py = runnerObj.playerY;
-            if (px + runnerObj.playerSize > o.x && px < o.x + o.w && py + runnerObj.playerSize > o.y && py < o.y + o.h) {
-                endRunner(false);
-                return;
-            }
-        }
-
-        const px = runnerObj.playerX, py = runnerObj.playerY, sz = runnerObj.playerSize;
-        ctx.fillStyle = '#00d4ff';
-        ctx.fillRect(px, py, sz, sz);
-        ctx.fillStyle = '#0088aa';
-        ctx.fillRect(px, py, sz, 4);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(px + 6, py + 8, 7, 7);
-        ctx.fillRect(px + sz - 13, py + 8, 7, 7);
-        ctx.fillStyle = '#000';
-        ctx.fillRect(px + 8, py + 10, 3, 4);
-        ctx.fillRect(px + sz - 11, py + 10, 3, 4);
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(px + sz/2, py + sz - 10, 6, 0.1 * Math.PI, 0.9 * Math.PI);
-        ctx.stroke();
-
-        gameAnimFrame = requestAnimationFrame(gameLoop);
-    };
-    gameAnimFrame = requestAnimationFrame(gameLoop);
-}
+    
 
 function endRunner(isWin) {
     if (runnerObj.isDead) return;
