@@ -882,7 +882,24 @@ function continueToApp() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
     startApp();
 }
+document.getElementById('myProfileBtn').onclick = function() {
+    document.getElementById('profileTitle').textContent = 'Мой профиль';
+    document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
+    document.getElementById('profileModal').classList.add('show');
+};
 
+document.getElementById('myStatusSelect').onchange = function(e) {
+    currentUser.lastSeen = e.target.value;
+    document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+};
+
+document.getElementById('logoutFromProfileBtn').onclick = function() {
+    if(confirm('Выйти из аккаунта?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+    }
+};
 document.querySelectorAll('.nav-btn').forEach(b => {
   b.addEventListener('click', () => {
     const tab = b.dataset.tab;
@@ -1279,8 +1296,11 @@ function openPostModal() {
         renderMyPage();
     };
     document.getElementById('formModal').classList.add('show');
+ document.getElementById('formCancel').onclick = function() {
+        document.getElementById('formModal').classList.remove('show');
+    };
 }
-
+ 
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     const manageBtn = document.getElementById('managePinnedBtn');
