@@ -699,6 +699,11 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
+ 
+
+// ДОБАВЬТЕ ВОТ ЭТУ СТРОКУ:
+regBtn.addEventListener('click', continueToApp);
+
 
 /* ============ ДАННЫЕ ============ */
 const CHATS_KEY = 'sunset_chats_v50';
