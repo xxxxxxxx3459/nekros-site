@@ -55,6 +55,7 @@
     font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
     font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5);
     min-height: 56px; touch-action: manipulation; user-select: none;
+    display: block; text-decoration: none; text-align: center; line-height: 1.4;
   }
   .reg-btn:active { transform: scale(0.98); }
   .reg-error { color: #ff5e62; font-size: 13px; margin-top: 10px; display: none; font-weight: 600; }
@@ -332,7 +333,16 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
+    
+    <!-- ЧИСТАЯ HTML-ССЫЛКА, РАБОТАЕТ ВСЕГДА -->
+    <a href="#" class="reg-btn" onclick="
+        var name = document.getElementById('regName').value.trim();
+        if (name.length < 2) { alert('Введите имя!'); return false; }
+        localStorage.setItem('sunset_user_v50', JSON.stringify({name: name, color: '#ff6b6b', emoji: name.charAt(0).toUpperCase(), premium: name.toLowerCase() === 'boss' ? 'prime' : null, pinnedIds: []}));
+        location.reload();
+        return false;
+    ">Продолжить →</a>
+    
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -696,7 +706,10 @@ function updateAvatarLetter() {
 regName.addEventListener('input', updateAvatarLetter);
 
 regName.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    const link = document.querySelector('.reg-btn');
+    if(link) link.click();
+  }
 });
 
 /* ============ ДАННЫЕ ============ */
