@@ -104,6 +104,7 @@ const BOT_POSTS = [
     { id: 'bp2', author: 'Дмитрий', color: '#4a90e2', text: 'Сделал пасту с креветками на ужин 🍝', time: '25 минут назад', views: 82, likes: 24, reposts: 1, comments: [] }
 ];
 
+// ============ ИНИЦИАЛИЗАЦИЯ И РЕГИСТРАЦИЯ ============
 const avatarPreview = document.getElementById('avatarPreview');
 const regName = document.getElementById('regName');
 const regBtn = document.getElementById('regBtn');
@@ -317,6 +318,7 @@ function renderChatsList(tab, q) {
     div.addEventListener('click', () => openChat(item)); list.appendChild(div);
   });
 }
+
 // ЧАТЫ
 const chatEl = document.getElementById('chat');
 const chatBody = document.getElementById('chatBody');
