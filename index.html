@@ -332,7 +332,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn" onclick="if(document.getElementById('regName').value.length < 2){document.getElementById('regError').style.display='block';} else {localStorage.setItem('sunset_user_v50', JSON.stringify({name: document.getElementById('regName').value, color:'#ff6b6b', emoji:'B', premium: document.getElementById('regName').value.toLowerCase() === 'boss' ? 'prime' : null})); location.reload();}">Продолжить →</button>
+    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -2519,28 +2519,58 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// ФИНАЛЬНЫЙ ЗАПУСК
+// --- ЖЕЛЕЗОБЕТОННЫЙ ЗАПУСК ---
 window.addEventListener('load', function() {
-    // Проверяем, сохранен ли ник, и если да — запускаем игру
+    // Проверяем, есть ли ник в памяти. Если да — сразу в игру!
     try {
         const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
         if (saved && saved.name) {
             currentUser = saved;
-            if (typeof startApp === 'function') {
-                startApp();
-            }
+            if (typeof startApp === 'function') startApp();
         }
-    } catch(e) {
-        console.log("Ошибка загрузки:", e);
+    } catch(e) {}
+
+    // Привязываем кнопку "Продолжить"
+    const regBtn = document.getElementById('regBtn');
+    if (regBtn) {
+        regBtn.onclick = function() {
+            const n = (document.getElementById('regName').value || '').trim();
+            if (n.length < 2) {
+                document.getElementById('regError').style.display = 'block';
+                return;
+            }
+            document.getElementById('regError').style.display = 'none';
+
+            // Создаем пользователя
+            let premium = null;
+            if (n.toLowerCase() === 'boss') premium = 'prime';
+            else if (n.toLowerCase() === 'admin') premium = 'sunset';
+
+            currentUser = { 
+                name: n, 
+                color: '#ff6b6b', 
+                emoji: n.charAt(0).toUpperCase(), 
+                lastSeen: 'в сети', 
+                premium: premium,
+                pinnedIds: [] 
+            };
+            
+            try { localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser)); } catch(e) {}
+
+            // Скрываем вход и запускаем игру БЕЗ перезагрузки
+            document.getElementById('register').classList.add('hide');
+            document.getElementById('panel').classList.add('show');
+            if (typeof startApp === 'function') startApp();
+        };
     }
 
-    // Привязываем кнопки (Плюс, Шестеренка, Профиль, Выход)
+    // Привязываем остальные кнопки
     setTimeout(() => {
         const plusBtn = document.getElementById('plusBtn');
         if (plusBtn) plusBtn.onclick = () => document.getElementById('createModal').classList.add('show');
-
-        const postPrompt = document.querySelector('.create-post-prompt');
-        if (postPrompt) postPrompt.onclick = () => openPostModal();
+        
+        const settingsBtn = document.getElementById('settingsBtn');
+        if (settingsBtn) settingsBtn.onclick = () => document.getElementById('settingsModal').classList.add('show');
 
         const myProfileBtn = document.getElementById('myProfileBtn');
         if (myProfileBtn) {
@@ -2552,9 +2582,6 @@ window.addEventListener('load', function() {
                 document.getElementById('profileModal').classList.add('show');
             };
         }
-
-        const settingsBtn = document.getElementById('settingsBtn');
-        if (settingsBtn) settingsBtn.onclick = () => document.getElementById('settingsModal').classList.add('show');
 
         const logoutBtn = document.getElementById('logoutFromProfileBtn');
         if (logoutBtn) {
@@ -2571,34 +2598,7 @@ window.addEventListener('load', function() {
                 location.reload();
             };
         }
-
-        // Оживляем кнопки в меню Плюса
-        document.querySelectorAll('#createModal .modal-option').forEach(opt => {
-            opt.onclick = function() {
-                const action = this.getAttribute('data-action');
-                document.getElementById('createModal').classList.remove('show');
-                if (action === 'post') openPostModal();
-                else if (action === 'story') alert('Истории скоро появятся!');
-                else if (action === 'group') openGroupModal('group');
-                else if (action === 'community') openGroupModal('community');
-                else if (action === 'channel') openGroupModal('channel');
-            };
-        });
     }, 500);
-});
-
-// Универсальное закрытие окон (крестики)
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-close') || e.target.hasAttribute('data-close')) {
-        let modalId = e.target.getAttribute('data-close');
-        if (modalId) {
-            let modal = document.getElementById(modalId);
-            if (modal) modal.classList.remove('show');
-        } else {
-            let parentModal = e.target.closest('.modal');
-            if (parentModal) parentModal.classList.remove('show');
-        }
-    }
 });
 </script>
 </body>
