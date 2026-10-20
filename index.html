@@ -332,7 +332,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
- <button type="button" class="reg-btn" id="regBtn" onclick="document.getElementById('register').style.display='none'; document.getElementById('panel').style.display='flex';">Продолжить →</button>
+<button type="button" class="reg-btn" id="regBtn" onclick="document.getElementById('register').classList.add('hide'); document.getElementById('panel').classList.add('show'); var n = document.getElementById('regName').value || 'Игрок'; if(!currentUser) { currentUser = {name: n, color:'#ff6b6b', emoji: n.charAt(0).toUpperCase(), premium: (n.toLowerCase()==='boss'?'prime':null), lastSeen: 'в сети', pinnedIds: []}; if(typeof startApp === 'function') startApp(); }">Продолжить →</button>
     var name = document.getElementById('regName').value.trim();
     if (name.length < 2) { alert('Введите имя!'); return; }
     localStorage.setItem('sunset_user_v50', JSON.stringify({name: name, color: '#ff6b6b', emoji: name.charAt(0).toUpperCase(), premium: name.toLowerCase() === 'boss' ? 'prime' : null, pinnedIds: []}));
