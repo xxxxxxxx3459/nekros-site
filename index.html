@@ -1376,7 +1376,13 @@ function openManagePinned() {
         });
         list.appendChild(div);
     });
-    document.getElementById('managePinnedModal').classList.add('show');
+    document.getElementById('managePinnedModal').classList.add('show'); document.querySelectorAll('.modal-close').forEach(btn => {
+      document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.onclick = function() {
+            let modal = this.closest('.modal');
+            if (modal) modal.classList.remove('show');
+        };
+    });
 }
 
 function renderGames() {
