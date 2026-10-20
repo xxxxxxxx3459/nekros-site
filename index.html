@@ -9,6 +9,7 @@
   html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; background: #1a0a1e; }
   .sunset-photo { position: fixed; inset: 0; z-index: 0; background-image: url('https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90'); background-size: cover; background-position: center; }
   .sunset-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,5,30,0.4), rgba(30,10,40,0.25) 40%, rgba(40,15,30,0.35) 70%, rgba(15,5,20,0.75)); }
+  
   #register { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.35); backdrop-filter: blur(15px); }
   #register.hide { display: none; }
   .reg-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.3); border-radius: 24px; padding: 32px 24px; width: 100%; max-width: 380px; color: #fff; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
@@ -17,7 +18,7 @@
   .avatar-preview { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; color: #fff; cursor: pointer; border: 3px solid rgba(255,255,255,0.5); background-size: cover; background-position: center; }
   .reg-input { width: 100%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 14px; padding: 16px 18px; font-size: 16px; color: #fff; outline: none; margin-bottom: 16px; font-family: inherit; }
   .reg-input::placeholder { color: rgba(255,255,255,0.6); }
-  .reg-btn { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 18px; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5); min-height: 56px; touch-action: manipulation; user-select: none; display: block; text-decoration: none; text-align: center; }
+  .reg-btn { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 18px; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; font-family: inherit; box-shadow: 0 8px 24px rgba(255,100,80,0.5); min-height: 56px; display: block; text-decoration: none; text-align: center; }
   .reg-btn:active { transform: scale(0.98); }
   .reg-error { color: #ff5e62; font-size: 13px; margin-top: 10px; display: none; font-weight: 600; }
 
@@ -37,11 +38,13 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   .section-title { color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 18px 16px 8px; font-weight: 600; }
+  
   .search-section { padding: 12px 16px 0; }
   .search-input { width: 100%; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 12px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit; }
   .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
   .search-tab { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 2px; color: rgba(255,255,255,0.7); font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; transition: 0.2s; }
   .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
+  
   #chatsList { padding: 4px 0; }
   .card-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; margin: 4px 12px; cursor: pointer; background: rgba(255,255,255,0.06); }
   .card-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #fff; flex-shrink: 0; position: relative; overflow: hidden; background-size: cover; background-position: center; }
@@ -51,7 +54,7 @@
   .card-sub { color: rgba(255,255,255,0.7); font-size: 12px; }
   .empty-state { text-align: center; padding: 40px 20px; color: rgba(255, 255, 255, 0.8); margin: 20px 16px; }
   .empty-state .emoji { font-size: 64px; margin-bottom: 16px; }
-  
+
   .post { margin: 12px; padding: 16px; background: rgba(30, 20, 40, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(10px); }
   .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
@@ -140,6 +143,13 @@
   canvas { display: block; touch-action: none; }
   .game-btn { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border: none; padding: 12px 30px; border-radius: 12px; font-size: 18px; cursor: pointer; margin-top: 20px; }
   .privacy-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; }
+  .game-ui-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; pointer-events: none; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px #000; }
+  .turbo-bar-container { position: absolute; bottom: 20px; left: 20px; width: 180px; height: 24px; background: rgba(0,0,0,0.7); border: 2px solid #ff8c42; border-radius: 12px; overflow: hidden; display: none; z-index: 15; box-shadow: 0 0 12px rgba(255,140,66,0.4); }
+  .turbo-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff8c42, #ffd700, #fff); transition: width 0.3s; box-shadow: 0 0 10px #ffd700; }
+  .turbo-bar-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 10px; font-weight: bold; color: #fff; text-shadow: 0 1px 3px #000; pointer-events: none; letter-spacing: 1px; }
+  .turbo-btn { position: absolute; bottom: 20px; right: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 3px solid #555; color: #555; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; z-index: 15; transition: 0.3s; pointer-events: none; }
+  .turbo-btn.ready { background: radial-gradient(circle, #ffd700, #ff8c42); border-color: #fff; color: #000; cursor: pointer; pointer-events: auto; box-shadow: 0 0 20px #ff8c42; animation: pulseTurbo 1s infinite; }
+  @keyframes pulseTurbo { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -330,7 +340,566 @@
     <div class="game-area" id="gameArea"></div>
 </div>
 
-<script src="script.js"></script>
-<script src="game.js"></script>
+<script>
+/* ============ ЗВУКИ ============ */
+let audioCtx = null;
+function playSound(type) {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+        if (type === 'laser') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            osc.start(); osc.stop(now + 0.1);
+        } else if (type === 'explosion') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now);
+            osc.frequency.exponentialRampToValueAtTime(10, now + 0.3);
+            gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc.start(); osc.stop(now + 0.3);
+        } else if (type === 'jump') {
+            osc.type = 'square'; osc.frequency.setValueAtTime(300, now);
+            osc.frequency.linearRampToValueAtTime(600, now + 0.1);
+            gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+            osc.start(); osc.stop(now + 0.1);
+        } else if (type === 'gameover') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(50, now + 1.2);
+            gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+            osc.start(); osc.stop(now + 1.2);
+        } else if (type === 'win') {
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(400, now);
+            osc.frequency.setValueAtTime(600, now + 0.1); osc.frequency.setValueAtTime(800, now + 0.2);
+            gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+            osc.start(); osc.stop(now + 0.4);
+        }
+    } catch(e) {}
+}
+
+function speakPotracheno() {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance("Потрачено");
+        utterance.lang = 'ru-RU'; utterance.rate = 0.8; utterance.pitch = 0.6;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+const STORAGE_KEY = 'sunset_user_v50';
+const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
+let chosenColor = '#ff6b6b';
+let currentUser = null, chats = {}, groups = [], channels = [], posts = [], userLikes = [];
+let activeChat = null, currentSearchTab = 'people';
+
+const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Иван','Денис','Евгений','Даниил','Тимур'];
+const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия'];
+const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Козлов','Степанов','Николаев','Орлов','Андреев'];
+
+function getRandomFullName() {
+    const isMale = Math.random() > 0.5;
+    const firstName = isMale ? rnd(FIRST_NAMES_M) : rnd(FIRST_NAMES_F);
+    const lastName = rnd(LAST_NAMES);
+    return `${firstName} ${isMale ? lastName : lastName + 'а'}`;
+}
+function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const ALL_USERS = [];
+for(let i=0; i<50; i++) {
+    const name = getRandomFullName();
+    ALL_USERS.push({ id: 'u_' + i, name: name, color: rnd(AVATAR_COLORS), emoji: name.charAt(0), type: 'person', lastSeen: rnd(['в сети', 'недавно', 'год назад']), allowInvites: Math.random() > 0.2 });
+}
+const PEOPLE = [
+  { id: 'alex', name: 'Алекс', color: '#ff6b6b', emoji: 'A', type: 'person', lastSeen: 'в сети' },
+  { id: 'maria', name: 'Мария', color: '#a06cd5', emoji: 'M', type: 'person', lastSeen: 'в сети' }
+];
+const SONGS = [["Imagine Dragons", "Believer"],["Ed Sheeran", "Shape of You"],["The Weeknd", "Blinding Lights"],["Dua Lipa", "Levitating"],["Billie Eilish", "Bad Guy"],["Post Malone", "Circles"]];
+const BOT_POSTS = [{ id: 'bp1', author: 'Мария', color: '#a06cd5', text: 'Всем привет! Только что вернулась из спортзала 💪', time: '10 минут назад', views: 45, likes: 12, reposts: 0, comments: [] }];
+
+const avatarPreview = document.getElementById('avatarPreview');
+const regName = document.getElementById('regName');
+const regBtn = document.getElementById('regBtn');
+const regError = document.getElementById('regError');
+
+if(avatarPreview) {
+    avatarPreview.style.background = chosenColor; avatarPreview.textContent = '?';
+    avatarPreview.addEventListener('click', function() {
+      let i = AVATAR_COLORS.indexOf(chosenColor); i = (i + 1) % AVATAR_COLORS.length;
+      chosenColor = AVATAR_COLORS[i]; avatarPreview.style.background = chosenColor;
+    });
+}
+if(regName) {
+    regName.addEventListener('input', function() {
+      const n = (regName.value || '').trim(); avatarPreview.textContent = n ? n.charAt(0).toUpperCase() : '?';
+      if(n.length >= 2) regError.style.display = 'none';
+    });
+    regName.addEventListener('keydown', function(e) { if (e.key === 'Enter') regBtn.click(); });
+}
+
+function continueToApp() {
+    const n = (regName.value || '').trim();
+    if (n.length < 2) { regError.style.display = 'block'; return; }
+    regError.style.display = 'none';
+    currentUser = { name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), photo: null, premium: null, lastSeen: 'в сети', pinnedIds: [], allowInvites: true, allowCalls: true };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    startApp();
+}
+if(regBtn) regBtn.addEventListener('click', continueToApp);
+
+function startApp() {
+  if (!currentUser) return;
+  document.getElementById('register').classList.add('hide');
+  document.getElementById('panel').classList.add('show');
+  try {
+    chats = JSON.parse(localStorage.getItem('sunset_chats') || '{}');
+    groups = JSON.parse(localStorage.getItem('sunset_groups') || '[]');
+    posts = JSON.parse(localStorage.getItem('sunset_posts') || '[]');
+  } catch(e) {}
+  updateProfileUI(); renderChatsList('people'); renderPosts(); renderMusic(); renderGames();
+  document.getElementById('postsList').innerHTML = ''; renderPosts();
+}
+
+function updateProfileUI() {
+  const av = document.getElementById('myAvatarSmall');
+  if(!av) return;
+  if(currentUser.photo) { av.style.backgroundImage = `url(${currentUser.photo})`; av.textContent = ''; } 
+  else { av.style.backgroundImage = 'none'; av.style.background = currentUser.color; av.textContent = currentUser.emoji; }
+  document.getElementById('myNameLabel').textContent = currentUser.name;
+  document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
+}
+
+document.getElementById('myProfileBtn').addEventListener('click', () => {
+    document.getElementById('profileAvatarBig').textContent = currentUser.photo ? '' : currentUser.emoji;
+    document.getElementById('profileAvatarBig').style.background = currentUser.photo ? 'transparent' : currentUser.color;
+    document.getElementById('profileAvatarBig').style.backgroundImage = currentUser.photo ? `url(${currentUser.photo})` : 'none';
+    document.getElementById('myStatusSelect').value = currentUser.lastSeen;
+    document.getElementById('profilePrivacyToggle').checked = currentUser.allowInvites;
+    document.getElementById('profileModal').classList.add('show');
+});
+
+document.getElementById('profilePhotoInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX = 300; let w = img.width, h = img.height;
+                if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+                canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
+                currentUser.photo = canvas.toDataURL('image/jpeg', 0.7);
+                document.getElementById('profileAvatarBig').textContent = '';
+                document.getElementById('profileAvatarBig').style.background = 'transparent';
+                document.getElementById('profileAvatarBig').style.backgroundImage = `url(${currentUser.photo})`;
+                updateProfileUI();
+            }; img.src = event.target.result;
+        }; reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('saveProfileBtn').addEventListener('click', () => {
+    currentUser.lastSeen = document.getElementById('myStatusSelect').value;
+    currentUser.allowInvites = document.getElementById('profilePrivacyToggle').checked;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); updateProfileUI(); closeModal('profileModal');
+});
+document.getElementById('logoutFromProfileBtn').addEventListener('click', () => { if(confirm('Выйти?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+
+document.getElementById('settingsBtn').addEventListener('click', () => {
+    document.getElementById('privacyGroupsToggle').checked = currentUser.allowInvites;
+    document.getElementById('settingsModal').classList.add('show');
+});
+function saveSettings() { currentUser.allowInvites = document.getElementById('privacyGroupsToggle').checked; localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); closeModal('settingsModal'); }
+window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); };
+
+document.getElementById('plusBtn').addEventListener('click', () => { document.getElementById('createModal').classList.add('show'); });
+let currentCreateType = '';
+document.getElementById('optPost').addEventListener('click', () => { closeModal('createModal'); document.getElementById('formModal').classList.add('show'); });
+document.getElementById('optGroup').addEventListener('click', () => { closeModal('createModal'); openCreateGroup('group'); });
+document.getElementById('optCommunity').addEventListener('click', () => { closeModal('createModal'); openCreateGroup('community'); });
+document.getElementById('optChannel').addEventListener('click', () => { closeModal('createModal'); openCreateGroup('channel'); });
+function openCreateGroup(type) {
+    currentCreateType = type;
+    document.getElementById('cgTitle').textContent = { group: 'Новая группа', community: 'Сообщество', channel: 'Канал' }[type];
+    document.getElementById('cgName').value = ''; document.getElementById('createGroupModal').classList.add('show');
+}
+document.getElementById('cgSubmit').addEventListener('click', () => {
+    const name = document.getElementById('cgName').value.trim(); if(!name) return;
+    const newItem = { id: 'item_' + Date.now(), name, emoji: name.charAt(0).toUpperCase(), color: rnd(AVATAR_COLORS), owner: currentUser.name, type: currentCreateType, privacy: document.getElementById('cgType').value, members: [currentUser.name] };
+    if(currentCreateType === 'channel') channels.push(newItem); else groups.push(newItem);
+    localStorage.setItem('sunset_groups', JSON.stringify(groups)); closeModal('createGroupModal'); renderChatsList(currentSearchTab, '');
+});
+
+document.querySelectorAll('.nav-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    const tab = b.dataset.tab;
+    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'games') renderGames(); if (tab === 'music') renderMusic();
+  });
+});
+document.querySelectorAll('.search-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active'); currentSearchTab = t.dataset.stab;
+    renderChatsList(currentSearchTab, '');
+  });
+});
+
+function renderChatsList(tab) {
+  const list = document.getElementById('chatsList'); list.innerHTML = '';
+  let items = [];
+  if (tab === 'people') items = [...PEOPLE, ...ALL_USERS];
+  else if (tab === 'groups') items = groups.filter(g => g.type === 'group');
+  else if (tab === 'communities') items = groups.filter(g => g.type === 'community');
+  else if (tab === 'channels') items = channels;
+  items.forEach(item => {
+    const div = document.createElement('div'); div.className = 'card-item';
+    let subText = item.type === 'person' ? item.lastSeen : `${item.members ? item.members.length : 1} участников`;
+    div.innerHTML = `<div class="card-avatar" style="background:${item.color}">${item.emoji}</div><div class="card-info"><div class="card-name">${item.name}</div><div class="card-sub">${subText}</div></div>`;
+    div.addEventListener('click', () => openChat(item)); list.appendChild(div);
+  });
+}
+
+const chatEl = document.getElementById('chat');
+const chatBody = document.getElementById('chatBody');
+
+function openChat(item) {
+  activeChat = item; document.getElementById('chatName').textContent = item.name;
+  document.getElementById('chatAvatar').textContent = item.emoji; document.getElementById('chatAvatar').style.background = item.color;
+  const statusEl = document.getElementById('chatStatus');
+  if (item.type === 'person') { statusEl.textContent = item.lastSeen; statusEl.className = 'status ' + (item.lastSeen === 'в сети' ? 'online' : ''); } 
+  else { statusEl.textContent = `${item.members ? item.members.length : 1} участников`; }
+  chatEl.classList.add('show'); chatBody.innerHTML = '';
+  const msgs = chats[item.id] || [];
+  if (!msgs.length) chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
+  else { msgs.forEach(m => { const d = document.createElement('div'); d.className = 'message ' + (m.from === 'me' ? 'me' : 'them'); d.innerHTML = m.text + '<div class="time">' + m.time + '</div>'; chatBody.appendChild(d); }); }
+}
+
+document.getElementById('chatSend').addEventListener('click', () => {
+  const t = document.getElementById('chatInput').value.trim(); if (!t || !activeChat) return;
+  const time = new Date().toLocaleTimeString().slice(0,5);
+  if (!chats[activeChat.id]) chats[activeChat.id] = [];
+  chats[activeChat.id].push({ text: t, time: time, from: 'me' });
+  localStorage.setItem('sunset_chats', JSON.stringify(chats));
+  chatBody.innerHTML = ''; chats[activeChat.id].forEach(m => { const d = document.createElement('div'); d.className = 'message ' + (m.from === 'me' ? 'me' : 'them'); d.innerHTML = m.text + '<div class="time">' + m.time + '</div>'; chatBody.appendChild(d); });
+  document.getElementById('chatInput').value = ''; chatBody.scrollTop = chatBody.scrollHeight;
+  
+  const st = document.getElementById('chatStatus'); st.textContent = 'печатает...'; st.className = 'status typing';
+  setTimeout(() => {
+    chats[activeChat.id].push({ text: "Привет! Как дела?", time: time, from: 'them' }); localStorage.setItem('sunset_chats', JSON.stringify(chats));
+    if (activeChat) { st.textContent = activeChat.lastSeen; st.className = 'status'; 
+      const d = document.createElement('div'); d.className = 'message them'; d.innerHTML = "Привет! Как дела?" + '<div class="time">' + time + '</div>'; chatBody.appendChild(d); chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }, 2000);
+});
+document.getElementById('backBtn').addEventListener('click', () => { chatEl.classList.remove('show'); activeChat = null; });
+
+document.getElementById('addParticipantsBtn').addEventListener('click', () => {
+    document.getElementById('participantsList').innerHTML = '';
+    ALL_USERS.forEach(user => {
+        const isAllowed = user.allowInvites !== false;
+        const div = document.createElement('div'); div.className = 'viewer-item';
+        div.innerHTML = `<div class="viewer-avatar" style="background:${user.color}">${user.emoji}</div><div class="viewer-info"><div class="viewer-name">${user.name}</div>${!isAllowed ? '<div style="color:#ff5e62;font-size:11px;">Запрещено</div>' : ''}</div><button class="invite-btn" ${!isAllowed ? 'disabled style="opacity:0.5;"' : ''}>${isAllowed ? 'Пригласить' : 'Запрещено'}</button>`;
+        if(isAllowed) div.querySelector('.invite-btn').addEventListener('click', function() { this.textContent = 'Приглашен'; this.style.color = '#86efac'; });
+        document.getElementById('participantsList').appendChild(div);
+    });
+    document.getElementById('addParticipantsModal').classList.add('show');
+});
+
+function renderPosts() {
+  const el = document.getElementById('postsList'); if(!el) return;
+  el.innerHTML = ''; const allFeed = [...posts, ...BOT_POSTS];
+  allFeed.forEach(p => {
+    const div = document.createElement('div'); div.className = 'post';
+    div.innerHTML = `<div class="post-header"><div class="post-avatar" style="background:${p.color}">${p.author.charAt(0)}</div><div class="post-meta"><div class="post-author">${p.author}</div><div class="post-time">${p.time}</div></div></div><div class="post-text">${p.text}</div><div class="post-actions"><button class="post-action">🤍 ${p.likes || 0}</button><button class="post-action">🔄 ${p.reposts || 0}</button><button class="post-action">💬 0</button></div>`;
+    el.appendChild(div);
+  });
+}
+document.getElementById('formSubmit').addEventListener('click', () => {
+    const text = document.getElementById('formText').value.trim(); if(!text) return;
+    posts.unshift({ id: 'p_' + Date.now(), author: currentUser.name, color: currentUser.color, text: text, time: 'только что', likes: 0, reposts: 0 });
+    localStorage.setItem('sunset_posts', JSON.stringify(posts)); closeModal('formModal'); renderPosts();
+});
+
+function renderMusic() {
+    const el = document.getElementById('musicList'); if (!el) return; let html = '';
+    SONGS.forEach((s, i) => { html += `<div class="track"><div class="track-left"><div class="track-name">${s[1]}</div><div class="track-artist">${s[0]}</div></div><div class="track-play">▶</div></div>`; });
+    el.innerHTML = html;
+}
+
+/* ================== ИГРЫ ================== */
+let gameAnimFrame = null;
+let gameState = { shooterLevel: 1, runnerLevel: 1, coins: 0 };
+let playerUpgrades = { fireRate: 1, speed: 1, wave: 1 };
+let bossShootTime = 0;
+
+function closeGame() {
+    document.getElementById('gameOverlay').classList.remove('show');
+    if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
+}
+
+function startGame(type) {
+    if (type === 'shooter') openShooterMenu();
+    else if (type === 'runner') openRunnerMenu();
+}
+
+function renderGames() {
+    const grid = document.getElementById('gamesGrid'); if (!grid) return;
+    grid.innerHTML = `<div class="game-card" onclick="startGame('shooter')"><div class="game-icon">✈️</div><div class="game-title">Космические войны</div><div class="game-desc">Ур. ${gameState.shooterLevel}</div></div><div class="game-card" onclick="startGame('runner')"><div class="game-icon">🟦</div><div class="game-title">Квадратик</div><div class="game-desc">Ур. ${gameState.runnerLevel}</div></div>`;
+}
+
+function openShooterMenu() {
+    const area = document.getElementById('gameArea');
+    document.getElementById('gameTitle').textContent = 'Космические войны';
+    document.getElementById('gameOverlay').classList.add('show');
+    area.innerHTML = `
+        <div style="text-align:center; color:#fff; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h2 style="color:#00d4ff; text-shadow:0 0 10px #00d4ff; margin-bottom:20px; font-size:32px;">Космические войны</h2>
+            <div style="margin-bottom:20px; font-size:18px;">Уровень: ${gameState.shooterLevel} / 1000</div>
+            <button class="game-btn" onclick="selectDifficulty()" style="width:200px; margin-bottom:10px;">▶️ Играть</button>
+            <button class="game-btn" onclick="openShooterShop()" style="background:#a06cd5; width:200px; margin-bottom:10px;">🛠 Магазин</button>
+            <button class="game-btn" onclick="closeGame()" style="background:#555; width:200px;">Назад</button>
+        </div>`;
+}
+
+function selectDifficulty() {
+    const area = document.getElementById('gameArea');
+    area.innerHTML = `
+        <div style="text-align:center; color:#fff; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h2 style="margin-bottom:20px;">Выбери сложность</h2>
+            <button class="game-btn" onclick="initShooter(1)" style="background:#4ade80; width:200px; margin-bottom:10px;">Легко</button>
+            <button class="game-btn" onclick="initShooter(1.5)" style="background:#f5a623; width:200px; margin-bottom:10px;">Средне</button>
+            <button class="game-btn" onclick="initShooter(2.5)" style="background:#ff5e62; width:200px; margin-bottom:10px;">Сложно</button>
+            <button class="game-btn" onclick="openShooterMenu()" style="background:#555; width:200px;">Назад</button>
+        </div>`;
+}
+
+let shooterObj = {};
+
+function initShooter(diff) {
+    const area = document.getElementById('gameArea'); area.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight - 100;
+    area.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const baseHp = 200 + (gameState.shooterLevel * 50);
+    shooterObj = {
+        canvas, ctx, playerX: canvas.width/2, playerY: canvas.height - 60, bullets: [], meteors: [], ufos: [], bossProjectiles: [],
+        score: 0, timeLeft: 300, waveCharge: 0, isBoss: false, bossHp: baseHp, bossMaxHp: baseHp,
+        isDead: false, isFiring: false, lastShot: 0, diff: diff, bossX: canvas.width/2, bossY: 100, bossTime: 0
+    };
+
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        shooterObj.playerX = e.touches[0].clientX - rect.left;
+        if (e.touches[0].clientY - rect.top > 100) shooterObj.playerY = e.touches[0].clientY - rect.top;
+    }, {passive: false});
+    canvas.addEventListener('touchstart', (e) => { shooterObj.isFiring = true; });
+    canvas.addEventListener('touchend', () => { shooterObj.isFiring = false; });
+    canvas.addEventListener('mousedown', () => { shooterObj.isFiring = true; });
+    canvas.addEventListener('mouseup', () => { shooterObj.isFiring = false; });
+
+    const uiTop = document.createElement('div');
+    uiTop.className = 'game-ui-top';
+    uiTop.innerHTML = `<div>Ур: ${gameState.shooterLevel} | ⏱ <span id="shTime">05:00</span></div><div>⭐ <span id="shScore">0</span></div>`;
+    area.appendChild(uiTop);
+
+    const turboBar = document.createElement('div');
+    turboBar.className = 'turbo-bar-container'; turboBar.id = 'turboBar';
+    turboBar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div><div class="turbo-bar-label" id="turboLabel">ВОЛНА 0%</div>';
+    area.appendChild(turboBar);
+    const turboBtn = document.createElement('button');
+    turboBtn.className = 'turbo-btn'; turboBtn.id = 'turboBtn'; turboBtn.textContent = 'ВОЛНА';
+    area.appendChild(turboBtn);
+
+    turboBtn.onclick = () => {
+        if (shooterObj.waveCharge >= 100) {
+            shooterObj.waveCharge = 0; shooterObj.ufos = []; shooterObj.meteors = [];
+            for(let i=0; i<20; i++) playSound('explosion');
+            if (shooterObj.isBoss) shooterObj.bossHp -= (shooterObj.bossMaxHp * 0.2);
+            document.getElementById('turboFill').style.width = '0%';
+            document.getElementById('turboLabel').textContent = 'ВОЛНА 0%';
+            turboBtn.classList.remove('ready');
+            turboBtn.style.display = 'none';
+        }
+    };
+
+    let lastTick = performance.now();
+    let spawnTime = 0;
+
+    const gameLoop = (time) => {
+        if (shooterObj.isDead) return;
+        if (time - lastTick > 1000 && !shooterObj.isBoss) {
+            lastTick = time; shooterObj.timeLeft--;
+            const m = Math.floor(shooterObj.timeLeft/60), s = shooterObj.timeLeft%60;
+            document.getElementById('shTime').innerText = `0${m}:${s<10?'0':''}${s}`;
+            if (shooterObj.timeLeft <= 0) shooterObj.isBoss = true;
+        }
+
+        ctx.fillStyle = '#0a0510'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (shooterObj.isFiring && time - shooterObj.lastShot > (250 / playerUpgrades.fireRate)) {
+            shooterObj.bullets.push({ x: shooterObj.playerX, y: shooterObj.playerY - 20, vy: -15 });
+            shooterObj.lastShot = time; playSound('laser');
+        }
+        ctx.fillStyle = '#ffd700';
+        for(let i = shooterObj.bullets.length - 1; i >= 0; i--) {
+            let b = shooterObj.bullets[i]; b.y += b.vy; ctx.fillRect(b.x - 2, b.y - 10, 4, 15);
+            if (b.y < 0) shooterObj.bullets.splice(i, 1);
+        }
+
+        if (!shooterObj.isBoss) {
+            if (time - spawnTime > 1000 / shooterObj.diff) {
+                spawnTime = time;
+                if (Math.random() > 0.5) shooterObj.meteors.push({ x: Math.random() * canvas.width, y: -30, speed: 2 * shooterObj.diff, size: 20 });
+                else shooterObj.ufos.push({ x: Math.random() * canvas.width, y: -30, speed: 1.5 * shooterObj.diff, size: 25 });
+            }
+            ctx.fillStyle = '#8c5a45';
+            for(let i = shooterObj.meteors.length - 1; i >= 0; i--) {
+                let m = shooterObj.meteors[i]; m.y += m.speed; ctx.beginPath(); ctx.arc(m.x, m.y, m.size, 0, Math.PI*2); ctx.fill();
+                if (m.y > canvas.height) shooterObj.meteors.splice(i, 1);
+            }
+            ctx.fillStyle = '#4ade80';
+            for(let i = shooterObj.ufos.length - 1; i >= 0; i--) {
+                let u = shooterObj.ufos[i]; u.y += u.speed; ctx.fillRect(u.x - u.size/2, u.y - u.size/2, u.size, u.size);
+                if (u.y > canvas.height) shooterObj.ufos.splice(i, 1);
+            }
+        } else {
+            shooterObj.bossTime++; shooterObj.bossX = canvas.width/2 + Math.cos(shooterObj.bossTime * 0.02) * (canvas.width/3);
+            ctx.fillStyle = '#ff5e62'; ctx.beginPath(); ctx.ellipse(shooterObj.bossX, shooterObj.bossY, 60, 30, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#333'; ctx.fillRect(shooterObj.bossX - 60, shooterObj.bossY - 50, 120, 10);
+            ctx.fillStyle = '#4ade80'; ctx.fillRect(shooterObj.bossX - 60, shooterObj.bossY - 50, 120 * (shooterObj.bossHp / shooterObj.bossMaxHp), 10);
+            
+            if (time - bossShootTime > 1500) {
+                bossShootTime = time;
+                const dx = shooterObj.playerX - shooterObj.bossX;
+                const dy = shooterObj.playerY - shooterObj.bossY;
+                const dist = Math.hypot(dx, dy);
+                shooterObj.bossProjectiles.push({ x: shooterObj.bossX, y: shooterObj.bossY + 20, vx: (dx / dist) * 5, vy: (dy / dist) * 5 });
+            }
+        }
+        
+        ctx.fillStyle = '#00d4ff';
+        for(let i = shooterObj.bossProjectiles.length - 1; i >= 0; i--) {
+            let p = shooterObj.bossProjectiles[i]; p.x += p.vx; p.y += p.vy;
+            ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI*2); ctx.fill();
+            if (Math.hypot(p.x - shooterObj.playerX, p.y - shooterObj.playerY) < 25) { endShooter(false); return; }
+            if (p.y > canvas.height) shooterObj.bossProjectiles.splice(i, 1);
+        }
+
+        ctx.save(); ctx.translate(shooterObj.playerX, shooterObj.playerY);
+        ctx.fillStyle = '#00d4ff'; ctx.beginPath(); ctx.moveTo(0, -25); ctx.lineTo(15, 10); ctx.lineTo(-15, 10); ctx.fill(); ctx.restore();
+
+        shooterObj.waveCharge += 0.2;
+        if (shooterObj.waveCharge > 100) {
+            shooterObj.waveCharge = 100;
+            document.getElementById('turboBar').style.display = 'block';
+            document.getElementById('turboFill').style.width = '100%';
+            document.getElementById('turboLabel').textContent = 'ВОЛНА ГОТОВА';
+            turboBtn.classList.add('ready'); turboBtn.style.display = 'flex';
+        }
+
+        gameAnimFrame = requestAnimationFrame(gameLoop);
+    };
+    gameAnimFrame = requestAnimationFrame(gameLoop);
+}
+
+function endShooter(isWin) {
+    shooterObj.isDead = true;
+    const area = document.getElementById('gameArea');
+    if(isWin) {
+        playSound('win');
+        area.innerHTML = `<div style="text-align:center; color:#fff; padding:20px;"><h1 style="color:#4ade80; font-size:40px; margin-bottom:20px;">ПОБЕДА!</h1><p>Босс уничтожен</p><button class="game-btn" onclick="openShooterMenu()" style="margin-top:20px;">В меню</button></div>`;
+    } else {
+        playSound('gameover'); speakPotracheno();
+        area.innerHTML = `<div style="text-align:center; color:#fff; padding:20px;"><h1 style="color:#ff5e62; font-size:50px; margin-bottom:20px; text-shadow:0 0 20px #ff5e62;">ПОТРАЧЕНО</h1><button class="game-btn" onclick="openShooterMenu()" style="margin-top:20px;">Попробовать снова</button></div>`;
+    }
+}
+
+function openShooterShop() {
+    const area = document.getElementById('gameArea');
+    area.innerHTML = `
+        <div style="padding:20px; color:#fff; text-align:center; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h2>Улучшения</h2>
+            <button class="game-btn" onclick="upgrade('fireRate')" style="width:250px; margin-bottom:10px;">Скорострельность (Ур. ${playerUpgrades.fireRate})</button>
+            <button class="game-btn" onclick="openShooterMenu()" style="background:#555; width:250px;">Назад</button>
+        </div>`;
+}
+function upgrade(type) { playerUpgrades[type]++; openShooterShop(); }
+
+function openRunnerMenu() {
+    const area = document.getElementById('gameArea');
+    document.getElementById('gameTitle').textContent = 'Квадратик';
+    document.getElementById('gameOverlay').classList.add('show');
+    area.innerHTML = `
+        <div style="text-align:center; color:#fff; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <h2 style="color:#00d4ff; text-shadow:0 0 10px #00d4ff; margin-bottom:20px; font-size:32px;">Квадратик</h2>
+            <div style="margin-bottom:20px; font-size:18px;">Уровень: ${gameState.runnerLevel} / 1000</div>
+            <button class="game-btn" onclick="initRunner()" style="width:200px; margin-bottom:10px;">▶️ Играть</button>
+            <button class="game-btn" onclick="closeGame()" style="background:#555; width:200px;">Назад</button>
+        </div>`;
+}
+
+function initRunner() {
+    const area = document.getElementById('gameArea'); area.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight - 100;
+    area.appendChild(canvas); const ctx = canvas.getContext('2d');
+
+    let runnerObj = {
+        canvas, ctx, px: 80, py: canvas.height - 80, vy: 0, size: 30, score: 0, 
+        monsterX: -100, monsterSpeed: 3 + (gameState.runnerLevel * 0.1), isDead: false
+    };
+
+    const jump = (e) => { if(e) e.preventDefault(); if (runnerObj.py >= canvas.height - 80 && !runnerObj.isDead) { runnerObj.vy = -14; playSound('jump'); } };
+    canvas.addEventListener('touchstart', jump, {passive: false});
+    canvas.addEventListener('mousedown', jump);
+
+    const loop = () => {
+        if (runnerObj.isDead) return;
+        runnerObj.vy += 0.7; runnerObj.py += runnerObj.vy;
+        if (runnerObj.py > canvas.height - 80) { runnerObj.py = canvas.height - 80; runnerObj.vy = 0; }
+        
+        runnerObj.monsterX += runnerObj.monsterSpeed;
+        if (runnerObj.monsterX > runnerObj.px - 20) {
+            runnerObj.isDead = true;
+            playSound('gameover');
+            ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = '#ff5e62'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('Вас съели 🙁', canvas.width/2, canvas.height/2);
+            setTimeout(openRunnerMenu, 3000);
+            return;
+        }
+
+        ctx.fillStyle = '#0a0510'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+        
+        ctx.fillStyle = '#00d4ff'; ctx.fillRect(runnerObj.px, runnerObj.py, runnerObj.size, runnerObj.size);
+        ctx.fillStyle = '#fff'; ctx.fillRect(runnerObj.px + 6, runnerObj.py + 8, 6, 6); ctx.fillRect(runnerObj.px + 18, runnerObj.py + 8, 6, 6);
+        ctx.fillStyle = '#000'; ctx.fillRect(runnerObj.px + 8, runnerObj.py + 10, 3, 3); ctx.fillRect(runnerObj.px + 20, runnerObj.py + 10, 3, 3);
+
+        ctx.fillStyle = '#ff5e62'; ctx.fillRect(runnerObj.monsterX, runnerObj.py, runnerObj.size, runnerObj.size);
+        ctx.fillStyle = '#fff'; ctx.fillRect(runnerObj.monsterX + 6, runnerObj.py + 8, 6, 6); ctx.fillRect(runnerObj.monsterX + 18, runnerObj.py + 8, 6, 6);
+        ctx.fillStyle = '#000'; ctx.fillRect(runnerObj.monsterX + 8, runnerObj.py + 10, 3, 3); ctx.fillRect(runnerObj.monsterX + 20, runnerObj.py + 10, 3, 3);
+        ctx.beginPath(); ctx.arc(runnerObj.monsterX + 15, runnerObj.py + 22, 8, 0, Math.PI); ctx.fill();
+
+        gameAnimFrame = requestAnimationFrame(loop);
+    };
+    gameAnimFrame = requestAnimationFrame(loop);
+}
+
+window.addEventListener('load', function() {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) { try { currentUser = JSON.parse(saved); startApp(); } catch(e) {} }
+});
+</script>
 </body>
 </html>
