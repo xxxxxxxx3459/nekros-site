@@ -332,7 +332,12 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
+ <button type="button" class="reg-btn" id="regBtn" onclick="
+    var name = document.getElementById('regName').value.trim();
+    if (name.length < 2) { alert('Введите имя!'); return; }
+    localStorage.setItem('sunset_user_v50', JSON.stringify({name: name, color: '#ff6b6b', emoji: name.charAt(0).toUpperCase(), premium: name.toLowerCase() === 'boss' ? 'prime' : null, pinnedIds: []}));
+    window.location.href = window.location.href;
+">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -2519,86 +2524,17 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// --- ЖЕЛЕЗОБЕТОННЫЙ ЗАПУСК ---
+// ПРОСТОЙ ЗАПУСК
 window.addEventListener('load', function() {
-    // Проверяем, есть ли ник в памяти. Если да — сразу в игру!
-    try {
-        const saved = JSON.parse(localStorage.getItem('sunset_user_v50') || 'null');
-        if (saved && saved.name) {
-            currentUser = saved;
+    var saved = localStorage.getItem('sunset_user_v50');
+    if (saved) {
+        try {
+            currentUser = JSON.parse(saved);
             if (typeof startApp === 'function') startApp();
+        } catch(e) {
+            alert('Ошибка сохранения: ' + e.message);
         }
-    } catch(e) {}
-
-    // Привязываем кнопку "Продолжить"
-    const regBtn = document.getElementById('regBtn');
-    if (regBtn) {
-        regBtn.onclick = function() {
-            const n = (document.getElementById('regName').value || '').trim();
-            if (n.length < 2) {
-                document.getElementById('regError').style.display = 'block';
-                return;
-            }
-            document.getElementById('regError').style.display = 'none';
-
-            // Создаем пользователя
-            let premium = null;
-            if (n.toLowerCase() === 'boss') premium = 'prime';
-            else if (n.toLowerCase() === 'admin') premium = 'sunset';
-
-            currentUser = { 
-                name: n, 
-                color: '#ff6b6b', 
-                emoji: n.charAt(0).toUpperCase(), 
-                lastSeen: 'в сети', 
-                premium: premium,
-                pinnedIds: [] 
-            };
-            
-            try { localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser)); } catch(e) {}
-
-            // Скрываем вход и запускаем игру БЕЗ перезагрузки
-            document.getElementById('register').classList.add('hide');
-            document.getElementById('panel').classList.add('show');
-            if (typeof startApp === 'function') startApp();
-        };
     }
-
-    // Привязываем остальные кнопки
-    setTimeout(() => {
-        const plusBtn = document.getElementById('plusBtn');
-        if (plusBtn) plusBtn.onclick = () => document.getElementById('createModal').classList.add('show');
-        
-        const settingsBtn = document.getElementById('settingsBtn');
-        if (settingsBtn) settingsBtn.onclick = () => document.getElementById('settingsModal').classList.add('show');
-
-        const myProfileBtn = document.getElementById('myProfileBtn');
-        if (myProfileBtn) {
-            myProfileBtn.onclick = () => {
-                if (!currentUser) return;
-                document.getElementById('profileTitle').textContent = currentUser.name;
-                document.getElementById('profileStatus').textContent = currentUser.lastSeen;
-                document.getElementById('myStatusSelect').value = currentUser.lastSeen;
-                document.getElementById('profileModal').classList.add('show');
-            };
-        }
-
-        const logoutBtn = document.getElementById('logoutFromProfileBtn');
-        if (logoutBtn) {
-            logoutBtn.onclick = () => {
-                document.getElementById('profileModal').classList.remove('show');
-                document.getElementById('logoutModal').classList.add('show');
-            };
-        }
-
-        const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
-        if (confirmLogoutBtn) {
-            confirmLogoutBtn.onclick = () => {
-                localStorage.removeItem('sunset_user_v50');
-                location.reload();
-            };
-        }
-    }, 500);
 });
 </script>
 </body>
