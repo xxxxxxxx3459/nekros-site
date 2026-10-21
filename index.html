@@ -850,6 +850,7 @@ function startApp() {
           myAvatar.textContent = currentUser.emoji;
           myAvatar.style.background = currentUser.color;
       }
+    }
   
   
   const nameLabel = document.getElementById('myNameLabel');
@@ -861,7 +862,8 @@ function startApp() {
           promptAv.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
           promptAv.style.background = 'transparent';
       } else {
-          promptAv.textContent = currentUser.emoji;
+       }
+   promptAv.textContent = currentUser.emoji;
           promptAv.style.background = currentUser.color;
       }
   
