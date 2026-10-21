@@ -1567,7 +1567,7 @@ function saveGameState() {
     try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
-================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== 
+//================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== 
 function openShooterMenu() {
     const area = document.getElementById('gameArea');
     const unlocked = gameState.shooter.unlocked;
@@ -2687,22 +2687,6 @@ window.banMember = function(name) {
     }
 };
  
-</script>
-<div id="myDebugConsole" style="position:fixed; bottom:0; left:0; right:0; background:rgba(255,0,0,0.9); color:white; font-size:12px; padding:10px; z-index:99999; display:none; max-height:50vh; overflow-y:auto; font-family:monospace;"></div>
-<script>
-window.onerror = function(msg, url, line, col, error) {
-  
- var debugDiv = document.getElementById('myDebugConsole');
-    if (debugDiv) {
-        debugDiv.style.display = 'block';
-        var errorMsg = msg;
-        if (msg.includes('Unexpected token') || msg.includes('Unexpected end of input')) {
-            errorMsg = "🚨 ОШИБКА СКОБОК: " + msg;
-        }
-        debugDiv.innerHTML += '<div style="border-bottom:1px solid white; padding:5px 0;">❌ ' + errorMsg + ' (Строка: ' + line + ')</div>';
-    }
-    return false;
-};
 </script>
 </body>
 </html>
