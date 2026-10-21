@@ -602,7 +602,6 @@
 
 <script>
 /* ============ ЗВУКИ ============ */
-alert("Скрипт загрузился!");
  let audioCtx = null;
 function playSound(type) {
     try {
@@ -922,23 +921,8 @@ document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = 'Мой профиль';
     document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
     
-    // --- ДОБАВЛЯЕМ ЛОГИКУ РЕКЛАМЫ ---
-    if (currentUser.premium === 'prime') {
-        document.getElementById('premiumAdSettings').style.display = 'block';
-        document.getElementById('myAdText').value = currentUser.adText || '';
-        document.getElementById('myAdLink').value = currentUser.adLink || '';
-    } else {
-        document.getElementById('premiumAdSettings').style.display = 'none';
-    }
-
-    document.getElementById('profileModal').classList.add('show');
-};
-document.getElementById('saveAdBtn').onclick = function() {
-    currentUser.adText = document.getElementById('myAdText').value.trim();
-    currentUser.adLink = document.getElementById('myAdLink').value.trim();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-    alert('Реклама сохранена! Теперь она будет видна в ваших чатах.');
-};    
+  document.getElementById('profileModal').classList.add('show'); // <--- ЭТА СТРОКА ДОЛЖНА БЫТЬ (ОНА ОТКРЫВАЕТ ПРОФИЛЬ)
+}; // <--- И ВОТ ЭТА ЗАКРЫВАЮЩАЯ СКОБКА
 
 document.getElementById('myStatusSelect').onchange = function(e) {
     currentUser.lastSeen = e.target.value;
