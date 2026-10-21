@@ -1567,7 +1567,7 @@ function saveGameState() {
     try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
-/* ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== */
+================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== 
 function openShooterMenu() {
     const area = document.getElementById('gameArea');
     const unlocked = gameState.shooter.unlocked;
@@ -2075,7 +2075,7 @@ function endShooter(isWin) {
     }
 }
 
-/* ================== ИГРА 2: КВАДРАТИК ================== */
+================== ИГРА 2: КВАДРАТИК ================== 
 function openRunnerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
@@ -2312,7 +2312,7 @@ function endRunner(isWin) {
     }
 }
 
-/* ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ================== */
+ ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ================== 
 function openPlatformerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
