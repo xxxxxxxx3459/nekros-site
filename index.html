@@ -324,28 +324,7 @@
 </style>
 </head>
 <body>
-<script>
-    const tempName = localStorage.getItem('sunset_temp_name');
-    if (tempName) {
-        localStorage.removeItem('sunset_temp_name');
-        currentUser = { 
-            name: tempName, color: '#ff6b6b', emoji: tempName.charAt(0).toUpperCase(), 
-            premium: null, isAdmin: false, lastSeen: 'в сети',
-            profileViews: 0, subscribers: 0, pinnedIds: []
-        };
-        localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser));
-      window.addEventListener('load', () => {
-        if (typeof startApp === 'function') {
-            startApp();
-        } else {
-            alert('Ошибка: startApp не найдена даже после загрузки!');
-        }
-    });
-    }
-</script>
-
 <div class="sunset-photo"></div>
-
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
@@ -639,9 +618,24 @@
     </div>
     <div class="game-area" id="gameArea"></div>
 </div>
-
 <script>
- 
+ function continueToApp() {
+    const nameInput = document.getElementById('regName');
+    const n = (nameInput.value || '').trim();
+    if (n.length < 2) {
+        document.getElementById('regError').style.display = 'block';
+        return;
+    }
+    document.getElementById('regError').style.display = 'none';
+
+    currentUser = { 
+        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+        premium: null, isAdmin: false, lastSeen: 'в сети',
+        profileViews: 0, subscribers: 0, pinnedIds: []
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    startApp();
+}
 // ============ ЗВУКИ ============ 
  let audioCtx = null;
 function playSound(type) {
@@ -740,7 +734,7 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-
+document.getElementById('regBtn').addEventListener('click', continueToApp);
 //============ ДАННЫЕ ============ 
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
