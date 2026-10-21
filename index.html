@@ -324,14 +324,16 @@
 </style>
 </head>
 <body>
+
 <div class="sunset-photo"></div>
+
 <div id="register">
   <div class="reg-card">
     <h1>Sunset</h1>
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-  <button type="button" class="reg-btn" id="regBtn" onclick="const n=document.getElementById('regName').value.trim(); if(n.length<2){document.getElementById('regError').style.display='block';}else{localStorage.setItem('sunset_user_v50', JSON.stringify({name:n, color:'#ff6b6b', emoji:n.charAt(0).toUpperCase(), premium:null, isAdmin:false, lastSeen:'в сети', profileViews:0, subscribers:0, pinnedIds:[]})); window.location.reload();}">Продолжить →</button>
+    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -456,13 +458,11 @@
     </div>
     <div class="chat-body" id="chatBody"></div>
 
-    <!-- ВОТ СЮДА ВСТАВЛЯЕМ БАННЕР -->
     <div id="chatAdBanner" style="display: none; margin: 0 14px 10px 14px; padding: 12px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px;">
       <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Prime</div>
       <div id="adText" style="color: #fff; font-size: 14px; font-weight: 600;"></div>
       <div id="adLink" style="color: #ff8c42; font-size: 13px; margin-top: 4px; cursor: pointer; text-decoration: underline;"></div>
     </div>
-    <!-- КОНЕЦ БАННЕРА -->
 
     <div class="chat-input-bar">
       <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
@@ -549,16 +549,12 @@
     <div class="modal-sub" id="profileStatus"></div>
     <button class="profile-action-btn" id="changeAvatarBtn" onclick="uploadProfilePhoto()">🖼️ Загрузить фото профиля</button>
  
-    
-    <!-- ВОТ СЮДА ВСТАВЛЯЕМ БЛОК РЕКЛАМЫ -->
     <div id="premiumAdSettings" style="display: none; margin-top: 15px; background: rgba(255,215,0,0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.3);">
         <label style="font-size: 13px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px;">👑 Настройки рекламы (Prime):</label>
         <input type="text" class="modal-input" id="myAdText" placeholder="Текст рекламы" maxlength="50">
         <input type="url" class="modal-input" id="myAdLink" placeholder="Ссылка (https://...)">
         <button class="profile-action-btn" id="saveAdBtn" style="background:#ffd700; color:#000; margin-bottom: 0;">Сохранить рекламу</button>
     </div>
-    <!-- КОНЕЦ БЛОКА РЕКЛАМЫ -->
-
     
     <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
     <select class="status-select" id="myStatusSelect">
@@ -618,42 +614,10 @@
     </div>
     <div class="game-area" id="gameArea"></div>
 </div>
-<script>
- alert('Кнопка работает, функция найдена!');
- // Проверка: если имя уже сохранено, запускаем приложение сразу
-document.addEventListener('DOMContentLoaded', () => {
-    const savedName = localStorage.getItem('sunset_user_v50');
-    if (savedName) {
-        try {
-            alert('✅ Имя прочитано из памяти: ' + currentUser.name);
-            startApp();
-        } catch(e) {
-            console.error("Ошибка чтения профиля", e);
-        }
-    }
-});
- function continueToApp() {
-    const nameInput = document.getElementById('regName');
-    const n = (nameInput.value || '').trim();
-    if (n.length < 2) {
-        document.getElementById('regError').style.display = 'block';
-        return;
-    }
-    document.getElementById('regError').style.display = 'none';
 
-    currentUser = { 
-        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-        premium: null, isAdmin: false, lastSeen: 'в сети',
-        profileViews: 0, subscribers: 0, pinnedIds: []
-    };
-    try { 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); 
-    alert('✅ Имя сохранено в память: ' + n);
-} catch(e) { 
-    alert('❌ Ошибка сохранения: ' + e.message); 
-}
-// ============ ЗВУКИ ============ 
- let audioCtx = null;
+<script>
+// ============ ЗВУКИ ============
+let audioCtx = null;
 function playSound(type) {
     try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -750,8 +714,8 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-document.getElementById('regBtn').addEventListener('click', continueToApp);
-//============ ДАННЫЕ ============ 
+
+// ============ ДАННЫЕ ============
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
 const CHANNELS_KEY = 'sunset_channels_v50';
@@ -855,9 +819,32 @@ const BOT_POSTS = [
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+// ============ СТАРТ ПРИЛОЖЕНИЯ ============
+document.getElementById('regBtn').addEventListener('click', function() {
+    const n = regName.value.trim();
+    if (n.length < 2) {
+        regError.style.display = 'block';
+        return;
+    }
+    regError.style.display = 'none';
+    
+    let isAdmin = false, premiumLevel = null;
+    const lowerName = n.toLowerCase();
+    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
+    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
+
+    currentUser = { 
+        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
+        profileViews: 0, subscribers: 0, pinnedIds: []
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    startApp();
+});
+
 function startApp() {
   if (!currentUser) {
-      const saved = localStorage.getItem('sunset_user_v50');
+      const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
           currentUser = JSON.parse(saved);
       } else {
@@ -868,7 +855,6 @@ function startApp() {
   const regScreen = document.getElementById('register');
   const panelScreen = document.getElementById('panel');
   
-  // Защита: если элементов нет, ждем и пробуем снова
   if (!regScreen || !panelScreen) {
       setTimeout(startApp, 500);
       return;
@@ -877,7 +863,6 @@ function startApp() {
   regScreen.classList.add('hide');
   panelScreen.classList.add('show');
   
-  // Аватарка в шапке
   const myAvatar = document.getElementById('myAvatarSmall');
   if (myAvatar) {
       if (currentUser.avatarImage) {
@@ -889,11 +874,9 @@ function startApp() {
       }
   }
   
-  // Имя в шапке
   const nameLabel = document.getElementById('myNameLabel');
   if (nameLabel) nameLabel.textContent = currentUser.name;
   
-  // Аватарка в "создать пост"
   const promptAv = document.getElementById('promptAvatar');
   if (promptAv) {
       if (currentUser.avatarImage) {
@@ -907,20 +890,14 @@ function startApp() {
   
   updatePremiumBadge();
 
-  // Запускаем рендер
   if (typeof renderChatsList === 'function') renderChatsList('people');
   if (typeof renderPosts === 'function') renderPosts();
   if (typeof renderStories === 'function') renderStories();
   if (typeof renderMusic === 'function') renderMusic(); 
   if (typeof renderGames === 'function') renderGames();
   if (typeof renderMyPage === 'function') renderMyPage(); 
-setTimeout(() => {
-      const r = document.getElementById('register');
-      const p = document.getElementById('panel');
-      if (r && p) { r.classList.add('hide'); p.classList.add('show'); }
-  }, 100);
 }
- 
+
 function updatePremiumBadge() {
   const av = document.getElementById('myAvatarSmall');
   const old = av.querySelector('.premium-badge');
@@ -937,11 +914,11 @@ function updatePremiumBadge() {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
 }
+
 document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = 'Мой профиль';
     document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
     
-    // --- ВОТ СЮДА ВСТАВЛЯЕМ ЭТОТ КУСОК ---
     const adSettings = document.getElementById('premiumAdSettings');
     if (adSettings) {
         if (currentUser.premium === 'prime') {
@@ -954,12 +931,9 @@ document.getElementById('myProfileBtn').onclick = function() {
             adSettings.style.display = 'none';
         }
     }
-    // --- КОНЕЦ ВСТАВКИ ---
 
     document.getElementById('profileModal').classList.add('show');
-}; // <--- 934 строка, эта скобка закрывает функцию
-
-
+};
 
 document.getElementById('myStatusSelect').onchange = function(e) {
     currentUser.lastSeen = e.target.value;
@@ -1070,7 +1044,6 @@ function openChat(item) {
       chatBody.scrollTop = chatBody.scrollHeight; 
   }
 
-  // ЛОГИКА РЕКЛАМЫ В ЧАТАХ (ТОЛЬКО ДЛЯ PRIME)
   const adBanner = document.getElementById('chatAdBanner');
   if (adBanner) { 
       if (item.type !== 'person' && item.owner === currentUser.name && currentUser.premium === 'prime') {
@@ -1089,8 +1062,8 @@ function openChat(item) {
           adBanner.style.display = 'none';
       }
   }
-} // <--- ВОТ ЗДЕСЬ ЗАКРЫВАЕТСЯ ФУНКЦИЯ openChat (после всей логики рекламы)
- 
+}
+
 function saveGroups() {
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
     try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
@@ -1214,7 +1187,6 @@ function openPublicProfile(person) {
     
     const subBtn = document.getElementById('pubSubscribeBtn');
     
-    // Проверяем, подписан ли уже
     let subscriptions = JSON.parse(localStorage.getItem('sunset_subscriptions') || '[]');
     let isSubscribed = subscriptions.includes(person.id);
     
@@ -1245,7 +1217,7 @@ function openPublicProfile(person) {
             isSubscribed = true;
         }
         localStorage.setItem('sunset_subscriptions', JSON.stringify(subscriptions));
-        renderPosts(); // Обновляем ленту
+        renderPosts();
     };
     
     document.getElementById('publicProfileModal').classList.add('show');
@@ -1331,7 +1303,8 @@ function buildPostEl(p) {
     input.value = '';
     list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
     savePostsIfMine(p);
-  // РЕКЛАМНЫЙ БЛОК ДЛЯ ПРЕМИУМОВ (Только Prime)
+  });
+
   if (currentUser.premium === 'prime') {
       if (p.ads && p.ads.text) {
           const adDiv = document.createElement('div');
@@ -1406,7 +1379,7 @@ function openPostModal() {
         renderMyPage();
     };
     document.getElementById('formModal').classList.add('show');
- document.getElementById('formCancel').onclick = function() {
+    document.getElementById('formCancel').onclick = function() {
         document.getElementById('formModal').classList.remove('show');
     };
 }
@@ -1542,7 +1515,7 @@ function saveGameState() {
     try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
-//================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ================== 
+// ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ==================
 function openShooterMenu() {
     const area = document.getElementById('gameArea');
     const unlocked = gameState.shooter.unlocked;
@@ -2050,7 +2023,7 @@ function endShooter(isWin) {
     }
 }
 
-//================== ИГРА 2: КВАДРАТИК ================== 
+// ================== ИГРА 2: КВАДРАТИК ==================
 function openRunnerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
@@ -2072,8 +2045,6 @@ function initRunner() {
     const area = document.getElementById('gameArea');
     area.innerHTML = '';
     const canvas = document.createElement('canvas');
-    
-    // Размеры как у шутера (чтобы не было растяжения)
     canvas.width = window.innerWidth > 500 ? 500 : window.innerWidth;
     canvas.height = window.innerHeight - 150;
     canvas.style.borderRadius = '20px';
@@ -2095,7 +2066,6 @@ function initRunner() {
         spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
     };
 
-    // Верхняя панель с таймером
     const uiTop = document.createElement('div');
     uiTop.className = 'game-ui-top';
     uiTop.innerHTML = `<div>Ур: ${level} | ⏱ <span id="rnTime">06:00</span></div><div>⭐ <span id="rnScore">0</span></div>`;
@@ -2115,7 +2085,6 @@ function initRunner() {
     const gameLoop = (time) => {
         if (runnerObj.isDead) return;
         
-        // Таймер
         if (time - runnerObj.lastTimerTick > 1000) {
             runnerObj.lastTimerTick = time;
             runnerObj.timeLeft--;
@@ -2139,20 +2108,17 @@ function initRunner() {
             runnerObj.onGround = true;
         }
         
-        // Фон
         const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
         grad.addColorStop(0, '#1a0a2e');
         grad.addColorStop(1, '#2a0a3e');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Земля
         ctx.fillStyle = '#1a1a2e';
         ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
         ctx.fillStyle = '#ff5e62';
         ctx.fillRect(0, canvas.height - 40, canvas.width, 3);
 
-        // Облака
         runnerObj.clouds.forEach(c => {
             c.x -= c.s;
             if (c.x < -50) { c.x = canvas.width + 50; c.y = Math.random() * 150 + 20; }
@@ -2160,7 +2126,6 @@ function initRunner() {
             ctx.fillRect(c.x, c.y, 50, 20);
         });
 
-        // Спавн препятствий
         if (runnerObj.frame % Math.max(35, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
             const oh = Math.random() > 0.4 ? 40 : 60;
             runnerObj.obstacles.push({
@@ -2171,7 +2136,6 @@ function initRunner() {
             });
         }
 
-        // Движение препятствий
         for (let i = runnerObj.obstacles.length - 1; i >= 0; i--) {
             let o = runnerObj.obstacles[i];
             o.x -= o.speed;
@@ -2188,7 +2152,6 @@ function initRunner() {
                 if(scoreEl) scoreEl.innerText = runnerObj.score;
             }
             
-            // Столкновение
             const px = runnerObj.playerX;
             const py = runnerObj.playerY;
             if (px + runnerObj.playerSize > o.x && px < o.x + o.w && py + runnerObj.playerSize > o.y && py < o.y + o.h) {
@@ -2197,7 +2160,6 @@ function initRunner() {
             }
         }
 
-        // Игрок (кубик с глазами)
         const px = runnerObj.playerX, py = runnerObj.playerY, sz = runnerObj.playerSize;
         ctx.fillStyle = '#00d4ff';
         ctx.fillRect(px, py, sz, sz);
@@ -2219,8 +2181,6 @@ function initRunner() {
     };
     gameAnimFrame = requestAnimationFrame(gameLoop);
 }
-
-    
 
 function endRunner(isWin) {
     if (runnerObj.isDead) return;
@@ -2287,7 +2247,7 @@ function endRunner(isWin) {
     }
 }
 
-// ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ================== 
+// ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ==================
 function openPlatformerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
@@ -2540,21 +2500,7 @@ function endPlatformer(isWin = false) {
     }
 }
 
-// ПРОВЕРКА ПАМЯТИ И ЗАПУСК
-window.addEventListener('load', function() {
-    var saved = localStorage.getItem('sunset_user_v50');
-    if (saved) {
-        try {
-            currentUser = JSON.parse(saved);
-            if (typeof startApp === 'function') {
-                startApp();
-            }
-        } catch(e) {
-            console.error(e);
-        }
-    }
-}); 
- function uploadProfilePhoto() {
+function uploadProfilePhoto() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
@@ -2582,13 +2528,10 @@ window.addEventListener('load', function() {
     };
     fileInput.click();
 }
- document.getElementById('chatMembersBtn').onclick = function() {
+
+document.getElementById('chatMembersBtn').onclick = function() {
     if (!activeChat) return;
-    
-    // Берем список участников (если он пустой, то создаем)
     let members = activeChat.members || [];
-    
-    // Создаем окно, если его еще нет в HTML
     let modal = document.getElementById('membersModal');
     if (!modal) {
         modal = document.createElement('div');
@@ -2605,7 +2548,6 @@ window.addEventListener('load', function() {
         document.body.appendChild(modal);
     }
     
-    // Наполняем список
     const list = document.getElementById('membersList');
     list.innerHTML = '';
     document.getElementById('membersCount').textContent = `Всего участников: ${members.length}`;
@@ -2619,7 +2561,6 @@ window.addEventListener('load', function() {
         div.style.padding = '10px 0';
         div.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
         
-        // Если это владелец, кнопку бана не показываем
         let banBtnHtml = '';
         if (m.name !== currentUser.name) {
             banBtnHtml = `<button class="invite-btn" style="background:#ff5e62; color:#fff; border:none; padding: 6px 12px; border-radius: 8px;" onclick="banMember('${m.name}')">Забанить</button>`;
@@ -2640,28 +2581,35 @@ window.addEventListener('load', function() {
     modal.classList.add('show');
 };
 
-// Функция для бана (удаления)
 window.banMember = function(name) {
     if (!activeChat) return;
     if (confirm(`Вы уверены, что хотите забанить ${name}?`)) {
-        // Удаляем из массива участников
         activeChat.members = activeChat.members.filter(m => m.name !== name);
-        
-        // Сохраняем изменения в базу (localStorage)
         if (activeChat.type === 'channel') {
             localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
         } else {
             localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
         }
-        
-        // Обновляем окно участников
         document.getElementById('membersCount').textContent = `Всего участников: ${activeChat.members.length}`;
         document.getElementById('membersModal').classList.remove('show');
-        
         alert(`${name} забанен и удален из чата!`);
     }
 };
- 
+
+// ПРОВЕРКА ПАМЯТИ ПРИ ЗАГРУЗКЕ
+window.addEventListener('load', function() {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+        try {
+            currentUser = JSON.parse(saved);
+            if (typeof startApp === 'function') {
+                startApp();
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+});
 </script>
 </body>
 </html>
