@@ -331,7 +331,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn" onclick="alert('Кнопка работает!')">Продолжить →</button>
+  <button type="button" class="reg-btn" id="regBtn" onclick="const n=document.getElementById('regName').value.trim(); if(n.length<2){document.getElementById('regError').style.display='block';}else{localStorage.setItem('sunset_user_v50', JSON.stringify({name:n, color:'#ff6b6b', emoji:n.charAt(0).toUpperCase(), premium:null, isAdmin:false, lastSeen:'в сети', profileViews:0, subscribers:0, pinnedIds:[]})); window.location.reload();}">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
