@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-hello
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -458,6 +457,15 @@ hello
       <button class="icon-btn" id="deleteChatBtn" style="display:none; font-size:20px; background:transparent; border:none; color:#ff5e62;">🗑️</button>
     </div>
     <div class="chat-body" id="chatBody"></div>
+
+    <!-- ВОТ СЮДА ВСТАВЛЯЕМ БАННЕР -->
+    <div id="chatAdBanner" style="display: none; margin: 0 14px 10px 14px; padding: 12px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px;">
+      <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Prime</div>
+      <div id="adText" style="color: #fff; font-size: 14px; font-weight: 600;"></div>
+      <div id="adLink" style="color: #ff8c42; font-size: 13px; margin-top: 4px; cursor: pointer; text-decoration: underline;"></div>
+    </div>
+    <!-- КОНЕЦ БАННЕРА -->
+
     <div class="chat-input-bar">
       <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
       <button class="chat-send" id="chatSend">➤</button>
@@ -542,6 +550,18 @@ hello
     <div class="modal-title" id="profileTitle">Мой профиль</div>
     <div class="modal-sub" id="profileStatus"></div>
     <button class="profile-action-btn" id="changeAvatarBtn" onclick="uploadProfilePhoto()">🖼️ Загрузить фото профиля</button>
+ 
+    
+    <!-- ВОТ СЮДА ВСТАВЛЯЕМ БЛОК РЕКЛАМЫ -->
+    <div id="premiumAdSettings" style="display: none; margin-top: 15px; background: rgba(255,215,0,0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.3);">
+        <label style="font-size: 13px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px;">👑 Настройки рекламы (Prime):</label>
+        <input type="text" class="modal-input" id="myAdText" placeholder="Текст рекламы" maxlength="50">
+        <input type="url" class="modal-input" id="myAdLink" placeholder="Ссылка (https://...)">
+        <button class="profile-action-btn" id="saveAdBtn" style="background:#ffd700; color:#000; margin-bottom: 0;">Сохранить рекламу</button>
+    </div>
+    <!-- КОНЕЦ БЛОКА РЕКЛАМЫ -->
+
+    
     <label style="font-size: 13px; opacity: 0.8; margin-bottom: 6px; display: block; margin-top: 10px;">Статус:</label>
     <select class="status-select" id="myStatusSelect">
       <option value="в сети">в сети</option>
@@ -910,8 +930,25 @@ document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = 'Мой профиль';
     document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
     
-  document.getElementById('profileModal').classList.add('show'); // <--- ЭТА СТРОКА ДОЛЖНА БЫТЬ (ОНА ОТКРЫВАЕТ ПРОФИЛЬ)
-}; // <--- И ВОТ ЭТА ЗАКРЫВАЮЩАЯ СКОБКА
+    // --- ВОТ СЮДА ВСТАВЛЯЕМ ЭТОТ КУСОК ---
+    const adSettings = document.getElementById('premiumAdSettings');
+    if (adSettings) {
+        if (currentUser.premium === 'prime') {
+            adSettings.style.display = 'block';
+            const txt = document.getElementById('myAdText');
+            const lnk = document.getElementById('myAdLink');
+            if (txt) txt.value = currentUser.adText || '';
+            if (lnk) lnk.value = currentUser.adLink || '';
+        } else {
+            adSettings.style.display = 'none';
+        }
+    }
+    // --- КОНЕЦ ВСТАВКИ ---
+
+    document.getElementById('profileModal').classList.add('show');
+}; // <--- 934 строка, эта скобка закрывает функцию
+
+
 
 document.getElementById('myStatusSelect').onchange = function(e) {
     currentUser.lastSeen = e.target.value;
@@ -1024,18 +1061,18 @@ function openChat(item) {
 
   // ЛОГИКА РЕКЛАМЫ В ЧАТАХ (ТОЛЬКО ДЛЯ PRIME)
   const adBanner = document.getElementById('chatAdBanner');
-  // Добавляем проверку, есть ли элемент на странице, чтобы не было ошибки
   if (adBanner) { 
-      if (item.type !== 'person') {
-          if (currentUser.premium === 'prime' && item.owner === currentUser.name) {
-              adBanner.style.display = 'block';
-              document.getElementById('adText').textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
-              document.getElementById('adLink').textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
-              document.getElementById('adLink').onclick = () => {
+      if (item.type !== 'person' && item.owner === currentUser.name && currentUser.premium === 'prime') {
+          adBanner.style.display = 'block';
+          const adTextEl = document.getElementById('adText');
+          const adLinkEl = document.getElementById('adLink');
+          
+          if (adTextEl) adTextEl.textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
+          if (adLinkEl) {
+              adLinkEl.textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
+              adLinkEl.onclick = () => {
                   if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
               };
-          } else {
-              adBanner.style.display = 'none';
           }
       } else {
           adBanner.style.display = 'none';
