@@ -619,6 +619,18 @@
     <div class="game-area" id="gameArea"></div>
 </div>
 <script>
+ // Проверка: если имя уже сохранено, запускаем приложение сразу
+document.addEventListener('DOMContentLoaded', () => {
+    const savedName = localStorage.getItem('sunset_user_v50');
+    if (savedName) {
+        try {
+            currentUser = JSON.parse(savedName);
+            startApp();
+        } catch(e) {
+            console.error("Ошибка чтения профиля", e);
+        }
+    }
+});
  function continueToApp() {
     const nameInput = document.getElementById('regName');
     const n = (nameInput.value || '').trim();
