@@ -887,7 +887,7 @@ document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
     
     // --- ДОБАВЛЯЕМ ЛОГИКУ РЕКЛАМЫ ---
-    if (currentUser.premium === 'prime' || currentUser.premium === 'sunset') {
+    if (currentUser.premium === 'prime') {
         document.getElementById('premiumAdSettings').style.display = 'block';
         document.getElementById('myAdText').value = currentUser.adText || '';
         document.getElementById('myAdLink').value = currentUser.adLink || '';
@@ -1010,7 +1010,23 @@ function openChat(item) {
   if (!msgs.length) chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
   else { msgs.forEach(m => addMsgToDOM(m)); chatBody.scrollTop = chatBody.scrollHeight; }
 }
-
+// ЛОГИКА РЕКЛАМЫ В ЧАТАХ (ТОЛЬКО ДЛЯ PRIME)
+  const adBanner = document.getElementById('chatAdBanner');
+  if (item.type !== 'person') {
+      if (currentUser.premium === 'prime' && item.owner === currentUser.name) {
+          adBanner.style.display = 'block';
+          document.getElementById('adText').textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
+          document.getElementById('adLink').textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
+          document.getElementById('adLink').onclick = () => {
+              if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
+          };
+      } else {
+          adBanner.style.display = 'none';
+      }
+  } else {
+      adBanner.style.display = 'none';
+  }
+}
 function saveGroups() {
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
     try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
@@ -1251,7 +1267,21 @@ function buildPostEl(p) {
     input.value = '';
     list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
     savePostsIfMine(p);
-  });
+  // РЕКЛАМНЫЙ БЛОК ДЛЯ ПРЕМИУМОВ (Только Prime)
+  if (currentUser.premium === 'prime') {
+      if (p.ads && p.ads.text) {
+          const adDiv = document.createElement('div');
+          adDiv.style.cssText = 'margin-top: 15px; padding: 12px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px;';
+          adDiv.innerHTML = `
+            <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Premium</div>
+            <div style="color: #fff; font-size: 14px;">${esc(p.ads.text)}</div>
+            ${p.ads.image ? `<img src="${esc(p.ads.image)}" style="width:100%; border-radius:8px; margin-top:8px;">` : ''}
+            ${p.ads.link ? `<a href="${esc(p.ads.link)}" target="_blank" style="display:block; margin-top:8px; color:#ff8c42; font-size:13px; text-decoration:none;">Перейти по ссылке →</a>` : ''}
+          `;
+          div.appendChild(adDiv);
+      }
+  }
+ 
   return div;
 }
 
