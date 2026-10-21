@@ -920,6 +920,54 @@ function startApp() {
   if (typeof renderGames === 'function') renderGames();
   if (typeof renderMyPage === 'function') renderMyPage(); 
 }
+ function startApp() {
+  if (!currentUser) return;
+  
+  const regScreen = document.getElementById('register');
+  const panelScreen = document.getElementById('panel');
+  
+  if (!regScreen || !panelScreen) {
+      setTimeout(startApp, 500);
+      return;
+  }
+
+  regScreen.classList.add('hide');
+  panelScreen.classList.add('show');
+  
+  const myAvatar = document.getElementById('myAvatarSmall');
+  if (myAvatar) {
+      if (currentUser.avatarImage) {
+          myAvatar.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+          myAvatar.style.background = 'transparent';
+      } else {
+          myAvatar.textContent = currentUser.emoji;
+          myAvatar.style.background = currentUser.color;
+      }
+  }
+  
+  const nameLabel = document.getElementById('myNameLabel');
+  if (nameLabel) nameLabel.textContent = currentUser.name;
+  
+  const promptAv = document.getElementById('promptAvatar');
+  if (promptAv) {
+      if (currentUser.avatarImage) {
+          promptAv.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+          promptAv.style.background = 'transparent';
+      } else {
+          promptAv.textContent = currentUser.emoji;
+          promptAv.style.background = currentUser.color;
+      }
+  }
+  
+  updatePremiumBadge();
+
+  if (typeof renderChatsList === 'function') renderChatsList('people');
+  if (typeof renderPosts === 'function') renderPosts();
+  if (typeof renderStories === 'function') renderStories();
+  if (typeof renderMusic === 'function') renderMusic(); 
+  if (typeof renderGames === 'function') renderGames();
+  if (typeof renderMyPage === 'function') renderMyPage(); 
+}
 function updatePremiumBadge() {
   const av = document.getElementById('myAvatarSmall');
   const old = av.querySelector('.premium-badge');
