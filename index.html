@@ -933,6 +933,19 @@ document.getElementById('myProfileBtn').onclick = function() {
     }
 
     document.getElementById('profileModal').classList.add('show');
+ document.getElementById('saveAdBtn').onclick = function() {
+        const adText = document.getElementById('myAdText').value.trim();
+        const adLink = document.getElementById('myAdLink').value.trim();
+        
+        currentUser.adText = adText;
+        currentUser.adLink = adLink;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+        
+        alert('Реклама сохранена! Она будет показываться в ваших группах и каналах.');
+        
+        document.getElementById('profileModal').classList.remove('show');
+        if (typeof startApp === 'function') startApp();
+    };
 };
 
 document.getElementById('myStatusSelect').onchange = function(e) {
