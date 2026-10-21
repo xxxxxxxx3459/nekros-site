@@ -333,7 +333,7 @@
     <p>Введите имя чтобы продолжить</p>
     <div class="avatar-preview" id="avatarPreview">?</div>
     <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off">
-    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
+    <button type="button" class="reg-btn" id="regBtn" onclick="continueToApp()">Продолжить →</button>
     <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
   </div>
 </div>
@@ -840,7 +840,7 @@ function startApp() {
   regScreen.classList.add('hide');
   panelScreen.classList.add('show');
   
-  // Защита для аватарки
+  // Аватарка в шапке
   const myAvatar = document.getElementById('myAvatarSmall');
   if (myAvatar) {
       if (currentUser.avatarImage) {
@@ -850,37 +850,34 @@ function startApp() {
           myAvatar.textContent = currentUser.emoji;
           myAvatar.style.background = currentUser.color;
       }
-    }
+  }
   
-  
+  // Имя в шапке
   const nameLabel = document.getElementById('myNameLabel');
   if (nameLabel) nameLabel.textContent = currentUser.name;
   
+  // Аватарка в "создать пост"
   const promptAv = document.getElementById('promptAvatar');
   if (promptAv) {
       if (currentUser.avatarImage) {
           promptAv.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
           promptAv.style.background = 'transparent';
       } else {
-       }
-   promptAv.textContent = currentUser.emoji;
+          promptAv.textContent = currentUser.emoji;
           promptAv.style.background = currentUser.color;
       }
-  
+  }
   
   updatePremiumBadge();
 
-  
-
-  // Запускаем рендер (с проверками, если вдруг элементов нет)
+  // Запускаем рендер
   if (typeof renderChatsList === 'function') renderChatsList('people');
   if (typeof renderPosts === 'function') renderPosts();
   if (typeof renderStories === 'function') renderStories();
   if (typeof renderMusic === 'function') renderMusic(); 
   if (typeof renderGames === 'function') renderGames();
   if (typeof renderMyPage === 'function') renderMyPage(); 
-} // <--- Закрываем функцию startApp
-
+}
 function updatePremiumBadge() {
   const av = document.getElementById('myAvatarSmall');
   const old = av.querySelector('.premium-badge');
@@ -911,9 +908,6 @@ function continueToApp() {
         return;
     }
     document.getElementById('regError').style.display = 'none';
-    
-
-    
     
     let isAdmin = false, premiumLevel = null;
     const lowerName = n.toLowerCase();
