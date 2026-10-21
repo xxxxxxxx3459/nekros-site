@@ -348,7 +348,7 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="icon-btn plus" id="plusBtn">+</button>
+      <button class="icon-btn plus" id="plusBtn" onclick="document.getElementById('createModal').classList.add('show')">+</button>
       <button class="icon-btn" id="settingsBtn">⚙️</button>
     </div>
   </div>
@@ -2645,7 +2645,40 @@ window.banMember = function(name) {
         alert(`${name} забанен и удален из чата!`);
     }
 };
-
+document.querySelectorAll('.modal-option').forEach(option => {
+    option.onclick = function() {
+        const action = this.dataset.action;
+        document.getElementById('createModal').classList.remove('show');
+        
+        if (action === 'post') {
+            openPostModal();
+        } else if (action === 'story') {
+            alert('Истории скоро появятся!');
+        } else {
+            const name = prompt('Введите название:');
+            if (!name) return;
+            const newObj = {
+                id: 'g_' + Date.now(),
+                name: name,
+                color: '#ff8c42',
+                emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
+                type: action,
+                owner: currentUser.name,
+                members: []
+            };
+            if (action === 'channel') {
+                channels.push(newObj);
+                try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
+            } else {
+                groups.push(newObj);
+                try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+            }
+            alert(`Создано: ${name}`);
+            renderChatsList(currentSearchTab, '');
+            renderMyPage();
+        }
+    };
+});
 // ПРОВЕРКА ПАМЯТИ ПРИ ЗАГРУЗКЕ
 window.addEventListener('load', function() {
     var saved = localStorage.getItem(STORAGE_KEY);
