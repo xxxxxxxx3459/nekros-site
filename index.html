@@ -885,8 +885,24 @@ function continueToApp() {
 document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = 'Мой профиль';
     document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : (currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт');
+    
+    // --- ДОБАВЛЯЕМ ЛОГИКУ РЕКЛАМЫ ---
+    if (currentUser.premium === 'prime' || currentUser.premium === 'sunset') {
+        document.getElementById('premiumAdSettings').style.display = 'block';
+        document.getElementById('myAdText').value = currentUser.adText || '';
+        document.getElementById('myAdLink').value = currentUser.adLink || '';
+    } else {
+        document.getElementById('premiumAdSettings').style.display = 'none';
+    }
+
     document.getElementById('profileModal').classList.add('show');
 };
+document.getElementById('saveAdBtn').onclick = function() {
+    currentUser.adText = document.getElementById('myAdText').value.trim();
+    currentUser.adLink = document.getElementById('myAdLink').value.trim();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+    alert('Реклама сохранена! Теперь она будет видна в ваших чатах.');
+};    
 
 document.getElementById('myStatusSelect').onchange = function(e) {
     currentUser.lastSeen = e.target.value;
@@ -2472,6 +2488,86 @@ window.addEventListener('load', function() {
     };
     fileInput.click();
 }
+ document.getElementById('chatMembersBtn').onclick = function() {
+    if (!activeChat) return;
+    
+    // Берем список участников (если он пустой, то создаем)
+    let members = activeChat.members || [];
+    
+    // Создаем окно, если его еще нет в HTML
+    let modal = document.getElementById('membersModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'membersModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card" style="max-height: 80vh;">
+                <div class="modal-title">Участники</div>
+                <div class="modal-sub" id="membersCount"></div>
+                <div id="membersList" style="margin-top: 10px; max-height: 50vh; overflow-y: auto;"></div>
+                <button class="modal-close" onclick="document.getElementById('membersModal').classList.remove('show')">Закрыть</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    // Наполняем список
+    const list = document.getElementById('membersList');
+    list.innerHTML = '';
+    document.getElementById('membersCount').textContent = `Всего участников: ${members.length}`;
+    
+    members.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'viewer-item';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'space-between';
+        div.style.padding = '10px 0';
+        div.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+        
+        // Если это владелец, кнопку бана не показываем
+        let banBtnHtml = '';
+        if (m.name !== currentUser.name) {
+            banBtnHtml = `<button class="invite-btn" style="background:#ff5e62; color:#fff; border:none; padding: 6px 12px; border-radius: 8px;" onclick="banMember('${m.name}')">Забанить</button>`;
+        } else {
+            banBtnHtml = `<span style="font-size:12px; color:#ffd700;">Админ</span>`;
+        }
+
+        div.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div class="viewer-avatar" style="background:#4a90e2; width:35px; height:35px; border-radius:50%; display:flex; justify-content:center; align-items:center; color:#fff; font-weight:bold;">${m.name.charAt(0)}</div>
+                <div class="viewer-name" style="color:#fff; font-size:14px;">${m.name}</div>
+            </div>
+            ${banBtnHtml}
+        `;
+        list.appendChild(div);
+    });
+    
+    modal.classList.add('show');
+};
+
+// Функция для бана (удаления)
+window.banMember = function(name) {
+    if (!activeChat) return;
+    if (confirm(`Вы уверены, что хотите забанить ${name}?`)) {
+        // Удаляем из массива участников
+        activeChat.members = activeChat.members.filter(m => m.name !== name);
+        
+        // Сохраняем изменения в базу (localStorage)
+        if (activeChat.type === 'channel') {
+            localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
+        } else {
+            localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
+        }
+        
+        // Обновляем окно участников
+        document.getElementById('membersCount').textContent = `Всего участников: ${activeChat.members.length}`;
+        document.getElementById('membersModal').classList.remove('show');
+        
+        alert(`${name} забанен и удален из чата!`);
+    }
+};
+ 
 </script>
 </body>
 </html>
