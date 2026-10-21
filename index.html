@@ -856,7 +856,14 @@ function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function startApp() {
-  if (!currentUser) return;
+  if (!currentUser) {
+      const saved = localStorage.getItem('sunset_user_v50');
+      if (saved) {
+          currentUser = JSON.parse(saved);
+      } else {
+          return;
+      }
+  }
   
   const regScreen = document.getElementById('register');
   const panelScreen = document.getElementById('panel');
