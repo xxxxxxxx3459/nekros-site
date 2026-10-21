@@ -602,7 +602,8 @@
 
 <script>
 /* ============ ЗВУКИ ============ */
-let audioCtx = null;
+alert("Скрипт загрузился!");
+ let audioCtx = null;
 function playSound(type) {
     try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
