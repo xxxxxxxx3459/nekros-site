@@ -622,7 +622,7 @@
 </div>
 
 <script>
- alert('Я работаю!');
+alert('Проверка старта!');
 
  function continueToApp() {
     const nameInput = document.getElementById('regName');
@@ -2647,7 +2647,8 @@ window.banMember = function(name) {
 <div id="myDebugConsole" style="position:fixed; bottom:0; left:0; right:0; background:rgba(255,0,0,0.9); color:white; font-size:12px; padding:10px; z-index:99999; display:none; max-height:50vh; overflow-y:auto; font-family:monospace;"></div>
 <script>
 window.onerror = function(msg, url, line, col, error) {
-    var debugDiv = document.getElementById('myDebugConsole');
+   alert('ОШИБКА: ' + msg);
+ var debugDiv = document.getElementById('myDebugConsole');
     if (debugDiv) {
         debugDiv.style.display = 'block';
         var errorMsg = msg;
