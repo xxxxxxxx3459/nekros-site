@@ -641,30 +641,8 @@
 </div>
 
 <script>
-function continueToApp() {
-    const nameInput = document.getElementById('regName');
-    const n = (nameInput.value || '').trim();
-    if (n.length < 2) {
-        document.getElementById('regError').style.display = 'block';
-        return;
-    }
-    document.getElementById('regError').style.display = 'none';
-
-    let isAdmin = false, premiumLevel = null;
-    const lowerName = n.toLowerCase();
-    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-
-    currentUser = { 
-        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-        profileViews: 0, subscribers: 0, pinnedIds: []
-    };
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    startApp();
-}
  
-/* ============ ЗВУКИ ============ */
+ ============ ЗВУКИ ============ 
  let audioCtx = null;
 function playSound(type) {
     try {
