@@ -1008,25 +1008,32 @@ function openChat(item) {
   chatBody.innerHTML = '';
   const msgs = chats[item.id] || [];
   if (!msgs.length) chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог первым!</p></div>';
-  else { msgs.forEach(m => addMsgToDOM(m)); chatBody.scrollTop = chatBody.scrollHeight; }
-}
-// ЛОГИКА РЕКЛАМЫ В ЧАТАХ (ТОЛЬКО ДЛЯ PRIME)
+  else { 
+      msgs.forEach(m => addMsgToDOM(m)); 
+      chatBody.scrollTop = chatBody.scrollHeight; 
+  }
+
+  // ЛОГИКА РЕКЛАМЫ В ЧАТАХ (ТОЛЬКО ДЛЯ PRIME)
   const adBanner = document.getElementById('chatAdBanner');
-  if (item.type !== 'person') {
-      if (currentUser.premium === 'prime' && item.owner === currentUser.name) {
-          adBanner.style.display = 'block';
-          document.getElementById('adText').textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
-          document.getElementById('adLink').textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
-          document.getElementById('adLink').onclick = () => {
-              if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
-          };
+  // Добавляем проверку, есть ли элемент на странице, чтобы не было ошибки
+  if (adBanner) { 
+      if (item.type !== 'person') {
+          if (currentUser.premium === 'prime' && item.owner === currentUser.name) {
+              adBanner.style.display = 'block';
+              document.getElementById('adText').textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
+              document.getElementById('adLink').textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
+              document.getElementById('adLink').onclick = () => {
+                  if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
+              };
+          } else {
+              adBanner.style.display = 'none';
+          }
       } else {
           adBanner.style.display = 'none';
       }
-  } else {
-      adBanner.style.display = 'none';
   }
-}
+} // <--- ВОТ ЗДЕСЬ ЗАКРЫВАЕТСЯ ФУНКЦИЯ openChat (после всей логики рекламы)
+ 
 function saveGroups() {
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
     try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
