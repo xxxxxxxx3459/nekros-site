@@ -622,6 +622,28 @@
 </div>
 
 <script>
+ function continueToApp() {
+    const nameInput = document.getElementById('regName');
+    const n = (nameInput.value || '').trim();
+    if (n.length < 2) {
+        document.getElementById('regError').style.display = 'block';
+        return;
+    }
+    document.getElementById('regError').style.display = 'none';
+    
+    let isAdmin = false, premiumLevel = null;
+    const lowerName = n.toLowerCase();
+    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
+    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
+
+    currentUser = { 
+        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
+        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
+        profileViews: 0, subscribers: 0, pinnedIds: []
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
+    startApp();
+}
 /* ============ ЗВУКИ ============ */
  let audioCtx = null;
 function playSound(type) {
@@ -893,34 +915,6 @@ function updatePremiumBadge() {
   } else {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
-}
-
-
-  
-
- 
-
-function continueToApp() {
-    const nameInput = document.getElementById('regName');
-    const n = (nameInput.value || '').trim();
-    if (n.length < 2) {
-        document.getElementById('regError').style.display = 'block';
-        return;
-    }
-    document.getElementById('regError').style.display = 'none';
-    
-    let isAdmin = false, premiumLevel = null;
-    const lowerName = n.toLowerCase();
-    if (lowerName === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-    else if (lowerName === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-
-    currentUser = { 
-        name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
-        premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-        profileViews: 0, subscribers: 0, pinnedIds: []
-    };
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    startApp();
 }
 document.getElementById('myProfileBtn').onclick = function() {
     document.getElementById('profileTitle').textContent = 'Мой профиль';
@@ -2648,13 +2642,17 @@ window.banMember = function(name) {
 };
  
 </script>
- <div id="myDebugConsole" style="position:fixed; bottom:0; left:0; right:0; background:rgba(255,0,0,0.9); color:white; font-size:12px; padding:10px; z-index:99999; display:none; max-height:50vh; overflow-y:auto; font-family:monospace;"></div>
+<div id="myDebugConsole" style="position:fixed; bottom:0; left:0; right:0; background:rgba(255,0,0,0.9); color:white; font-size:12px; padding:10px; z-index:99999; display:none; max-height:50vh; overflow-y:auto; font-family:monospace;"></div>
 <script>
 window.onerror = function(msg, url, line, col, error) {
     var debugDiv = document.getElementById('myDebugConsole');
     if (debugDiv) {
         debugDiv.style.display = 'block';
-        debugDiv.innerHTML += '<div style="border-bottom:1px solid white; padding:5px 0;">❌ ' + msg + ' (Строка: ' + line + ')</div>';
+        var errorMsg = msg;
+        if (msg.includes('Unexpected token') || msg.includes('Unexpected end of input')) {
+            errorMsg = "🚨 ОШИБКА СКОБОК: " + msg;
+        }
+        debugDiv.innerHTML += '<div style="border-bottom:1px solid white; padding:5px 0;">❌ ' + errorMsg + ' (Строка: ' + line + ')</div>';
     }
     return false;
 };
