@@ -324,6 +324,7 @@
 </style>
 </head>
 <body>
+<script>alert('JS ВООБЩЕ РАБОТАЕТ!');</script> 
 
 <div class="sunset-photo"></div>
 
@@ -611,7 +612,7 @@
     <button class="modal-close" data-close="logoutModal">Отмена</button>
   </div>
 </div>
-<div style="color: white; background: red; position: fixed; top: 0; left: 0; z-index: 999999; padding: 10px;">ТЕСТ HTML РАБОТАЕТ!</div>
+
 <div id="gameOverlay">
     <div class="game-topbar">
         <button class="game-close" onclick="closeGame()">✕</button>
@@ -622,8 +623,7 @@
 </div>
 
 <script>
-
- function continueToApp() {
+function continueToApp() {
     const nameInput = document.getElementById('regName');
     const n = (nameInput.value || '').trim();
     if (n.length < 2) {
