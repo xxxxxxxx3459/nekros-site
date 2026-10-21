@@ -822,18 +822,28 @@ function startApp() {
   // Защита для аватарки
   const myAvatar = document.getElementById('myAvatarSmall');
   if (myAvatar) {
-      myAvatar.textContent = currentUser.emoji;
-      myAvatar.style.background = currentUser.color;
-  }
+      if (currentUser.avatarImage) {
+          myAvatar.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+          myAvatar.style.background = 'transparent';
+      } else {
+          myAvatar.textContent = currentUser.emoji;
+          myAvatar.style.background = currentUser.color;
+      }
+  
   
   const nameLabel = document.getElementById('myNameLabel');
   if (nameLabel) nameLabel.textContent = currentUser.name;
   
   const promptAv = document.getElementById('promptAvatar');
   if (promptAv) {
-      promptAv.textContent = currentUser.emoji;
-      promptAv.style.background = currentUser.color;
-  }
+      if (currentUser.avatarImage) {
+          promptAv.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+          promptAv.style.background = 'transparent';
+      } else {
+          promptAv.textContent = currentUser.emoji;
+          promptAv.style.background = currentUser.color;
+      }
+  
   
   updatePremiumBadge();
 
@@ -858,29 +868,7 @@ function startApp() {
   if (typeof renderMusic === 'function') renderMusic(); 
   if (typeof renderGames === 'function') renderGames();
   if (typeof renderMyPage === 'function') renderMyPage(); 
-}
-
-  try {
-    chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
-    groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
-    channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
-    posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
-    userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
-    const savedGames = JSON.parse(localStorage.getItem(GAMES_KEY) || 'null');
-    if (savedGames) {
-        if(savedGames.shooter && !savedGames.shooter.unlocked) savedGames.shooter.unlocked = 1;
-        if(savedGames.runner && !savedGames.runner.unlocked) savedGames.runner.unlocked = 1;
-        gameState = savedGames;
-    }
-  } catch(e) {}
-
-  renderChatsList('people');
-  renderPosts();
-  renderStories();
-  renderMusic(); 
-  renderGames();
-  renderMyPage(); 
-}
+} // <--- Закрываем функцию startApp
 
 function updatePremiumBadge() {
   const av = document.getElementById('myAvatarSmall');
@@ -888,7 +876,6 @@ function updatePremiumBadge() {
   if (old) old.remove();
   const st = document.getElementById('myStatusLabel');
   
-  // Убираем старые бейджи, чтобы не было дублей
   if (currentUser.premium === 'prime') {
     const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
     st.textContent = 'Prime Premium';
@@ -899,6 +886,9 @@ function updatePremiumBadge() {
     st.textContent = currentUser.lastSeen || 'в сети';
   }
 }
+
+
+  
 
  
 
