@@ -806,14 +806,59 @@ function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;',
 
 function startApp() {
   if (!currentUser) return;
-  document.getElementById('register').classList.add('hide');
-  document.getElementById('panel').classList.add('show');
-  document.getElementById('myAvatarSmall').textContent = currentUser.emoji;
-  document.getElementById('myAvatarSmall').style.background = currentUser.color;
-  document.getElementById('myNameLabel').textContent = currentUser.name;
-  document.getElementById('promptAvatar').textContent = currentUser.emoji;
-  document.getElementById('promptAvatar').style.background = currentUser.color;
+  
+  const regScreen = document.getElementById('register');
+  const panelScreen = document.getElementById('panel');
+  
+  // Защита: если элементов нет, ждем и пробуем снова
+  if (!regScreen || !panelScreen) {
+      setTimeout(startApp, 500);
+      return;
+  }
+
+  regScreen.classList.add('hide');
+  panelScreen.classList.add('show');
+  
+  // Защита для аватарки
+  const myAvatar = document.getElementById('myAvatarSmall');
+  if (myAvatar) {
+      myAvatar.textContent = currentUser.emoji;
+      myAvatar.style.background = currentUser.color;
+  }
+  
+  const nameLabel = document.getElementById('myNameLabel');
+  if (nameLabel) nameLabel.textContent = currentUser.name;
+  
+  const promptAv = document.getElementById('promptAvatar');
+  if (promptAv) {
+      promptAv.textContent = currentUser.emoji;
+      promptAv.style.background = currentUser.color;
+  }
+  
   updatePremiumBadge();
+
+  try {
+    chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
+    groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
+    channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
+    posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
+    userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
+    const savedGames = JSON.parse(localStorage.getItem(GAMES_KEY) || 'null');
+    if (savedGames) {
+        if(savedGames.shooter && !savedGames.shooter.unlocked) savedGames.shooter.unlocked = 1;
+        if(savedGames.runner && !savedGames.runner.unlocked) savedGames.runner.unlocked = 1;
+        gameState = savedGames;
+    }
+  } catch(e) {}
+
+  // Запускаем рендер (с проверками, если вдруг элементов нет)
+  if (typeof renderChatsList === 'function') renderChatsList('people');
+  if (typeof renderPosts === 'function') renderPosts();
+  if (typeof renderStories === 'function') renderStories();
+  if (typeof renderMusic === 'function') renderMusic(); 
+  if (typeof renderGames === 'function') renderGames();
+  if (typeof renderMyPage === 'function') renderMyPage(); 
+}
 
   try {
     chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
