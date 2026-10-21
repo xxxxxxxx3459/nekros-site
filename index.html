@@ -321,6 +321,9 @@
       box-shadow: 0 0 20px #ff8c42; animation: pulseTurbo 1s infinite;
   }
   @keyframes pulseTurbo { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+ .story-circle { transition: transform 0.2s; }
+  .story-circle:active { transform: scale(0.95); }
+  .story-ring.my-add .story-img { font-size: 32px; background: linear-gradient(135deg, #ff8c42, #ff5e62); }
 </style>
 </head>
 <body>
@@ -714,7 +717,69 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-
+function renderStories() {
+    const el = document.getElementById('storiesRow');
+    if (!el) return;
+    el.innerHTML = '';
+    
+    // Кнопка "Добавить историю"
+    const addBtn = document.createElement('div');
+    addBtn.className = 'story-circle';
+    addBtn.innerHTML = `
+        <div class="story-ring my-add"><div class="story-img">+</div></div>
+        <div class="story-label">Добавить</div>
+    `;
+    addBtn.onclick = () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*,video/*';
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (!window.stories) window.stories = [];
+                window.stories.unshift({
+                    id: 's_' + Date.now(),
+                    author: currentUser.name,
+                    color: currentUser.color,
+                    media: event.target.result,
+                    isVideo: file.type.includes('video')
+                });
+                renderStories();
+            };
+            reader.readAsDataURL(file);
+        };
+        fileInput.click();
+    };
+    el.appendChild(addBtn);
+    
+    // Отрисовка историй пользователей
+    if (window.stories && window.stories.length > 0) {
+        window.stories.forEach(story => {
+            const div = document.createElement('div');
+            div.className = 'story-circle';
+            div.innerHTML = `
+                <div class="story-ring">
+                    <div class="story-img" style="background:${story.color};">${story.author.charAt(0).toUpperCase()}</div>
+                </div>
+                <div class="story-label">${story.author}</div>
+            `;
+            div.onclick = () => {
+                const viewerHtml = `
+                    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;" onclick="this.remove()">
+                        ${story.isVideo ? 
+                            `<video src="${story.media}" autoplay controls style="max-width:100%; max-height:90vh;"></video>` : 
+                            `<img src="${story.media}" style="max-width:100%; max-height:90vh; object-fit:contain;">`}
+                        <div style="position:absolute;top:20px;left:20px;color:#fff;font-weight:bold;">${story.author}</div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', viewerHtml);
+            };
+            el.appendChild(div);
+        });
+    }
+}
 // ============ ДАННЫЕ ============
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
@@ -2653,29 +2718,70 @@ document.querySelectorAll('.modal-option').forEach(option => {
         if (action === 'post') {
             openPostModal();
         } else if (action === 'story') {
-            alert('Истории скоро появятся!');
-        } else {
-            const name = prompt('Введите название:');
-            if (!name) return;
-            const newObj = {
-                id: 'g_' + Date.now(),
-                name: name,
-                color: '#ff8c42',
-                emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
-                type: action,
-                owner: currentUser.name,
-                members: []
+            // Логика для истории
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*,video/*';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    if (!window.stories) window.stories = [];
+                    window.stories.unshift({
+                        id: 's_' + Date.now(),
+                        author: currentUser.name,
+                        color: currentUser.color,
+                        media: event.target.result,
+                        isVideo: file.type.includes('video')
+                    });
+                    alert('История добавлена!');
+                    renderStories();
+                };
+                reader.readAsDataURL(file);
             };
-            if (action === 'channel') {
-                channels.push(newObj);
-                try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-            } else {
-                groups.push(newObj);
-                try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-            }
-            alert(`Создано: ${name}`);
-            renderChatsList(currentSearchTab, '');
-            renderMyPage();
+            fileInput.click();
+        } else {
+            // Красивое окно для групп, каналов и сообществ
+            const title = action === 'channel' ? 'Новый канал 📢' : (action === 'community' ? 'Новое сообщество 🌍' : 'Новая группа 👥');
+            const modalHtml = `
+                <div class="modal show" id="createGroupModal" style="z-index: 9999;">
+                    <div class="modal-card">
+                        <div class="modal-title">${title}</div>
+                        <div class="modal-sub">Введите название</div>
+                        <input type="text" class="modal-input" id="newGroupName" placeholder="Название..." maxlength="30">
+                        <button class="modal-primary" id="confirmCreateGroupBtn" style="margin-bottom: 10px;">Создать</button>
+                        <button class="modal-close" onclick="document.getElementById('createGroupModal').remove()">Отмена</button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            document.getElementById('confirmCreateGroupBtn').onclick = function() {
+                const name = document.getElementById('newGroupName').value.trim();
+                if (!name) { alert('Введите название!'); return; }
+                
+                const newObj = {
+                    id: 'g_' + Date.now(),
+                    name: name,
+                    color: '#ff8c42',
+                    emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
+                    type: action,
+                    owner: currentUser.name,
+                    members: []
+                };
+                if (action === 'channel') {
+                    channels.push(newObj);
+                    try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
+                } else {
+                    groups.push(newObj);
+                    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+                }
+                alert(`Создано: ${name}`);
+                document.getElementById('createGroupModal').remove();
+                renderChatsList(currentSearchTab, '');
+                renderMyPage();
+            };
         }
     };
 });
