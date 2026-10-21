@@ -848,19 +848,7 @@ function startApp() {
   
   updatePremiumBadge();
 
-  try {
-    chats = JSON.parse(localStorage.getItem(CHATS_KEY) || '{}');
-    groups = JSON.parse(localStorage.getItem(GROUPS_KEY) || '[]');
-    channels = JSON.parse(localStorage.getItem(CHANNELS_KEY) || '[]');
-    posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
-    userLikes = JSON.parse(localStorage.getItem(LIKES_KEY) || '[]');
-    const savedGames = JSON.parse(localStorage.getItem(GAMES_KEY) || 'null');
-    if (savedGames) {
-        if(savedGames.shooter && !savedGames.shooter.unlocked) savedGames.shooter.unlocked = 1;
-        if(savedGames.runner && !savedGames.runner.unlocked) savedGames.runner.unlocked = 1;
-        gameState = savedGames;
-    }
-  } catch(e) {}
+  
 
   // Запускаем рендер (с проверками, если вдруг элементов нет)
   if (typeof renderChatsList === 'function') renderChatsList('people');
