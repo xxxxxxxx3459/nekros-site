@@ -334,13 +334,13 @@
             profileViews: 0, subscribers: 0, pinnedIds: []
         };
         localStorage.setItem('sunset_user_v50', JSON.stringify(currentUser));
-        setTimeout(() => {
-            if (typeof startApp === 'function') {
-                startApp();
-            } else {
-                alert('Ошибка: Функция startApp не найдена в коде!');
-            }
-        }, 100);
+      window.addEventListener('load', () => {
+        if (typeof startApp === 'function') {
+            startApp();
+        } else {
+            alert('Ошибка: startApp не найдена даже после загрузки!');
+        }
+    });
     }
 </script>
 
@@ -740,8 +740,8 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-regBtn.addEventListener('click', continueToApp);
-/* ============ ДАННЫЕ ============ */
+
+//============ ДАННЫЕ ============ 
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
 const CHANNELS_KEY = 'sunset_channels_v50';
