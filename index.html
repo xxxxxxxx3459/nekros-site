@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedName = localStorage.getItem('sunset_user_v50');
     if (savedName) {
         try {
-            currentUser = JSON.parse(savedName);
+            alert('✅ Имя прочитано из памяти: ' + currentUser.name);
             startApp();
         } catch(e) {
             console.error("Ошибка чтения профиля", e);
@@ -645,8 +645,11 @@ document.addEventListener('DOMContentLoaded', () => {
         premium: null, isAdmin: false, lastSeen: 'в сети',
         profileViews: 0, subscribers: 0, pinnedIds: []
     };
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-    startApp();
+    try { 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); 
+    alert('✅ Имя сохранено в память: ' + n);
+} catch(e) { 
+    alert('❌ Ошибка сохранения: ' + e.message); 
 }
 // ============ ЗВУКИ ============ 
  let audioCtx = null;
