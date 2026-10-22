@@ -1271,27 +1271,35 @@ function openChat(item) {
 
   const adBanner = document.getElementById('chatAdBanner');
   if (adBanner) { 
-      if (item.type !== 'person' && item.owner === currentUser.name && currentUser.premium === 'prime') {
+      if (item.type !== 'person') {
           adBanner.style.display = 'block';
-          const adTextEl = document.getElementById('adText');
-          const adLinkEl = document.getElementById('adLink');
-          
-          if (adTextEl) adTextEl.textContent = 'Здесь может быть ваша реклама!';
-          if (adLinkEl) {
-              adLinkEl.innerHTML = '👉 <span style="color:#ffd700; font-weight:bold; text-decoration:underline;">Купить премиум</span>';
-              adLinkEl.onclick = () => {
-                  document.getElementById('chat').classList.remove('show');
-                  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-                  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-                  document.getElementById('tab-promo').classList.add('active');
-                  document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
-              };
+          adBanner.innerHTML = '';
+
+          const isOwnerPremium = (item.owner === currentUser.name && currentUser.premium === 'prime');
+          const isCurrentUserPremium = (currentUser.premium === 'prime' || currentUser.premium === 'sunset');
+
+          if (isOwnerPremium) {
+              const adText = currentUser.adText || 'Реклама от Prime';
+              const adLink = currentUser.adLink || '#';
+              adBanner.innerHTML = `
+                  <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Prime</div>
+                  <div style="color: #fff; font-size: 14px; font-weight: 600;">${adText}</div>
+                  <div style="color: #ff8c42; font-size: 13px; margin-top: 4px; cursor: pointer; text-decoration: underline;" onclick="window.open('${adLink}', '_blank')">👉 Перейти по ссылке</div>
+              `;
+          } else if (!isCurrentUserPremium) {
+              adBanner.innerHTML = `
+                  <a class="ad-square" onclick="document.getElementById('chat').classList.remove('show'); document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active')); document.getElementById('tab-promo').classList.add('active'); document.querySelector('.nav-btn[data-tab=\\'promo\\']').classList.add('active');">
+                      <div class="ad-square-text">Тут может быть ваша реклама!</div>
+                      <div class="ad-square-btn">Купить прайм</div>
+                  </a>
+              `;
+          } else {
+              adBanner.style.display = 'none';
           }
       } else {
           adBanner.style.display = 'none';
       }
   }
-}
 
 function saveGroups() {
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
