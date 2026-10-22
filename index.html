@@ -334,6 +334,7 @@
     border: 1px solid rgba(255, 215, 0, 0.25);
     border-radius: 16px;
     display: none; /* Скрыто по умолчанию, включается для бесплатных */
+   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
   .ad-container.show-ad {
     display: block;
@@ -497,17 +498,13 @@
       <button class="icon-btn" id="deleteChatBtn" style="display:none; font-size:20px; background:transparent; border:none; color:#ff5e62;">🗑️</button>
     </div>
     <div class="chat-body" id="chatBody"></div>
-   
-    <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГРУПП И КАНАЛОВ -->
-   
-    <div id="chatAdText" class="ad-text">Реклама от Premium: Присоединяйтесь к нашей подписке!</div>
+  
+   <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГРУПП И КАНАЛОВ -->
+    <div id="chatAdBanner" class="ad-container">
+      <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
+      <div id="chatAdText" class="ad-text">Реклама от Premium: Присоединяйтесь к нашей подписке!</div>
       <div id="chatAdLink" class="ad-link">👉 <span style='color:#ffd700; font-weight:bold;'>Купить премиум</span></div>
-    <div class="chat-input-bar">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
-      <button class="chat-send" id="chatSend">➤</button>
     </div>
-  </div>
-</div>
 
 <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГЛАВНОЙ СТРАНИЦЫ -->
     <div id="feedAdBanner" class="ad-container" style="margin-top: 20px;">
