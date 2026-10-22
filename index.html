@@ -1263,15 +1263,11 @@ function openChat(item) {
           const adTextEl = document.getElementById('adText');
           const adLinkEl = document.getElementById('adLink');
           
-          if (adTextEl) adTextEl.textContent = 'Здесь может быть ваша реклама!';
+          if (adTextEl) adTextEl.textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
           if (adLinkEl) {
-              adLinkEl.innerHTML = '👉 <span style="color:#ffd700; font-weight:bold; text-decoration:underline;">Купить премиум</span>';
+              adLinkEl.textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
               adLinkEl.onclick = () => {
-                  document.getElementById('chat').classList.remove('show');
-                  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-                  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-                  document.getElementById('tab-promo').classList.add('active');
-                  document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
+                  if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
               };
           }
       } else {
@@ -1317,24 +1313,17 @@ document.getElementById('chatSend').addEventListener('click', () => {
   const statusEl = document.getElementById('chatStatus');
   if (activeChat.type === 'person') { statusEl.textContent = 'печатает...'; statusEl.className = 'status typing'; }
   setTimeout(() => {
-    // Если в группе/сообществе нет других людей (только ты), бот молчит
-    if (activeChat.type !== 'person' && (!activeChat.members || activeChat.members.length === 0)) {
-        return;
-    }
-
     const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
     try { localStorage.setItem(CHATS_KEY, JSON.stringify(chats)); } catch(e) {}
     if (activeChat) { 
-        if (activeChat.type === 'person') { 
-            statusEl.textContent = activeChat.lastSeen; 
-            statusEl.className = 'status ' + (activeChat.lastSeen === 'в сети' ? 'online' : 'offline'); 
-        }
-        addMsgToDOM(reply); 
-        chatBody.scrollTop = chatBody.scrollHeight; 
+        if (activeChat.type === 'person') { statusEl.textContent = activeChat.lastSeen; statusEl.className = 'status ' + (activeChat.lastSeen === 'в сети' ? 'online' : 'offline'); }
+        addMsgToDOM(reply); chatBody.scrollTop = chatBody.scrollHeight; 
     }
   }, 2500);
+});
+
 document.getElementById('chatInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('chatSend').click();
 });
@@ -2907,22 +2896,5 @@ window.addEventListener('load', function() {
     }
 });
 </script>
-
-<script>
-function customAlert(text) {
-    const modal = document.createElement('div');
-    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-    modal.innerHTML = `
-        <div style="background:#1a0a1e; border:1px solid rgba(255,255,255,0.2); border-radius:24px; padding:24px; width:100%; max-width:320px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-            <div style="color:#fff; font-size:16px; margin-bottom:20px; line-height:1.4;">${text}</div>
-            <button onclick="this.closest('div').parentElement.remove()" style="width:100%; background:linear-gradient(135deg,#ff8c42,#ff5e62); border:none; border-radius:14px; padding:14px; color:#fff; font-size:16px; font-weight:bold; cursor:pointer;">ОК</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-}
-</script>
-
-</body>
-</html>
 </body>
 </html>
