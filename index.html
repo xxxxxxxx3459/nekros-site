@@ -1094,12 +1094,10 @@ function renderMusic() {
     if (!el) return;
     let html = '';
     
-    const DEMO_TRACKS = [
-        { name: "Believer", artist: "Imagine Dragons", url: "https://cdns-preview-1.dzcdn.net/stream/c-1c2e16c75f2447f3b9c9e5c5b1e2447c-5.mp3" },
-        { name: "Shape of You", artist: "Ed Sheeran", url: "https://cdns-preview-4.dzcdn.net/stream/c-4d1e3e32f9a1867e8f6f2b5e420d4023-6.mp3" },
-        { name: "Blinding Lights", artist: "The Weeknd", url: "https://cdns-preview-6.dzcdn.net/stream/c-6d902e0d321b6a1c53a35d2e11f21e71-6.mp3" },
-        { name: "Levitating", artist: "Dua Lipa", url: "https://cdns-preview-7.dzcdn.net/stream/c-7d5d3d32b9e7f416db8e0c1e2e1f2b4d-5.mp3" },
-        { name: "Bad Guy", artist: "Billie Eilish", url: "https://cdns-preview-9.dzcdn.net/stream/c-9e1f5a7b3c2d1e4f5a6b7c8d9e0f1a2b-4.mp3" }
+const DEMO_TRACKS = [
+        { name: "Lofi Study", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" },
+        { name: "Chill Abstract", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3" },
+        { name: "Good Day", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2021/11/25/audio_00fa5593f3.mp3" }
     ];
 
     DEMO_TRACKS.forEach((s, i) => {
@@ -1118,25 +1116,49 @@ window.playTrack = function(url, name, artist) {
     // Если трек уже играет — ставим на паузу
     if (!player.paused && player.src === url) {
         player.pause();
-        alert('⏸ Пауза: ' + name);
         return;
     }
 
-    // Загружаем и играем
     player.src = url;
     player.load();
     
-    player.play().then(() => {
-        alert('🎵 Играет: ' + name + ' — ' + artist);
-    }).catch(e => {
-        // Если ошибка Abort, значит браузер не успел загрузить — пробуем еще раз
-        if (e.name === 'AbortError') {
-            setTimeout(() => {
-                player.play().catch(() => {});
-            }, 500);
+    // Создаем или обновляем красивую панель
+    let bar = document.getElementById('customMusicBar');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'customMusicBar';
+        bar.style.cssText = 'position:fixed; bottom:70px; left:10px; right:10px; background:rgba(30,20,40,0.95); border:1px solid rgba(255,255,255,0.2);( border-radius:16px; padding10:10px px15px; display:flex; align);-items:center; gap:12 box-shadowpx; z-index:9999; backdrop-filter:blur:0 10px 30px rgba(0,0,0,0.5);';
+        document.body.appendChild(bar);
+    }
+
+    bar.innerHTML = `
+        <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#ff8c42,#ff5e62); display:flex; align-items:center; justify-content:center; font-size:18px;">🎵</div>
+        <div style="flex:1; min-width:0;">
+            <div style="color:#fff; font-size:14px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
+            <div style="color:rgba(255,255,255,0.6); font-size:11px;">${artist}</div>
+        </div>
+        <button id="playPauseBtn" style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.1); border:none; color:#fff; font-size:18px; cursor:pointer;">⏸</button>
+    `;
+
+    // Логика кнопки паузы
+    const btn = document.getElementById('playPauseBtn');
+    btn.onclick = () => {
+        if (player.paused) {
+            player.play();
+            btn.textContent = '⏸';
         } else {
-            alert('❌ Ошибка: ' + e.message + '. Попробуйте нажать еще раз.');
+            player.pause();
+            btn.textContent = '▶';
         }
+    };
+
+    // Следим за состоянием плеера
+    player.onplay = () => { btn.textContent = '⏸'; };
+    player.onpause = () => { btn.textContent = '▶'; };
+    player.onended = () => { btn.textContent = '▶'; };
+
+    player.play().catch(e => {
+        alert('❌ Не удалось запустить. Попробуйте другой трек.');
     });
 };
 
