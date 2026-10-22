@@ -499,12 +499,9 @@
     <div class="chat-body" id="chatBody"></div>
    
     <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГРУПП И КАНАЛОВ -->
-    <div id="chatAdBanner" class="ad-container">
-      <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
-      <div id="chatAdText" class="ad-text">Реклама от Premium: Присоединяйтесь к нашей подписке!</div>
+   
+    <div id="chatAdText" class="ad-text">Реклама от Premium: Присоединяйтесь к нашей подписке!</div>
       <div id="chatAdLink" class="ad-link">👉 <span style='color:#ffd700; font-weight:bold;'>Купить премиум</span></div>
-    </div>
-
     <div class="chat-input-bar">
       <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
       <button class="chat-send" id="chatSend">➤</button>
@@ -2890,8 +2887,8 @@ function updateAdsDisplay() {
             const adText = document.getElementById('chatAdText');
             const adLink = document.getElementById('chatAdLink');
             
-            adText.textContent = "Реклама от Premium: Присоединяйтесь к нашему каналу!";
-            adLink.textContent = "👉 Купить премиум";
+            adText.textContent = "Реклама от Premium: Присоединяйтесь к нашей подписке!";
+            adLink.innerHTML = "👉 <span style='color:#ffd700; font-weight:bold;'>Купить премиум</span>";
             
             adLink.onclick = () => {
                 document.getElementById('chat').classList.remove('show');
