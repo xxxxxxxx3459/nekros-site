@@ -352,12 +352,13 @@
     font-weight: 600;
     line-height: 1.4;
   }
-  .ad-link {
-    color: #ff8c42;
+.ad-link {
+    color: #ffd700;
     font-size: 13px;
     margin-top: 6px;
     cursor: pointer;
     text-decoration: underline;
+    text-decoration-color: #ffd700;
     font-weight: 600;
     display: inline-block;
   }
@@ -501,8 +502,8 @@
     <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГРУПП И КАНАЛОВ -->
     <div id="chatAdBanner" class="ad-container">
       <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
-      <div id="chatAdText" class="ad-text">Здесь может быть ваша реклама!</div>
-      <div id="chatAdLink" class="ad-link">👉 Купить премиум</div>
+      Тут может быть ваша реклама! Присоединяйтесь к нашей подписке Premium!
+      <div id="chatAdLink" class="ad-link">👉 Купить premium</div>
     </div>
 
     <div class="chat-input-bar">
@@ -515,8 +516,8 @@
 <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГЛАВНОЙ СТРАНИЦЫ -->
 <div id="feedAdBanner" class="ad-container" style="margin-top: 20px;">
   <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
-  <div id="feedAdText" class="ad-text">Здесь может быть ваша реклама!</div>
-  <div id="feedAdLink" class="ad-link">👉 Купить премиум</div>
+<div id="feedAdText" class="ad-text">Тут может быть ваша реклама! Присоединяйтесь к нашей подписке Premium!</div>
+ <div id="feedAdLink" class="ad-link">👉 Купить premium</div>  
 </div>
 
 <div class="modal" id="createModal">
@@ -2858,11 +2859,11 @@ function updateAdsDisplay() {
             // Чтобы было красиво, покажем заглушку или текст из профиля, если он есть.
             
             // Тут мы имитируем рекламу от другого премиум-пользователя.
-            const premiumAdText = "Реклама от Premium: Попробуйте наш новый курс по фотошопу!";
+            const premiumAdText = "Тут может быть ваша реклама! Присоединяйтесь к нашей подписке Premium!"
             const premiumAdLink = "https://example.com";
             
             adText.textContent = premiumAdText;
-            adLink.textContent = "👉 Купить премиум";
+            adLink.textContent = "👉 Купить premium"; 
             
             // Если у вас была сохранена реклама в профиле (для демонстрации), можно вывести её
             // adText.textContent = "Здесь может быть ваша реклама!";
@@ -2890,8 +2891,8 @@ function updateAdsDisplay() {
             const adText = document.getElementById('chatAdText');
             const adLink = document.getElementById('chatAdLink');
             
-            adText.textContent = "Реклама от Premium: Присоединяйтесь к нашему каналу!";
-            adLink.textContent = "👉 Купить премиум";
+            adText.textContent = "Реклама от Premium: Присоединяйтесь к нашей подписке!";
+            adLink.textContent = "👉 Купить Premium";
             
             adLink.onclick = () => {
                 document.getElementById('chat').classList.remove('show');
