@@ -617,7 +617,7 @@
     </div>
     <div class="game-area" id="gameArea"></div>
 </div>
-
+<audio id="musicPlayer" controls style="display:none;"></audio>
 <script>
 // ============ ЗВУКИ ============
 let audioCtx = null;
@@ -1093,14 +1093,42 @@ function renderMusic() {
     const el = document.getElementById('musicList');
     if (!el) return;
     let html = '';
-    SONGS.forEach((s, i) => {
-        html += `<div class="track" onclick="alert('🎵 Воспроизведение: ${esc(s[0])} - ${esc(s[1])}')">
+    
+    const DEMO_TRACKS = [
+        { name: "Believer", artist: "Imagine Dragons", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+        { name: "Shape of You", artist: "Ed Sheeran", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+        { name: "Blinding Lights", artist: "The Weeknd", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+        { name: "Levitating", artist: "Dua Lipa", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+        { name: "Bad Guy", artist: "Billie Eilish", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+        { name: "Circles", artist: "Post Malone", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" }
+    ];
+
+    DEMO_TRACKS.forEach((s, i) => {
+        html += `<div class="track" onclick="playTrack('${s.url}', '${esc(s.name)}', '${esc(s.artist)}')">
                 <div class="track-left"><div class="track-num">${i + 1}</div>
-                    <div class="track-info"><div class="track-name">${esc(s[1])}</div><div class="track-artist">${esc(s[0])}</div></div>
-                </div><div class="track-play">▶</div></div>`;
+                    <div class="track-info"><div class="track-name">${esc(s.name)}</div><div class="track-artist">${esc(s.artist)}</div></div>
+                </div><div class="track-play" id="playIcon_${i}">▶</div></div>`;
     });
     el.innerHTML = html;
 }
+
+window.playTrack = function(url, name, artist) {
+    const player = document.getElementById('musicPlayer');
+    if (!player) return;
+
+    if (!player.paused && player.src === url) {
+        player.pause();
+        alert('⏸ Пауза: ' + name);
+        return;
+    }
+
+    player.src = url;
+    player.play().then(() => {
+        alert('🎵 Играет: ' + name + ' — ' + artist);
+    }).catch(e => {
+        alert('❌ Ошибка: ' + e.message);
+    });
+};
 
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
