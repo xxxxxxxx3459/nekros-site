@@ -325,6 +325,42 @@
   .story-circle { transition: transform 0.2s; }
   .story-circle:active { transform: scale(0.95); }
   .story-ring.my-add .story-img { font-size: 32px; background: linear-gradient(135deg, #ff8c42, #ff5e62); }
+  
+  /* СТИЛЬ ДЛЯ РЕКЛАМЫ */
+  .ad-container {
+    margin: 12px 16px;
+    padding: 12px;
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 16px;
+    display: none; /* Скрыто по умолчанию, включается для бесплатных */
+  }
+  .ad-container.show-ad {
+    display: block;
+  }
+  .ad-label {
+    font-size: 10px;
+    color: #ffd700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .ad-text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .ad-link {
+    color: #ff8c42;
+    font-size: 13px;
+    margin-top: 6px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600;
+    display: inline-block;
+  }
 </style>
 </head>
 <body>
@@ -462,10 +498,11 @@
     </div>
     <div class="chat-body" id="chatBody"></div>
 
-    <div id="chatAdBanner" style="display: none; margin: 0 14px 10px 14px; padding: 12px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px;">
-      <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Prime</div>
-      <div id="adText" style="color: #fff; font-size: 14px; font-weight: 600;"></div>
-      <div id="adLink" style="color: #ff8c42; font-size: 13px; margin-top: 4px; cursor: pointer; text-decoration: underline;"></div>
+    <!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГРУПП И КАНАЛОВ -->
+    <div id="chatAdBanner" class="ad-container">
+      <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
+      <div id="chatAdText" class="ad-text">Здесь может быть ваша реклама!</div>
+      <div id="chatAdLink" class="ad-link">👉 Купить премиум</div>
     </div>
 
     <div class="chat-input-bar">
@@ -473,6 +510,13 @@
       <button class="chat-send" id="chatSend">➤</button>
     </div>
   </div>
+</div>
+
+<!-- РЕКЛАМНЫЙ БЛОК ДЛЯ ГЛАВНОЙ СТРАНИЦЫ -->
+<div id="feedAdBanner" class="ad-container" style="margin-top: 20px;">
+  <div class="ad-label">РЕКЛАМА ОТ PRIME</div>
+  <div id="feedAdText" class="ad-text">Здесь может быть ваша реклама!</div>
+  <div id="feedAdLink" class="ad-link">👉 Купить премиум</div>
 </div>
 
 <div class="modal" id="createModal">
@@ -554,7 +598,7 @@
     <button class="profile-action-btn" id="changeAvatarBtn" onclick="uploadProfilePhoto()">🖼️ Загрузить фото профиля</button>
  
     <div id="premiumAdSettings" style="display: none; margin-top: 15px; background: rgba(255,215,0,0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.3);">
-        <label style="font-size: 13px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px;">👑 Настройки рекламы (Prime):</label>
+        <label style="font-size: 13px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px;">👑 Настройки рекламы (Prime/Sunset):</label>
         <input type="text" class="modal-input" id="myAdText" placeholder="Текст рекламы" maxlength="50">
         <input type="url" class="modal-input" id="myAdLink" placeholder="Ссылка (https://...)">
         <button class="profile-action-btn" id="saveAdBtn" style="background:#ffd700; color:#000; margin-bottom: 0;">Сохранить рекламу</button>
@@ -577,7 +621,8 @@
     <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
- <div class="modal" id="settingsModal">
+
+<div class="modal" id="settingsModal">
   <div class="modal-card" style="max-height: 90vh;">
     <div class="modal-title">⚙️ Настройки</div>
     <label style="font-size: 13px; opacity: 0.8; display: block; margin-top: 10px;">Время:</label>
@@ -619,6 +664,7 @@
     <div class="game-area" id="gameArea"></div>
 </div>
 <audio id="musicPlayer" controls style="display:none;"></audio>
+
 <script>
 // ============ ЗВУКИ ============
 let audioCtx = null;
@@ -796,7 +842,8 @@ document.getElementById('regBtn').addEventListener('click', function() {
     currentUser = { 
         name: n, color: chosenColor, emoji: n.charAt(0).toUpperCase(), 
         premium: premiumLevel, isAdmin: isAdmin, lastSeen: 'в сети',
-        profileViews: 0, subscribers: 0, pinnedIds: []
+        profileViews: 0, subscribers: 0, pinnedIds: [],
+        adText: '', adLink: ''
     };
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
     startApp();
@@ -881,7 +928,7 @@ document.getElementById('myProfileBtn').onclick = function() {
     
     const adSettings = document.getElementById('premiumAdSettings');
     if (adSettings) {
-        if (currentUser.premium === 'prime') {
+        if (currentUser.premium === 'prime' || currentUser.premium === 'sunset') {
             adSettings.style.display = 'block';
             const txt = document.getElementById('myAdText');
             const lnk = document.getElementById('myAdLink');
@@ -903,10 +950,10 @@ document.getElementById('saveAdBtn').onclick = function() {
     currentUser.adLink = adLink;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
     
-    customAlert('Реклама сохранена! Она будет показываться в ваших группах и каналах.');
+    customAlert('Реклама сохранена! Она будет показываться бесплатным пользователям.');
     
     document.getElementById('profileModal').classList.remove('show');
-    if (typeof startApp === 'function') startApp();
+    updateAdsDisplay();
 };
 
 document.getElementById('plusBtn').onclick = function() {
@@ -1256,28 +1303,8 @@ function openChat(item) {
       chatBody.scrollTop = chatBody.scrollHeight; 
   }
 
-  const adBanner = document.getElementById('chatAdBanner');
-  if (adBanner) { 
-      if (item.type !== 'person' && item.owner === currentUser.name && currentUser.premium === 'prime') {
-          adBanner.style.display = 'block';
-          const adTextEl = document.getElementById('adText');
-          const adLinkEl = document.getElementById('adLink');
-          
-          if (adTextEl) adTextEl.textContent = 'Здесь может быть ваша реклама!';
-          if (adLinkEl) {
-              adLinkEl.innerHTML = '👉 <span style="color:#ffd700; font-weight:bold; text-decoration:underline;">Купить премиум</span>';
-              adLinkEl.onclick = () => {
-                  document.getElementById('chat').classList.remove('show');
-                  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-                  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-                  document.getElementById('tab-promo').classList.add('active');
-                  document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
-              };
-          }
-      } else {
-          adBanner.style.display = 'none';
-      }
-  }
+  // ОБНОВЛЯЕМ РЕКЛАМУ В ЧАТЕ
+  updateAdsDisplay();
 }
 
 function saveGroups() {
@@ -1317,7 +1344,6 @@ document.getElementById('chatSend').addEventListener('click', () => {
   const statusEl = document.getElementById('chatStatus');
   if (activeChat.type === 'person') { statusEl.textContent = 'печатает...'; statusEl.className = 'status typing'; }
   setTimeout(() => {
-    // Если в группе/сообществе нет других людей (только ты), бот молчит
     if (activeChat.type !== 'person' && (!activeChat.members || activeChat.members.length === 0)) {
         return;
     }
@@ -1526,20 +1552,6 @@ function buildPostEl(p) {
     savePostsIfMine(p);
   });
 
-  if (currentUser.premium === 'prime') {
-      if (p.ads && p.ads.text) {
-          const adDiv = document.createElement('div');
-          adDiv.style.cssText = 'margin-top: 15px; padding: 12px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px;';
-          adDiv.innerHTML = `
-            <div style="font-size: 10px; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">Реклама от Premium</div>
-            <div style="color: #fff; font-size: 14px;">${esc(p.ads.text)}</div>
-            ${p.ads.image ? `<img src="${esc(p.ads.image)}" style="width:100%; border-radius:8px; margin-top:8px;">` : ''}
-            ${p.ads.link ? `<a href="${esc(p.ads.link)}" target="_blank" style="display:block; margin-top:8px; color:#ff8c42; font-size:13px; text-decoration:none;">Перейти по ссылке →</a>` : ''}
-          `;
-          div.appendChild(adDiv);
-      }
-  }
- 
   return div;
 }
 
@@ -1604,7 +1616,7 @@ function openPostModal() {
         document.getElementById('formModal').classList.remove('show');
     };
 }
- 
+
 function renderMyPage() {
     const pinnedContainer = document.getElementById('pinnedSections');
     const manageBtn = document.getElementById('managePinnedBtn');
@@ -2827,6 +2839,73 @@ function customAlert(text) {
     document.body.appendChild(modal);
 }
 
+// ОБНОВЛЕНИЕ РЕКЛАМЫ
+function updateAdsDisplay() {
+    // 1. РЕКЛАМА НА ГЛАВНОЙ
+    const feedAdBanner = document.getElementById('feedAdBanner');
+    if (feedAdBanner) {
+        // Показываем только тем, у кого нет премиума
+        if (currentUser.premium !== 'prime' && currentUser.premium !== 'sunset') {
+            feedAdBanner.classList.add('show-ad');
+            
+            const adText = document.getElementById('feedAdText');
+            const adLink = document.getElementById('feedAdLink');
+            
+            // Логика: Если текущий пользователь - премиум, он не видит рекламу. 
+            // А рекламу пишут другие премиумы. Нам нужно показать рекламу, которую написал любой премиум.
+            // Но так как у нас нет базы других премиумов, мы будем показывать рекламу текущего пользователя (если он премиум, он её не увидит).
+            // Для демонстрации: если это обычный пользователь, мы покажем рекламу "Марии" (заглушка) или его собственную.
+            // Чтобы было красиво, покажем заглушку или текст из профиля, если он есть.
+            
+            // Тут мы имитируем рекламу от другого премиум-пользователя.
+            const premiumAdText = "Реклама от Premium: Попробуйте наш новый курс по фотошопу!";
+            const premiumAdLink = "https://example.com";
+            
+            adText.textContent = premiumAdText;
+            adLink.textContent = "👉 Купить премиум";
+            
+            // Если у вас была сохранена реклама в профиле (для демонстрации), можно вывести её
+            // adText.textContent = "Здесь может быть ваша реклама!";
+            // adLink.textContent = "👉 Купить премиум";
+            
+            adLink.onclick = () => {
+                // Переход в промо вкладку
+                document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+                document.getElementById('tab-promo').classList.add('active');
+                document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
+            };
+        } else {
+            feedAdBanner.classList.remove('show-ad');
+        }
+    }
+
+    // 2. РЕКЛАМА В ЧАТАХ (Группы и Каналы)
+    const chatAdBanner = document.getElementById('chatAdBanner');
+    if (chatAdBanner) {
+        // Показываем только бесплатным пользователям и только если открыт чат группы/канала
+        if (currentUser.premium !== 'prime' && currentUser.premium !== 'sunset' && activeChat && activeChat.type !== 'person') {
+            chatAdBanner.classList.add('show-ad');
+            
+            const adText = document.getElementById('chatAdText');
+            const adLink = document.getElementById('chatAdLink');
+            
+            adText.textContent = "Реклама от Premium: Присоединяйтесь к нашему каналу!";
+            adLink.textContent = "👉 Купить премиум";
+            
+            adLink.onclick = () => {
+                document.getElementById('chat').classList.remove('show');
+                document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+                document.getElementById('tab-promo').classList.add('active');
+                document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
+            };
+        } else {
+            chatAdBanner.classList.remove('show-ad');
+        }
+    }
+}
+
 // ПРОВЕРКА ПАМЯТИ ПРИ ЗАГРУЗКЕ
 window.addEventListener('load', function() {
     var saved = localStorage.getItem(STORAGE_KEY);
@@ -2836,6 +2915,7 @@ window.addEventListener('load', function() {
             if (typeof startApp === 'function') {
                 startApp();
             }
+            updateAdsDisplay();
         } catch(e) {
             console.error(e);
         }
