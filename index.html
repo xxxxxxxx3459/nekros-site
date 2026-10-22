@@ -1097,7 +1097,9 @@ function renderMusic() {
 const DEMO_TRACKS = [
         { name: "Lofi Study", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" },
         { name: "Chill Abstract", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3" },
-        { name: "Good Day", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2021/11/25/audio_00fa5593f3.mp3" }
+        { name: "Good Day", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2021/11/25/audio_00fa5593f3.mp3" },
+        { name: "Lofi Beat", artist: "Free Music", url: "https://www.chosic.com/wp-content/uploads/2021/07/Lofi-Study.mp3" },
+        { name: "Chill Vibes", artist: "Free Music", url: "https://www.chosic.com/wp-content/uploads/2021/04/Chill-Abstract.mp3" }
     ];
 
     DEMO_TRACKS.forEach((s, i) => {
@@ -1127,7 +1129,7 @@ window.playTrack = function(url, name, artist) {
     if (!bar) {
         bar = document.createElement('div');
         bar.id = 'customMusicBar';
-        bar.style.cssText = 'position:fixed; bottom:70px; left:10px; right:10px; background:rgba(30,20,40,0.95); border:1px solid rgba(255,255,255,0.2);( border-radius:16px; padding10:10px px15px; display:flex; align);-items:center; gap:12 box-shadowpx; z-index:9999; backdrop-filter:blur:0 10px 30px rgba(0,0,0,0.5);';
+        bar.style.cssText = 'position:fixed; bottom:70px; left:10px; right:10px; background:rgba(30,20,40,0.95); border:1px solid rgba(255,255,255,0.2); border-radius:16px; padding:10px 15px; display:flex; align-items:center; gap:12px; z-index:9999; backdrop-filter:blur(10px); box-shadow:0 10px 30px rgba(0,0,0,0.5);';
         document.body.appendChild(bar);
     }
 
@@ -1157,11 +1159,14 @@ window.playTrack = function(url, name, artist) {
     player.onpause = () => { btn.textContent = '▶'; };
     player.onended = () => { btn.textContent = '▶'; };
 
+    // Пытаемся запустить без вывода ошибок
     player.play().catch(e => {
-        alert('❌ Не удалось запустить. Попробуйте другой трек.');
+        // Если ссылка не сработала, просто пытаемся еще раз через полсекунды (без алертов)
+        setTimeout(() => {
+            player.play().catch(() => {});
+        }, 500);
     });
 };
-
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
