@@ -321,7 +321,8 @@
       box-shadow: 0 0 20px #ff8c42; animation: pulseTurbo 1s infinite;
   }
   @keyframes pulseTurbo { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
- .story-circle { transition: transform 0.2s; }
+
+  .story-circle { transition: transform 0.2s; }
   .story-circle:active { transform: scale(0.95); }
   .story-ring.my-add .story-img { font-size: 32px; background: linear-gradient(135deg, #ff8c42, #ff5e62); }
 </style>
@@ -351,7 +352,7 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="icon-btn plus" id="plusBtn" onclick="document.getElementById('createModal').classList.add('show')">+</button>
+      <button class="icon-btn plus" id="plusBtn">+</button>
       <button class="icon-btn" id="settingsBtn">⚙️</button>
     </div>
   </div>
@@ -717,69 +718,7 @@ regName.addEventListener('input', updateAvatarLetter);
 regName.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.keyCode === 13) regBtn.click();
 });
-function renderStories() {
-    const el = document.getElementById('storiesRow');
-    if (!el) return;
-    el.innerHTML = '';
-    
-    // Кнопка "Добавить историю"
-    const addBtn = document.createElement('div');
-    addBtn.className = 'story-circle';
-    addBtn.innerHTML = `
-        <div class="story-ring my-add"><div class="story-img">+</div></div>
-        <div class="story-label">Добавить</div>
-    `;
-    addBtn.onclick = () => {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*,video/*';
-        fileInput.onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                if (!window.stories) window.stories = [];
-                window.stories.unshift({
-                    id: 's_' + Date.now(),
-                    author: currentUser.name,
-                    color: currentUser.color,
-                    media: event.target.result,
-                    isVideo: file.type.includes('video')
-                });
-                renderStories();
-            };
-            reader.readAsDataURL(file);
-        };
-        fileInput.click();
-    };
-    el.appendChild(addBtn);
-    
-    // Отрисовка историй пользователей
-    if (window.stories && window.stories.length > 0) {
-        window.stories.forEach(story => {
-            const div = document.createElement('div');
-            div.className = 'story-circle';
-            div.innerHTML = `
-                <div class="story-ring">
-                    <div class="story-img" style="background:${story.color};">${story.author.charAt(0).toUpperCase()}</div>
-                </div>
-                <div class="story-label">${story.author}</div>
-            `;
-            div.onclick = () => {
-                const viewerHtml = `
-                    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;" onclick="this.remove()">
-                        ${story.isVideo ? 
-                            `<video src="${story.media}" autoplay controls style="max-width:100%; max-height:90vh;"></video>` : 
-                            `<img src="${story.media}" style="max-width:100%; max-height:90vh; object-fit:contain;">`}
-                        <div style="position:absolute;top:20px;left:20px;color:#fff;font-weight:bold;">${story.author}</div>
-                    </div>
-                `;
-                document.body.insertAdjacentHTML('beforeend', viewerHtml);
-            };
-            el.appendChild(div);
-        });
-    }
-}
+
 // ============ ДАННЫЕ ============
 const CHATS_KEY = 'sunset_chats_v50';
 const GROUPS_KEY = 'sunset_groups_v50';
@@ -827,50 +766,6 @@ const PEOPLE = [
 const DEFAULT_COMMUNITIES = [
   { id: 'comm_music', name: 'Мир музыки', color: '#8b5cf6', emoji: '🎵', desc: 'Всё о музыке', type: 'community', members: [] },
   { id: 'comm_games', name: 'Игровое сообщество', color: '#10b981', emoji: '🎮', desc: 'Игры', type: 'community', members: [] }
-];
-
-const SONGS = [
-  ["Imagine Dragons", "Believer"],["Ed Sheeran", "Shape of You"],["The Weeknd", "Blinding Lights"],
-  ["Dua Lipa", "Levitating"],["Billie Eilish", "Bad Guy"],["Post Malone", "Circles"],
-  ["Harry Styles", "As It Was"],["The Kid LAROI", "Stay"],["Glass Animals", "Heat Waves"],
-  ["Lil Nas X", "Montero"],["Olivia Rodrigo", "Drivers License"],["Adele", "Easy On Me"],
-  ["Coldplay", "Yellow"],["Coldplay", "Viva La Vida"],["Maroon 5", "Sugar"],
-  ["The Chainsmokers", "Closer"],["Avicii", "Wake Me Up"],["Alan Walker", "Faded"],
-  ["Marshmello", "Happier"],["DJ Snake", "Let Me Love You"],["Ed Sheeran", "Perfect"],
-  ["Shawn Mendes", "Senorita"],["Camila Cabello", "Havana"],["Ariana Grande", "7 Rings"],
-  ["Katy Perry", "Roar"],["Rihanna", "Diamonds"],["Beyoncé", "Halo"],
-  ["Lady Gaga", "Bad Romance"],["Bruno Mars", "Uptown Funk"],["Justin Bieber", "Sorry"],
-  ["Taylor Swift", "Shake It Off"],["Taylor Swift", "Anti-Hero"],["Dua Lipa", "Dont Start Now"],
-  ["Doja Cat", "Say So"],["Sia", "Chandelier"],["Sia", "Snowman"],
-  ["Ava Max", "Sweet But Psycho"],["Tones and I", "Dance Monkey"],
-  ["Harry Styles", "Watermelon Sugar"],["Billie Eilish", "Lovely"],["Olivia Rodrigo", "Good 4 U"],
-  ["Imagine Dragons", "Thunder"],["Imagine Dragons", "Radioactive"],["OneRepublic", "Counting Stars"],
-  ["Passenger", "Let Her Go"],["Sam Smith", "Stay With Me"],["Lewis Capaldi", "Someone You Loved"],
-  ["Adele", "Hello"],["Adele", "Rolling in the Deep"],["Lana Del Rey", "Summertime Sadness"],
-  ["Hozier", "Take Me to Church"],["Tom Odell", "Another Love"],
-  ["Linkin Park", "Numb"],["Linkin Park", "In the End"],
-  ["Nirvana", "Smells Like Teen Spirit"],["Queen", "Bohemian Rhapsody"],
-  ["AC/DC", "Thunderstruck"],["Arctic Monkeys", "Do I Wanna Know?"],
-  ["The Neighbourhood", "Sweater Weather"],["Arctic Monkeys", "505"],
-  ["Radiohead", "Creep"],["Coldplay", "The Scientist"],["Coldplay", "Fix You"],
-  ["James Arthur", "Say You Wont Let Go"],["John Legend", "All of Me"],
-  ["Ed Sheeran", "Photograph"],["Ed Sheeran", "Thinking Out Loud"],
-  ["Zayn", "Pillowtalk"],["The Weeknd", "Save Your Tears"],
-  ["The Weeknd", "Starboy"],["Post Malone", "Sunflower"],
-  ["Post Malone", "Rockstar"],["Travis Scott", "SICKO MODE"],
-  ["Drake", "Gods Plan"],["Drake", "One Dance"],
-  ["Kanye West", "Stronger"],["Eminem", "Lose Yourself"],
-  ["Eminem", "Stan"],["50 Cent", "In Da Club"],
-  ["Snoop Dogg", "Drop It Like Its Hot"],["Dr. Dre", "Still D.R.E."],
-  ["2Pac", "California Love"],["Notorious B.I.G.", "Juicy"],
-  ["Miyagi & Andy Panda", "Kosandra"],["Miyagi & Andy Panda", "Utopia"],
-  ["Баста", "Сансара"],["Баста", "Моя вселенная"],
-  ["Скриптонит", "Положение"],["Скриптонит", "Вечно молодой"],
-  ["Оксимирон", "Город под подошвой"],["Оксимирон", "Переплетено"],
-  ["ЛСП", "Монетка"],["ЛСП", "Тик-так"],
-  ["FACE", "Юморист"],["FACE", "Бургер"],
-  ["Моргенштерн", "Cadillac"],["Моргенштерн", "Новый мерин"],
-  ["Тимати", "Где ты, где я"],["Тимати", "В клубе"]
 ];
 
 const BOT_POSTS = [
@@ -998,21 +893,23 @@ document.getElementById('myProfileBtn').onclick = function() {
     }
 
     document.getElementById('profileModal').classList.add('show');
- document.getElementById('saveAdBtn').onclick = function() {
-        const adText = document.getElementById('myAdText').value.trim();
-        const adLink = document.getElementById('myAdLink').value.trim();
-        
-        currentUser.adText = adText;
-        currentUser.adLink = adLink;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-        
-        alert('Реклама сохранена! Она будет показываться в ваших группах и каналах.');
-        
-        document.getElementById('profileModal').classList.remove('show');
-        if (typeof startApp === 'function') startApp();
-    };
 };
- document.getElementById('plusBtn').onclick = function() {
+
+document.getElementById('saveAdBtn').onclick = function() {
+    const adText = document.getElementById('myAdText').value.trim();
+    const adLink = document.getElementById('myAdLink').value.trim();
+    
+    currentUser.adText = adText;
+    currentUser.adLink = adLink;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
+    
+    customAlert('Реклама сохранена! Она будет показываться в ваших группах и каналах.');
+    
+    document.getElementById('profileModal').classList.remove('show');
+    if (typeof startApp === 'function') startApp();
+};
+
+document.getElementById('plusBtn').onclick = function() {
     document.getElementById('createModal').classList.add('show');
 };
 
@@ -1024,29 +921,68 @@ document.querySelectorAll('.modal-option').forEach(option => {
         if (action === 'post') {
             openPostModal();
         } else if (action === 'story') {
-            alert('Истории скоро появятся!');
-        } else {
-            const name = prompt('Введите название:');
-            if (!name) return;
-            const newObj = {
-                id: 'g_' + Date.now(),
-                name: name,
-                color: '#ff8c42',
-                emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
-                type: action,
-                owner: currentUser.name,
-                members: []
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*,video/*';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    if (!window.stories) window.stories = [];
+                    window.stories.unshift({
+                        id: 's_' + Date.now(),
+                        author: currentUser.name,
+                        color: currentUser.color,
+                        media: event.target.result,
+                        isVideo: file.type.includes('video')
+                    });
+                    customAlert('История добавлена!');
+                    renderStories();
+                };
+                reader.readAsDataURL(file);
             };
-            if (action === 'channel') {
-                channels.push(newObj);
-                try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-            } else {
-                groups.push(newObj);
-                try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-            }
-            alert(`Создано: ${name}`);
-            renderChatsList(currentSearchTab, '');
-            renderMyPage();
+            fileInput.click();
+        } else {
+            const title = action === 'channel' ? 'Новый канал 📢' : (action === 'community' ? 'Новое сообщество 🌍' : 'Новая группа 👥');
+            const modalHtml = `
+                <div class="modal show" id="createGroupModal" style="z-index: 9999;">
+                    <div class="modal-card">
+                        <div class="modal-title">${title}</div>
+                        <div class="modal-sub">Введите название</div>
+                        <input type="text" class="modal-input" id="newGroupName" placeholder="Название..." maxlength="30">
+                        <button class="modal-primary" id="confirmCreateGroupBtn" style="margin-bottom: 10px;">Создать</button>
+                        <button class="modal-close" onclick="document.getElementById('createGroupModal').remove()">Отмена</button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            document.getElementById('confirmCreateGroupBtn').onclick = function() {
+                const name = document.getElementById('newGroupName').value.trim();
+                if (!name) { customAlert('Введите название!'); return; }
+                
+                const newObj = {
+                    id: 'g_' + Date.now(),
+                    name: name,
+                    color: '#ff8c42',
+                    emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
+                    type: action,
+                    owner: currentUser.name,
+                    members: []
+                };
+                if (action === 'channel') {
+                    channels.push(newObj);
+                    try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
+                } else {
+                    groups.push(newObj);
+                    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
+                }
+                customAlert(`Создано: ${name}`);
+                document.getElementById('createGroupModal').remove();
+                renderChatsList(currentSearchTab, '');
+                renderMyPage();
+            };
         }
     };
 });
@@ -1094,7 +1030,7 @@ function renderMusic() {
     if (!el) return;
     let html = '';
     
-const DEMO_TRACKS = [
+    const DEMO_TRACKS = [
         { name: "Lofi Study", artist: "Pixabay", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" }
     ];
 
@@ -1111,7 +1047,6 @@ window.playTrack = function(url, name, artist) {
     const player = document.getElementById('musicPlayer');
     if (!player) return;
 
-    // Если трек уже играет — ставим на паузу
     if (!player.paused && player.src === url) {
         player.pause();
         return;
@@ -1120,12 +1055,10 @@ window.playTrack = function(url, name, artist) {
     player.src = url;
     player.load();
     
-    // Создаем панель, если ее нет
     let bar = document.getElementById('customMusicBar');
     if (!bar) {
         bar = document.createElement('div');
         bar.id = 'customMusicBar';
-        // Стили: узкая панель, прижатая к низу, с отступами
         bar.style.cssText = 'position:fixed; bottom:75px; left:10px; right:10px; background:rgba(20,15,30,0.95); border:1px solid rgba(255,255,255,0.15); border-radius:16px; padding:8px 12px; display:flex; flex-direction:column; gap:6px; z-index:9999; backdrop-filter:blur(15px); box-shadow:0 4px 20px rgba(0,0,0,0.5);';
         document.body.appendChild(bar);
     }
@@ -1152,7 +1085,6 @@ window.playTrack = function(url, name, artist) {
     const currentTimeEl = document.getElementById('currentTime');
     const durationEl = document.getElementById('durationTime');
 
-    // Логика кнопки плей/пауза
     btn.onclick = () => {
         if (player.paused) {
             player.play();
@@ -1163,12 +1095,10 @@ window.playTrack = function(url, name, artist) {
         }
     };
 
-    // Следим за состоянием
     player.onplay = () => { btn.textContent = '⏸'; };
     player.onpause = () => { btn.textContent = '▶'; };
     player.onended = () => { btn.textContent = '▶'; };
 
-    // Обновление времени и ползунка
     player.ontimeupdate = () => {
         if (!isNaN(player.duration)) {
             const cur = Math.floor(player.currentTime);
@@ -1179,25 +1109,95 @@ window.playTrack = function(url, name, artist) {
         }
     };
 
-    // Перемотка
     seek.oninput = () => {
         if (!isNaN(player.duration)) {
             player.currentTime = (seek.value / 100) * player.duration;
         }
     };
 
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: name,
+            artist: artist,
+            album: 'Sunset Music'
+        });
+        navigator.mediaSession.setActionHandler('play', () => player.play());
+        navigator.mediaSession.setActionHandler('pause', () => player.pause());
+    }
+
     player.play().catch(e => {
-        // Если не удалось запустить, пробуем еще раз
         setTimeout(() => player.play().catch(() => {}), 500);
     });
 };
 
-// Вспомогательная функция для формата времени (0:00)
 function formatTime(seconds) {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
     return m + ':' + (s < 10 ? '0' : '') + s;
 }
+
+function renderStories() {
+    const el = document.getElementById('storiesRow');
+    if (!el) return;
+    el.innerHTML = '';
+    
+    const addBtn = document.createElement('div');
+    addBtn.className = 'story-circle';
+    addBtn.innerHTML = `
+        <div class="story-ring my-add"><div class="story-img">+</div></div>
+        <div class="story-label">Добавить</div>
+    `;
+    addBtn.onclick = () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*,video/*';
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (!window.stories) window.stories = [];
+                window.stories.unshift({
+                    id: 's_' + Date.now(),
+                    author: currentUser.name,
+                    color: currentUser.color,
+                    media: event.target.result,
+                    isVideo: file.type.includes('video')
+                });
+                renderStories();
+            };
+            reader.readAsDataURL(file);
+        };
+        fileInput.click();
+    };
+    el.appendChild(addBtn);
+    
+    if (window.stories && window.stories.length > 0) {
+        window.stories.forEach(story => {
+            const div = document.createElement('div');
+            div.className = 'story-circle';
+            div.innerHTML = `
+                <div class="story-ring">
+                    <div class="story-img" style="background:${story.color};">${story.author.charAt(0).toUpperCase()}</div>
+                </div>
+                <div class="story-label">${story.author}</div>
+            `;
+            div.onclick = () => {
+                const viewerHtml = `
+                    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;" onclick="this.remove()">
+                        ${story.isVideo ? 
+                            `<video src="${story.media}" autoplay controls style="max-width:100%; max-height:90vh;"></video>` : 
+                            `<img src="${story.media}" style="max-width:100%; max-height:90vh; object-fit:contain;">`}
+                        <div style="position:absolute;top:20px;left:20px;color:#fff;font-weight:bold;">${story.author}</div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', viewerHtml);
+            };
+            el.appendChild(div);
+        });
+    }
+}
+
 function renderChatsList(tab, q) {
   const list = document.getElementById('chatsList');
   if (!list) return;
@@ -1263,11 +1263,15 @@ function openChat(item) {
           const adTextEl = document.getElementById('adText');
           const adLinkEl = document.getElementById('adLink');
           
-          if (adTextEl) adTextEl.textContent = currentUser.adText || 'Здесь могла быть ваша реклама';
+          if (adTextEl) adTextEl.textContent = 'Здесь может быть ваша реклама!';
           if (adLinkEl) {
-              adLinkEl.textContent = currentUser.adLink ? '👉 ' + currentUser.adLink : '👉 Добавьте ссылку в профиле';
+              adLinkEl.innerHTML = '👉 <span style="color:#ffd700; font-weight:bold; text-decoration:underline;">Купить премиум</span>';
               adLinkEl.onclick = () => {
-                  if (currentUser.adLink) window.open(currentUser.adLink, '_blank');
+                  document.getElementById('chat').classList.remove('show');
+                  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+                  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+                  document.getElementById('tab-promo').classList.add('active');
+                  document.querySelector('.nav-btn[data-tab="promo"]').classList.add('active');
               };
           }
       } else {
@@ -1313,6 +1317,11 @@ document.getElementById('chatSend').addEventListener('click', () => {
   const statusEl = document.getElementById('chatStatus');
   if (activeChat.type === 'person') { statusEl.textContent = 'печатает...'; statusEl.className = 'status typing'; }
   setTimeout(() => {
+    // Если в группе/сообществе нет других людей (только ты), бот молчит
+    if (activeChat.type !== 'person' && (!activeChat.members || activeChat.members.length === 0)) {
+        return;
+    }
+
     const rt = generateReply(msg.text);
     const reply = { text: rt, time: nowTime(), from: 'them' };
     chats[activeChat.id].push(reply);
@@ -1340,7 +1349,7 @@ function generateReply(text) {
 
 document.getElementById('deleteChatBtn').addEventListener('click', () => {
     if (!activeChat) return;
-    if (activeChat.owner !== currentUser.name) { alert('Вы не владелец!'); return; }
+    if (activeChat.owner !== currentUser.name) { customAlert('Вы не владелец!'); return; }
     if (confirm(`Удалить "${activeChat.name}"?`)) {
         if (activeChat.type === 'channel') { channels = channels.filter(c => c.id !== activeChat.id); try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {} }
         else { groups = groups.filter(g => g.id !== activeChat.id); try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {} }
@@ -1415,14 +1424,14 @@ function openPublicProfile(person) {
     subBtn.onclick = () => {
         if (isSubscribed) {
             subscriptions = subscriptions.filter(id => id !== person.id);
-            alert(`Вы отписались от ${person.name}`);
+            customAlert(`Вы отписались от ${person.name}`);
             subBtn.textContent = 'Подписаться';
             subBtn.style.background = 'linear-gradient(135deg, #ff8c42, #ff5e62)';
             subBtn.style.color = '#fff';
             isSubscribed = false;
         } else {
             subscriptions.push(person.id);
-            alert(`Вы подписались на ${person.name}! Теперь его посты будут в ленте.`);
+            customAlert(`Вы подписались на ${person.name}! Теперь его посты будут в ленте.`);
             subBtn.textContent = 'Отписаться';
             subBtn.style.background = 'rgba(255,255,255,0.1)';
             subBtn.style.color = '#ff5e62';
@@ -1562,13 +1571,13 @@ function openPostModal() {
 
     document.getElementById('formSubmit').onclick = () => {
         const text = document.getElementById('formText').value.trim();
-        if (!text) { alert('Введите текст!'); return; }
+        if (!text) { customAlert('Введите текст!'); return; }
         
         const image = document.getElementById('formPhoto').value.trim();
         const music = document.getElementById('formMusic').value.trim();
         
         if (music && currentUser.premium !== 'sunset' && currentUser.premium !== 'prime') {
-            alert('🚫 Ошибка: Добавлять музыку могут только пользователи Premium!');
+            customAlert('🚫 Ошибка: Добавлять музыку могут только пользователи Premium!');
             return;
         }
 
@@ -1662,7 +1671,7 @@ function openManagePinned() {
         const checkbox = div.querySelector('input');
         checkbox.addEventListener('change', (e) => {
             if (e.target.checked) {
-                if (currentUser.pinnedIds.length >= limit) { e.target.checked = false; alert(`Лимит: ${limit}`); return; }
+                if (currentUser.pinnedIds.length >= limit) { e.target.checked = false; customAlert(`Лимит: ${limit}`); return; }
                 if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
             } else currentUser.pinnedIds = currentUser.pinnedIds.filter(id => id !== link.id);
             try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
@@ -2184,7 +2193,7 @@ function endShooter(isWin) {
         }
         saveGameState();
         setTimeout(() => {
-            alert(`🏆 ПОБЕДА!\nОчки: ${shooterObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.shooter.unlocked}`);
+            customAlert(`🏆 ПОБЕДА!\nОчки: ${shooterObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.shooter.unlocked}`);
             openShooterMenu();
         }, 100);
     } else {
@@ -2408,7 +2417,7 @@ function endRunner(isWin) {
         }
         saveGameState();
         setTimeout(() => {
-            alert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nОчки: ${runnerObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.runner.unlocked}`);
+            customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nОчки: ${runnerObj.score}\nМонеты: +${coinsEarned}\nОткрыт уровень: ${gameState.runner.unlocked}`);
             openRunnerMenu();
         }, 100);
     } else {
@@ -2685,7 +2694,7 @@ function endPlatformer(isWin = false) {
         gameState.shooter.coins += 50;
         saveGameState();
         setTimeout(() => {
-            alert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nСобрано монет: ${platformerObj.coinsCollected}\nНаграда: +50 🪙`);
+            customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nСобрано монет: ${platformerObj.coinsCollected}\nНаграда: +50 🪙`);
             openPlatformerMenu();
         }, 100);
     } else {
@@ -2731,8 +2740,7 @@ function uploadProfilePhoto() {
                 startApp();
             }
             
-            
-            alert('Фото профиля успешно обновлено!');
+            customAlert('Фото профиля успешно обновлено!');
             document.getElementById('profileModal').classList.remove('show');
         };
         reader.readAsDataURL(file);
@@ -2803,84 +2811,22 @@ window.banMember = function(name) {
         }
         document.getElementById('membersCount').textContent = `Всего участников: ${activeChat.members.length}`;
         document.getElementById('membersModal').classList.remove('show');
-        alert(`${name} забанен и удален из чата!`);
+        customAlert(`${name} забанен и удален из чата!`);
     }
 };
-document.querySelectorAll('.modal-option').forEach(option => {
-    option.onclick = function() {
-        const action = this.dataset.action;
-        document.getElementById('createModal').classList.remove('show');
-        
-        if (action === 'post') {
-            openPostModal();
-        } else if (action === 'story') {
-            // Логика для истории
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*,video/*';
-            fileInput.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    if (!window.stories) window.stories = [];
-                    window.stories.unshift({
-                        id: 's_' + Date.now(),
-                        author: currentUser.name,
-                        color: currentUser.color,
-                        media: event.target.result,
-                        isVideo: file.type.includes('video')
-                    });
-                    alert('История добавлена!');
-                    renderStories();
-                };
-                reader.readAsDataURL(file);
-            };
-            fileInput.click();
-        } else {
-            // Красивое окно для групп, каналов и сообществ
-            const title = action === 'channel' ? 'Новый канал 📢' : (action === 'community' ? 'Новое сообщество 🌍' : 'Новая группа 👥');
-            const modalHtml = `
-                <div class="modal show" id="createGroupModal" style="z-index: 9999;">
-                    <div class="modal-card">
-                        <div class="modal-title">${title}</div>
-                        <div class="modal-sub">Введите название</div>
-                        <input type="text" class="modal-input" id="newGroupName" placeholder="Название..." maxlength="30">
-                        <button class="modal-primary" id="confirmCreateGroupBtn" style="margin-bottom: 10px;">Создать</button>
-                        <button class="modal-close" onclick="document.getElementById('createGroupModal').remove()">Отмена</button>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            
-            document.getElementById('confirmCreateGroupBtn').onclick = function() {
-                const name = document.getElementById('newGroupName').value.trim();
-                if (!name) { alert('Введите название!'); return; }
-                
-                const newObj = {
-                    id: 'g_' + Date.now(),
-                    name: name,
-                    color: '#ff8c42',
-                    emoji: action === 'channel' ? '📢' : (action === 'community' ? '🌍' : '👥'),
-                    type: action,
-                    owner: currentUser.name,
-                    members: []
-                };
-                if (action === 'channel') {
-                    channels.push(newObj);
-                    try { localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); } catch(e) {}
-                } else {
-                    groups.push(newObj);
-                    try { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); } catch(e) {}
-                }
-                alert(`Создано: ${name}`);
-                document.getElementById('createGroupModal').remove();
-                renderChatsList(currentSearchTab, '');
-                renderMyPage();
-            };
-        }
-    };
-});
+
+function customAlert(text) {
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `
+        <div style="background:#1a0a1e; border:1px solid rgba(255,255,255,0.2); border-radius:24px; padding:24px; width:100%; max-width:320px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+            <div style="color:#fff; font-size:16px; margin-bottom:20px; line-height:1.4;">${text}</div>
+            <button onclick="this.closest('div').parentElement.remove()" style="width:100%; background:linear-gradient(135deg,#ff8c42,#ff5e62); border:none; border-radius:14px; padding:14px; color:#fff; font-size:16px; font-weight:bold; cursor:pointer;">ОК</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
 // ПРОВЕРКА ПАМЯТИ ПРИ ЗАГРУЗКЕ
 window.addEventListener('load', function() {
     var saved = localStorage.getItem(STORAGE_KEY);
