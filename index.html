@@ -148,17 +148,25 @@
   .track-artist { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .track-play { color: #ff8c42; font-size: 18px; padding-left: 10px; }
 
-  .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px; }
+  .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 16px; }
   .game-card {
-      background: rgba(30, 20, 40, 0.6); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px; padding: 20px; display: flex; flex-direction: column;
+      background: linear-gradient(145deg, rgba(40,25,55,0.9), rgba(25,15,40,0.95));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px; padding: 22px 16px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center; cursor: pointer;
-      transition: 0.2s; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: all 0.25s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden;
   }
-  .game-card:active { transform: scale(0.95); }
-  .game-icon { font-size: 40px; margin-bottom: 10px; }
-  .game-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .game-desc { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 8px; }
+  .game-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,140,66,0.15), transparent 60%);
+      opacity: 0; transition: opacity 0.25s;
+  }
+  .game-card:active { transform: scale(0.96); }
+  .game-card:active::before { opacity: 1; }
+  .game-icon { font-size: 48px; margin-bottom: 12px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+  .game-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .game-desc { color: rgba(255,255,255,0.55); font-size: 12px; line-height: 1.4; }
 
   .create-post-prompt {
     display: flex; align-items: center; gap: 12px;
@@ -226,16 +234,59 @@
   .nav-btn.active { color: #ff8c42; }
   .nav-icon { font-size: 20px; }
 
-  .modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  /* ========== УЛУЧШЕННАЯ МОДАЛКА СОЗДАТЬ ========== */
+  .modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.28s ease; }
   .modal.show { opacity: 1; pointer-events: all; }
-  .modal-card { background: rgba(25, 15, 35, 0.98); backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; padding: 24px 20px 32px; width: 100%; max-width: 500px; color: #fff; transform: translateY(100%); transition: transform 0.3s ease; border-top: 1px solid rgba(255,255,255,0.15); max-height: 90vh; overflow-y: auto; }
+  .modal-card { 
+    background: linear-gradient(180deg, rgba(32,18,48,0.98), rgba(18,10,30,0.99)); 
+    backdrop-filter: blur(40px); 
+    border-radius: 28px 28px 0 0; 
+    padding: 28px 20px 36px; 
+    width: 100%; max-width: 480px; 
+    color: #fff; 
+    transform: translateY(100%); 
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); 
+    border-top: 1px solid rgba(255,255,255,0.18); 
+    max-height: 92vh; overflow-y: auto; 
+    box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+  }
   .modal.show .modal-card { transform: translateY(0); }
-  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; text-align: center; }
-  .modal-sub { font-size: 13px; opacity: 0.7; text-align: center; margin-bottom: 20px; }
-  .modal-option { padding: 14px; border-radius: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; cursor: pointer; }
-  .modal-option .opt-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .modal-option .opt-desc { font-size: 12px; opacity: 0.65; line-height: 1.4; }
-  .modal-close { background: rgba(255,255,255,0.1); border: none; border-radius: 12px; padding: 12px; width: 100%; color: #fff; font-size: 14px; cursor: pointer; font-family: inherit; margin-top: 8px; }
+  .modal-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; text-align: center; letter-spacing: -0.3px; }
+  .modal-sub { font-size: 14px; opacity: 0.65; text-align: center; margin-bottom: 24px; }
+  
+  .create-options { display: flex; flex-direction: column; gap: 12px; }
+  .create-option {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 18px; border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer; transition: all 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .create-option::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, #ff8c42, #ff5e62);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .create-option:active { transform: scale(0.98); background: rgba(255,255,255,0.12); }
+  .create-option:active::before { opacity: 1; }
+  .create-option-icon {
+    width: 52px; height: 52px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(255,140,66,0.25), rgba(255,94,98,0.25));
+    border: 1px solid rgba(255,140,66,0.3);
+  }
+  .create-option-content { flex: 1; }
+  .create-option-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+  .create-option-desc { font-size: 13px; opacity: 0.6; line-height: 1.35; }
+  .create-option-arrow { font-size: 20px; opacity: 0.4; }
+
+  .modal-close { 
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); 
+    border-radius: 14px; padding: 14px; width: 100%; color: #fff; 
+    font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 16px; 
+  }
   .modal-input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; }
   .modal-textarea { width: 100%; min-height: 120px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 18px; font-size: 15px; color: #fff; outline: none; margin-bottom: 12px; font-family: inherit; resize: none; }
   .modal-primary { width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
@@ -283,15 +334,29 @@
   .game-area { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
   canvas { display: block; touch-action: none; }
   .game-ui-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; pointer-events: none; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px #000; }
-  .game-btn { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border: none; padding: 12px 30px; border-radius: 12px; font-size: 18px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+  .game-btn { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; cursor: pointer; font-weight: 700; margin-top: 12px; box-shadow: 0 6px 20px rgba(255,100,80,0.35); }
   
-  .shop-container { position: absolute; inset: 0; background: rgba(15,10,25,0.95); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; z-index: 20; }
+  .shop-container { position: absolute; inset: 0; background: rgba(15,10,25,0.97); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; z-index: 20; }
   .shop-header { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-bottom: 20px; }
-  .upgrade-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-  .upgrade-info h4 { margin-bottom: 5px; font-size: 16px; }
-  .upgrade-info p { font-size: 12px; opacity: 0.7; }
-  .upgrade-btn { background: #4ade80; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 80px;}
-  .upgrade-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+  .upgrade-item { background: rgba(255,255,255,0.08); padding: 16px; border-radius: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08); }
+  .upgrade-info h4 { margin-bottom: 4px; font-size: 16px; }
+  .upgrade-info p { font-size: 12px; opacity: 0.65; }
+  .upgrade-btn { background: #4ade80; color: #000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; min-width: 80px;}
+  .upgrade-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+  /* Difficulty selector */
+  .diff-selector { display: flex; gap: 8px; margin: 18px 0 8px; flex-wrap: wrap; justify-content: center; }
+  .diff-btn {
+    padding: 10px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.75);
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .diff-btn.active {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 4px 16px rgba(255,100,80,0.4);
+  }
+  .diff-btn:active { transform: scale(0.96); }
 
   .turbo-bar-container {
       position: absolute; bottom: 20px; left: 20px;
@@ -475,15 +540,59 @@
   </div>
 </div>
 
+<!-- ========== УЛУЧШЕННАЯ МОДАЛКА СОЗДАТЬ ========== -->
 <div class="modal" id="createModal">
   <div class="modal-card">
     <div class="modal-title">Создать</div>
-    <div class="modal-sub">Выбери что хочешь сделать</div>
-    <div class="modal-option" data-action="post"><div class="opt-title">📝 Пост</div><div class="opt-desc">Текст, фото и музыка</div></div>
-    <div class="modal-option" data-action="story"><div class="opt-title">📸 История</div><div class="opt-desc">Кружок вверху ленты</div></div>
-    <div class="modal-option" data-action="group"><div class="opt-title">👥 Группа</div><div class="opt-desc">Создать группу</div></div>
-    <div class="modal-option" data-action="community"><div class="opt-title">🌍 Сообщество</div><div class="opt-desc">Глобальное сообщество</div></div>
-    <div class="modal-option" data-action="channel"><div class="opt-title">📢 Канал</div><div class="opt-desc">Трансляция постов</div></div>
+    <div class="modal-sub">Выбери, что хочешь сделать</div>
+    
+    <div class="create-options">
+      <div class="create-option" data-action="post">
+        <div class="create-option-icon">📝</div>
+        <div class="create-option-content">
+          <div class="create-option-title">Пост</div>
+          <div class="create-option-desc">Текст, фото и музыка</div>
+        </div>
+        <div class="create-option-arrow">›</div>
+      </div>
+      
+      <div class="create-option" data-action="story">
+        <div class="create-option-icon">📸</div>
+        <div class="create-option-content">
+          <div class="create-option-title">История</div>
+          <div class="create-option-desc">Кружок вверху ленты</div>
+        </div>
+        <div class="create-option-arrow">›</div>
+      </div>
+      
+      <div class="create-option" data-action="group">
+        <div class="create-option-icon">👥</div>
+        <div class="create-option-content">
+          <div class="create-option-title">Группа</div>
+          <div class="create-option-desc">Приватный чат с друзьями</div>
+        </div>
+        <div class="create-option-arrow">›</div>
+      </div>
+      
+      <div class="create-option" data-action="community">
+        <div class="create-option-icon">🌍</div>
+        <div class="create-option-content">
+          <div class="create-option-title">Сообщество</div>
+          <div class="create-option-desc">Глобальное сообщество</div>
+        </div>
+        <div class="create-option-arrow">›</div>
+      </div>
+      
+      <div class="create-option" data-action="channel">
+        <div class="create-option-icon">📢</div>
+        <div class="create-option-content">
+          <div class="create-option-title">Канал</div>
+          <div class="create-option-desc">Трансляция постов</div>
+        </div>
+        <div class="create-option-arrow">›</div>
+      </div>
+    </div>
+    
     <button class="modal-close" data-close="createModal">Отмена</button>
   </div>
 </div>
@@ -577,7 +686,8 @@
     <button class="modal-close" data-close="profileModal">Закрыть</button>
   </div>
 </div>
- <div class="modal" id="settingsModal">
+
+<div class="modal" id="settingsModal">
   <div class="modal-card" style="max-height: 90vh;">
     <div class="modal-title">⚙️ Настройки</div>
     <label style="font-size: 13px; opacity: 0.8; display: block; margin-top: 10px;">Время:</label>
@@ -619,6 +729,7 @@
     <div class="game-area" id="gameArea"></div>
 </div>
 <audio id="musicPlayer" controls style="display:none;"></audio>
+
 <script>
 // ============ ЗВУКИ ============
 let audioCtx = null;
@@ -735,6 +846,8 @@ let gameState = {
     shooter: { plane: 1, income: 1, fireRate: 1, turbo: 1, coins: 0, unlocked: 1 },
     runner: { unlocked: 1 }
 };
+
+let selectedDifficulty = 'normal'; // easy | normal | hard | extreme
 
 const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Иван','Денис','Евгений','Даниил','Тимур'];
 const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия'];
@@ -913,7 +1026,7 @@ document.getElementById('plusBtn').onclick = function() {
     document.getElementById('createModal').classList.add('show');
 };
 
-document.querySelectorAll('.modal-option').forEach(option => {
+document.querySelectorAll('.create-option').forEach(option => {
     option.onclick = function() {
         const action = this.dataset.action;
         document.getElementById('createModal').classList.remove('show');
@@ -1317,7 +1430,6 @@ document.getElementById('chatSend').addEventListener('click', () => {
   const statusEl = document.getElementById('chatStatus');
   if (activeChat.type === 'person') { statusEl.textContent = 'печатает...'; statusEl.className = 'status typing'; }
   setTimeout(() => {
-    // Если в группе/сообществе нет других людей (только ты), бот молчит
     if (activeChat.type !== 'person' && (!activeChat.members || activeChat.members.length === 0)) {
         return;
     }
@@ -1736,22 +1848,59 @@ function saveGameState() {
     try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e) {}
 }
 
+function getDiffMultiplier() {
+    switch(selectedDifficulty) {
+        case 'easy': return 0.65;
+        case 'normal': return 1.0;
+        case 'hard': return 1.45;
+        case 'extreme': return 1.9;
+        default: return 1.0;
+    }
+}
+
+function renderDiffButtons(containerId, callback) {
+    const html = `
+        <div class="diff-selector" id="${containerId}">
+            <button class="diff-btn ${selectedDifficulty==='easy'?'active':''}" data-diff="easy">Лёгкая</button>
+            <button class="diff-btn ${selectedDifficulty==='normal'?'active':''}" data-diff="normal">Нормальная</button>
+            <button class="diff-btn ${selectedDifficulty==='hard'?'active':''}" data-diff="hard">Сложная</button>
+            <button class="diff-btn ${selectedDifficulty==='extreme'?'active':''}" data-diff="extreme">Экстрим</button>
+        </div>
+    `;
+    return html;
+}
+
+function bindDiffButtons(containerSelector) {
+    document.querySelectorAll(`${containerSelector} .diff-btn`).forEach(btn => {
+        btn.onclick = () => {
+            selectedDifficulty = btn.dataset.diff;
+            document.querySelectorAll(`${containerSelector} .diff-btn`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        };
+    });
+}
+
 // ================== ИГРА 1: КОСМИЧЕСКИЙ ШУТЕР ==================
 function openShooterMenu() {
     const area = document.getElementById('gameArea');
     const unlocked = gameState.shooter.unlocked;
     area.innerHTML = `
-        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
-            <h2 style="color:#00d4ff; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #00d4ff;">Космический Шутер</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Уровень: ${unlocked} / 800</div>
-            <div style="display:flex; gap:15px; margin-bottom:30px; flex-wrap:wrap; justify-content:center;">
-                <button class="game-btn" onclick="openShooterShop()" style="background:#a06cd5;">🛠 Магазин</button>
+        <div style="text-align:center; padding:24px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:linear-gradient(180deg,#0d0618,#1a0a2e);">
+            <div style="font-size:56px; margin-bottom:8px;">✈️</div>
+            <h2 style="color:#00d4ff; font-size:28px; margin-bottom:6px; text-shadow:0 0 20px rgba(0,212,255,0.5);">Космический Шутер</h2>
+            <div style="font-size:15px; margin-bottom:8px; color:rgba(255,255,255,0.7);">Уровень: ${unlocked} / 800 · Монеты: ${gameState.shooter.coins} 🪙</div>
+            
+            ${renderDiffButtons('shooterDiff')}
+            
+            <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; justify-content:center;">
+                <button class="game-btn" onclick="openShooterShop()" style="background:linear-gradient(135deg,#a06cd5,#7b2ff7);">🛠 Магазин</button>
                 <button class="game-btn" onclick="initShooter(${unlocked})">▶️ Играть</button>
             </div>
-            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; line-height:1.5;">
-                Уровень длится 6 минут.<br>Сбивай метеориты и НЛО.<br>Турбо: 2 заряда, большой взрыв!
+            <div style="color:rgba(255,255,255,0.45); font-size:12px; max-width:300px; text-align:center; line-height:1.5; margin-top:24px;">
+                Уровень длится 6 минут · Сбивай метеориты и НЛО<br>Турбо: 2 заряда, большой взрыв
             </div>
         </div>`;
+    bindDiffButtons('#shooterDiff');
 }
 
 function openShooterShop() {
@@ -1794,6 +1943,8 @@ function initShooter(level) {
     canvas.height = window.innerHeight - 150;
     area.appendChild(canvas);
 
+    const mult = getDiffMultiplier();
+
     shooterObj = {
         canvas, ctx: canvas.getContext('2d'),
         playerX: canvas.width / 2, playerY: canvas.height - 60,
@@ -1801,10 +1952,11 @@ function initShooter(level) {
         score: 0, isDead: false, isFiring: false, lastShot: 0,
         timeLeft: 360, boss: null, level: level,
         turboCharge: 0, turboActive: false, turboUses: 0,
-        turboWaveRadius: 0, turboWaveActive: false, shake: 0
+        turboWaveRadius: 0, turboWaveActive: false, shake: 0,
+        diffMult: mult
     };
 
-    const difficulty = 1 + (level - 1) * 0.08;
+    const difficulty = 1 + (level - 1) * 0.08 * mult;
     shooterObj.stars = Array.from({length: 60}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 2 + 1 }));
 
     const uiTop = document.createElement('div');
@@ -1934,15 +2086,15 @@ function initShooter(level) {
             if (b.y < 0) shooterObj.bullets.splice(i, 1);
         }
 
-        let spawnRate = Math.max(120, 700 - (level * 3) - (gameState.shooter.plane * 3));
-        let mSpeed = 2 + level * 0.15 + (gameState.shooter.plane * 0.05);
+        let spawnRate = Math.max(80, (700 - (level * 3) - (gameState.shooter.plane * 3)) / mult);
+        let mSpeed = (2 + level * 0.15 + (gameState.shooter.plane * 0.05)) * mult;
 
         if (!shooterObj.boss && time - spawnTime > spawnRate / difficulty) {
             spawnTime = time;
             if (Math.random() > 0.5) {
                 shooterObj.meteors.push({ x: Math.random() * (canvas.width - 40) + 20, y: -30, speed: mSpeed, size: Math.random() * 18 + 14, hp: 1, rot: 0 });
             } else {
-                shooterObj.enemyUfos.push({ x: Math.random() * (canvas.width - 60) + 30, y: -30, speed: mSpeed * 0.8, hp: 2, angle: 0, zigzag: Math.random() * Math.PI * 2 });
+                shooterObj.enemyUfos.push({ x: Math.random() * (canvas.width - 60) + 30, y: -30, speed: mSpeed * 0.8, hp: Math.ceil(2 * mult), angle: 0, zigzag: Math.random() * Math.PI * 2 });
             }
         }
 
@@ -2054,7 +2206,7 @@ function initShooter(level) {
             ctx.fillText(`${Math.ceil(b.hp)} / ${b.maxHp}`, b.x, barY + 9);
             ctx.textAlign = 'left';
 
-            const shootDelay = Math.max(600, 1500 - level * 5);
+            const shootDelay = Math.max(400, (1500 - level * 5) / mult);
             if (time - bossShootTime > shootDelay) {
                 bossShootTime = time;
                 const dx = shooterObj.playerX - b.x;
@@ -2062,7 +2214,7 @@ function initShooter(level) {
                 const dist = Math.hypot(dx, dy);
                 shooterObj.bossProjectiles.push({ 
                     x: b.x, y: b.y + 20, 
-                    vx: (dx / dist) * 5, vy: (dy / dist) * 5
+                    vx: (dx / dist) * (5 * mult), vy: (dy / dist) * (5 * mult)
                 });
             }
 
@@ -2173,7 +2325,7 @@ function chargeTurbo() {
 
 function spawnBoss() {
     const canvas = shooterObj.canvas;
-    const hp = 150 + (shooterObj.level - 1) * 20 + Math.floor(Math.random() * 50);
+    const hp = Math.floor((150 + (shooterObj.level - 1) * 20 + Math.floor(Math.random() * 50)) * shooterObj.diffMult);
     shooterObj.boss = { x: canvas.width / 2, y: 100, hp: hp, maxHp: hp, time: 0, waveHit: false };
     shooterObj.meteors = [];
     shooterObj.enemyUfos = [];
@@ -2186,7 +2338,7 @@ function endShooter(isWin) {
 
     if (isWin) {
         playSound('win');
-        let coinsEarned = Math.floor(shooterObj.score * (1 + gameState.shooter.income * 0.5));
+        let coinsEarned = Math.floor(shooterObj.score * (1 + gameState.shooter.income * 0.5) * (selectedDifficulty === 'extreme' ? 1.5 : selectedDifficulty === 'hard' ? 1.25 : 1));
         gameState.shooter.coins += coinsEarned;
         if (shooterObj.level === gameState.shooter.unlocked && gameState.shooter.unlocked < 800) {
             gameState.shooter.unlocked++;
@@ -2248,16 +2400,20 @@ function endShooter(isWin) {
 function openRunnerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
-        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
-            <h2 style="color:#ff5e62; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ff5e62;">Квадратик</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Уровень: ${gameState.runner.unlocked} / 800</div>
+        <div style="text-align:center; padding:24px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:linear-gradient(180deg,#0d0618,#1a0a2e);">
+            <div style="font-size:56px; margin-bottom:8px;">🟦</div>
+            <h2 style="color:#ff5e62; font-size:28px; margin-bottom:6px; text-shadow:0 0 20px rgba(255,94,98,0.5);">Квадратик</h2>
+            <div style="font-size:15px; margin-bottom:8px; color:rgba(255,255,255,0.7);">Уровень: ${gameState.runner.unlocked} / 800</div>
             
-            <button class="game-btn" onclick="initRunner()" style="background:linear-gradient(135deg, #ff8c42, #ff5e62); color:#fff; padding: 12px 30px; font-size: 18px; border-radius: 12px; margin-top: 10px;">▶️ Играть</button>
+            ${renderDiffButtons('runnerDiff')}
             
-            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; margin-top:20px; line-height:1.5;">
-                Тапай чтобы прыгать.<br>С каждым уровнем всё сложнее!<br>Уровень длится 6 минут.
+            <button class="game-btn" onclick="initRunner()" style="margin-top:18px;">▶️ Играть</button>
+            
+            <div style="color:rgba(255,255,255,0.45); font-size:12px; max-width:300px; text-align:center; margin-top:24px; line-height:1.5;">
+                Тапай чтобы прыгать · С каждым уровнем всё сложнее<br>Уровень длится 6 минут
             </div>
         </div>`;
+    bindDiffButtons('#runnerDiff');
 }
 
 let runnerObj = {};
@@ -2275,8 +2431,9 @@ function initRunner() {
     
     const ctx = canvas.getContext('2d');
     const level = gameState.runner.unlocked;
-    const baseSpeed = 4 + level * 0.15;
-    const spawnRate = Math.max(30, 90 - level * 0.5);
+    const mult = getDiffMultiplier();
+    const baseSpeed = (4 + level * 0.15) * mult;
+    const spawnRate = Math.max(25, (90 - level * 0.5) / mult);
     
     runnerObj = {
         canvas, ctx, level,
@@ -2284,7 +2441,8 @@ function initRunner() {
         playerSize: 28, obstacles: [], score: 0, 
         speed: baseSpeed, frame: 0, isDead: false, onGround: true,
         timeLeft: 360, lastTimerTick: performance.now(), 
-        spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2}))
+        spawnRate, clouds: Array.from({length: 5}, () => ({x: Math.random() * canvas.width, y: Math.random() * 150 + 20, s: Math.random() * 0.5 + 0.2})),
+        diffMult: mult
     };
 
     const uiTop = document.createElement('div');
@@ -2347,13 +2505,13 @@ function initRunner() {
             ctx.fillRect(c.x, c.y, 50, 20);
         });
 
-        if (runnerObj.frame % Math.max(35, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
+        if (runnerObj.frame % Math.max(30, runnerObj.spawnRate - Math.floor(runnerObj.score / 20)) === 0 && runnerObj.timeLeft > 0) {
             const oh = Math.random() > 0.4 ? 40 : 60;
             runnerObj.obstacles.push({
                 x: canvas.width,
                 y: canvas.height - 40 - oh,
                 w: 25, h: oh,
-                speed: runnerObj.speed + runnerObj.score * 0.01
+                speed: runnerObj.speed + runnerObj.score * 0.01 * mult
             });
         }
 
@@ -2368,7 +2526,7 @@ function initRunner() {
             if (o.x + o.w < 0) {
                 runnerObj.obstacles.splice(i, 1);
                 runnerObj.score++;
-                runnerObj.speed = baseSpeed + runnerObj.score * 0.02;
+                runnerObj.speed = baseSpeed + runnerObj.score * 0.02 * mult;
                 const scoreEl = document.getElementById('rnScore');
                 if(scoreEl) scoreEl.innerText = runnerObj.score;
             }
@@ -2410,7 +2568,7 @@ function endRunner(isWin) {
     
     if (isWin) {
         playSound('win');
-        const coinsEarned = 20 + runnerObj.score * 2;
+        const coinsEarned = Math.floor((20 + runnerObj.score * 2) * (selectedDifficulty === 'extreme' ? 1.4 : 1));
         gameState.shooter.coins += coinsEarned;
         if (runnerObj.level === gameState.runner.unlocked && gameState.runner.unlocked < 800) {
             gameState.runner.unlocked++;
@@ -2468,18 +2626,23 @@ function endRunner(isWin) {
     }
 }
 
-// ================== ИГРА 3: ПЛАТФОРМЕР (МАРИО) ==================
+// ================== ИГРА 3: ПЛАТФОРМЕР ==================
 function openPlatformerMenu() {
     const area = document.getElementById('gameArea');
     area.innerHTML = `
-        <div style="text-align:center; padding:20px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(15,10,25,0.9);">
-            <h2 style="color:#ffd700; font-size:32px; margin-bottom:10px; text-shadow:0 0 10px #ffd700;">Супер Прыгун</h2>
-            <div style="font-size:18px; margin-bottom:20px; color:#fff;">Собери монеты и допрыгни до флага!</div>
-            <button class="game-btn" onclick="initPlatformer()" style="background:linear-gradient(135deg, #ffd700, #ff8c00); color:#000;">▶️ Играть</button>
-            <div style="color:#aaa; font-size:12px; max-width:320px; text-align:center; margin-top:20px; line-height:1.5;">
-                Управление: Прыжок (тап).<br>Прыгай врагам на голову!
+        <div style="text-align:center; padding:24px; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:linear-gradient(180deg,#0d0618,#1a0a2e);">
+            <div style="font-size:56px; margin-bottom:8px;">🍄</div>
+            <h2 style="color:#ffd700; font-size:28px; margin-bottom:6px; text-shadow:0 0 20px rgba(255,215,0,0.5);">Супер Прыгун</h2>
+            <div style="font-size:15px; margin-bottom:8px; color:rgba(255,255,255,0.7);">Собери монеты и допрыгни до флага!</div>
+            
+            ${renderDiffButtons('platDiff')}
+            
+            <button class="game-btn" onclick="initPlatformer()" style="background:linear-gradient(135deg, #ffd700, #ff8c00); color:#000; margin-top:18px;">▶️ Играть</button>
+            <div style="color:rgba(255,255,255,0.45); font-size:12px; max-width:300px; text-align:center; margin-top:24px; line-height:1.5;">
+                Управление: Прыжок (тап) · Прыгай врагам на голову!
             </div>
         </div>`;
+    bindDiffButtons('#platDiff');
 }
 
 let platformerObj = {};
@@ -2492,6 +2655,7 @@ function initPlatformer() {
     canvas.height = window.innerHeight - 150;
     area.appendChild(canvas);
     const ctx = canvas.getContext('2d');
+    const mult = getDiffMultiplier();
 
     const levelData = {
         platforms: [
@@ -2501,8 +2665,8 @@ function initPlatformer() {
             {x: 600, y: canvas.height - 150, w: 100, h: 20}
         ],
         enemies: [
-            {x: 300, y: canvas.height - 70, w: 30, h: 30, vx: 1.5, alive: true},
-            {x: 550, y: canvas.height - 70, w: 30, h: 30, vx: -1.5, alive: true}
+            {x: 300, y: canvas.height - 70, w: 30, h: 30, vx: 1.5 * mult, alive: true},
+            {x: 550, y: canvas.height - 70, w: 30, h: 30, vx: -1.5 * mult, alive: true}
         ],
         coins: [
             {x: 220, y: canvas.height - 150, w: 15, h: 15, collected: false},
@@ -2518,7 +2682,8 @@ function initPlatformer() {
         keys: { right: false, left: false, up: false },
         level: levelData,
         coinsCollected: 0,
-        isDead: false
+        isDead: false,
+        diffMult: mult
     };
 
     const moveLeft = (e) => { if(e) e.preventDefault(); platformerObj.keys.left = true; platformerObj.keys.right = false; };
@@ -2691,10 +2856,11 @@ function endPlatformer(isWin = false) {
 
     if (isWin) {
         playSound('win');
-        gameState.shooter.coins += 50;
+        const reward = Math.floor(50 * (selectedDifficulty === 'extreme' ? 1.5 : selectedDifficulty === 'hard' ? 1.25 : 1));
+        gameState.shooter.coins += reward;
         saveGameState();
         setTimeout(() => {
-            customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nСобрано монет: ${platformerObj.coinsCollected}\nНаграда: +50 🪙`);
+            customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nСобрано монет: ${platformerObj.coinsCollected}\nНаграда: +${reward} 🪙`);
             openPlatformerMenu();
         }, 100);
     } else {
