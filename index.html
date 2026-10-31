@@ -1,1796 +1,1527 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sunset</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
-    width: 100%; height: 100%; overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    background: #0f0a14;
-    color: #fff;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>X-Social | Premium Network Ultra</title>
+    
+    <!-- Подключение шрифтов -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС
+           ========================================= */
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #16161f;
+            --bg-input: #232330;
+            --text-main: #ffffff;
+            --text-muted: #8e8e9e;
+            --accent: #ff4757;
+            --accent-gradient: linear-gradient(135deg, #ff6b81, #ff4757);
+            --premium-gradient: linear-gradient(135deg, #feca57, #ff9f43);
+            --success: #2ecc71;
+            --info: #3498db;
+            --border-radius: 20px;
+            --border-color: #2a2a35;
+        }
 
-  .sunset-photo {
-    position: fixed; inset: 0; z-index: 0;
-    background-image: url('https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1920&q=90');
-    background-size: cover; background-position: center;
-  }
-  .sunset-photo::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(15,8,25,0.55), rgba(20,10,35,0.4) 40%, rgba(25,12,40,0.55) 70%, rgba(10,5,18,0.85));
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-  #register {
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px; background: rgba(0,0,0,0.4); backdrop-filter: blur(20px);
-  }
-  #register.hide { display: none; }
-  .reg-card {
-    background: rgba(255,255,255,0.08); backdrop-filter: blur(40px);
-    border: 1px solid rgba(255,255,255,0.18); border-radius: 28px;
-    padding: 36px 28px; width: 100%; max-width: 380px;
-    color: #fff; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-  }
-  .reg-card h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
-  .reg-card p { font-size: 15px; opacity: 0.75; margin-bottom: 28px; }
-  .avatar-preview {
-    width: 110px; height: 110px; border-radius: 50%;
-    margin: 0 auto 22px; display: flex; align-items: center; justify-content: center;
-    font-size: 42px; font-weight: 700; color: #fff; cursor: pointer;
-    border: 3px solid rgba(255,255,255,0.35); transition: 0.2s;
-  }
-  .reg-input {
-    width: 100%; background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.18); border-radius: 16px;
-    padding: 16px 18px; font-size: 16px; color: #fff; outline: none;
-    margin-bottom: 16px; font-family: inherit;
-  }
-  .reg-input::placeholder { color: rgba(255,255,255,0.45); }
-  .reg-btn {
-    width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62);
-    border: none; border-radius: 16px; padding: 17px;
-    font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
-    font-family: inherit; box-shadow: 0 10px 28px rgba(255,90,70,0.4);
-  }
-  .reg-error { color: #ff5e62; font-size: 13px; margin-top: 12px; display: none; font-weight: 600; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
 
-  #panel { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; background: rgba(12,8,20,0.78); backdrop-filter: blur(28px); }
-  #panel.show { display: flex; }
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
 
-  .header {
-    padding: 52px 18px 14px; display: flex; align-items: center; justify-content: space-between;
-    color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .header-left { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .my-avatar {
-    width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; color: #fff; border: 2px solid rgba(255,255,255,0.35);
-    position: relative; flex-shrink: 0; overflow: hidden;
-  }
-  .premium-badge {
-    position: absolute; bottom: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; font-size: 11px;
-    background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5); z-index: 2;
-  }
-  .premium-badge.prime { background: linear-gradient(135deg, #00d4ff, #7b2ff7); color: #fff; }
-  .my-name { font-size: 17px; font-weight: 650; }
-  .my-status { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-  .header-right { display: flex; gap: 8px; }
-  .icon-btn {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12);
-    width: 40px; height: 40px; border-radius: 50%; color: #fff; font-size: 18px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-  }
-  .icon-btn.plus { font-size: 24px; font-weight: 300; }
+        /* =========================================
+           2. ШАПКА САЙТА (HEADER)
+           ========================================= */
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-  .content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; }
-  .content::-webkit-scrollbar { display: none; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
 
-  .section-title {
-    color: rgba(255,255,255,0.45); font-size: 11px; letter-spacing: 1.5px;
-    text-transform: uppercase; padding: 20px 16px 10px; font-weight: 600;
-  }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 22px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
 
-  /* ===== FEED ===== */
-  .feed-refresh-wrap {
-    display: flex; justify-content: center; padding: 16px 16px 8px;
-  }
-  .feed-refresh-btn {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
-    color: #fff; font-size: 14px; font-weight: 600; padding: 11px 22px;
-    border-radius: 100px; cursor: pointer; transition: 0.2s;
-  }
-  .feed-refresh-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.14); }
+        .avatar.premium::after {
+            content: '👑';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            font-size: 18px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
 
-  .post {
-    margin: 10px 14px; padding: 16px;
-    background: rgba(30,20,45,0.55); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 22px; box-shadow: 0 8px 28px rgba(0,0,0,0.25);
-    backdrop-filter: blur(12px);
-  }
-  .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .post-avatar {
-    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0;
-  }
-  .post-meta { flex: 1; min-width: 0; }
-  .post-author { color: #fff; font-size: 15px; font-weight: 650; }
-  .post-time { color: rgba(255,255,255,0.45); font-size: 12px; margin-top: 2px; }
-  .post-text { color: #e8e4ef; font-size: 15px; line-height: 1.55; margin-bottom: 14px; white-space: pre-wrap; }
-  .post-image { width: 100%; border-radius: 14px; margin-bottom: 14px; display: block; object-fit: cover; max-height: 380px; }
+        .user-name {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-  .post-actions {
-    display: flex; gap: 8px; padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-  }
-  .post-action {
-    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-    background: rgba(255,255,255,0.05); border: none; color: rgba(255,255,255,0.65);
-    font-size: 13px; cursor: pointer; font-family: inherit; padding: 9px; border-radius: 12px;
-  }
-  .post-action.liked { color: #ff5e8c; background: rgba(255,94,140,0.12); }
+        .user-status {
+            font-size: 13px;
+            color: var(--premium-gradient);
+            font-weight: 600;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  .post-comments { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.07); }
-  .comment { padding: 7px 0; font-size: 13px; color: #ccc; }
-  .comment-author { font-weight: 650; color: #ffb380; margin-right: 4px; }
-  .comment-input-row { display: flex; gap: 8px; margin-top: 8px; }
-  .comment-input {
-    flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; font-family: inherit;
-  }
-  .comment-send {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; border-radius: 50%;
-    width: 38px; height: 38px; color: #fff; font-size: 16px; cursor: pointer;
-  }
+        .header-actions button {
+            background: var(--bg-input);
+            border: none;
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-  /* stories */
-  .stories-row { display: flex; gap: 12px; padding: 14px 16px 6px; overflow-x: auto; scrollbar-width: none; }
-  .stories-row::-webkit-scrollbar { display: none; }
-  .story-circle { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; width: 70px; }
-  .story-ring {
-    width: 66px; height: 66px; border-radius: 50%; padding: 3px;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62, #a06cd5);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .story-img {
-    width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-size: 22px; font-weight: 700; color: #fff;
-    border: 2.5px solid rgba(12,8,20,0.95);
-  }
-  .story-label { font-size: 11px; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70px; text-align: center; }
-  .story-ring.my-add { background: linear-gradient(135deg, #ff8c42, #ff5e62); }
-  .story-ring.my-add .story-img { background: rgba(15,10,25,0.7); font-size: 28px; }
+        .header-actions button:active {
+            background: #3a3a48;
+            transform: scale(0.95);
+        }
 
-  /* chats */
-  .search-section { padding: 12px 16px 0; }
-  .search-input {
-    width: 100%; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px; padding: 13px 16px; font-size: 15px; color: #fff; outline: none; font-family: inherit;
-  }
-  .search-tabs { display: flex; gap: 6px; padding: 10px 16px 0; }
-  .search-tab {
-    flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px; padding: 9px 2px; color: rgba(255,255,255,0.65); font-size: 11px;
-    cursor: pointer; font-family: inherit; text-align: center;
-  }
-  .search-tab.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
+        /* =========================================
+           3. НИЖНЕЕ МЕНЮ (BOTTOM NAVIGATION)
+           ========================================= */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(22, 22, 31, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 25px 0;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
 
-  .card-item {
-    display: flex; align-items: center; gap: 14px; padding: 13px 14px; border-radius: 18px;
-    margin: 4px 12px; cursor: pointer; background: rgba(255,255,255,0.05);
-  }
-  .card-item:active { background: rgba(255,255,255,0.1); }
-  .card-avatar {
-    width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-size: 22px; font-weight: 700; color: #fff; flex-shrink: 0;
-  }
-  .card-avatar.group { border-radius: 14px; }
-  .card-info { flex: 1; min-width: 0; }
-  .card-name { color: #fff; font-size: 15px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .card-sub { color: rgba(255,255,255,0.55); font-size: 12px; margin-top: 3px; }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+            width: 20%;
+        }
 
-  .empty-state { text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.7); }
-  .empty-state .emoji { font-size: 56px; margin-bottom: 14px; }
-  .empty-state p { font-size: 15px; line-height: 1.5; }
+        .nav-item.active {
+            color: var(--accent);
+        }
 
-  /* my page */
-  .create-post-prompt {
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 18px; padding: 13px 16px; margin: 14px;
-    cursor: pointer;
-  }
-  .create-post-prompt span { color: rgba(255,255,255,0.5); font-size: 15px; flex: 1; }
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+            transition: 0.2s;
+        }
 
-  .pinned-sections {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-    padding: 14px; background: rgba(0,0,0,0.25); margin: 0 14px 12px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.07);
-  }
-  .pinned-item {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 12px 6px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 6px; cursor: pointer; min-height: 72px;
-  }
-  .pinned-icon { font-size: 24px; }
-  .pinned-name { font-size: 10px; color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; }
-  .pinned-empty { grid-column: span 4; text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; padding: 12px 0; }
-  .manage-pinned-btn {
-    margin: 0 14px 16px; padding: 12px; text-align: center;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; color: #ff8c42; font-size: 13px; font-weight: 650; cursor: pointer;
-  }
+        .nav-item:active .nav-icon {
+            transform: translateY(-2px);
+        }
 
-  /* games */
-  .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px; }
-  .game-card {
-    background: linear-gradient(160deg, rgba(40,25,60,0.9), rgba(22,12,38,0.95));
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; padding: 24px 16px;
-    display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .game-card:active { transform: scale(0.97); }
-  .game-icon { font-size: 48px; margin-bottom: 12px; }
-  .game-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 5px; }
-  .game-desc { color: rgba(255,255,255,0.5); font-size: 12px; line-height: 1.4; }
+        /* =========================================
+           4. КНОПКА ДОБАВЛЕНИЯ (FAB)
+           ========================================= */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 65px;
+            height: 65px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            color: white;
+            border: none;
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.5);
+            cursor: pointer;
+            z-index: 90;
+            transition: transform 0.2s;
+        }
 
-  /* promo */
-  .promo-card { margin: 12px 16px; padding: 22px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; }
-  .promo-card.prime { background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,47,247,0.1)); border-color: rgba(0,212,255,0.25); }
-  .promo-card.sunset { background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,140,66,0.1)); border-color: rgba(255,215,0,0.25); }
-  .promo-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-  .promo-emoji { font-size: 36px; }
-  .promo-name { color: #fff; font-size: 18px; font-weight: 700; }
-  .promo-desc { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 3px; }
-  .premium-features { margin-bottom: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .feat { display: flex; gap: 10px; color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.4; }
-  .promo-price {
-    width: 100%; padding: 15px; border-radius: 14px;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none;
-    color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
-  }
-  .promo-price.prime-btn { background: linear-gradient(135deg, #00d4ff, #7b2ff7); }
-  .promo-price.sunset-btn { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
+        .fab:active {
+            transform: scale(0.85) rotate(45deg);
+        }
 
-  /* chat */
-  #chat {
-    position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column;
-    background: rgba(12,8,20,0.97); backdrop-filter: blur(30px);
-    transform: translateX(100%); transition: transform 0.3s ease;
-  }
-  #chat.show { transform: translateX(0); }
-  .chat-header {
-    padding: 52px 16px 14px; display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.08); color: #fff;
-  }
-  .back-btn { background: transparent; border: none; color: #fff; font-size: 24px; padding: 4px 8px; cursor: pointer; }
-  .chat-title { flex: 1; }
-  .chat-title .name { font-size: 16px; font-weight: 650; }
-  .chat-title .status {
-    font-size: 11px; margin-top: 3px; display: inline-block;
-    background: rgba(255,255,255,0.1); padding: 2px 9px; border-radius: 10px;
-  }
-  .chat-title .status.online { color: #86efac; }
-  .chat-title .status.typing { color: #ffb380; }
-  .chat-body { flex: 1; overflow-y: auto; padding: 16px 14px 20px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
-  .chat-body::-webkit-scrollbar { display: none; }
-  .message { max-width: 78%; padding: 11px 15px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-wrap: break-word; }
-  .message.me { align-self: flex-end; background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-bottom-right-radius: 5px; }
-  .message.them { align-self: flex-start; background: rgba(255,255,255,0.12); color: #fff; border-bottom-left-radius: 5px; }
-  .message .time { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
-  .chat-input-bar {
-    padding: 10px 14px 18px; display: flex; align-items: center; gap: 8px;
-    background: rgba(0,0,0,0.35); border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .chat-input {
-    flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 24px; padding: 13px 18px; font-size: 15px; color: #fff; outline: none;
-  }
-  .chat-send {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none; color: #fff; font-size: 20px; cursor: pointer;
-  }
+        /* =========================================
+           5. ЛЕНТА И КАРТОЧКИ ПОСТОВ
+           ========================================= */
+        .feed {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-  .bottom-nav {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 74px; z-index: 25;
-    display: flex; align-items: center; justify-content: space-around;
-    background: rgba(12,8,20,0.92); backdrop-filter: blur(30px);
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .nav-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 4px; background: transparent; border: none; color: rgba(255,255,255,0.4);
-    font-size: 10px; cursor: pointer; padding: 8px 0; font-family: inherit;
-  }
-  .nav-btn.active { color: #ff8c42; }
-  .nav-icon { font-size: 21px; }
+        .post {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.4s ease forwards;
+            opacity: 0;
+        }
 
-  /* modal */
-  .modal {
-    position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center;
-    background: rgba(0,0,0,0.65); backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  }
-  .modal.show { opacity: 1; pointer-events: all; }
-  .modal-card {
-    background: linear-gradient(180deg, rgba(28,16,42,0.98), rgba(16,10,28,0.99));
-    border-radius: 28px 28px 0 0; padding: 28px 20px 36px; width: 100%; max-width: 480px;
-    color: #fff; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-    border-top: 1px solid rgba(255,255,255,0.12); max-height: 92vh; overflow-y: auto;
-  }
-  .modal.show .modal-card { transform: translateY(0); }
-  .modal-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; text-align: center; }
-  .modal-sub { font-size: 14px; opacity: 0.6; text-align: center; margin-bottom: 22px; }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
 
-  .create-options { display: flex; flex-direction: column; gap: 11px; }
-  .create-option {
-    display: flex; align-items: center; gap: 16px; padding: 15px 16px; border-radius: 18px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09); cursor: pointer;
-  }
-  .create-option:active { background: rgba(255,255,255,0.11); }
-  .create-option-icon {
-    width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
-    font-size: 24px; background: linear-gradient(135deg, rgba(255,140,66,0.22), rgba(255,94,98,0.22));
-    border: 1px solid rgba(255,140,66,0.25);
-  }
-  .create-option-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-  .create-option-desc { font-size: 13px; opacity: 0.55; }
-  .create-option-arrow { font-size: 20px; opacity: 0.35; margin-left: auto; }
+        .post-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
 
-  .modal-close {
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 14px; width: 100%; color: #fff; font-size: 15px;
-    font-weight: 600; cursor: pointer; margin-top: 16px; font-family: inherit;
-  }
-  .modal-input, .modal-textarea {
-    width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px; padding: 14px 16px; font-size: 15px; color: #fff; outline: none;
-    margin-bottom: 12px; font-family: inherit;
-  }
-  .modal-textarea { min-height: 120px; resize: none; }
-  .modal-primary {
-    width: 100%; background: linear-gradient(135deg, #ff8c42, #ff5e62); border: none;
-    border-radius: 14px; padding: 15px; font-size: 15px; font-weight: 650; color: #fff; cursor: pointer;
-  }
+        .post-meta {
+            display: flex;
+            flex-direction: column;
+        }
 
-  .status-select {
-    width: 100%; padding: 13px 16px; margin-bottom: 14px; border-radius: 12px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; font-size: 15px; font-family: inherit; outline: none;
-  }
-  .profile-action-btn {
-    width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 13px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit;
-  }
+        .post-author {
+            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-  .track { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .track-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .track-num { width: 26px; text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
-  .track-name { color: #fff; font-size: 14px; font-weight: 650; }
-  .track-artist { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 2px; }
-  .track-play { color: #ff8c42; font-size: 18px; }
+        .post-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
 
-  /* game overlay */
-  #gameOverlay { position: fixed; inset: 0; z-index: 300; background: #0a0510; display: none; flex-direction: column; color: #fff; }
-  #gameOverlay.show { display: flex; }
-  .game-topbar { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.5); }
-  .game-close { font-size: 24px; background: transparent; border: none; color: #fff; cursor: pointer; }
-  .game-area { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-  canvas { display: block; touch-action: none; }
-  .game-ui-top { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; pointer-events: none; font-weight: 700; font-size: 15px; text-shadow: 0 2px 6px #000; }
-  .game-btn {
-    background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border: none;
-    padding: 14px 28px; border-radius: 14px; font-size: 16px; cursor: pointer; font-weight: 700;
-    box-shadow: 0 8px 24px rgba(255,90,70,0.35);
-  }
-  .diff-selector { display: flex; gap: 8px; margin: 16px 0 8px; flex-wrap: wrap; justify-content: center; }
-  .diff-btn {
-    padding: 10px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; cursor: pointer;
-  }
-  .diff-btn.active { background: linear-gradient(135deg, #ff8c42, #ff5e62); color: #fff; border-color: transparent; }
+        .post-content {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #e4e4e7;
+            white-space: pre-wrap;
+        }
 
-  .shop-container { position: absolute; inset: 0; background: rgba(12,8,20,0.97); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; z-index: 20; }
-  .shop-header { display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-  .upgrade-item { background: rgba(255,255,255,0.07); padding: 15px; border-radius: 14px; margin-bottom: 11px; display: flex; justify-content: space-between; align-items: center; }
-  .upgrade-btn { background: #4ade80; color: #000; border: none; padding: 10px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; min-width: 80px; }
-  .upgrade-btn:disabled { background: #444; color: #888; }
+        .post-image {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            max-height: 350px;
+            border: 1px solid var(--border-color);
+        }
 
-  .turbo-bar-container { position: absolute; bottom: 20px; left: 20px; width: 180px; height: 24px; background: rgba(0,0,0,0.7); border: 2px solid #ff8c42; border-radius: 12px; overflow: hidden; display: none; z-index: 15; }
-  .turbo-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff8c42, #ffd700); transition: width 0.3s; }
-  .turbo-bar-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 10px; font-weight: 700; color: #fff; pointer-events: none; }
-  .turbo-btn { position: absolute; bottom: 20px; right: 20px; width: 78px; height: 78px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 3px solid #555; color: #555; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; z-index: 15; pointer-events: none; }
-  .turbo-btn.ready { background: radial-gradient(circle, #ffd700, #ff8c42); border-color: #fff; color: #000; pointer-events: auto; box-shadow: 0 0 20px #ff8c42; }
+        .post-actions {
+            display: flex;
+            gap: 10px;
+        }
 
-  .viewer-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-  .viewer-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff; }
-  .viewer-name { font-size: 14px; font-weight: 650; }
-  .invite-btn { background: rgba(255,140,66,0.2); border: 1px solid rgba(255,140,66,0.4); color: #ffb380; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
-</style>
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-input);
+            border: none;
+            border-radius: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:active {
+            background: #3a3a48;
+            transform: scale(0.97);
+        }
+
+        .action-btn.liked {
+            color: var(--accent);
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        /* =========================================
+           6. БЕЙДЖИ (МЕТКИ)
+           ========================================= */
+        .badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.news {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+
+        .badge.premium {
+            background: var(--premium-gradient);
+            color: #000;
+        }
+
+        .badge.toxic {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        /* =========================================
+           7. ПРЕМИУМ БАННЕР
+           ========================================= */
+        .premium-banner {
+            margin: 0 15px 20px 15px;
+            padding: 25px;
+            background: linear-gradient(135deg, #2a1b38, #1a1a24);
+            border-radius: var(--border-radius);
+            border: 1px solid #4a2f5e;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            max-width: 570px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .premium-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(254, 202, 87, 0.15) 0%, transparent 60%);
+            animation: rotate 10s linear infinite;
+        }
+
+        .premium-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #feca57;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .premium-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .premium-btn {
+            background: var(--premium-gradient);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #1a1a24;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(254, 202, 87, 0.3);
+        }
+
+        /* =========================================
+           8. МОДАЛЬНОЕ ОКНО СОЗДАНИЯ (ШТОРКА)
+           ========================================= */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 200;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 30px 30px 0 0;
+            padding: 25px 20px 40px 20px;
+            border-top: 1px solid #3a3a48;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .create-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .create-option:active {
+            border-color: var(--accent);
+            background: var(--bg-input);
+            transform: scale(0.98);
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-input);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .option-info {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .option-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .option-arrow {
+            color: var(--text-muted);
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-card);
+            border: none;
+            color: var(--accent);
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           9. СТРАНИЦА PREMIUM (ТАРИФЫ)
+           ========================================= */
+        .premium-page {
+            display: none;
+            padding: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .premium-header {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .premium-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-card.pro {
+            border-color: #feca57;
+            box-shadow: 0 10px 30px rgba(254, 202, 87, 0.15);
+            background: linear-gradient(180deg, #1f1b24 0%, var(--bg-card) 100%);
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            margin: 15px 0;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        /* =========================================
+           10. ЗАГЛУШКИ ДЛЯ ДРУГИХ ВКЛАДОК
+           ========================================= */
+        .stub-page {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .stub-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .stub-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stub-text {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           11. АНИМАЦИИ
+           ========================================= */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
+ 
+    <!-- =========================================
+         HTML РАЗМЕТКА (ВИЗУАЛЬНАЯ ЧАСТЬ)
+         ========================================= -->
 
-<div class="sunset-photo"></div>
-
-<div id="register">
-  <div class="reg-card">
-    <h1>Sunset</h1>
-    <p>Введите имя чтобы продолжить</p>
-    <div class="avatar-preview" id="avatarPreview">?</div>
-    <input type="text" class="reg-input" id="regName" placeholder="Ваш ник" maxlength="20" autocomplete="off">
-    <button type="button" class="reg-btn" id="regBtn">Продолжить →</button>
-    <div class="reg-error" id="regError">Введите имя (минимум 2 символа)</div>
-  </div>
-</div>
-
-<div id="panel">
-  <div class="header">
-    <div class="header-left" id="myProfileBtn">
-      <div class="my-avatar" id="myAvatarSmall"></div>
-      <div>
-        <div class="my-name" id="myNameLabel"></div>
-        <div class="my-status" id="myStatusLabel">в сети</div>
-      </div>
-    </div>
-    <div class="header-right">
-      <button class="icon-btn plus" id="plusBtn">+</button>
-      <button class="icon-btn" id="settingsBtn">⚙️</button>
-    </div>
-  </div>
-
-  <div class="content" id="content">
-    <!-- МОЯ СТРАНИЦА -->
-    <div class="tab-content active" id="tab-mypage">
-      <div class="create-post-prompt" onclick="openPostModal()">
-        <div class="my-avatar" id="promptAvatar" style="width:36px;height:36px;font-size:14px;"></div>
-        <span>Привет! Расскажите что-нибудь...</span>
-      </div>
-      <div class="section-title">📌 Закреплённые разделы</div>
-      <div class="pinned-sections" id="pinnedSections"></div>
-      <div class="manage-pinned-btn" id="managePinnedBtn" style="display:none;">⚙️ Настроить разделы</div>
-      <div class="section-title">📝 Мои посты</div>
-      <div id="myPagePostsList"></div>
-    </div>
-
-    <!-- ЧАТЫ -->
-    <div class="tab-content" id="tab-chats">
-      <div class="search-section">
-        <input type="text" class="search-input" id="mainSearchInput" placeholder="Поиск...">
-        <div class="search-tabs">
-          <button class="search-tab active" data-stab="people">👤 Люди</button>
-          <button class="search-tab" data-stab="groups">👥 Группы</button>
-          <button class="search-tab" data-stab="communities">🌍 Сообщества</button>
-          <button class="search-tab" data-stab="channels">📢 Каналы</button>
+    <!-- ШАПКА САЙТА -->
+    <header class="header">
+        <div class="profile-info" onclick="switchTab('profile')">
+            <div class="avatar premium">B</div>
+            <div>
+                <div class="user-name">boss <span style="font-size: 14px;">✅</span></div>
+                <div class="user-status">Prime Premium</div>
+            </div>
         </div>
-      </div>
-      <div id="chatsList"></div>
-    </div>
-
-    <!-- ГЛАВНАЯ / ЛЕНТА -->
-    <div class="tab-content" id="tab-feed">
-      <div class="stories-row" id="storiesRow"></div>
-      
-      <div class="feed-refresh-wrap">
-        <button class="feed-refresh-btn" onclick="refreshFeed()">
-          <span>↻</span> Обновить ленту
-        </button>
-      </div>
-
-      <div class="section-title">📝 Лента новостей</div>
-      <div id="postsList"></div>
-    </div>
-
-    <!-- МУЗЫКА -->
-    <div class="tab-content" id="tab-music">
-      <div class="section-title">🎵 Музыка</div>
-      <div id="musicList"></div>
-    </div>
-
-    <!-- ИГРЫ -->
-    <div class="tab-content" id="tab-games">
-      <div class="section-title">🎮 Игры</div>
-      <div class="games-grid" id="gamesGrid"></div>
-    </div>
-
-    <!-- ПРОМО -->
-    <div class="tab-content" id="tab-promo">
-      <div class="section-title">👑 Premium</div>
-      <div class="promo-card sunset">
-        <div class="promo-head">
-          <span class="promo-emoji">⭐</span>
-          <div>
-            <div class="promo-name">Sunset Premium</div>
-            <div class="promo-desc">1 800 ₽ / год</div>
-          </div>
+        <div class="header-actions">
+            <button onclick="switchTab('premium')">👑</button>
+            <button onclick="showToast('Настройки в разработке!')">⚙️</button>
         </div>
-        <div class="premium-features">
-          <div class="feat"><span>⭐</span><span><b>Статус Administrator</b></span></div>
-          <div class="feat"><span>📌</span><span><b>3 раздела</b> на странице</span></div>
-          <div class="feat"><span>📝</span><span><b>200 постов</b> в месяц</span></div>
-          <div class="feat"><span>🎵</span><span>Музыка в постах</span></div>
+    </header>
+
+    <!-- ГЛАВНАЯ ЛЕНТА -->
+    <main id="page-home" class="feed">
+        
+        <!-- Баннер премиума в ленте -->
+        <div class="premium-banner" onclick="switchTab('premium')">
+            <div class="premium-title">Нужно продвижение?</div>
+            <div class="premium-text">Попробуйте Premium: эксклюзивные стикеры, отсутствие рекламы и приоритет в ленте.</div>
+            <button class="premium-btn">Узнать больше</button>
         </div>
-        <button class="promo-price sunset-btn">Купить за 1 800 ₽</button>
-      </div>
-      <div class="promo-card prime">
-        <div class="promo-head">
-          <span class="promo-emoji">💎</span>
-          <div>
-            <div class="promo-name">Prime Premium</div>
-            <div class="promo-desc">2 600 ₽ / год</div>
-          </div>
+
+        <!-- Сюда JS будет вставлять посты -->
+        <div id="feed-container"></div>
+        
+        <div style="text-align: center; color: var(--text-muted); padding: 20px; font-size: 14px;">
+            Загрузка новых постов...
         </div>
-        <div class="premium-features">
-          <div class="feat"><span>💎</span><span><b>Статус Master</b></span></div>
-          <div class="feat"><span>📌</span><span><b>8 разделов</b></span></div>
-          <div class="feat"><span>♾️</span><span>Бесконечные посты</span></div>
-          <div class="feat"><span>🎵</span><span>Музыка в постах</span></div>
+    </main>
+
+    <!-- СТРАНИЦА PREMIUM (ТАРИФЫ) -->
+    <main id="page-premium" class="premium-page">
+        <div class="premium-header">Выберите свой план</div>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Посты для всех бесплатны. Premium дает только бусты и плюшки.</p>
+
+        <!-- Тариф Basic -->
+        <div class="premium-card">
+            <h3 style="font-size: 20px; margin-bottom: 5px;">Prime Basic</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Для начинающих блогеров</p>
+            <div class="price">299 ₽<span>/мес</span></div>
+            <ul class="features">
+                <li>Золотой значок Premium в профиле</li>
+                <li>Увеличение слотов на главной (до 12)</li>
+                <li>Полное отключение рекламы</li>
+                <li>Возможность ставить длинные истории</li>
+            </ul>
+            <button class="premium-btn" style="width: 100%;" onclick="showToast('Оплата временно недоступна в демо-версии')">Купить Basic</button>
         </div>
-        <button class="promo-price prime-btn">Купить за 2 600 ₽</button>
-      </div>
+
+        <!-- Тариф PRO -->
+        <div class="premium-card pro">
+            <div style="position: absolute; top: 20px; right: -30px; background: #feca57; color: #000; font-size: 12px; padding: 5px 40px; transform: rotate(45deg); font-weight: 800;">TOP</div>
+            <h3 style="font-size: 20px; margin-bottom: 5px; color: #feca57;">Prime Premium</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Максимальные возможности</p>
+            <div class="price" style="color: #feca57;">699 ₽<span>/мес</span></div>
+            <ul class="features">
+                <li>Все возможности из Basic</li>
+                <li>Приоритет в ленте (ваши посты видят первыми)</li>
+                <li>Эксклюзивные стикеры и эмодзи</li>
+                <li>Возможность создавать "Сообщества"</li>
+                <li>Сбор новостей от ИИ 24/7</li>
+                <li>Скрытие статуса "Онлайн"</li>
+            </ul>
+            <button class="premium-btn" style="width: 100%;" onclick="showToast('Оплата временно недоступна в демо-версии')">Оформить Premium</button>
+        </div>
+    </main>
+
+    <!-- ЗАГЛУШКИ ДЛЯ ДРУГИХ ВКЛАДОК (ЧАТЫ, МУЗЫКА, ИГРЫ, ПРОФИЛЬ) -->
+    <main id="page-chats" class="stub-page">
+        <div class="stub-icon">💬</div>
+        <div class="stub-title">Чаты</div>
+        <div class="stub-text">Здесь будут ваши переписки с друзьями и коллегами. Функция находится в разработке.</div>
+    </main>
+
+    <main id="page-music" class="stub-page">
+        <div class="stub-icon">🎵</div>
+        <div class="stub-title">Музыка</div>
+        <div class="stub-text">Слушайте музыку прямо в приложении. Мы добавляем миллионы треков. Ожидайте обновления!</div>
+    </main>
+
+    <main id="page-games" class="stub-page">
+        <div class="stub-icon">🎮</div>
+        <div class="stub-title">Игры</div>
+        <div class="stub-text">Играйте в мини-игры со своими друзьями и зарабатывайте бонусы.</div>
+    </main>
+
+    <main id="page-profile" class="stub-page">
+        <div class="avatar premium" style="width: 100px; height: 100px; font-size: 40px; margin: 0 auto 20px auto;">B</div>
+        <div class="stub-title">boss</div>
+        <div class="stub-text">Prime Premium User<br>Статистика: 148 постов • 15.4k подписчиков</div>
+        <button class="premium-btn" style="margin-top: 20px;" onclick="switchTab('premium')">Управлять подпиской</button>
+    </main>
+
+    <!-- КНОПКА ДОБАВЛЕНИЯ (ПЛЮСИК) -->
+    <button class="fab" onclick="openCreateModal()">+</button>
+
+    <!-- НИЖНЕЕ МЕНЮ НАВИГАЦИИ -->
+    <nav class="bottom-nav">
+        <div class="nav-item" id="nav-profile" onclick="switchTab('profile')">
+            <div class="nav-icon">👤</div>
+            <span>Моя стр.</span>
+        </div>
+        <div class="nav-item" id="nav-chats" onclick="switchTab('chats')">
+            <div class="nav-icon">💬</div>
+            <span>Чаты</span>
+        </div>
+        <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
+            <div class="nav-icon">📱</div>
+            <span>Главная</span>
+        </div>
+        <div class="nav-item" id="nav-music" onclick="switchTab('music')">
+            <div class="nav-icon">🎵</div>
+            <span>Музыка</span>
+        </div>
+        <div class="nav-item" id="nav-games" onclick="switchTab('games')">
+            <div class="nav-icon">🎮</div>
+            <span>Игры</span>
+        </div>
+    </nav>
+
+    <!-- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ (ШТОРКА СНИЗУ) -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <div class="modal-title">Создать</div>
+            <div class="modal-subtitle">Выбери, что хочешь сделать</div>
+
+            <div class="create-option" onclick="showToast('Редактор постов в разработке!')">
+                <div class="option-icon" style="color: #e74c3c;">📝</div>
+                <div class="option-info">
+                    <div class="option-title">Пост</div>
+                    <div class="option-desc">Текст, фото и музыка</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Камера недоступна в браузере')">
+                <div class="option-icon" style="color: #e67e22;">📸</div>
+                <div class="option-info">
+                    <div class="option-title">История</div>
+                    <div class="option-desc">Кружок вверху ленты</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Группа создана! (Демо)')">
+                <div class="option-icon" style="color: #3498db;">👥</div>
+                <div class="option-info">
+                    <div class="option-title">Группа</div>
+                    <div class="option-desc">Приватный чат</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Сообщество создано! (Демо)')">
+                <div class="option-icon" style="color: #2ecc71;">🌐</div>
+                <div class="option-info">
+                    <div class="option-title">Сообщество</div>
+                    <div class="option-desc">Глобальное сообщество</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Канал создан! (Демо)')">
+                <div class="option-icon" style="color: #9b59b6;">📢</div>
+                <div class="option-info">
+                    <div class="option-title">Канал</div>
+                    <div class="option-desc">Трансляция постов</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <button class="cancel-btn" onclick="closeCreateModal()">Отмена</button>
+        </div>
     </div>
-  </div>
 
-  <div class="bottom-nav">
-    <button class="nav-btn active" data-tab="mypage"><span class="nav-icon">👤</span><span>Моя стр.</span></button>
-    <button class="nav-btn" data-tab="chats"><span class="nav-icon">💬</span><span>Чаты</span></button>
-    <button class="nav-btn" data-tab="feed"><span class="nav-icon">📱</span><span>Главная</span></button>
-    <button class="nav-btn" data-tab="music"><span class="nav-icon">🎵</span><span>Музыка</span></button>
-    <button class="nav-btn" data-tab="games"><span class="nav-icon">🎮</span><span>Игры</span></button>
-    <button class="nav-btn" data-tab="promo"><span class="nav-icon">💰</span><span>Промо</span></button>
-  </div>
+    <!-- =========================================
+         JAVASCRIPT (ОГРОМНЫЙ БЛОК ЛОГИКИ)
+         ========================================= -->
+    <script>
+        
+        // =========================================
+        // БАЗА ДАННЫХ: ТОКСИЧНЫЕ ПОСТЫ (МАТЫ, ПОДЪЁБЫ)
+        // =========================================
+        const toxicPosts = [
+            "Чинил соседу ноут. Оказалось, просто шнур от зарядки отходил. Взял 500 рублей «за диагностику» 😂 (ну а хули, я не благотворительный фонд)",
+            "Кто-то поставил дизлайк моему посту? Я найду твой IP, вычислю адрес и приду поговорить за жизнь. Шутка. Или нет. 😈",
+            "Мой код работает, но я не знаю почему. Не трогайте его, если хотите жить. Программисты поймут.",
+            "Скучно. Напишите мне что-нибудь оскорбительное, я хочу поспорить. Только без бана, а то заблокирую нахуй.",
+            "Сегодня сходил в спортзал. Пожал 20 кг. Это был вес моего бургера, который я съел по дороге. Прогресс на лицо.",
+            "Девушки говорят, что им нужны заботливые парни. А потом уходят к тем, у кого есть машина. Смешно, правда?",
+            "Собеседование прошло отлично. Я им рассказал, как я умею гуглить, они сказали, что подумают. Ну и идите нахуй, найду работу получше.",
+            "Всем привет! Я новый бот этого приложения. Если увидите баг - не пишите, я все равно не отвечу. Я тут чисто за донаты.",
+            "Мне кажется, или все вокруг резко стали экспертами по геополитике? Пацаны, вы кнопку включения компа то еле нашли.",
+            "Работать в пятницу - это как есть суп вилкой. Вроде и делаешь что-то, но смысла ноль.",
+            "Заказал пиццу. Курьер пришел на 2 часа позже. Сказал, что пробки. Пицца была холодная, как моя бывшая. Оцените мой вечер.",
+            "Купил новый телефон. Теперь я успешный человек. Осталось только кредит за него выплатить. И за старый. И за квартиру.",
+            "Смотрю на свой список дел на сегодня: 1. Проснуться. Всё, список выполнен, можно отдыхать.",
+            "Кто-то реально верит в гороскопы? Овен, ты сегодня найдешь деньги. Ага, конечно. Скорее потеряешь последние.",
+            "Если бы я получал рубль за каждый раз, когда я тупил... Я бы уже был миллионером. Но я туплю, поэтому у меня нет денег.",
+            "Мой кот смотрит на меня так, будто я его напрягаю своим существованием. Кот, мы живем на мои деньги, имей совесть!",
+            "Люблю смотреть на людей в метро. Они все такие серьезные, будто решают судьбу мира. А потом выходят на своей остановке и идут в Пятерочку.",
+            "Вот почему у богатых нет проблем с деньгами? Потому что они не тратят их на всякую хуйню. А я вот вчера купил светящийся в темноте чехол для телефона. Зачем?",
+            "Мне кажется, я достиг просветления. Я понял, что работа - это не волк, но в лес все равно хочется.",
+            "Спорить с интернете - это как участвовать в паралимпиаде. Даже если выиграешь, все равно чувствуешь себя инвалидом.",
+            "Однажды я решил заняться саморазвитием. Прочитал одну книгу. Понял, что это не мое. Вернулся к мемам.",
+            "Мне сказали, что нужно больше улыбаться. Я улыбнулся. Люди начали шарахаться. Больше не буду.",
+            "Вот у меня есть друзья. Но когда я пишу им 'го в доту', они отвечают 'не могу, я с девушкой'. А я что, не девушка? Ах да, точно.",
+            "Обожаю, когда люди пишут 'я не токсик, я просто говорю правду'. Нет, чувак, ты просто мудак.",
+            "Сейчас бы на море. Чтобы песок, солнце, и чтобы никто не спрашивал 'когда на работу выходишь?'.",
+            "Моя жизнь - это сплошной мем. Только смешно почему-то не мне, а окружающим.",
+            "Вчера лег в 10 вечера, чтобы выспаться. Проснулся в 4 утра, потому что мне приснилось, что я забыл закрыть вкладку с порнухой. Живи теперь с этим.",
+            "Люди, которые пишут 'доброе утро' в 6 утра, вы вообще люди? Дайте поспать, я не хочу знать, что вы там делаете.",
+            "Мне 25, а я до сих пор не знаю, кем хочу стать, когда вырасту. Кажется, я просто хочу стать тем, кто спит до 12 и не парится.",
+            "Вот смотришь на некоторых людей и думаешь: 'Как ты вообще дожил до своих лет?' А потом понимаешь: 'А, ну да, мама с папой все делали за него'.",
+            "Сейчас модно быть осознанным. Я вот осознал, что я ленивый кусок дерьма. И знаете, мне даже нравится.",
+            "Зачем люди ходят в клубы? Чтобы послушать громкую музыку, постоять в очереди в туалет и уехать домой с пустым кошельком. Гениально.",
+            "У меня есть суперспособность: я могу забыть, что хотел сказать, за секунду до того, как это скажу. Врачи говорят, это склероз. Я говорю, это магия.",
+            "В интернете все смелые. Пока дело не доходит до реального разговора, тут же 'ой, я не могу, у меня дела'.",
+            "Никогда не понимал людей, которые любят утренние пробежки. Вы вообще видели, как выглядит утро? Оно ужасное.",
+            "Иногда хочется просто исчезнуть. Но потом вспоминаешь, что у тебя есть кредит и подписка на Яндекс.Музыку. И остаешься.",
+            "Я не злопамятный. Я просто записываю все в блокнотик, чтобы потом вспомнить и отомстить.",
+            "Вот бы в жизни было кнопка 'Отменить'. Как в Word. Нажал и всё, ты снова чист и невинен.",
+            "Самая большая ложь в моей жизни: 'Я проснусь пораньше и всё успею'.",
+            "Я люблю свою работу. Я люблю её настолько, что каждый день мечтаю о том, как я ухожу с неё и больше никогда не возвращаюсь.",
+            "Люди делятся на два типа: те, кто ставит будильник на 7:00 и встает в 7:00, и те, кто ставит на 7:00 и встает в 7:30, проклиная всё на свете.",
+            "Мне кажется, я в прошлой жизни был котом. Я так же люблю спать, есть и чтобы меня не трогали.",
+            "Никогда не спорь с идиотом. Сначала он опустит тебя до своего уровня, а потом задавит опытом.",
+            "В детстве я думал, что взрослая жизнь - это свобода. Оказалось, это свобода платить за квартиру.",
+            "Я такой человек, что даже когда мне плохо, я сначала узнаю, как дела у других. А потом уже вспоминаю, что мне тоже хреново.",
+            "Зачем я купил абонемент в спортзал? Чтобы он лежал в кошельке и напоминал мне о моей лени.",
+            "Сейчас бы шашлычок, пиво и на природу. Но у меня есть работа, кредит и ответственность. Живу мечтой.",
+            "Мой мозг в 3 часа ночи: 'А помнишь, как ты опозорился в 2015 году?' Да, спасибо, что напомнил, теперь не усну.",
+            "Худшее чувство в мире - это когда ты забыл, зачем пришел в комнату. Просто стоишь, как идиот, и ждешь, когда память вернется.",
+            "Я не ленивый. Я просто в режиме энергосбережения. По умолчанию.",
+            "Если бы я получал 100 рублей за каждую свою тупую мысль, я бы уже купил себе остров. И назвал бы его 'Остров Лени'."
+        ];
+     
+        // =========================================
+        // БАЗА ДАННЫХ: МИРОВЫЕ НОВОСТИ (ENGLISH)
+        // =========================================
+        const globalNews = [
+            "🐬 Volunteers in Australia successfully rescued a pod of 19 dolphins stranded on the beach. Great job, guys!",
+            "🌱 Scientists developed a new biodegradable plastic that dissolves in seawater in just 4 hours. The future is green.",
+            "🚀 SpaceX just launched a new satellite that will provide free internet to remote areas of Africa.",
+            "🎨 A 7-year-old kid's drawing was turned into a real playground by his local community. Faith in humanity restored.",
+            "🏥 A new breakthrough in medicine: a simple blood test can now detect 5 types of cancer at an early stage. Saving millions of lives.",
+            "🌳 The Amazon rainforest saw a 30% decrease in deforestation this year thanks to new global policies.",
+            "💻 Apple announced a new program to teach coding to underprivileged kids in 50 countries for free.",
+            "🚲 Paris has officially become a 100% bike-friendly city, removing the last of its inner-city car lanes.",
+            "🐝 A new species of bee was discovered in the mountains, proving nature is still full of surprises.",
+            "🤖 A robotic dog just helped rescue a hiker lost in the Alps for 3 days. Technology saves lives.",
+            "🍎 A farmer in Japan grew the world's first square watermelon that actually tastes sweet.",
+            "⚡ Tesla unveiled a new battery that charges in 5 minutes and lasts for 1000 miles.",
+            "🎓 Free university education is now available online for everyone in the EU through a new government platform.",
+            "🌊 Ocean cleanup project successfully removed 1 million kg of plastic from the Pacific Ocean this month.",
+            "🦁 A lion cub was safely returned to the wild after being treated by a local wildlife sanctuary.",
+            "🎉 A small town in Italy decided to pay people €30,000 to move there and start a business. The catch? You have to stay for 5 years.",
+            "🐕 A stray dog in Turkey was adopted by a local fire department after he kept following them to every rescue mission.",
+            "📱 A new app helps blind people navigate busy city streets using AI and their phone cameras. It's completely free.",
+            "🌻 The Netherlands just opened the world's largest vertical farm, producing fresh vegetables for 10,000 people daily.",
+            "🧬 Geneticists successfully edited a gene to cure a rare form of blindness in 15 children. A true miracle of science.",
+            "🏆 A 90-year-old grandmother just graduated from university with a degree in physics. She said she wanted to 'keep her brain sharp'.",
+            "🔋 A new solar panel technology can generate electricity even at night using the heat stored in the ground.",
+            "🐢 A sea turtle was released back into the ocean after being treated for plastic ingestion for 6 months.",
+            "🚆 Japan unveiled a new bullet train that travels at 400 km/h and uses 30% less energy than previous models.",
+            "🎬 A group of students made a short film about climate change that won an international award at the Cannes Film Festival.",
+            "🧠 Researchers found that regular afternoon naps can improve cognitive function by up to 20% in older adults.",
+            "🌋 A new geothermal energy plant in Iceland is now providing heat to 90% of the country's homes. A true green revolution.",
+            "🎁 A billionaire anonymously donated $500 million to a children's hospital in New York. Christmas came early.",
+            "🍲 A community kitchen in London serves 1000 free meals every day to anyone in need, no questions asked.",
+            "🌲 The government of Costa Rica announced that 98% of its electricity now comes from renewable sources. A global leader."
+        ];
 
-  <div id="chat">
-    <div class="chat-header">
-      <button class="back-btn" id="backBtn">←</button>
-      <div class="card-avatar" id="chatAvatar"></div>
-      <div class="chat-title">
-        <div class="name" id="chatName"></div>
-        <div class="status" id="chatStatus">в сети</div>
-      </div>
-      <button class="icon-btn" id="chatMembersBtn" style="display:none;background:transparent;border:none;">👥</button>
-      <button class="icon-btn" id="addParticipantsBtn" style="display:none;background:transparent;border:none;">➕</button>
-      <button class="icon-btn" id="deleteChatBtn" style="display:none;background:transparent;border:none;color:#ff5e62;">🗑️</button>
-    </div>
-    <div class="chat-body" id="chatBody"></div>
-    <div class="chat-input-bar">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Сообщение...">
-      <button class="chat-send" id="chatSend">➤</button>
-    </div>
-  </div>
-</div>
+        // =========================================
+        // БАЗА ДАННЫХ: ИНТЕРЕСНЫЕ ФАКТЫ (RUSSIAN)
+        // =========================================
+        const facts = [
+            "💡 Знаете ли вы, что медведи могут развивать скорость до 60 км/ч? Бегите, если что.",
+            "💡 У осьминогов три сердца. Пока плывут, одно останавливается. Вот почему они ползают.",
+            "💡 В космосе нельзя плакать. Слезы не капают, а собираются в шар вокруг глаз.",
+            "💡 Бананы светятся в ультрафиолете. Проверьте на вечеринке!",
+            "💡 Человеческий мозг использует 20% всей энергии тела, хотя составляет всего 2% от его массы.",
+            "💡 Мед никогда не портится. Археологи находили мед, которому 3000 лет, и он был съедобен.",
+            "💡 У акул нет костей, их скелет полностью состоит из хрящей.",
+            "💡 Если вынуть всю воду из Мирового океана, то солью можно покрыть всю сушу слоем в 150 метров.",
+            "💡 Слишком много сахара в детстве может сделать вас более агрессивным во взрослой жизни.",
+            "💡 Молния бьет в Землю примерно 100 раз в секунду.",
+            "💡 У кошек потеют только подушечки лап.",
+            "💡 Бактерии в вашем теле весят около 2 килограммов.",
+            "💡 Муравьи никогда не спят. Они просто отдыхают.",
+            "💡 Слоны - единственные животные, которые не могут прыгать.",
+            "💡 Страусы прячут голову в песок не от страха, а чтобы перевернуть яйца в гнезде.",
+            "💡 Человек может прожить без еды около 3 недель, а без сна — всего 11 дней.",
+            "💡 Вода в океане содержит золото, но его концентрация слишком мала для добычи.",
+            "💡 Пчелы могут распознавать лица людей.",
+            "💡 У жирафов такое же количество шейных позвонков, как и у человека (7 штук).",
+            "💡 За всю жизнь человек во сне съедает около 70 различных насекомых и пауков.",
+            "💡 Самая большая клетка в организме человека — это яйцеклетка.",
+            "💡 Пингвины делают предложение своей половинке, даря ей камешек.",
+            "💡 Крокодилы не могут высовывать язык.",
+            "💡 У улитки около 25 000 зубов.",
+            "💡 Полярные медведи левши.",
+            "💡 Человеческий нос может запомнить около 50 000 различных запахов.",
+            "💡 Сердце креветки находится в её голове.",
+            "💡 Бабочки пробуют еду на вкус своими лапками.",
+            "💡 Морская звезда может вывернуть свой желудок наизнанку, чтобы переварить добычу снаружи.",
+            "💡 У слонов самая большая продолжительность беременности — 22 месяца.",
+            "💡 Коалы спят около 22 часов в сутки.",
+            "💡 Молоко бегемота имеет розовый цвет.",
+            "💡 В Японии есть остров, который полностью населен кроликами.",
+            "💡 Арахис — это не орех, а бобовая культура.",
+            "💡 Глаз человека может различать около 10 миллионов оттенков цвета.",
+            "💡 Стрекозы имеют 6 лап, но они не могут ходить.",
+            "💡 Сахар, добавленный в бензин, может остановить двигатель автомобиля.",
+            "💡 В среднем человек засыпает за 7 минут.",
+            "💡 Мозг человека на 73% состоит из воды. Обезвоживание снижает его работу.",
+            "💡 Самая сильная мышца в теле человека (относительно размера) — это мышца, сжимающая челюсти.",
+            "💡 У тигров полоски есть не только на шерсти, но и на коже.",
+            "💡 Колибри — единственная птица, которая может летать назад.",
+            "💡 Ногти на руках растут быстрее, чем на ногах, примерно в 4 раза.",
+            "💡 Венера — единственная планета Солнечной системы, которая вращается по часовой стрелке.",
+            "💡 У осьминога голубая кровь.",
+            "💡 В теле взрослого человека около 37 триллионов клеток.",
+            "💡 Если кричать в течение 8 лет, 7 месяцев и 6 дней, вы потратите достаточно энергии, чтобы нагреть одну чашку кофе.",
+            "💡 Самое старое дерево в мире — сосна Мафусаил, ей около 4850 лет.",
+            "💡 В Древнем Египте подушки делали из камня.",
+            "💡 Свет от Солнца до Земли доходит за 8 минут и 20 секунд.",
+            "💡 В 2016 году Snapchat отказался от предложения Facebook купить их за 3 миллиарда долларов. Сейчас их оценка выше.",
+            "💡 Пикассо носил с собой пистолет и стрелял холостыми в людей, которые задавали ему слишком много вопросов об искусстве.",
+            "💡 Первый компьютерный вирус был создан в 1971 году и назывался Creeper. Он просто выводил сообщение 'I'm the creeper, catch me if you can!'.",
+            "💡 Самое длинное слово в русском языке — 'превысокомногорассмотрительствующий' (35 букв).",
+            "💡 Билл Гейтс в 1977 году попал в тюрьму за вождение без прав. Он провел там несколько часов.",
+            "💡 Медведи не живут в Антарктиде. Они обитают только в Арктике.",
+            "💡 На Луне есть 'моря', но они не содержат воды. Это просто огромные кратеры, заполненные застывшей лавой."
+        ];
 
-<!-- МОДАЛКИ -->
-<div class="modal" id="createModal">
-  <div class="modal-card">
-    <div class="modal-title">Создать</div>
-    <div class="modal-sub">Выбери, что хочешь сделать</div>
-    <div class="create-options">
-      <div class="create-option" data-action="post">
-        <div class="create-option-icon">📝</div>
-        <div><div class="create-option-title">Пост</div><div class="create-option-desc">Текст, фото и музыка</div></div>
-        <div class="create-option-arrow">›</div>
-      </div>
-      <div class="create-option" data-action="story">
-        <div class="create-option-icon">📸</div>
-        <div><div class="create-option-title">История</div><div class="create-option-desc">Кружок вверху ленты</div></div>
-        <div class="create-option-arrow">›</div>
-      </div>
-      <div class="create-option" data-action="group">
-        <div class="create-option-icon">👥</div>
-        <div><div class="create-option-title">Группа</div><div class="create-option-desc">Приватный чат</div></div>
-        <div class="create-option-arrow">›</div>
-      </div>
-      <div class="create-option" data-action="community">
-        <div class="create-option-icon">🌍</div>
-        <div><div class="create-option-title">Сообщество</div><div class="create-option-desc">Глобальное сообщество</div></div>
-        <div class="create-option-arrow">›</div>
-      </div>
-      <div class="create-option" data-action="channel">
-        <div class="create-option-icon">📢</div>
-        <div><div class="create-option-title">Канал</div><div class="create-option-desc">Трансляция постов</div></div>
-        <div class="create-option-arrow">›</div>
-      </div>
-    </div>
-    <button class="modal-close" data-close="createModal">Отмена</button>
-  </div>
-</div>
+        // =========================================
+        // БАЗА ДАННЫХ: АВТОРЫ (ПРОФИЛИ БОТОВ)
+        // =========================================
+        const authors = [
+            { name: "Токсичный Бот", color: "#e74c3c", letter: "Т", badge: "toxic", badgeText: "BOT" },
+            { name: "Good News Global", color: "#2ecc71", letter: "G", badge: "news", badgeText: "CHANNEL" },
+            { name: "Мир Фактов", color: "#3498db", letter: "Ф", badge: "news", badgeText: "CHANNEL" },
+            { name: "Олег (Друг)", color: "#9b59b6", letter: "О", badge: "", badgeText: "" },
+            { name: "Мемный Паблик", color: "#f39c12", letter: "М", badge: "premium", badgeText: "PREMIUM" },
+            { name: "Аноним", color: "#34495e", letter: "А", badge: "", badgeText: "" },
+            { name: "Сплетница", color: "#e84393", letter: "С", badge: "premium", badgeText: "PREMIUM" },
+            { name: "Тех-Гик", color: "#00cec9", letter: "Т", badge: "news", badgeText: "CHANNEL" },
+            { name: "ЗОЖ-Гуру", color: "#6ab04c", letter: "З", badge: "", badgeText: "" }
+        ];
 
-<div class="modal" id="formModal">
-  <div class="modal-card">
-    <div class="modal-title" id="formTitle">Новый пост</div>
-    <div class="modal-sub" id="formSub">Поделитесь чем-нибудь</div>
-    <textarea class="modal-textarea" id="formText" placeholder="Что у вас нового?"></textarea>
-    <div id="postMediaFields" style="display:none;">
-      <input type="url" class="modal-input" id="formPhoto" placeholder="Ссылка на фото / YouTube">
-      <input type="url" class="modal-input" id="formMusic" placeholder="Ссылка на музыку (Premium)">
-    </div>
-    <button class="modal-primary" id="formSubmit">Опубликовать</button>
-    <button class="modal-close" id="formCancel">Отмена</button>
-  </div>
-</div>
+        // =========================================
+        // ЛОГИКА ГЕНЕРАЦИИ ЛЕНТЫ (БЕСКОНЕЧНЫЙ СКРОЛЛ)
+        // =========================================
+        
+        // Находим контейнер, куда будем вставлять посты
+        const feedContainer = document.getElementById('feed-container');
+        let postCount = 0; // Счетчик постов (для уникальных ID)
 
-<div class="modal" id="managePinnedModal">
-  <div class="modal-card">
-    <div class="modal-title">Настройка разделов</div>
-    <div class="modal-sub" id="managePinnedCount"></div>
-    <div id="managePinnedList"></div>
-    <button class="modal-close" data-close="managePinnedModal">Готово</button>
-  </div>
-</div>
+        // Функция создания и вставки одного поста
+        function generatePost() {
+            // Рандом: будет ли пост токсичным?
+            const isToxic = Math.random() > 0.5;
+            
+            // Выбираем автора (если не токсик, то рандом из остальных)
+            const authorIndex = isToxic ? 0 : (Math.random() > 0.3 ? 1 : (Math.random() > 0.5 ? 2 : Math.floor(Math.random() * authors.length)));
+            const author = authors[authorIndex];
+            
+            let textContent = "";
+            let imageUrl = null;
 
-<div class="modal" id="addParticipantsModal">
-  <div class="modal-card">
-    <div class="modal-title">Добавить участников</div>
-    <input type="text" class="modal-input" id="searchInviteInput" placeholder="Введите имя...">
-    <div id="participantsList" style="max-height:45vh;overflow-y:auto;"></div>
-    <button class="modal-close" data-close="addParticipantsModal">Закрыть</button>
-  </div>
-</div>
+            // Подбираем контент в зависимости от выбранного автора
+            if (author.name === "Токсичный Бот") {
+                textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
+            } else if (author.name === "Good News Global") {
+                textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
+                // Добавляем картинку к новостям (рандомно)
+                if (Math.random() > 0.4) {
+                    imageUrl = `https://picsum.photos/seed/${Math.floor(Math.random() * 1000)}/600/400`;
+                }
+            } else if (author.name === "Мир Фактов") {
+                textContent = facts[Math.floor(Math.random() * facts.length)];
+            } else {
+                // Если попался другой автор, мешаем все базы
+                const allContent = toxicPosts.concat(globalNews, facts);
+                textContent = allContent[Math.floor(Math.random() * allContent.length)];
+            }
 
-<div class="modal" id="publicProfileModal">
-  <div class="modal-card">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-      <div class="my-avatar" id="pubProfileAvatar" style="width:70px;height:70px;font-size:28px;"></div>
-      <div style="flex:1;">
-        <div id="pubProfileName" style="font-size:20px;font-weight:700;"></div>
-        <div id="pubProfileStatus" style="font-size:13px;opacity:0.6;margin-top:4px;"></div>
-      </div>
-      <button id="pubSubscribeBtn" class="profile-action-btn" style="width:auto;padding:8px 16px;margin:0;">Подписаться</button>
-    </div>
-    <div class="section-title" style="padding:0 0 10px;">📌 Закреплённые</div>
-    <div class="pinned-sections" id="pubPinnedSections"></div>
-    <button class="modal-close" data-close="publicProfileModal">Закрыть</button>
-  </div>
-</div>
+            // Генерируем случайное время
+            const timeOptions = ["Только что", "2 минуты назад", "15 минут назад", "1 час назад", "3 часа назад", "Вчера"];
+            const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+            
+            // Генерируем случайную статистику
+            const randomLikes = Math.floor(Math.random() * 2500) + 10;
+            const randomComments = Math.floor(Math.random() * 150);
+            const randomReposts = Math.floor(Math.random() * 300);
 
-<div class="modal" id="profileModal">
-  <div class="modal-card">
-    <div class="modal-title" id="profileTitle">Мой профиль</div>
-    <div class="modal-sub" id="profileStatus"></div>
-    <button class="profile-action-btn" onclick="uploadProfilePhoto()">🖼️ Загрузить фото</button>
-    <div id="premiumAdSettings" style="display:none;margin-top:15px;background:rgba(255,215,0,0.08);padding:15px;border-radius:14px;">
-      <label style="font-size:13px;color:#ffd700;font-weight:700;display:block;margin-bottom:8px;">👑 Реклама (Prime)</label>
-      <input type="text" class="modal-input" id="myAdText" placeholder="Текст рекламы" maxlength="50">
-      <input type="url" class="modal-input" id="myAdLink" placeholder="Ссылка">
-      <button class="profile-action-btn" id="saveAdBtn" style="background:#ffd700;color:#000;margin:0;">Сохранить</button>
-    </div>
-    <label style="font-size:13px;opacity:0.7;display:block;margin:14px 0 6px;">Статус:</label>
-    <select class="status-select" id="myStatusSelect">
-      <option value="в сети">в сети</option>
-      <option value="был(а) в сети недавно">был(а) в сети недавно</option>
-      <option value="год назад">год назад</option>
-      <option value="2 года назад">2 года назад</option>
-      <option value="5 лет назад">5 лет назад</option>
-    </select>
-    <button class="profile-action-btn" id="logoutFromProfileBtn" style="background:#ff5e62;margin-top:12px;">🚪 Выйти</button>
-    <button class="modal-close" data-close="profileModal">Закрыть</button>
-  </div>
-</div>
+            // Собираем HTML-код поста в виде строки
+            const postHTML = `
+                <div class="post" id="post-${postCount}">
+                    <div class="post-header">
+                        <div class="post-avatar" style="background: ${author.color};">${author.letter}</div>
+                        <div class="post-meta">
+                            <div class="post-author">
+                                ${author.name} 
+                                ${author.badge ? `<span class="badge ${author.badge}">${author.badgeText}</span>` : ''}
+                            </div>
+                            <div class="post-time">${randomTime}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${textContent}</div>
+                    ${imageUrl ? `<img src="${imageUrl}" class="post-image" alt="Post Image" loading="lazy">` : ''}
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="like(this)">❤️ <span>${randomLikes}</span></button>
+                        <button class="action-btn">🔄 <span>${randomReposts}</span></button>
+                        <button class="action-btn">💬 <span>${randomComments}</span></button>
+                    </div>
+                </div>
+            `;
 
-<div class="modal" id="settingsModal">
-  <div class="modal-card">
-    <div class="modal-title">⚙️ Настройки</div>
-    <label style="font-size:13px;opacity:0.7;display:block;margin-top:10px;">Время:</label>
-    <select class="status-select" id="timeSelect">
-      <option value="hide">Скрыть время</option>
-      <option value="show">Показывать время</option>
-    </select>
-    <label style="font-size:13px;opacity:0.7;display:block;margin-top:10px;">Обои:</label>
-    <select class="status-select" id="wallpaperSelect">
-      <option value="default">🌅 Закат</option>
-      <option value="ocean">🌊 Океан</option>
-      <option value="space">🌌 Космос</option>
-      <option value="cyber">🌆 Киберпанк</option>
-    </select>
-    <div style="display:flex;align-items:center;gap:10px;margin:16px 0;">
-      <input type="checkbox" id="privacyGroups" style="width:20px;height:20px;">
-      <span style="font-size:14px;">Запретить добавлять в группы</span>
-    </div>
-    <button class="modal-primary" onclick="saveSettings()">Сохранить</button>
-    <button class="modal-close" data-close="settingsModal">Закрыть</button>
-  </div>
-</div>
+            // Вставляем HTML в конец контейнера
+            feedContainer.insertAdjacentHTML('beforeend', postHTML);
+            postCount++;
+        }
 
-<div id="gameOverlay">
-  <div class="game-topbar">
-    <button class="game-close" onclick="closeGame()">✕</button>
-    <div id="gameTitle" style="font-size:17px;font-weight:700;">Игра</div>
-    <div id="gameLevelDisplay" style="font-size:13px;opacity:0.6;"></div>
-  </div>
-  <div class="game-area" id="gameArea"></div>
-</div>
+        // При загрузке страницы генерируем первые 5 постов
+        for (let i = 0; i < 5; i++) {
+            generatePost();
+        }
 
-<audio id="musicPlayer" style="display:none;"></audio>
+        // Переменная-заглушка, чтобы скролл не срабатывал слишком часто
+        let isGenerating = false;
+        
+        // Слушаем скролл пользователя (бесконечная лента)
+        window.addEventListener('scroll', () => {
+            // Если пользователь докрутил до низа (с запасом 800 пикселей)
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+                if (!isGenerating) {
+                    isGenerating = true;
+                    setTimeout(() => {
+                        generatePost();
+                        generatePost();
+                        isGenerating = false;
+                    }, 500); // Задержка, чтобы не лагало
+                }
+            }
+        });
+     
+        // =========================================
+        // ИНТЕРАКТИВ: СИСТЕМА ЛАЙКОВ
+        // =========================================
+        
+        // Функция принимает кнопку, на которую нажали
+        function like(btn) {
+            // Находим span внутри кнопки, где лежит число лайков
+            const span = btn.querySelector('span');
+            // Превращаем текст в число
+            let count = parseInt(span.innerText);
+            
+            // Проверяем, есть ли уже класс 'liked' (значит, лайк уже стоит)
+            if (btn.classList.contains('liked')) {
+                // Если лайк стоит, убираем его
+                btn.classList.remove('liked');
+                // Уменьшаем счетчик
+                span.innerText = count - 1;
+            } else {
+                // Если лайка нет, добавляем класс
+                btn.classList.add('liked');
+                // Увеличиваем счетчик
+                span.innerText = count + 1;
+                
+                // Небольшая вибрация для телефона (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate(40);
+                }
+            }
+        }
 
-<script>
-// ===================== ЗВУКИ =====================
-let audioCtx = null;
-function playSound(type) {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    const now = audioCtx.currentTime;
-    if (type === 'laser') {
-      osc.type = 'sine'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
-      gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1); osc.start(); osc.stop(now + 0.1);
-    } else if (type === 'explosion') {
-      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now); osc.frequency.exponentialRampToValueAtTime(10, now + 0.3);
-      gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3); osc.start(); osc.stop(now + 0.3);
-    } else if (type === 'jump') {
-      osc.type = 'square'; osc.frequency.setValueAtTime(300, now); osc.frequency.linearRampToValueAtTime(600, now + 0.1);
-      gain.gain.setValueAtTime(0.05, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.1); osc.start(); osc.stop(now + 0.1);
-    } else if (type === 'gameover') {
-      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(50, now + 1.2);
-      gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2); osc.start(); osc.stop(now + 1.2);
-    } else if (type === 'win') {
-      osc.type = 'triangle'; osc.frequency.setValueAtTime(400, now); osc.frequency.setValueAtTime(600, now + 0.1); osc.frequency.setValueAtTime(800, now + 0.2);
-      gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.4); osc.start(); osc.stop(now + 0.4);
-    } else if (type === 'turbo') {
-      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.exponentialRampToValueAtTime(2000, now + 0.4);
-      gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4); osc.start(); osc.stop(now + 0.4);
-    }
-  } catch(e) {}
-}
-function speakPotracheno() {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance("Потрачено");
-    u.lang = 'ru-RU'; u.rate = 0.8; u.pitch = 0.6; window.speechSynthesis.speak(u);
-  }
-}
+        // =========================================
+        // ИНТЕРАКТИВ: ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК (НИЖНЕЕ МЕНЮ)
+        // =========================================
+        
+        function switchTab(tabName) {
+            // Массив со всеми возможными вкладками
+            const pages = ['home', 'premium', 'chats', 'music', 'games', 'profile'];
+            
+            // 1. Скрываем все страницы и убираем активный класс с иконок
+            pages.forEach(page => {
+                const el = document.getElementById(`page-${page}`);
+                if (el) {
+                    el.style.display = 'none';
+                }
+                
+                const nav = document.getElementById(`nav-${page}`);
+                if (nav) {
+                    nav.classList.remove('active');
+                }
+            });
 
-// ===================== ДАННЫЕ =====================
-const STORAGE_KEY = 'sunset_user_v51';
-const AVATAR_COLORS = ['#ff6b6b','#a06cd5','#4a90e2','#ff5e8c','#4ecdc4','#f5a623','#7b68ee','#26a69a','#ba68c8','#e91e63'];
-let chosenColor = '#ff6b6b';
-const avatarPreview = document.getElementById('avatarPreview');
-const regName = document.getElementById('regName');
-const regBtn = document.getElementById('regBtn');
-const regError = document.getElementById('regError');
+            // 2. Показываем нужную страницу
+            const activePage = document.getElementById(`page-${tabName}`);
+            if (activePage) {
+                // Если это главная, ей нужен display: flex (т.к. это лента)
+                // Остальным страницам нужен display: block
+                if (tabName === 'home') {
+                    activePage.style.display = 'flex';
+                } else {
+                    activePage.style.display = 'block';
+                }
+            }
 
-avatarPreview.style.background = chosenColor;
-avatarPreview.addEventListener('click', () => {
-  let i = AVATAR_COLORS.indexOf(chosenColor);
-  chosenColor = AVATAR_COLORS[(i + 1) % AVATAR_COLORS.length];
-  avatarPreview.style.background = chosenColor;
-});
-regName.addEventListener('input', () => {
-  const n = regName.value.trim();
-  avatarPreview.textContent = n ? n[0].toUpperCase() : '?';
-  if (n.length >= 2) regError.style.display = 'none';
-});
-regName.addEventListener('keydown', e => { if (e.key === 'Enter') regBtn.click(); });
+            // 3. Подсвечиваем активную иконку в меню
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
 
-const CHATS_KEY = 'sunset_chats_v51';
-const GROUPS_KEY = 'sunset_groups_v51';
-const CHANNELS_KEY = 'sunset_channels_v51';
-const POSTS_KEY = 'sunset_posts_v51';
-const LIKES_KEY = 'sunset_likes_v51';
-const GAMES_KEY = 'sunset_games_v51';
+            // 4. Прокручиваем страницу наверх (чтобы не оставался скролл с прошлой вкладки)
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 
-let currentUser = null;
-let chats = {}, groups = [], channels = [], posts = [], userLikes = [];
-let activeChat = null, currentSearchTab = 'people';
-let gameState = { shooter: { plane:1, income:1, fireRate:1, turbo:1, coins:0, unlocked:1 }, runner: { unlocked:1 } };
-let selectedDifficulty = 'normal';
+        // =========================================
+        // ИНТЕРАКТИВ: МОДАЛЬНОЕ ОКНО (ШТОРКА С ПЛЮСОМ)
+        // =========================================
+        
+        // Открыть шторку
+        function openCreateModal() {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                modal.classList.add('active');
+                // Блокируем скролл на фоне, пока открыта шторка
+                document.body.style.overflow = 'hidden';
+            }
+        }
 
-const FIRST_NAMES_M = ['Александр','Дмитрий','Максим','Сергей','Андрей','Алексей','Артём','Илья','Кирилл','Михаил','Никита','Матвей','Роман','Егор','Иван','Денис','Евгений','Даниил','Тимур','Павел'];
-const FIRST_NAMES_F = ['Анна','Мария','Елена','Дарья','Алина','Ирина','Екатерина','Наталья','Ольга','София','Татьяна','Виктория','Полина','Юлия','Ксения','Алиса','Валерия','Вероника','Маргарита','Анастасия'];
-const LAST_NAMES = ['Иванов','Смирнов','Кузнецов','Попов','Васильев','Петров','Соколов','Михайлов','Новиков','Фёдоров','Морозов','Волков','Алексеев','Лебедев','Семёнов','Козлов','Степанов','Николаев','Орлов','Андреев'];
+        // Закрыть шторку
+        function closeCreateModal() {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                modal.classList.remove('active');
+                // Возвращаем скролл
+                document.body.style.overflow = 'auto';
+            }
+        }
 
-function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
-function esc(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function getRandomFullName() {
-  const isMale = Math.random() > 0.5;
-  const first = isMale ? rnd(FIRST_NAMES_M) : rnd(FIRST_NAMES_F);
-  const last = rnd(LAST_NAMES);
-  return `${first} ${isMale ? last : last + 'а'}`;
-}
+        // Закрытие шторки при клике на темный фон (вне самой шторки)
+        const modalOverlay = document.getElementById('createModal');
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', function(e) {
+                // Проверяем, что клик был именно по фону, а не по содержимому
+                if (e.target === this) {
+                    closeCreateModal();
+                }
+            });
+        }
 
-const ALL_USERS = [];
-for (let i = 0; i < 300; i++) {
-  const name = getRandomFullName();
-  ALL_USERS.push({ id:'u_'+i, name, color:rnd(AVATAR_COLORS), emoji:name[0], type:'person', lastSeen:rnd(['в сети','был(а) в сети недавно','год назад']) });
-}
+        // =========================================
+        // ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (TOAST)
+        // =========================================
+        
+        // Функция для красивых уведомлений вместо стандартного alert()
+        function showToast(message) {
+            // Создаем новый div
+            const toast = document.createElement('div');
+            toast.innerText = message;
+            
+            // Применяем стили прямо через JS (чтобы не раздувать CSS)
+            toast.style.position = 'fixed';
+            toast.style.bottom = '110px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+            toast.style.background = 'rgba(35, 35, 48, 0.95)';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '30px';
+            toast.style.fontSize = '14px';
+            toast.style.fontWeight = '600';
+            toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.5)';
+            toast.style.zIndex = '9999';
+            toast.style.opacity = '0';
+            toast.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            toast.style.backdropFilter = 'blur(10px)';
+            toast.style.border = '1px solid rgba(255,255,255,0.1)';
+            toast.style.textAlign = 'center';
+            toast.style.width = 'max-content';
+            toast.style.maxWidth = '80%';
 
-const PEOPLE = [
-  { id:'alex', name:'Алекс', color:'#ff6b6b', emoji:'A', type:'person', lastSeen:'в сети' },
-  { id:'maria', name:'Мария', color:'#a06cd5', emoji:'M', type:'person', lastSeen:'в сети' },
-  { id:'dmitry', name:'Дмитрий', color:'#4a90e2', emoji:'Д', type:'person', lastSeen:'в сети' },
-  { id:'anna', name:'Анна', color:'#ff5e8c', emoji:'А', type:'person', lastSeen:'был(а) в сети недавно' },
-  { id:'ivan', name:'Иван', color:'#4ecdc4', emoji:'И', type:'person', lastSeen:'в сети' },
-  { id:'elena', name:'Елена', color:'#f5a623', emoji:'Е', type:'person', lastSeen:'год назад' }
-];
+            // Добавляем в body
+            document.body.appendChild(toast);
 
-const DEFAULT_COMMUNITIES = [
-  { id:'comm_music', name:'Мир музыки', color:'#8b5cf6', emoji:'🎵', type:'community', members:[] },
-  { id:'comm_games', name:'Игровое сообщество', color:'#10b981', emoji:'🎮', type:'community', members:[] }
-];
+            // Анимация появления (через 10 мс)
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 10);
 
-// ===================== ОГРОМНЫЙ МАССИВ ПОСТОВ =====================
-const BOT_POSTS = [
-  // Хорошие Новости
-  { id:'gn1', author:'Хорошие Новости', color:'#22c55e', text:'Учёные из Швейцарии научились выращивать здоровые нейроны из стволовых клеток. Это большой шаг в лечении Паркинсона 🧠✨', time:'12 минут назад', views:842, likes:231, reposts:48, comments:[] },
-  { id:'gn2', author:'Хорошие Новости', color:'#22c55e', text:'В Японии открыли бесплатный приют для пожилых кошек. Все 47 пушистиков уже нашли дом 🐱❤️', time:'34 минуты назад', views:1204, likes:567, reposts:89, comments:[] },
-  { id:'gn3', author:'Хорошие Новости', color:'#22c55e', text:'Школьница из Новосибирска изобрела способ очистки воды с помощью водорослей. Проект уже тестируют в 3 регионах 🌱💧', time:'1 час назад', views:693, likes:198, reposts:41, comments:[] },
-  { id:'gn4', author:'Хорошие Новости', color:'#22c55e', text:'Волонтёры спасли 19 дельфинов, которые сели на мель у берегов Австралии. Все живы и уже в море 🐬', time:'2 часа назад', views:1540, likes:712, reposts:130, comments:[] },
-  { id:'gn5', author:'Хорошие Новости', color:'#22c55e', text:'В Финляндии официально закрыли последнюю угольную станцию. Страна теперь на 100% на возобновляемой энергии ⚡🌍', time:'3 часа назад', views:981, likes:445, reposts:97, comments:[] },
+            // Анимация исчезновения и удаление (через 3 секунды)
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                
+                // Удаляем элемент из DOM после окончания анимации
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+     
+        // =========================================
+        // 6. ИМИТАЦИЯ ЖИВОЙ АКТИВНОСТИ (БОТЫ РАБОТАЮТ)
+        // =========================================
+        
+        // Эта функция запускается каждые 12 секунд и добавляет лайки случайным постам.
+        // Это создает ощущение, что на сайте реально сидят люди.
+        setInterval(() => {
+            // Находим все посты на странице
+            const posts = document.querySelectorAll('.post');
+            
+            // Если постов нет, ничего не делаем
+            if (posts.length > 0) {
+                // Выбираем случайный пост
+                const randomPost = posts[Math.floor(Math.random() * posts.length)];
+                
+                // Находим кнопку лайка в этом посте (первая кнопка с классом action-btn)
+                const likeBtn = randomPost.querySelector('.action-btn');
+                
+                // Проверяем, что кнопка существует и на ней еще нет нашего лайка
+                if (likeBtn && !likeBtn.classList.contains('liked')) {
+                    const span = likeBtn.querySelector('span');
+                    let count = parseInt(span.innerText);
+                    
+                    // Прибавляем от 1 до 5 лайков
+                    let addLikes = Math.floor(Math.random() * 5) + 1;
+                    span.innerText = count + addLikes;
+                }
+            }
+        }, 12000);
 
-  // Обычная жизнь
-  { id:'bp1', author:'Мария', color:'#a06cd5', text:'Только что вернулась из спортзала. Ноги трясутся, но кайф 💪 Сегодня делала присед 80 кг', time:'8 минут назад', views:67, likes:19, reposts:0, comments:[] },
-  { id:'bp2', author:'Дмитрий', color:'#4a90e2', text:'Сделал пасту с креветками на ужин. Жена сказала «можно ещё раз». Это высшая похвала 🍝', time:'18 минут назад', views:94, likes:28, reposts:1, comments:[] },
-  { id:'bp3', author:'Анна', color:'#ff5e8c', text:'Закат сегодня просто космос. Сижу на балконе с чаем и смотрю, как город загорается огнями 🌅', time:'25 минут назад', views:156, likes:61, reposts:4, comments:[] },
-  { id:'bp4', author:'Алекс', color:'#ff6b6b', text:'Слушаю новый альбом и пью кофе. Понедельник можно и так пережить ☕', time:'41 минута назад', views:78, likes:22, reposts:0, comments:[] },
-  { id:'bp5', author:'Елена', color:'#f5a623', text:'Погуляла в парке, покормила белок. Одна прям на руку залезла, жирная такая 🐿️', time:'55 минут назад', views:112, likes:37, reposts:2, comments:[] },
-  { id:'bp6', author:'Кирилл', color:'#7b68ee', text:'На работе опять принтер зажрал бумагу. Третий раз за день. Я уже почти ненавижу технологии', time:'1 час назад', views:203, likes:89, reposts:11, comments:[] },
-  { id:'bp7', author:'София', color:'#e91e63', text:'Купила наконец-то нормальный матрас. Спать теперь как в облаке. Рекомендую всем, кто ещё на советском 😴', time:'1 час назад', views:145, likes:52, reposts:3, comments:[] },
-  { id:'bp8', author:'Иван', color:'#4ecdc4', text:'Сегодня впервые за месяц вышел на пробежку. 5 км. Ноги болят, но душа поёт', time:'1.5 часа назад', views:88, likes:31, reposts:1, comments:[] },
-  { id:'bp9', author:'Полина', color:'#ba68c8', text:'Сделала домашний чизкейк. Получился слегка кривой, но очень вкусный. Главное — результат', time:'2 часа назад', views:167, likes:74, reposts:5, comments:[] },
-  { id:'bp10', author:'Артём', color:'#26a69a', text:'Чинил соседу ноут. Оказалось, просто шнур от зарядки отходил. Взял 500 рублей «за диагностику» 😂', time:'2 часа назад', views:312, likes:148, reposts:22, comments:[] },
+        // =========================================
+        // 7. ФУНКЦИЯ ОБНОВЛЕНИЯ ЛЕНТЫ (REFRESH)
+        // =========================================
+        
+        // Эта функция позволяет очистить ленту и загрузить новые посты (как свайп вниз)
+        function refreshFeed() {
+            // Очищаем контейнер с постами
+            if (feedContainer) {
+                feedContainer.innerHTML = '';
+            }
+            
+            // Сбрасываем счетчик
+            postCount = 0;
+            
+            // Показываем уведомление
+            showToast('Лента обновлена! Загружаем новости... 🔄');
+            
+            // Генерируем новые 5 постов с небольшой задержкой для эффекта
+            setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                    generatePost();
+                }
+            }, 500);
+        }
 
-  // Мемы / подколы
-  { id:'bp11', author:'Максим', color:'#ff8c42', text:'Когда открыл холодильник в 3 ночи и понял, что там только майонез и надежда', time:'15 минут назад', views:421, likes:198, reposts:34, comments:[] },
-  { id:'bp12', author:'Дарья', color:'#ff5e8c', text:'Мой кот в очередной раз уронил кружку. Я уже даже не злюсь. Просто принимаю свою судьбу', time:'28 минут назад', views:289, likes:134, reposts:19, comments:[] },
-  { id:'bp13', author:'Сергей', color:'#4a90e2', text:'Будильник: *звенит*\nЯ: ещё 5 минут\nБудильник через 5 минут: *звенит*\nЯ: ну ты и сука', time:'37 минут назад', views:534, likes:267, reposts:41, comments:[] },
-  { id:'bp14', author:'Алина', color:'#a06cd5', text:'Попытка выглядеть серьёзно на совещании, когда в наушниках играет «Синий трактор»', time:'48 минут назад', views:376, likes:189, reposts:27, comments:[] },
-  { id:'bp15', author:'Никита', color:'#7b68ee', text:'Друг: «давай в пятницу в бар»\nЯ: «ок»\nЯ в пятницу: уже в тапках и с сериалом', time:'1 час назад', views:448, likes:221, reposts:38, comments:[] },
-  { id:'bp16', author:'Юлия', color:'#e91e63', text:'Когда написал «ок» вместо «хорошо» и теперь переживаешь, не показалось ли это грубо', time:'1.2 часа назад', views:391, likes:176, reposts:29, comments:[] },
-  { id:'bp17', author:'Роман', color:'#26a69a', text:'Открыл Windows после обновления. Теперь у меня 14 новых иконок, которые я никогда не просил', time:'1.5 часа назад', views:512, likes:243, reposts:45, comments:[] },
-  { id:'bp18', author:'Виктория', color:'#f5a623', text:'Мама: «ты поел?»\nЯ: «да»\nМама через 10 минут: «а точно поел?»', time:'2 часа назад', views:467, likes:215, reposts:33, comments:[] },
+        // Привязываем обновление ленты к заголовку (если нажать на "Главная" еще раз)
+        const homeNav = document.getElementById('nav-home');
+        if (homeNav) {
+            homeNav.addEventListener('click', () => {
+                // Если мы уже на главной, обновляем ленту
+                if (document.getElementById('page-home').style.display !== 'none') {
+                    refreshFeed();
+                }
+            });
+        }
 
-  // С матом / подколы
-  { id:'bp19', author:'Денис', color:'#ff6b6b', text:'Опять этот долбанный дождь. Вышел без зонта, конечно. Классика жанра, блин', time:'22 минуты назад', views:198, likes:87, reposts:6, comments:[] },
-  { id:'bp20', author:'Егор', color:'#4a90e2', text:'Начальник опять придумал срочную задачу в 17:50. Я уже почти дома был, сука', time:'40 минут назад', views:276, likes:142, reposts:18, comments:[] },
-  { id:'bp21', author:'Татьяна', color:'#a06cd5', text:'Курьер привёз заказ без соуса. Без соуса, Карл. Это уже преступление', time:'1 час назад', views:334, likes:167, reposts:24, comments:[] },
-  { id:'bp22', author:'Павел', color:'#7b68ee', text:'Попытка объяснить маме, что я не «просто сижу в телефоне», а работаю. Бесполезно', time:'1.3 часа назад', views:389, likes:201, reposts:31, comments:[] },
-  { id:'bp23', author:'Ксения', color:'#ff5e8c', text:'Когда написал важное сообщение и оно улетело не тому человеку. Хочется провалиться сквозь землю', time:'1.7 часа назад', views:451, likes:234, reposts:39, comments:[] },
-  { id:'bp24', author:'Матвей', color:'#4ecdc4', text:'Интернет отвалился ровно в момент, когда я почти скачал фильм. Вселенная явно надо мной издевается', time:'2.2 часа назад', views:298, likes:156, reposts:21, comments:[] },
+        // =========================================
+        // 8. ОБРАБОТКА КЛИКОВ ПО АВТОРАМ (ПЕРЕХОД В ПРОФИЛЬ)
+        // =========================================
+        
+        // Эта функция нужна, чтобы при клике на аватарку или ник бота открывался профиль.
+        // Так как у нас динамическая генерация, мы ловим клик через делегирование событий.
+        document.body.addEventListener('click', function(e) {
+            // Проверяем, был ли клик по никнейму или аватарке внутри поста
+            const isAuthorClick = e.target.closest('.post-author') || e.target.closest('.post-avatar');
+            
+            if (isAuthorClick) {
+                // Если клик был, показываем уведомление (в будущем тут будет переход)
+                const authorName = isAuthorClick.innerText || 'Автор';
+                showToast(`Переход в профиль: ${authorName.trim()}`);
+            }
+        });
 
-  // Ещё жизнь
-  { id:'bp25', author:'Ольга', color:'#ba68c8', text:'Сегодня первый раз за долгое время нормально выспалась. Чувствую себя человеком, а не зомби', time:'3 часа назад', views:187, likes:76, reposts:4, comments:[] },
-  { id:'bp26', author:'Андрей', color:'#26a69a', text:'Собрал наконец-то стеллаж из Икеи. Осталось только понять, куда делись 3 болта', time:'3.5 часа назад', views:243, likes:98, reposts:9, comments:[] },
-  { id:'bp27', author:'Наталья', color:'#f5a623', text:'Дочь принесла из садика рисунок «мама на работе». Я там с тремя руками и огромной кружкой кофе. Реализм 100%', time:'4 часа назад', views:412, likes:223, reposts:28, comments:[] },
-  { id:'bp28', author:'Илья', color:'#ff8c42', text:'Вечер пятницы. План: ничего не делать. Выполнение: идеально', time:'4.5 часа назад', views:356, likes:189, reposts:17, comments:[] },
-  { id:'bp29', author:'Алиса', color:'#e91e63', text:'Нашла старые фото с выпускного. Как же мы все были маленькие и глупые. И красивые, кстати', time:'5 часов назад', views:278, likes:134, reposts:12, comments:[] },
-  { id:'bp30', author:'Тимур', color:'#4a90e2', text:'Купил абонемент в зал. Теперь осталось туда хотя бы ходить. Прогресс!', time:'5.5 часов назад', views:201, likes:89, reposts:7, comments:[] }
-];
+        // =========================================
+        // 9. ЗАЩИТА ОТ ОШИБОК И ПРОВЕРКА ЭЛЕМЕНТОВ
+        // =========================================
+        
+        // Проверяем, что все критически важные элементы загрузились
+        window.addEventListener('DOMContentLoaded', () => {
+            // Проверка контейнера ленты
+            if (!document.getElementById('feed-container')) {
+                console.error('Ошибка: Не найден контейнер для ленты (feed-container)');
+            }
+            
+            // Проверка нижнего меню
+            if (!document.querySelector('.bottom-nav')) {
+                console.error('Ошибка: Не найдено нижнее меню (bottom-nav)');
+            }
+            
+            // Проверка кнопки плюса
+            if (!document.querySelector('.fab')) {
+                console.error('Ошибка: Не найдена кнопка добавления (fab)');
+            }
+            
+            // Логируем успешный запуск
+            console.log('✅ X-Social успешно загружен!');
+            console.log('🤖 Боты активны и готовы генерировать контент.');
+            console.log('👑 Premium система инициализирована.');
+        });
 
-// ===================== СТАРТ =====================
-document.getElementById('regBtn').addEventListener('click', () => {
-  const n = regName.value.trim();
-  if (n.length < 2) { regError.style.display = 'block'; return; }
-  let isAdmin = false, premiumLevel = null;
-  const lower = n.toLowerCase();
-  if (lower === 'admin') { isAdmin = true; premiumLevel = 'sunset'; }
-  else if (lower === 'boss') { isAdmin = true; premiumLevel = 'prime'; }
-  currentUser = { name:n, color:chosenColor, emoji:n[0].toUpperCase(), premium:premiumLevel, isAdmin, lastSeen:'в сети', pinnedIds:[] };
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser)); } catch(e) {}
-  startApp();
-});
+        // =========================================
+        // 10. ДОПОЛНИТЕЛЬНАЯ ЛОГИКА ДЛЯ ПРЕМИУМ СТРАНИЦЫ
+        // =========================================
+        
+        // Функция для имитации покупки (если пользователь нажал на кнопку)
+        function buyPremium(planName) {
+            // Показываем уведомление о том, что это демо
+            showToast(`Вы выбрали тариф: ${planName}. Оплата пока недоступна.`);
+            
+            // Можно добавить визуальный эффект (например, подсветку карточки)
+            const cards = document.querySelectorAll('.premium-card');
+            cards.forEach(card => {
+                card.style.transform = 'scale(1)';
+            });
+        }
 
-function startApp() {
-  if (!currentUser) {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) currentUser = JSON.parse(saved); else return;
-  }
-  document.getElementById('register').classList.add('hide');
-  document.getElementById('panel').classList.add('show');
-  const av = document.getElementById('myAvatarSmall');
-  if (currentUser.avatarImage) {
-    av.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-  } else {
-    av.textContent = currentUser.emoji;
-    av.style.background = currentUser.color;
-  }
-  document.getElementById('myNameLabel').textContent = currentUser.name;
-  const promptAv = document.getElementById('promptAvatar');
-  if (promptAv) {
-    if (currentUser.avatarImage) promptAv.innerHTML = `<img src="${currentUser.avatarImage}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-    else { promptAv.textContent = currentUser.emoji; promptAv.style.background = currentUser.color; }
-  }
-  updatePremiumBadge();
-  renderChatsList('people');
-  renderPosts();
-  renderStories();
-  renderMusic();
-  renderGames();
-  renderMyPage();
-}
+        // =========================================
+        // 11. ФУНКЦИЯ ДЛЯ ВЫВОДА ВСЕХ ЛАЙКОВ (ДЛЯ ТЕСТА)
+        // =========================================
+        
+        // Просто для проверки, что код работает корректно
+        function countAllLikes() {
+            const likes = document.querySelectorAll('.action-btn span');
+            let total = 0;
+            likes.forEach(span => {
+                total += parseInt(span.innerText) || 0;
+            });
+            console.log(`Всего лайков в ленте: ${total}`);
+            return total;
+        }
 
-function updatePremiumBadge() {
-  const av = document.getElementById('myAvatarSmall');
-  const old = av.querySelector('.premium-badge');
-  if (old) old.remove();
-  const st = document.getElementById('myStatusLabel');
-  if (currentUser.premium === 'prime') {
-    const b = document.createElement('div'); b.className = 'premium-badge prime'; b.textContent = '💎'; av.appendChild(b);
-    st.textContent = 'Prime Premium';
-  } else if (currentUser.premium === 'sunset') {
-    const b = document.createElement('div'); b.className = 'premium-badge'; b.textContent = '⭐'; av.appendChild(b);
-    st.textContent = 'Sunset Premium';
-  } else st.textContent = currentUser.lastSeen || 'в сети';
-}
+        // =========================================
+        // 12. АВТО-СКРОЛЛ ДЛЯ БЕСКОНЕЧНОЙ ЛЕНТЫ
+        // =========================================
+        
+        // Добавляем обработчик колесика мыши для плавной подгрузки
+        // (Это дополнение к событию scroll, которое было в Части 3)
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            // Очищаем предыдущий таймер
+            clearTimeout(scrollTimeout);
+            
+            // Устанавливаем новый таймер, чтобы не спамить генерацию
+            scrollTimeout = setTimeout(() => {
+                // Проверяем, что мы не на странице Premium и не в модалке
+                const isPremiumOpen = document.getElementById('page-premium').style.display === 'block';
+                const isModalOpen = document.getElementById('createModal').classList.contains('active');
+                
+                if (!isPremiumOpen && !isModalOpen) {
+                    // Логика подгрузки уже есть в Части 3, тут просто дополнительная проверка
+                }
+            }, 100);
+        });
 
-// ===================== НАВИГАЦИЯ =====================
-document.querySelectorAll('.nav-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    const tab = b.dataset.tab;
-    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
-    document.getElementById('content').scrollTop = 0;
-    if (tab === 'mypage') renderMyPage();
-    if (tab === 'games') renderGames();
-    if (tab === 'music') renderMusic();
-  });
-});
+        // =========================================
+        // 13. ЛОГИКА ДЛЯ КНОПКИ "ОБНОВИТЬ ЛЕНТУ" (ЕСЛИ ДОБАВИМ)
+        // =========================================
+        
+        // Эта функция просто вызывает refreshFeed с анимацией
+        function manualRefresh() {
+            // Прокручиваем наверх
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Через 300 мс очищаем и генерируем заново
+            setTimeout(() => {
+                refreshFeed();
+            }, 300);
+        }
 
-document.getElementById('plusBtn').onclick = () => document.getElementById('createModal').classList.add('show');
-document.querySelectorAll('.create-option').forEach(opt => {
-  opt.onclick = function() {
-    const action = this.dataset.action;
-    document.getElementById('createModal').classList.remove('show');
-    if (action === 'post') openPostModal();
-    else if (action === 'story') {
-      const input = document.createElement('input');
-      input.type = 'file'; input.accept = 'image/*,video/*';
-      input.onchange = e => {
-        const file = e.target.files[0]; if (!file) return;
-        const reader = new FileReader();
-        reader.onload = ev => {
-          if (!window.stories) window.stories = [];
-          window.stories.unshift({ id:'s_'+Date.now(), author:currentUser.name, color:currentUser.color, media:ev.target.result, isVideo:file.type.includes('video') });
-          renderStories();
-        };
-        reader.readAsDataURL(file);
-      };
-      input.click();
-    } else {
-      const title = action === 'channel' ? 'Новый канал 📢' : action === 'community' ? 'Новое сообщество 🌍' : 'Новая группа 👥';
-      const html = `<div class="modal show" id="createGroupModal" style="z-index:9999;"><div class="modal-card"><div class="modal-title">${title}</div><div class="modal-sub">Введите название</div><input type="text" class="modal-input" id="newGroupName" placeholder="Название..." maxlength="30"><button class="modal-primary" id="confirmCreateGroupBtn" style="margin-bottom:10px;">Создать</button><button class="modal-close" onclick="document.getElementById('createGroupModal').remove()">Отмена</button></div></div>`;
-      document.body.insertAdjacentHTML('beforeend', html);
-      document.getElementById('confirmCreateGroupBtn').onclick = () => {
-        const name = document.getElementById('newGroupName').value.trim();
-        if (!name) { customAlert('Введите название!'); return; }
-        const obj = { id:'g_'+Date.now(), name, color:'#ff8c42', emoji: action==='channel'?'📢':action==='community'?'🌍':'👥', type:action, owner:currentUser.name, members:[] };
-        if (action === 'channel') { channels.push(obj); localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels)); }
-        else { groups.push(obj); localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); }
-        customAlert('Создано: ' + name);
-        document.getElementById('createGroupModal').remove();
-        renderChatsList(currentSearchTab, '');
-        renderMyPage();
-      };
-    }
-  };
-});
+        console.log('🚀 Все системы X-Social работают в штатном режиме!');
+     
+        // =========================================
+        // 14. ФИНАЛЬНАЯ ЛОГИКА ДЛЯ ПРЕМИУМ-КАРТОЧЕК
+        // =========================================
+        
+        // Эта функция добавляет эффект "пульсации" при нажатии на карточку тарифа
+        const premiumCards = document.querySelectorAll('.premium-card');
+        
+        if (premiumCards) {
+            premiumCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Добавляем временный класс для анимации (если нет)
+                    this.style.transition = 'transform 0.1s ease';
+                    this.style.transform = 'scale(0.98)';
+                    
+                    // Возвращаем обратно через 100 мс
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 100);
+                });
+            });
+        }
 
-document.querySelectorAll('.modal-close').forEach(btn => {
-  btn.onclick = function() { const m = this.closest('.modal'); if (m) m.classList.remove('show'); };
-});
+        // =========================================
+        // 15. ПРОВЕРКА НА МОБИЛЬНЫЕ УСТРОЙСТВА
+        // =========================================
+        
+        // Определяем, открыт ли сайт с телефона
+        function isMobile() {
+            return window.innerWidth <= 600;
+        }
 
-document.getElementById('myProfileBtn').onclick = () => {
-  document.getElementById('profileTitle').textContent = 'Мой профиль';
-  document.getElementById('profileStatus').textContent = currentUser.premium === 'prime' ? 'Prime Premium' : currentUser.premium === 'sunset' ? 'Sunset Premium' : 'Обычный аккаунт';
-  const ad = document.getElementById('premiumAdSettings');
-  if (currentUser.premium === 'prime') {
-    ad.style.display = 'block';
-    document.getElementById('myAdText').value = currentUser.adText || '';
-    document.getElementById('myAdLink').value = currentUser.adLink || '';
-  } else ad.style.display = 'none';
-  document.getElementById('profileModal').classList.add('show');
-};
+        // Если это телефон, логируем в консоль (для отладки)
+        if (isMobile()) {
+            console.log('📱 Обнаружено мобильное устройство. Включен адаптивный режим.');
+        } else {
+            console.log('💻 Обнаружен компьютер. Сайт выглядит как приложение.');
+        }
 
-document.getElementById('logoutFromProfileBtn').onclick = () => {
-  if (confirm('Выйти из аккаунта?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
-};
+        // =========================================
+        // 16. ОБРАБОТКА ОШИБОК ЗАГРУЗКИ КАРТИНОК
+        // =========================================
+        
+        // Если картинка из интернета не загрузилась, мы просто скрываем её,
+        // чтобы не было "битых" иконок в ленте.
+        document.body.addEventListener('error', function(e) {
+            // Если ошибка произошла на элементе img
+            if (e.target.tagName === 'IMG') {
+                // Скрываем картинку
+                e.target.style.display = 'none';
+                console.warn('Не удалось загрузить изображение:', e.target.src);
+            }
+        }, true); // Используем фазу перехвата (capture), чтобы поймать ошибку
 
-document.getElementById('myStatusSelect').onchange = e => {
-  currentUser.lastSeen = e.target.value;
-  document.getElementById('myStatusLabel').textContent = currentUser.lastSeen;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-};
+        // =========================================
+        // 17. ФИНАЛЬНЫЙ ПРИВЕТСТВЕННЫЙ ЛОГ
+        // =========================================
+        
+        setTimeout(() => {
+            console.log('%c👋 Добро пожаловать в X-Social!', 'color: #ff4757; font-size: 20px; font-weight: bold;');
+            console.log('%cСайт полностью загружен и готов к работе.', 'color: #8e8e9e; font-size: 14px;');
+            console.log('%cАвторы ботов: Токсичный Бот, Good News Global, Мир Фактов.', 'color: #2ecc71; font-size: 12px;');
+            console.log('%cPremium система активна.', 'color: #feca57; font-size: 12px;');
+        }, 1000);
 
-// ===================== ЛЕНТА =====================
-function refreshFeed() {
-  renderPosts();
-  customAlert('Лента обновлена ✨');
-}
+        // =========================================
+        // 18. "УМНЫЙ" СБРОС ФОРМЫ (ЕСЛИ БУДЕТ РЕДАКТОР)
+        // =========================================
+        
+        // Функция для очистки полей ввода (на будущее, если добавим создание постов)
+        function clearPostForm() {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            showToast('Поля очищены!');
+        }
 
-function renderPosts() {
-  const el = document.getElementById('postsList');
-  if (!el) return;
-  el.innerHTML = '';
-  const all = [...posts, ...BOT_POSTS];
-  // перемешиваем, но оставляем хорошие новости чуть выше
-  all.sort(() => Math.random() - 0.5);
-  all.forEach(p => el.appendChild(buildPostEl(p)));
-  renderMyPagePosts();
-}
+        // =========================================
+        // 19. ИМИТАЦИЯ ЗАГРУЗКИ НОВОСТЕЙ (КРАСИВЫЙ ЭФФЕКТ)
+        // =========================================
+        
+        // Каждые 30 секунд имитируем "проверку новых новостей"
+        setInterval(() => {
+            // Просто логируем в консоль, чтобы ты видел, что бот работает
+            console.log('🔍 Сканирую интернет на наличие свежих новостей...');
+            
+            // Если лента открыта, можно незаметно добавить один пост (но мы этого делать не будем, чтобы не бесить пользователя)
+            // Вместо этого просто обновляем счетчик в консоли.
+        }, 30000);
 
-function buildPostEl(p) {
-  const div = document.createElement('div');
-  div.className = 'post';
-  const hasLiked = userLikes.includes(p.id);
-  let media = '';
-  if (p.image) {
-    if (p.image.includes('youtube') || p.image.includes('youtu.be')) {
-      let vid = '';
-      if (p.image.includes('v=')) vid = p.image.split('v=')[1].split('&')[0];
-      else if (p.image.includes('youtu.be/')) vid = p.image.split('youtu.be/')[1].split('?')[0];
-      if (vid) media = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="border-radius:14px;margin-bottom:12px;"></iframe>`;
-    } else media = `<img src="${esc(p.image)}" class="post-image" onerror="this.style.display='none'">`;
-  }
-  if (p.music) {
-    media += `<div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.25);padding:10px 14px;border-radius:14px;margin-bottom:12px;"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ff8c42,#ff5e62);display:flex;align-items:center;justify-content:center;">🎵</div><div style="flex:1;"><div style="font-size:13px;font-weight:650;">Музыка</div><div style="font-size:11px;opacity:0.6;">Нажми чтобы открыть</div></div><div onclick="window.open('${esc(p.music)}','_blank')" style="color:#ff8c42;cursor:pointer;">▶</div></div>`;
-  }
-
-  const isNews = p.author === 'Хорошие Новости';
-  div.innerHTML = `
-    <div class="post-header">
-      <div class="post-avatar" style="background:${p.color}">${isNews ? '📰' : p.author[0]}</div>
-      <div class="post-meta">
-        <div class="post-author">${esc(p.author)}${isNews ? ' <span style="font-size:11px;background:rgba(34,197,94,0.2);color:#86efac;padding:2px 7px;border-radius:6px;margin-left:4px;">канал</span>' : ''}</div>
-        <div class="post-time">${p.time} · 👁️ ${p.views || 0}</div>
-      </div>
-    </div>
-    <div class="post-text">${esc(p.text)}</div>
-    ${media}
-    <div class="post-actions">
-      <button class="post-action ${hasLiked?'liked':''} like-btn">${hasLiked?'❤️':'🤍'} <span>${p.likes||0}</span></button>
-      <button class="post-action repost-btn">🔄 <span>${p.reposts||0}</span></button>
-      <button class="post-action comment-btn">💬 <span>${(p.comments||[]).length}</span></button>
-    </div>
-    <div class="post-comments" style="display:none">
-      <div class="comments-list">${(p.comments||[]).map(c=>`<div class="comment"><span class="comment-author">${esc(c.author)}:</span> ${esc(c.text)}</div>`).join('')}</div>
-      <div class="comment-input-row">
-        <input type="text" class="comment-input" placeholder="Написать...">
-        <button class="comment-send">➤</button>
-      </div>
-    </div>`;
-
-  const likeBtn = div.querySelector('.like-btn');
-  likeBtn.onclick = function() {
-    if (userLikes.includes(p.id)) {
-      p.likes = Math.max(0, (p.likes||1)-1); userLikes = userLikes.filter(id => id !== p.id);
-      this.classList.remove('liked'); this.innerHTML = `🤍 <span>${p.likes}</span>`;
-    } else {
-      p.likes = (p.likes||0)+1; userLikes.push(p.id);
-      this.classList.add('liked'); this.innerHTML = `❤️ <span>${p.likes}</span>`;
-    }
-    try { localStorage.setItem(LIKES_KEY, JSON.stringify(userLikes)); } catch(e) {}
-  };
-  div.querySelector('.repost-btn').onclick = function() {
-    p.reposts = (p.reposts||0)+1; this.innerHTML = `🔄 <span>${p.reposts}</span>`;
-  };
-  const cb = div.querySelector('.post-comments');
-  div.querySelector('.comment-btn').onclick = () => { cb.style.display = cb.style.display==='none'?'block':'none'; };
-  const input = div.querySelector('.comment-input'), send = div.querySelector('.comment-send'), list = div.querySelector('.comments-list');
-  send.onclick = () => {
-    const t = input.value.trim(); if (!t) return;
-    if (!p.comments) p.comments = [];
-    p.comments.push({ author: currentUser.name, text: t });
-    input.value = '';
-    list.insertAdjacentHTML('beforeend', `<div class="comment"><span class="comment-author">${esc(currentUser.name)}:</span> ${esc(t)}</div>`);
-  };
-  return div;
-}
-
-function openPostModal() {
-  document.getElementById('formTitle').textContent = 'Новый пост';
-  document.getElementById('formText').value = '';
-  document.getElementById('formPhoto').value = '';
-  document.getElementById('formMusic').value = '';
-  document.getElementById('postMediaFields').style.display = 'block';
-  const music = document.getElementById('formMusic');
-  if (currentUser.premium === 'sunset' || currentUser.premium === 'prime') {
-    music.disabled = false; music.placeholder = 'Ссылка на музыку (Premium)'; music.style.opacity = '1';
-  } else {
-    music.disabled = true; music.placeholder = '🔒 Музыка только для Premium'; music.style.opacity = '0.5';
-  }
-  document.getElementById('formSubmit').onclick = () => {
-    const text = document.getElementById('formText').value.trim();
-    if (!text) { customAlert('Введите текст!'); return; }
-    const image = document.getElementById('formPhoto').value.trim();
-    const musicUrl = document.getElementById('formMusic').value.trim();
-    if (musicUrl && !currentUser.premium) { customAlert('Музыка только для Premium!'); return; }
-    posts.unshift({ id:'p_'+Date.now(), author:currentUser.name, color:currentUser.color, text, time:'только что', views:0, likes:0, reposts:0, comments:[], image:image||null, music:musicUrl||null });
-    try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch(e) {}
-    document.getElementById('formModal').classList.remove('show');
-    renderPosts(); renderMyPage();
-  };
-  document.getElementById('formModal').classList.add('show');
-  document.getElementById('formCancel').onclick = () => document.getElementById('formModal').classList.remove('show');
-}
-
-// ===================== ОСТАЛЬНОЕ (сокращённо, но полностью рабочее) =====================
-function renderStories() {
-  const el = document.getElementById('storiesRow'); if (!el) return;
-  el.innerHTML = '';
-  const add = document.createElement('div');
-  add.className = 'story-circle';
-  add.innerHTML = `<div class="story-ring my-add"><div class="story-img">+</div></div><div class="story-label">Добавить</div>`;
-  add.onclick = () => {
-    const input = document.createElement('input'); input.type='file'; input.accept='image/*,video/*';
-    input.onchange = e => {
-      const file = e.target.files[0]; if (!file) return;
-      const r = new FileReader();
-      r.onload = ev => {
-        if (!window.stories) window.stories = [];
-        window.stories.unshift({ id:'s_'+Date.now(), author:currentUser.name, color:currentUser.color, media:ev.target.result, isVideo:file.type.includes('video') });
-        renderStories();
-      };
-      r.readAsDataURL(file);
-    };
-    input.click();
-  };
-  el.appendChild(add);
-  if (window.stories) window.stories.forEach(s => {
-    const d = document.createElement('div'); d.className='story-circle';
-    d.innerHTML = `<div class="story-ring"><div class="story-img" style="background:${s.color}">${s.author[0]}</div></div><div class="story-label">${s.author}</div>`;
-    d.onclick = () => {
-      document.body.insertAdjacentHTML('beforeend', `<div style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;" onclick="this.remove()">${s.isVideo?`<video src="${s.media}" autoplay controls style="max-width:100%;max-height:90vh;"></video>`:`<img src="${s.media}" style="max-width:100%;max-height:90vh;object-fit:contain;">`}<div style="position:absolute;top:20px;left:20px;color:#fff;font-weight:700;">${s.author}</div></div>`);
-    };
-    el.appendChild(d);
-  });
-}
-
-function renderChatsList(tab, q='') {
-  const list = document.getElementById('chatsList'); if (!list) return;
-  list.innerHTML = '';
-  let items = [];
-  if (tab==='people') items = PEOPLE;
-  else if (tab==='groups') items = groups.map(g=>({...g,type:'group'}));
-  else if (tab==='communities') items = [...DEFAULT_COMMUNITIES, ...groups.filter(g=>g.type==='community')];
-  else if (tab==='channels') items = channels.map(c=>({...c,type:'channel'}));
-  if (q) items = items.filter(i => i.name.toLowerCase().includes(q));
-  if (!items.length) { list.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><p>Здесь пока пусто</p></div>'; return; }
-  items.forEach(item => {
-    const div = document.createElement('div'); div.className='card-item';
-    div.innerHTML = `<div class="card-avatar ${item.type==='group'?'group':''}" style="background:${item.color}">${item.emoji}</div><div class="card-info"><div class="card-name">${esc(item.name)}</div><div class="card-sub">${item.type==='person'?item.lastSeen:(item.members||[]).length+' участников'}</div></div>`;
-    div.onclick = () => openChat(item);
-    list.appendChild(div);
-  });
-}
-
-document.querySelectorAll('.search-tab').forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll('.search-tab').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active'); currentSearchTab = t.dataset.stab;
-    renderChatsList(currentSearchTab, document.getElementById('mainSearchInput').value.trim().toLowerCase());
-  };
-});
-document.getElementById('mainSearchInput').oninput = e => renderChatsList(currentSearchTab, e.target.value.trim().toLowerCase());
-
-const chatEl = document.getElementById('chat');
-const chatBody = document.getElementById('chatBody');
-
-function openChat(item) {
-  activeChat = item;
-  document.getElementById('chatName').textContent = item.name;
-  document.getElementById('chatAvatar').textContent = item.emoji;
-  document.getElementById('chatAvatar').style.background = item.color;
-  const status = document.getElementById('chatStatus');
-  if (item.type === 'person') {
-    status.textContent = item.lastSeen; status.className = 'status ' + (item.lastSeen==='в сети'?'online':'');
-    document.getElementById('addParticipantsBtn').style.display = 'none';
-    document.getElementById('chatMembersBtn').style.display = 'none';
-    document.getElementById('deleteChatBtn').style.display = 'none';
-  } else {
-    if (!item.members) item.members = [];
-    status.textContent = item.members.length + ' участников'; status.className = 'status online';
-    document.getElementById('addParticipantsBtn').style.display = 'flex';
-    document.getElementById('chatMembersBtn').style.display = 'flex';
-    document.getElementById('deleteChatBtn').style.display = item.owner===currentUser.name?'flex':'none';
-  }
-  chatEl.classList.add('show');
-  chatBody.innerHTML = '';
-  const msgs = chats[item.id] || [];
-  if (!msgs.length) chatBody.innerHTML = '<div class="empty-state"><div class="emoji">👋</div><p>Начните диалог</p></div>';
-  else msgs.forEach(m => addMsgToDOM(m));
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function addMsgToDOM(msg) {
-  const div = document.createElement('div');
-  if (msg.from === 'system') {
-    div.style.cssText = 'align-self:center;font-size:12px;color:rgba(255,255,255,0.5);padding:6px 12px;background:rgba(0,0,0,0.3);border-radius:12px;';
-    div.textContent = msg.text;
-  } else {
-    div.className = 'message ' + (msg.from==='me'?'me':'them');
-    div.innerHTML = esc(msg.text) + '<div class="time">'+msg.time+'</div>';
-  }
-  chatBody.appendChild(div);
-}
-function nowTime() { const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
-
-document.getElementById('chatSend').onclick = () => {
-  const t = document.getElementById('chatInput').value.trim();
-  if (!t || !activeChat) return;
-  const msg = { text:t, time:nowTime(), from:'me' };
-  if (!chats[activeChat.id]) chats[activeChat.id]=[];
-  chats[activeChat.id].push(msg);
-  localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-  const empty = chatBody.querySelector('.empty-state'); if (empty) empty.remove();
-  addMsgToDOM(msg);
-  document.getElementById('chatInput').value = '';
-  chatBody.scrollTop = chatBody.scrollHeight;
-  if (activeChat.type==='person') {
-    document.getElementById('chatStatus').textContent = 'печатает...';
-    document.getElementById('chatStatus').className = 'status typing';
-  }
-  setTimeout(() => {
-    if (activeChat.type!=='person' && (!activeChat.members||!activeChat.members.length)) return;
-    const reply = { text: generateReply(t), time:nowTime(), from:'them' };
-    chats[activeChat.id].push(reply);
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-    if (activeChat) {
-      if (activeChat.type==='person') {
-        document.getElementById('chatStatus').textContent = activeChat.lastSeen;
-        document.getElementById('chatStatus').className = 'status '+(activeChat.lastSeen==='в сети'?'online':'');
-      }
-      addMsgToDOM(reply); chatBody.scrollTop = chatBody.scrollHeight;
-    }
-  }, 2200);
-};
-document.getElementById('chatInput').onkeydown = e => { if (e.key==='Enter') document.getElementById('chatSend').click(); };
-document.getElementById('backBtn').onclick = () => { chatEl.classList.remove('show'); activeChat=null; };
-
-function generateReply(text) {
-  const t = text.toLowerCase();
-  if (t.includes('привет')||t.includes('здравствуй')) return rnd(['Привет!','Здарова!','Хай)']);
-  if (t.includes('как дела')) return rnd(['Норм, сам как?','Отлично, работаю','Потихоньку']);
-  if (t.includes('пока')) return 'Давай, удачи!';
-  return rnd(['Ага','Понял','Интересно','Ну да)','Расскажи ещё']);
-}
-
-document.getElementById('deleteChatBtn').onclick = () => {
-  if (!activeChat || activeChat.owner !== currentUser.name) return;
-  if (confirm('Удалить "'+activeChat.name+'"?')) {
-    if (activeChat.type==='channel') channels = channels.filter(c=>c.id!==activeChat.id);
-    else groups = groups.filter(g=>g.id!==activeChat.id);
-    delete chats[activeChat.id];
-    localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
-    localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
-    localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-    chatEl.classList.remove('show'); activeChat=null;
-    renderChatsList(currentSearchTab); renderMyPage();
-  }
-};
-
-document.getElementById('addParticipantsBtn').onclick = () => {
-  if (!activeChat) return;
-  document.getElementById('searchInviteInput').value = '';
-  renderParticipantsList(ALL_USERS);
-  document.getElementById('addParticipantsModal').classList.add('show');
-};
-document.getElementById('searchInviteInput').oninput = e => {
-  const q = e.target.value.trim().toLowerCase();
-  renderParticipantsList(ALL_USERS.filter(u=>u.name.toLowerCase().includes(q)));
-};
-function renderParticipantsList(users) {
-  const list = document.getElementById('participantsList'); list.innerHTML='';
-  if (!users.length) { list.innerHTML='<div style="text-align:center;padding:20px;opacity:0.5;">Никого нет</div>'; return; }
-  users.slice(0,40).forEach(u => {
-    const div = document.createElement('div'); div.className='viewer-item';
-    div.innerHTML = `<div class="viewer-avatar" style="background:${u.color}">${u.emoji}</div><div class="viewer-info"><div class="viewer-name">${u.name}</div></div><button class="invite-btn">Пригласить</button>`;
-    div.querySelector('.invite-btn').onclick = function() {
-      this.textContent='Приглашён'; this.disabled=true; this.style.color='#86efac';
-      if (!activeChat.members) activeChat.members=[];
-      if (!activeChat.members.find(m=>m.id===u.id)) activeChat.members.push(u);
-      localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
-      localStorage.setItem(CHANNELS_KEY, JSON.stringify(channels));
-      const sys = { text:`👤 ${u.name} присоединился`, time:nowTime(), from:'system' };
-      if (!chats[activeChat.id]) chats[activeChat.id]=[];
-      chats[activeChat.id].push(sys);
-      localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
-      document.getElementById('chatStatus').textContent = activeChat.members.length+' участников';
-      addMsgToDOM(sys); chatBody.scrollTop = chatBody.scrollHeight;
-    };
-    list.appendChild(div);
-  });
-}
-
-function renderMyPage() {
-  const cont = document.getElementById('pinnedSections');
-  const btn = document.getElementById('managePinnedBtn');
-  cont.innerHTML = '';
-  let limit = currentUser.premium==='prime'?8:currentUser.premium==='sunset'?3:0;
-  const myGroups = groups.filter(g=>g.owner===currentUser.name && g.type!=='community');
-  const myComm = groups.filter(g=>g.owner===currentUser.name && g.type==='community');
-  const myCh = channels.filter(c=>c.owner===currentUser.name);
-  const all = [...myGroups,...myComm,...myCh];
-  if (limit===0) {
-    cont.innerHTML = '<div class="pinned-empty">Купите Premium для закрепления</div>';
-    btn.style.display = 'none';
-  } else {
-    btn.style.display = 'block';
-    const pinned = all.filter(l=>currentUser.pinnedIds.includes(l.id)).slice(0,limit);
-    for (let i=0;i<limit;i++) {
-      const div = document.createElement('div');
-      if (i<pinned.length) {
-        const link = pinned[i];
-        div.className='pinned-item';
-        div.innerHTML = `<div class="pinned-icon">${link.type==='channel'?'📢':link.type==='community'?'🌍':'👥'}</div><div class="pinned-name">${esc(link.name)}</div>`;
-        div.onclick = () => openChat(link);
-      } else {
-        div.className='pinned-item'; div.style.opacity='0.4';
-        div.innerHTML = `<div class="pinned-icon">+</div><div class="pinned-name">Слот ${i+1}</div>`;
-        div.onclick = openManagePinned;
-      }
-      cont.appendChild(div);
-    }
-  }
-  renderMyPagePosts();
-}
-function renderMyPagePosts() {
-  const list = document.getElementById('myPagePostsList'); if (!list) return;
-  list.innerHTML = '';
-  const my = posts.filter(p=>p.author===currentUser.name);
-  if (!my.length) list.innerHTML = '<div class="empty-state"><div class="emoji">📝</div><p>У вас пока нет постов</p></div>';
-  else my.forEach(p => list.appendChild(buildPostEl(p)));
-}
-function openManagePinned() {
-  let limit = currentUser.premium==='prime'?8:currentUser.premium==='sunset'?3:0;
-  const all = [...groups.filter(g=>g.owner===currentUser.name), ...channels.filter(c=>c.owner===currentUser.name)];
-  document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit}`;
-  const list = document.getElementById('managePinnedList'); list.innerHTML='';
-  if (!all.length) list.innerHTML='<div style="text-align:center;padding:20px;opacity:0.5;">Нет групп и каналов</div>';
-  else all.forEach(link => {
-    const isPinned = currentUser.pinnedIds.includes(link.id);
-    const div = document.createElement('div'); div.className='viewer-item';
-    div.innerHTML = `<div class="viewer-avatar" style="background:${link.color}">${link.emoji}</div><div class="viewer-info"><div class="viewer-name">${esc(link.name)}</div></div><input type="checkbox" ${isPinned?'checked':''} style="width:20px;height:20px;accent-color:#ff8c42;">`;
-    div.querySelector('input').onchange = e => {
-      if (e.target.checked) {
-        if (currentUser.pinnedIds.length >= limit) { e.target.checked=false; customAlert('Лимит: '+limit); return; }
-        if (!currentUser.pinnedIds.includes(link.id)) currentUser.pinnedIds.push(link.id);
-      } else currentUser.pinnedIds = currentUser.pinnedIds.filter(id=>id!==link.id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentUser));
-      document.getElementById('managePinnedCount').textContent = `Выбрано ${currentUser.pinnedIds.length} из ${limit}`;
-      renderMyPage();
-    };
-    list.appendChild(div);
-  });
-  document.getElementById('managePinnedModal').classList.add('show');
-}
-
-function renderMusic() {
-  const el = document.getElementById('musicList'); if (!el) return;
-  el.innerHTML = `<div class="track" onclick="playTrack('https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3','Lofi Study','Pixabay')"><div class="track-left"><div class="track-num">1</div><div class="track-info"><div class="track-name">Lofi Study</div><div class="track-artist">Pixabay</div></div></div><div class="track-play">▶</div></div>`;
-}
-window.playTrack = function(url, name, artist) {
-  const player = document.getElementById('musicPlayer');
-  if (!player.paused && player.src===url) { player.pause(); return; }
-  player.src = url; player.play().catch(()=>{});
-  customAlert('Сейчас играет: ' + name);
-};
-
-function renderGames() {
-  const grid = document.getElementById('gamesGrid'); if (!grid) return;
-  grid.innerHTML = '';
-  [
-    {id:'shooter',icon:'✈️',title:'Космический Шутер',desc:`Ур. ${gameState.shooter.unlocked}/800`},
-    {id:'runner',icon:'🟦',title:'Квадратик',desc:`Ур. ${gameState.runner.unlocked}/800`},
-    {id:'platformer',icon:'🍄',title:'Супер Прыгун',desc:'Прыгай и собирай'}
-  ].forEach(g => {
-    const div = document.createElement('div'); div.className='game-card';
-    div.innerHTML = `<div class="game-icon">${g.icon}</div><div class="game-title">${g.title}</div><div class="game-desc">${g.desc}</div>`;
-    div.onclick = () => startGame(g.id);
-    grid.appendChild(div);
-  });
-}
-
-let currentGame = null, gameAnimFrame = null;
-function startGame(type) {
-  currentGame = type;
-  document.getElementById('gameOverlay').classList.add('show');
-  document.getElementById('gameTitle').textContent = type==='shooter'?'✈️ Космический Шутер':type==='runner'?'🟦 Квадратик':'🍄 Супер Прыгун';
-  if (type==='shooter') openShooterMenu();
-  else if (type==='runner') openRunnerMenu();
-  else openPlatformerMenu();
-}
-function closeGame() {
-  document.getElementById('gameOverlay').classList.remove('show');
-  if (gameAnimFrame) cancelAnimationFrame(gameAnimFrame);
-  currentGame = null; renderGames();
-}
-function saveGameState() { try { localStorage.setItem(GAMES_KEY, JSON.stringify(gameState)); } catch(e){} }
-function getDiffMultiplier() {
-  return {easy:0.65,normal:1,hard:1.45,extreme:1.9}[selectedDifficulty]||1;
-}
-function renderDiffButtons() {
-  return `<div class="diff-selector">
-    <button class="diff-btn ${selectedDifficulty==='easy'?'active':''}" data-diff="easy">Лёгкая</button>
-    <button class="diff-btn ${selectedDifficulty==='normal'?'active':''}" data-diff="normal">Нормальная</button>
-    <button class="diff-btn ${selectedDifficulty==='hard'?'active':''}" data-diff="hard">Сложная</button>
-    <button class="diff-btn ${selectedDifficulty==='extreme'?'active':''}" data-diff="extreme">Экстрим</button>
-  </div>`;
-}
-function bindDiff(selector) {
-  document.querySelectorAll(selector+' .diff-btn').forEach(b => {
-    b.onclick = () => {
-      selectedDifficulty = b.dataset.diff;
-      document.querySelectorAll(selector+' .diff-btn').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-    };
-  });
-}
-
-function openShooterMenu() {
-  const area = document.getElementById('gameArea');
-  area.innerHTML = `<div style="text-align:center;padding:24px;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(180deg,#0d0618,#1a0a2e);">
-    <div style="font-size:56px;margin-bottom:8px;">✈️</div>
-    <h2 style="color:#00d4ff;font-size:26px;margin-bottom:6px;">Космический Шутер</h2>
-    <div style="font-size:14px;opacity:0.7;margin-bottom:8px;">Уровень ${gameState.shooter.unlocked}/800 · ${gameState.shooter.coins} 🪙</div>
-    ${renderDiffButtons()}
-    <div style="display:flex;gap:12px;margin-top:18px;">
-      <button class="game-btn" onclick="openShooterShop()" style="background:linear-gradient(135deg,#a06cd5,#7b2ff7);">🛠 Магазин</button>
-      <button class="game-btn" onclick="initShooter(${gameState.shooter.unlocked})">▶️ Играть</button>
-    </div>
-  </div>`;
-  bindDiff('.diff-selector');
-}
-function openShooterShop() {
-  const s = gameState.shooter;
-  const cost = l => Math.floor(10*Math.pow(2,l));
-  const btn = (type,lvl) => lvl>=1000?'<button class="upgrade-btn" disabled>MAX</button>':s.coins<cost(lvl)?`<button class="upgrade-btn" disabled>${cost(lvl)} 🪙</button>`:`<button class="upgrade-btn" onclick="buyUpgrade('${type}',${cost(lvl)})">${cost(lvl)} 🪙</button>`;
-  document.getElementById('gameArea').innerHTML = `<div class="shop-container">
-    <div class="shop-header"><span>🛠 Улучшения</span><span>${s.coins} 🪙</span></div>
-    <div class="upgrade-item"><div><h4>✈️ Корабль (Ур.${s.plane})</h4><p style="font-size:12px;opacity:0.6;">Больше урона</p></div>${btn('plane',s.plane)}</div>
-    <div class="upgrade-item"><div><h4>💰 Доход (Ур.${s.income})</h4><p style="font-size:12px;opacity:0.6;">Больше монет</p></div>${btn('income',s.income)}</div>
-    <div class="upgrade-item"><div><h4>⚡ Скорострельность (Ур.${s.fireRate})</h4><p style="font-size:12px;opacity:0.6;">Быстрее стреляет</p></div>${btn('fireRate',s.fireRate)}</div>
-    <div class="upgrade-item"><div><h4>🚀 Турбо (Ур.${s.turbo})</h4><p style="font-size:12px;opacity:0.6;">Быстрее заряд</p></div>${btn('turbo',s.turbo)}</div>
-    <button class="game-btn" style="margin-top:16px;" onclick="openShooterMenu()">Назад</button>
-  </div>`;
-}
-function buyUpgrade(type, cost) {
-  if (gameState.shooter.coins >= cost) {
-    gameState.shooter.coins -= cost; gameState.shooter[type]++;
-    saveGameState(); openShooterShop();
-  }
-}
-
-let shooterObj = {};
-function initShooter(level) {
-  const area = document.getElementById('gameArea'); area.innerHTML='';
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.min(window.innerWidth,500); canvas.height = window.innerHeight-150;
-  area.appendChild(canvas);
-  const mult = getDiffMultiplier();
-  shooterObj = { canvas, ctx:canvas.getContext('2d'), playerX:canvas.width/2, playerY:canvas.height-60, bullets:[], meteors:[], enemyUfos:[], bossProjectiles:[], particles:[], stars:[], score:0, isDead:false, isFiring:false, lastShot:0, timeLeft:360, boss:null, level, turboCharge:0, turboActive:false, turboUses:0, turboWaveRadius:0, turboWaveActive:false, shake:0, diffMult:mult };
-  shooterObj.stars = Array.from({length:50},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,speed:Math.random()*2+1}));
-  const ui = document.createElement('div'); ui.className='game-ui-top';
-  ui.innerHTML = `<div>Ур:${level} | ⏱ <span id="shTime">06:00</span></div><div>⭐ <span id="shScore">0</span></div>`;
-  area.appendChild(ui);
-  const tbar = document.createElement('div'); tbar.className='turbo-bar-container'; tbar.id='turboBar';
-  tbar.innerHTML = '<div class="turbo-bar-fill" id="turboFill"></div><div class="turbo-bar-label" id="turboLabel">ТУРБО 0%</div>';
-  area.appendChild(tbar);
-  const tbtn = document.createElement('button'); tbtn.className='turbo-btn'; tbtn.id='turboBtn'; tbtn.textContent='ТУРБО';
-  area.appendChild(tbtn);
-  tbtn.onclick = () => {
-    if (shooterObj.turboCharge>=100 && shooterObj.turboUses<2 && !shooterObj.turboWaveActive) {
-      shooterObj.turboActive=true; shooterObj.turboWaveActive=true; shooterObj.turboWaveRadius=0;
-      shooterObj.turboCharge=0; shooterObj.turboUses++; playSound('turbo');
-      document.getElementById('turboFill').style.width='0%';
-      document.getElementById('turboLabel').textContent='ТУРБО 0%';
-      tbtn.classList.remove('ready'); tbtn.style.display='none';
-      if (shooterObj.turboUses>=2) tbar.style.display='none';
-    }
-  };
-  const move = e => {
-    const r = canvas.getBoundingClientRect();
-    const cx = e.touches?e.touches[0].clientX:e.clientX;
-    shooterObj.playerX = Math.max(20, Math.min(canvas.width-20, cx-r.left));
-    if (e.touches) {
-      const cy = e.touches[0].clientY;
-      shooterObj.playerY = Math.max(60, Math.min(canvas.height-20, cy-r.top));
-    }
-  };
-  canvas.addEventListener('touchmove', e=>{e.preventDefault();move(e);shooterObj.isFiring=true;},{passive:false});
-  canvas.addEventListener('mousemove', e=>{move(e);if(e.buttons===1)shooterObj.isFiring=true;});
-  canvas.addEventListener('touchstart', e=>{move(e);shooterObj.isFiring=true;});
-  canvas.addEventListener('mousedown', e=>{move(e);shooterObj.isFiring=true;});
-  canvas.addEventListener('touchend', ()=>shooterObj.isFiring=false);
-  canvas.addEventListener('mouseup', ()=>shooterObj.isFiring=false);
-
-  let lastTick = performance.now(), spawnT=0, bossShoot=0;
-  const loop = (time) => {
-    if (!shooterObj.canvas || shooterObj.isDead) return;
-    if (!shooterObj.boss && time-lastTick>1000) {
-      lastTick=time; shooterObj.timeLeft--;
-      if (shooterObj.timeLeft<=0) spawnBoss();
-      const m=Math.floor(shooterObj.timeLeft/60), s=shooterObj.timeLeft%60;
-      const el=document.getElementById('shTime'); if(el) el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    }
-    const ctx = shooterObj.ctx;
-    let sx=0,sy=0; if(shooterObj.shake>0){sx=(Math.random()-0.5)*shooterObj.shake;sy=(Math.random()-0.5)*shooterObj.shake;shooterObj.shake-=0.5;}
-    ctx.save(); ctx.translate(sx,sy);
-    ctx.fillStyle='#0a0510'; ctx.fillRect(-10,-10,canvas.width+20,canvas.height+20);
-    shooterObj.stars.forEach(st=>{st.y+=st.speed;if(st.y>canvas.height){st.y=0;st.x=Math.random()*canvas.width;}ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fillRect(st.x,st.y,2,2);});
-    ctx.save(); ctx.translate(shooterObj.playerX,shooterObj.playerY);
-    const sm=1+gameState.shooter.plane*0.02; ctx.scale(sm,sm);
-    ctx.fillStyle='#00d4ff'; ctx.beginPath(); ctx.moveTo(0,-25);ctx.lineTo(15,10);ctx.lineTo(5,15);ctx.lineTo(0,10);ctx.lineTo(-5,15);ctx.lineTo(-15,10);ctx.closePath();ctx.fill();
-    ctx.fillStyle='#fff'; ctx.beginPath();ctx.arc(0,-5,5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=shooterObj.isFiring?'#ff8c42':'#555'; ctx.fillRect(-5,15,10,8); ctx.restore();
-    const fr=Math.max(50,300-gameState.shooter.fireRate*10);
-    if(shooterObj.isFiring && time-shooterObj.lastShot>fr){
-      if(shooterObj.turboActive){shooterObj.bullets.push({x:shooterObj.playerX,y:shooterObj.playerY-20,vx:-5,vy:-15});shooterObj.bullets.push({x:shooterObj.playerX,y:shooterObj.playerY-20,vx:0,vy:-15});shooterObj.bullets.push({x:shooterObj.playerX,y:shooterObj.playerY-20,vx:5,vy:-15});}
-      else shooterObj.bullets.push({x:shooterObj.playerX,y:shooterObj.playerY-20,vx:0,vy:-15});
-      shooterObj.lastShot=time; playSound('laser');
-    }
-    ctx.fillStyle=shooterObj.turboActive?'#ffd700':'#ff8c42';
-    for(let i=shooterObj.bullets.length-1;i>=0;i--){const b=shooterObj.bullets[i];b.x+=b.vx;b.y+=b.vy;ctx.fillRect(b.x-2,b.y-10,4,15);if(b.y<0)shooterObj.bullets.splice(i,1);}
-    const spawnRate=Math.max(80,(700-level*3-gameState.shooter.plane*3)/mult);
-    const mSpeed=(2+level*0.15+gameState.shooter.plane*0.05)*mult;
-    if(!shooterObj.boss && time-spawnT>spawnRate/(1+(level-1)*0.08*mult)){
-      spawnT=time;
-      if(Math.random()>0.5) shooterObj.meteors.push({x:Math.random()*(canvas.width-40)+20,y:-30,speed:mSpeed,size:Math.random()*18+14,hp:1,rot:0});
-      else shooterObj.enemyUfos.push({x:Math.random()*(canvas.width-60)+30,y:-30,speed:mSpeed*0.8,hp:Math.ceil(2*mult),angle:0});
-    }
-    for(let i=shooterObj.meteors.length-1;i>=0;i--){
-      const m=shooterObj.meteors[i]; m.y+=m.speed; m.rot+=0.03;
-      ctx.save();ctx.translate(m.x,m.y);ctx.rotate(m.rot);ctx.fillStyle='#8c5a45';ctx.beginPath();for(let a=0;a<Math.PI*2;a+=Math.PI/6){const r=m.size+(Math.random()*3-1.5);ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.fill();ctx.restore();
-      for(let j=shooterObj.bullets.length-1;j>=0;j--){const b=shooterObj.bullets[j];if(Math.hypot(m.x-b.x,m.y-b.y)<m.size+5){shooterObj.bullets.splice(j,1);m.hp--;if(m.hp<=0){for(let p=0;p<8;p++)shooterObj.particles.push({x:m.x,y:m.y,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8,life:1,color:'#ff8c42'});shooterObj.meteors.splice(i,1);shooterObj.score++;document.getElementById('shScore').textContent=shooterObj.score;chargeTurbo();playSound('explosion');}break;}}
-      if(m.y>shooterObj.playerY-20&&m.y<shooterObj.playerY+20&&Math.abs(m.x-shooterObj.playerX)<m.size+15){endShooter(false);return;}
-      if(m.y>canvas.height)shooterObj.meteors.splice(i,1);
-    }
-    for(let i=shooterObj.enemyUfos.length-1;i>=0;i--){
-      const u=shooterObj.enemyUfos[i]; u.y+=u.speed; u.angle+=0.06; u.x+=Math.sin(u.angle)*2.5;
-      if(u.x<20)u.x=20; if(u.x>canvas.width-20)u.x=canvas.width-20;
-      ctx.fillStyle='#4ade80';ctx.beginPath();ctx.ellipse(u.x,u.y,22,11,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#86efac';ctx.beginPath();ctx.arc(u.x,u.y-6,9,Math.PI,0);ctx.fill();
-      for(let j=shooterObj.bullets.length-1;j>=0;j--){const b=shooterObj.bullets[j];if(Math.hypot(u.x-b.x,u.y-b.y)<22){shooterObj.bullets.splice(j,1);u.hp--;if(u.hp<=0){for(let p=0;p<12;p++)shooterObj.particles.push({x:u.x,y:u.y,vx:(Math.random()-0.5)*10,vy:(Math.random()-0.5)*10,life:1,color:'#4ade80'});shooterObj.enemyUfos.splice(i,1);shooterObj.score+=3;document.getElementById('shScore').textContent=shooterObj.score;chargeTurbo();playSound('explosion');}break;}}
-      if(u.y>shooterObj.playerY-20&&u.y<shooterObj.playerY+20&&Math.abs(u.x-shooterObj.playerX)<20){endShooter(false);return;}
-      if(u.y>canvas.height)shooterObj.enemyUfos.splice(i,1);
-    }
-    if(shooterObj.boss){
-      const b=shooterObj.boss; b.time=(b.time||0)+1; b.x=canvas.width/2+Math.cos(b.time*0.02)*(canvas.width*0.3); b.y=100+Math.sin(b.time*0.03)*50;
-      ctx.save();ctx.translate(b.x,b.y);ctx.fillStyle='#ff5e62';ctx.beginPath();ctx.ellipse(0,0,65,32,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ff8c42';ctx.beginPath();ctx.arc(0,-12,28,Math.PI,0);ctx.fill();ctx.restore();
-      const bw=120,bx=b.x-bw/2,by=b.y-60; ctx.fillStyle='rgba(0,0,0,0.7)';ctx.fillRect(bx-2,by-2,bw+4,14);ctx.fillStyle='#333';ctx.fillRect(bx,by,bw,10);
-      const hp=Math.max(0,b.hp/b.maxHp); ctx.fillStyle=hp>0.5?'#4ade80':hp>0.25?'#ffd700':'#ff5e62';ctx.fillRect(bx,by,bw*hp,10);
-      const delay=Math.max(400,(1500-level*5)/mult);
-      if(time-bossShoot>delay){bossShoot=time;const dx=shooterObj.playerX-b.x,dy=shooterObj.playerY-b.y,d=Math.hypot(dx,dy);shooterObj.bossProjectiles.push({x:b.x,y:b.y+20,vx:(dx/d)*5*mult,vy:(dy/d)*5*mult});}
-      for(let j=shooterObj.bullets.length-1;j>=0;j--){const bul=shooterObj.bullets[j];if(Math.hypot(b.x-bul.x,b.y-bul.y)<65){shooterObj.bullets.splice(j,1);b.hp-=(10+gameState.shooter.plane*2);shooterObj.shake=5;if(b.hp<=0){endShooter(true);return;}}}
-    }
-    for(let i=shooterObj.bossProjectiles.length-1;i>=0;i--){const p=shooterObj.bossProjectiles[i];p.x+=p.vx;p.y+=p.vy;ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.ellipse(p.x,p.y,14,5,Math.atan2(p.vy,p.vx),0,Math.PI*2);ctx.fill();if(Math.hypot(p.x-shooterObj.playerX,p.y-shooterObj.playerY)<22){endShooter(false);return;}if(p.x<-30||p.x>canvas.width+30||p.y<-30||p.y>canvas.height+30)shooterObj.bossProjectiles.splice(i,1);}
-    if(shooterObj.turboWaveActive){
-      shooterObj.turboWaveRadius+=12;
-      ctx.strokeStyle=`rgba(255,215,0,${Math.max(0,1-shooterObj.turboWaveRadius/(canvas.width*1.2))})`;ctx.lineWidth=8;ctx.beginPath();ctx.arc(shooterObj.playerX,shooterObj.playerY,shooterObj.turboWaveRadius,0,Math.PI*2);ctx.stroke();
-      for(let i=shooterObj.meteors.length-1;i>=0;i--){const m=shooterObj.meteors[i];if(Math.hypot(m.x-shooterObj.playerX,m.y-shooterObj.playerY)<shooterObj.turboWaveRadius){shooterObj.meteors.splice(i,1);shooterObj.score++;playSound('explosion');}}
-      for(let i=shooterObj.enemyUfos.length-1;i>=0;i--){const u=shooterObj.enemyUfos[i];if(Math.hypot(u.x-shooterObj.playerX,u.y-shooterObj.playerY)<shooterObj.turboWaveRadius){shooterObj.enemyUfos.splice(i,1);shooterObj.score+=3;playSound('explosion');}}
-      if(shooterObj.boss&&!shooterObj.boss.waveHit){const b=shooterObj.boss;if(Math.hypot(b.x-shooterObj.playerX,b.y-shooterObj.playerY)<shooterObj.turboWaveRadius){b.hp-=b.maxHp*0.3;b.waveHit=true;shooterObj.shake=15;if(b.hp<=0){endShooter(true);return;}}}
-      document.getElementById('shScore').textContent=shooterObj.score;
-      if(shooterObj.turboWaveRadius>canvas.width*1.2){shooterObj.turboWaveActive=false;shooterObj.turboActive=false;if(shooterObj.boss)shooterObj.boss.waveHit=false;}
-    }
-    for(let i=shooterObj.particles.length-1;i>=0;i--){const p=shooterObj.particles[i];p.x+=p.vx;p.y+=p.vy;p.life-=0.03;ctx.globalAlpha=p.life;ctx.fillStyle=p.color||'#ff8c42';ctx.fillRect(p.x,p.y,4,4);ctx.globalAlpha=1;if(p.life<=0)shooterObj.particles.splice(i,1);}
-    ctx.restore();
-    gameAnimFrame=requestAnimationFrame(loop);
-  };
-  gameAnimFrame=requestAnimationFrame(loop);
-}
-function chargeTurbo() {
-  if(shooterObj.turboActive||shooterObj.turboUses>=2)return;
-  shooterObj.turboCharge+=1.2+gameState.shooter.turbo*0.15; if(shooterObj.turboCharge>100)shooterObj.turboCharge=100;
-  const bar=document.getElementById('turboBar'), fill=document.getElementById('turboFill'), label=document.getElementById('turboLabel'), btn=document.getElementById('turboBtn');
-  if(bar)bar.style.display='block'; if(fill)fill.style.width=shooterObj.turboCharge+'%'; if(label)label.textContent=`ТУРБО ${Math.floor(shooterObj.turboCharge)}%`;
-  if(btn&&shooterObj.turboCharge>=100){btn.classList.add('ready');btn.style.display='flex';}
-}
-function spawnBoss() {
-  const hp=Math.floor((150+(shooterObj.level-1)*20+Math.random()*50)*shooterObj.diffMult);
-  shooterObj.boss={x:shooterObj.canvas.width/2,y:100,hp,maxHp:hp,time:0,waveHit:false};
-  shooterObj.meteors=[]; shooterObj.enemyUfos=[];
-}
-function endShooter(win) {
-  if(shooterObj.isDead)return; shooterObj.isDead=true; if(gameAnimFrame)cancelAnimationFrame(gameAnimFrame);
-  if(win){
-    playSound('win');
-    const coins=Math.floor(shooterObj.score*(1+gameState.shooter.income*0.5)*(selectedDifficulty==='extreme'?1.5:selectedDifficulty==='hard'?1.25:1));
-    gameState.shooter.coins+=coins;
-    if(shooterObj.level===gameState.shooter.unlocked&&gameState.shooter.unlocked<800)gameState.shooter.unlocked++;
-    saveGameState();
-    setTimeout(()=>{customAlert(`🏆 ПОБЕДА!\nОчки: ${shooterObj.score}\nМонеты: +${coins}`);openShooterMenu();},100);
-  } else {
-    playSound('gameover'); speakPotracheno();
-    const coins=Math.floor(shooterObj.score*0.3*(1+gameState.shooter.income*0.2));
-    gameState.shooter.coins+=coins; saveGameState();
-    const area=document.getElementById('gameArea');
-    const sad=document.createElement('div');
-    sad.style.cssText='position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;text-align:center;padding:20px;';
-    sad.innerHTML=`<div style="font-size:40px;font-weight:900;color:#ff5e62;letter-spacing:3px;text-shadow:0 0 20px #ff5e62;margin-bottom:16px;">ПОТРАЧЕНО</div><div style="font-size:17px;margin-bottom:8px;">Очки: ${shooterObj.score}</div><div style="font-size:14px;color:#4ade80;">Монеты: +${coins}</div>`;
-    area.appendChild(sad);
-    setTimeout(()=>{if(sad.parentNode)sad.remove();openShooterMenu();},4200);
-  }
-}
-
-function openRunnerMenu() {
-  document.getElementById('gameArea').innerHTML = `<div style="text-align:center;padding:24px;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(180deg,#0d0618,#1a0a2e);">
-    <div style="font-size:56px;margin-bottom:8px;">🟦</div>
-    <h2 style="color:#ff5e62;font-size:26px;margin-bottom:6px;">Квадратик</h2>
-    <div style="font-size:14px;opacity:0.7;margin-bottom:8px;">Уровень ${gameState.runner.unlocked}/800</div>
-    ${renderDiffButtons()}
-    <button class="game-btn" style="margin-top:16px;" onclick="initRunner()">▶️ Играть</button>
-  </div>`;
-  bindDiff('.diff-selector');
-}
-let runnerObj={};
-function initRunner() {
-  const area=document.getElementById('gameArea'); area.innerHTML='';
-  const canvas=document.createElement('canvas'); canvas.width=Math.min(window.innerWidth,500); canvas.height=window.innerHeight-150;
-  area.appendChild(canvas); const ctx=canvas.getContext('2d');
-  const level=gameState.runner.unlocked, mult=getDiffMultiplier();
-  const baseSpeed=(4+level*0.15)*mult;
-  runnerObj={canvas,ctx,level,playerX:50,playerY:canvas.height-100,playerVy:0,playerSize:28,obstacles:[],score:0,speed:baseSpeed,frame:0,isDead:false,onGround:true,timeLeft:360,lastTick:performance.now(),spawnRate:Math.max(25,(90-level*0.5)/mult)};
-  const ui=document.createElement('div'); ui.className='game-ui-top';
-  ui.innerHTML=`<div>Ур:${level} | ⏱ <span id="rnTime">06:00</span></div><div>⭐ <span id="rnScore">0</span></div>`;
-  area.appendChild(ui);
-  const jump=()=>{if(runnerObj.onGround&&!runnerObj.isDead){runnerObj.playerVy=-13-level*0.05;runnerObj.onGround=false;playSound('jump');}};
-  canvas.addEventListener('touchstart',e=>{e.preventDefault();jump();},{passive:false});
-  canvas.addEventListener('mousedown',jump);
-  const loop=(time)=>{
-    if(runnerObj.isDead)return;
-    if(time-runnerObj.lastTick>1000){runnerObj.lastTick=time;runnerObj.timeLeft--;if(runnerObj.timeLeft<=0){endRunner(true);return;}const m=Math.floor(runnerObj.timeLeft/60),s=runnerObj.timeLeft%60;const el=document.getElementById('rnTime');if(el)el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
-    runnerObj.frame++; runnerObj.playerVy+=0.7; runnerObj.playerY+=runnerObj.playerVy;
-    const floor=canvas.height-40;
-    if(runnerObj.playerY>floor-runnerObj.playerSize){runnerObj.playerY=floor-runnerObj.playerSize;runnerObj.playerVy=0;runnerObj.onGround=true;}
-    const g=ctx.createLinearGradient(0,0,0,canvas.height); g.addColorStop(0,'#1a0a2e'); g.addColorStop(1,'#2a0a3e');
-    ctx.fillStyle=g; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,canvas.height-40,canvas.width,40);
-    ctx.fillStyle='#ff5e62'; ctx.fillRect(0,canvas.height-40,canvas.width,3);
-    if(runnerObj.frame%Math.max(30,runnerObj.spawnRate-Math.floor(runnerObj.score/20))===0&&runnerObj.timeLeft>0){
-      const oh=Math.random()>0.4?40:60;
-      runnerObj.obstacles.push({x:canvas.width,y:canvas.height-40-oh,w:25,h:oh,speed:runnerObj.speed+runnerObj.score*0.01*mult});
-    }
-    for(let i=runnerObj.obstacles.length-1;i>=0;i--){
-      const o=runnerObj.obstacles[i]; o.x-=o.speed;
-      ctx.fillStyle='#ff5e62'; ctx.fillRect(o.x,o.y,o.w,o.h);
-      if(o.x+o.w<0){runnerObj.obstacles.splice(i,1);runnerObj.score++;runnerObj.speed=baseSpeed+runnerObj.score*0.02*mult;const el=document.getElementById('rnScore');if(el)el.textContent=runnerObj.score;}
-      if(runnerObj.playerX+runnerObj.playerSize>o.x&&runnerObj.playerX<o.x+o.w&&runnerObj.playerY+runnerObj.playerSize>o.y&&runnerObj.playerY<o.y+o.h){endRunner(false);return;}
-    }
-    ctx.fillStyle='#00d4ff'; ctx.fillRect(runnerObj.playerX,runnerObj.playerY,runnerObj.playerSize,runnerObj.playerSize);
-    gameAnimFrame=requestAnimationFrame(loop);
-  };
-  gameAnimFrame=requestAnimationFrame(loop);
-}
-function endRunner(win) {
-  if(runnerObj.isDead)return; runnerObj.isDead=true; if(gameAnimFrame)cancelAnimationFrame(gameAnimFrame);
-  if(win){
-    playSound('win');
-    const coins=Math.floor((20+runnerObj.score*2)*(selectedDifficulty==='extreme'?1.4:1));
-    gameState.shooter.coins+=coins;
-    if(runnerObj.level===gameState.runner.unlocked&&gameState.runner.unlocked<800)gameState.runner.unlocked++;
-    saveGameState();
-    setTimeout(()=>{customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nОчки: ${runnerObj.score}\nМонеты: +${coins}`);openRunnerMenu();},100);
-  } else {
-    playSound('gameover'); speakPotracheno();
-    const coins=Math.floor(runnerObj.score*0.3); gameState.shooter.coins+=coins; saveGameState();
-    const area=document.getElementById('gameArea');
-    const sad=document.createElement('div');
-    sad.style.cssText='position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;text-align:center;padding:20px;';
-    sad.innerHTML=`<div style="font-size:40px;font-weight:900;color:#ff5e62;letter-spacing:3px;text-shadow:0 0 20px #ff5e62;margin-bottom:16px;">ПОТРАЧЕНО</div><div style="font-size:17px;">Очки: ${runnerObj.score}</div>`;
-    area.appendChild(sad);
-    setTimeout(()=>{if(sad.parentNode)sad.remove();openRunnerMenu();},4000);
-  }
-}
-
-function openPlatformerMenu() {
-  document.getElementById('gameArea').innerHTML = `<div style="text-align:center;padding:24px;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(180deg,#0d0618,#1a0a2e);">
-    <div style="font-size:56px;margin-bottom:8px;">🍄</div>
-    <h2 style="color:#ffd700;font-size:26px;margin-bottom:6px;">Супер Прыгун</h2>
-    <div style="font-size:14px;opacity:0.7;margin-bottom:8px;">Собери монеты и дойди до флага</div>
-    ${renderDiffButtons()}
-    <button class="game-btn" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;margin-top:16px;" onclick="initPlatformer()">▶️ Играть</button>
-  </div>`;
-  bindDiff('.diff-selector');
-}
-let platformerObj={};
-function initPlatformer() {
-  const area=document.getElementById('gameArea'); area.innerHTML='';
-  const canvas=document.createElement('canvas'); canvas.width=Math.min(window.innerWidth,500); canvas.height=window.innerHeight-150;
-  area.appendChild(canvas); const ctx=canvas.getContext('2d'); const mult=getDiffMultiplier();
-  const lvl={
-    platforms:[{x:0,y:canvas.height-40,w:canvas.width,h:40},{x:200,y:canvas.height-120,w:100,h:20},{x:400,y:canvas.height-200,w:100,h:20},{x:600,y:canvas.height-150,w:100,h:20}],
-    enemies:[{x:300,y:canvas.height-70,w:30,h:30,vx:1.5*mult,alive:true},{x:550,y:canvas.height-70,w:30,h:30,vx:-1.5*mult,alive:true}],
-    coins:[{x:220,y:canvas.height-150,w:15,h:15,collected:false},{x:250,y:canvas.height-150,w:15,h:15,collected:false},{x:420,y:canvas.height-230,w:15,h:15,collected:false}],
-    flag:{x:canvas.width-50,y:canvas.height-120,w:10,h:80}
-  };
-  platformerObj={canvas,ctx,player:{x:50,y:canvas.height-100,w:30,h:40,vx:0,vy:0,onGround:false,facingRight:true},keys:{left:false,right:false},level:lvl,coinsCollected:0,isDead:false};
-  const ctrl=document.createElement('div');
-  ctrl.style.cssText='position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;z-index:20;';
-  ctrl.innerHTML=`<div style="display:flex;gap:10px;"><button id="btnLeft" style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.2);color:#fff;font-size:24px;border:none;">◀</button><button id="btnRight" style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.2);color:#fff;font-size:24px;border:none;">▶</button></div><button id="btnJump" style="width:70px;height:70px;border-radius:50%;background:rgba(255,215,0,0.85);color:#000;font-weight:700;font-size:15px;border:none;">ПРЫГ</button>`;
-  area.appendChild(ctrl);
-  const stop=()=>{platformerObj.keys.left=false;platformerObj.keys.right=false;};
-  document.getElementById('btnLeft').addEventListener('touchstart',e=>{e.preventDefault();platformerObj.keys.left=true;platformerObj.keys.right=false;},{passive:false});
-  document.getElementById('btnLeft').addEventListener('mousedown',()=>{platformerObj.keys.left=true;platformerObj.keys.right=false;});
-  document.getElementById('btnLeft').addEventListener('touchend',stop); document.getElementById('btnLeft').addEventListener('mouseup',stop);
-  document.getElementById('btnRight').addEventListener('touchstart',e=>{e.preventDefault();platformerObj.keys.right=true;platformerObj.keys.left=false;},{passive:false});
-  document.getElementById('btnRight').addEventListener('mousedown',()=>{platformerObj.keys.right=true;platformerObj.keys.left=false;});
-  document.getElementById('btnRight').addEventListener('touchend',stop); document.getElementById('btnRight').addEventListener('mouseup',stop);
-  document.getElementById('btnJump').addEventListener('touchstart',e=>{e.preventDefault();if(platformerObj.player.onGround){platformerObj.player.vy=-13;platformerObj.player.onGround=false;playSound('jump');}},{passive:false});
-  document.getElementById('btnJump').addEventListener('mousedown',()=>{if(platformerObj.player.onGround){platformerObj.player.vy=-13;platformerObj.player.onGround=false;playSound('jump');}});
-  const loop=()=>{
-    if(platformerObj.isDead)return;
-    const p=platformerObj.player, lvl=platformerObj.level;
-    if(platformerObj.keys.left){p.vx=-5;p.facingRight=false;} else if(platformerObj.keys.right){p.vx=5;p.facingRight=true;} else p.vx=0;
-    p.x+=p.vx; if(p.x<0)p.x=0; if(p.x+p.w>canvas.width)p.x=canvas.width-p.w;
-    p.vy+=0.6; p.y+=p.vy; p.onGround=false;
-    lvl.platforms.forEach(plat=>{
-      if(p.x+p.w>plat.x&&p.x<plat.x+plat.w&&p.y+p.h>plat.y&&p.y<plat.y+plat.h){
-        if(p.vy>0&&p.y+p.h-p.vy<=plat.y){p.y=plat.y-p.h;p.vy=0;p.onGround=true;}
-        else if(p.vy<0&&p.y-p.vy>=plat.y+plat.h){p.y=plat.y+plat.h;p.vy=0;}
-      }
-    });
-    lvl.enemies.forEach(en=>{
-      if(!en.alive)return; en.x+=en.vx; if(en.x<=0||en.x+en.w>=canvas.width)en.vx*=-1;
-      if(p.x+p.w>en.x&&p.x<en.x+en.w&&p.y+p.h>en.y&&p.y<en.y+en.h){
-        if(p.vy>0&&p.y+p.h-p.vy<=en.y+5){en.alive=false;p.vy=-10;playSound('explosion');}
-        else{endPlatformer();return;}
-      }
-    });
-    lvl.coins.forEach(c=>{if(!c.collected&&p.x+p.w>c.x&&p.x<c.x+c.w&&p.y+p.h>c.y&&p.y<c.y+c.h){c.collected=true;platformerObj.coinsCollected++;playSound('win');}});
-    const f=lvl.flag; if(p.x+p.w>f.x&&p.x<f.x+f.w&&p.y+p.h>f.y&&p.y<f.y+f.h){endPlatformer(true);return;}
-    ctx.fillStyle='#87CEEB'; ctx.fillRect(0,0,canvas.width,canvas.height);
-    lvl.platforms.forEach(plat=>{ctx.fillStyle='#4a2e15';ctx.fillRect(plat.x,plat.y,plat.w,plat.h);ctx.fillStyle='#4ade80';ctx.fillRect(plat.x,plat.y,plat.w,5);});
-    lvl.coins.forEach(c=>{if(!c.collected){ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(c.x+c.w/2,c.y+c.h/2,c.w/2,0,Math.PI*2);ctx.fill();}});
-    ctx.fillStyle='#aaa';ctx.fillRect(f.x,f.y,5,f.h);ctx.fillStyle='#ff5e62';ctx.beginPath();ctx.moveTo(f.x+5,f.y);ctx.lineTo(f.x+35,f.y+15);ctx.lineTo(f.x+5,f.y+30);ctx.fill();
-    lvl.enemies.forEach(en=>{if(en.alive){ctx.fillStyle='#a06cd5';ctx.fillRect(en.x,en.y,en.w,en.h);}});
-    ctx.fillStyle='#00d4ff';ctx.fillRect(p.x,p.y,p.w,p.h);
-    ctx.fillStyle='#000';ctx.font='bold 18px sans-serif';ctx.fillText(`Монеты: ${platformerObj.coinsCollected}/${lvl.coins.length}`,15,32);
-    gameAnimFrame=requestAnimationFrame(loop);
-  };
-  gameAnimFrame=requestAnimationFrame(loop);
-}
-function endPlatformer(win=false) {
-  if(platformerObj.isDead)return; platformerObj.isDead=true; if(gameAnimFrame)cancelAnimationFrame(gameAnimFrame);
-  if(win){
-    playSound('win');
-    const reward=Math.floor(50*(selectedDifficulty==='extreme'?1.5:selectedDifficulty==='hard'?1.25:1));
-    gameState.shooter.coins+=reward; saveGameState();
-    setTimeout(()=>{customAlert(`🏆 УРОВЕНЬ ПРОЙДЕН!\nМонет: ${platformerObj.coinsCollected}\n+${reward} 🪙`);openPlatformerMenu();},100);
-  } else {
-    playSound('gameover'); speakPotracheno();
-    const area=document.getElementById('gameArea');
-    const sad=document.createElement('div');
-    sad.style.cssText='position:absolute;inset:0;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;text-align:center;padding:20px;';
-    sad.innerHTML=`<div style="font-size:40px;font-weight:900;color:#ff5e62;letter-spacing:3px;text-shadow:0 0 20px #ff5e62;margin-bottom:16px;">ПОТРАЧЕНО</div><div style="font-size:17px;">Монет: ${platformerObj.coinsCollected}</div>`;
-    area.appendChild(sad);
-    setTimeout(()=>{if(sad.parentNode)sad.remove();openPlatformerMenu();},3500);
-  }
-}
-
-function uploadProfilePhoto() {
-  const input=document.createElement('input'); input.type='file'; input.accept='image/*';
-  input.onchange=e=>{
-    const file=e.target.files[0]; if(!file)return;
-    const r=new FileReader();
-    r.onload=ev=>{currentUser.avatarImage=ev.target.result;localStorage.setItem(STORAGE_KEY,JSON.stringify(currentUser));startApp();customAlert('Фото обновлено!');document.getElementById('profileModal').classList.remove('show');};
-    r.readAsDataURL(file);
-  };
-  input.click();
-}
-
-function customAlert(text) {
-  const m=document.createElement('div');
-  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-  m.innerHTML=`<div style="background:#1a0a1e;border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:24px;width:100%;max-width:320px;text-align:center;"><div style="color:#fff;font-size:16px;margin-bottom:20px;line-height:1.4;">${text}</div><button onclick="this.closest('div').parentElement.remove()" style="width:100%;background:linear-gradient(135deg,#ff8c42,#ff5e62);border:none;border-radius:14px;padding:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;">ОК</button></div>`;
-  document.body.appendChild(m);
-}
-
-window.addEventListener('load', () => {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) { try { currentUser = JSON.parse(saved); startApp(); } catch(e){} }
-});
-</script>
+    </script>
 </body>
 </html>
+     
