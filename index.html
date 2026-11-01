@@ -1143,6 +1143,24 @@
     margin-left: auto !important;
     margin-right: auto !important;
 }
+        /* --- КНОПКА ПЕРЕВОДА --- */
+.translate-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--info);
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.translate-btn:active { background: rgba(255, 255, 255, 0.1); }
+.translate-btn.translated { color: var(--success); border-color: rgba(46, 204, 113, 0.3); }
     </style>
 </head>
 <body>
@@ -1341,7 +1359,11 @@
             <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Обои чатов</div><div class="settings-value">›</div></div>
             <div class="settings-item"><div class="settings-icon">🔊</div><div class="settings-label">Звуки</div><div class="settings-value">›</div></div>
             <div class="settings-item"><div class="settings-icon">💾</div><div class="settings-label">Данные и память</div><div class="settings-value">›</div></div>
-            <div class="settings-item"><div class="settings-icon">🌐</div><div class="settings-label">Язык</div><div class="settings-value">RU ›</div></div>
+           <div class="settings-item" onclick="changeLanguage()">
+    <div class="settings-icon">🌐</div>
+    <div class="settings-label">Язык</div>
+    <div class="settings-value" id="currentLangDisplay">RU ›</div>
+</div>
         </div>
         <div class="settings-group">
             <div class="settings-item"><div class="settings-icon">👑</div><div class="settings-label">Premium</div><div class="settings-value">Активен ›</div></div>
@@ -2201,6 +2223,11 @@ async function generateDailyPost() {
 }
         function insertPost(author, text, imageUrl, time, customId = null) {
     const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
+    
+    // Проверяем, нужен ли перевод (если текст на английском)
+    const isEnglish = author.type === 'en' || (text.match(/[a-zA-Z]/) && !text.match(/[а-яА-Я]/));
+    const translateBtn = isEnglish ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">🌐 Перевести</button>` : '';
+
     const html = `
         <div class="post" id="${postId}">
             <div class="post-header">
@@ -2210,7 +2237,8 @@ async function generateDailyPost() {
                     <div class="post-time">${time}</div>
                 </div>
             </div>
-            <div class="post-content">${text}</div>
+            <div class="post-content" id="content-${postId}">${text}</div>
+            ${translateBtn}
             ${imageUrl ? `<img src="${imageUrl}" class="post-image" loading="lazy">` : ''}
             <div class="post-actions">
                 <button class="action-btn" onclick="like(this)">❤️ <span>0</span></button>
@@ -2479,6 +2507,59 @@ function viewStory(name, color, letter) {
 
 function closeStory() {
     document.getElementById('storyViewer').style.display = 'none';
+}
+        // ============ ПЕРЕВОДЧИК ============
+let userLang = localStorage.getItem('userLang') || 'ru';
+
+async function translateText(postId) {
+    const contentEl = document.getElementById(`content-${postId}`);
+    const btn = document.getElementById(`btn-${postId}`);
+    if (!contentEl || !btn) return;
+
+    // Если уже переведено - возвращаем оригинал
+    if (btn.classList.contains('translated')) {
+        contentEl.innerHTML = btn.dataset.original;
+        btn.classList.remove('translated');
+        btn.innerHTML = '🌐 Перевести';
+        return;
+    }
+
+    // Сохраняем оригинал
+    btn.dataset.original = contentEl.innerHTML;
+    btn.innerHTML = '⏳ Перевожу...';
+    
+    try {
+        // Бесплатный API Google Translate
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(contentEl.innerText)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Собираем переведенный текст
+        const translatedText = data[0].map(item => item[0]).join('');
+        
+        contentEl.innerHTML = translatedText;
+        btn.classList.add('translated');
+        btn.innerHTML = '✅ Оригинал';
+        
+    } catch (error) {
+        btn.innerHTML = '❌ Ошибка';
+        showToast('Не удалось перевести. Проверьте интернет.');
+        setTimeout(() => btn.innerHTML = '🌐 Перевести', 2000);
+    }
+}
+
+function changeLanguage() {
+    const choice = prompt("Выберите язык для перевода:\n1. Русский (ru)\n2. English (en)\n3. Español (es)\n4. Deutsch (de)\n\nВведите код языка (например, ru):", userLang);
+    
+    if (choice && choice.length === 2) {
+        userLang = choice.toLowerCase();
+        localStorage.setItem('userLang', userLang);
+        
+        const langDisplay = document.getElementById('currentLangDisplay');
+        if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
+        
+        showToast(`Язык перевода изменён на ${userLang.toUpperCase()}`);
+    }
 }
     </script>
 </body>
