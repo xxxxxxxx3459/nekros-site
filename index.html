@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+вы<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -626,9 +626,507 @@
                 transform: rotate(360deg);
             }
         }
+        /* --- СТАТИСТИКА И ДРУЗЬЯ/ПОДПИСЧИКИ --- */
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 20px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    margin: 15px auto;
+    max-width: 570px;
+    border: 1px solid var(--border-color);
+}
+.stat-item {
+    text-align: center;
+    cursor: pointer;
+    flex: 1;
+    border-right: 1px solid var(--border-color);
+}
+.stat-item:last-child { border-right: none; }
+.stat-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+}
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- СТОРИС РЯД --- */
+.stories-row {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 10px 15px 15px 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    scrollbar-width: none;
+}
+.stories-row::-webkit-scrollbar { display: none; }
+
+.story-item {
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 75px;
+}
+.story-ring {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #ff6b81, #ff4757, #feca57);
+    margin-bottom: 6px;
+    position: relative;
+}
+.story-ring.my-story {
+    background: var(--bg-card);
+    border: 2px dashed var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--accent);
+}
+.story-ring img, .story-ring .story-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+}
+.story-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ --- */
+.premium-banner.small {
+    padding: 14px 18px;
+    margin: 12px auto;
+    max-width: 550px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.premium-banner.small .premium-title {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+.premium-banner.small .premium-text {
+    font-size: 11px;
+    margin-bottom: 0;
+    flex: 1;
+}
+.premium-banner.small .premium-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+       /* --- 10 ЖИВЫХ ОБОЕВ ДЛЯ ЧАТА --- */
+.chat-bg-1 {
+    background: radial-gradient(ellipse at top, #1a0033 0%, #000005 70%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='20' cy='20' r='1' fill='%23ffffff' opacity='0.7'/%3E%3Ccircle cx='60' cy='60' r='1' fill='%23ffffff' opacity='0.5'/%3E%3Ccircle cx='80' cy='30' r='1.2' fill='%23ffffff' opacity='0.8'/%3E%3Ccircle cx='40' cy='80' r='0.8' fill='%23ffffff' opacity='0.6'/%3E%3C/svg%3E");
+}
+.chat-bg-2 {
+    background: linear-gradient(160deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+.chat-bg-3 {
+    background: linear-gradient(180deg, #232526 0%, #414345 100%);
+}
+.chat-bg-4 {
+    background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);
+}
+.chat-bg-5 {
+    background: radial-gradient(circle at 20% 30%, #5b247a 0%, #1bcedf 100%);
+}
+.chat-bg-6 {
+    background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+.chat-bg-7 {
+    background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+}
+.chat-bg-8 {
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23fff' opacity='0.9'/%3E%3Ccircle cx='150' cy='100' r='1' fill='%23fff' opacity='0.6'/%3E%3Ccircle cx='80' cy='160' r='1.2' fill='%23fff' opacity='0.8'/%3E%3C/svg%3E");
+}
+.chat-bg-9 {
+    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 50%, #ff9500 100%);
+}
+.chat-bg-10 {
+    background: radial-gradient(circle at 70% 30%, #ff5f6d 0%, #ffc371 50%, #1a1a2e 100%);
+}
+
+/* --- АНИМИРОВАННЫЙ БЛЕСК ДЛЯ "ЖИВЫХ" ОБОЕВ --- */
+.chat-window {
+    position: relative;
+    overflow: hidden;
+}
+.chat-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+        /* --- СПИСОК ЧАТОВ + ПОИСК --- */
+.chat-search {
+    margin: 12px 15px;
+    padding: 12px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    color: white;
+    font-size: 14px;
+    width: calc(100% - 30px);
+    outline: none;
+}
+.chat-search:focus { border-color: var(--accent); }
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    gap: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+.chat-list-item:active { background: var(--bg-card); }
+.chat-list-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+.chat-list-info { flex: 1; min-width: 0; }
+.chat-list-name {
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.chat-list-preview {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- ОКНО ПЕРЕПИСКИ --- */
+.chat-window {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    flex-direction: column;
+}
+.chat-window.active { display: flex; }
+
+.chat-topbar {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    z-index: 5;
+}
+.chat-topbar button {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+}
+.chat-topbar .chat-name {
+    flex: 1;
+    font-weight: 700;
+    font-size: 16px;
+}
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+.msg {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    animation: fadeIn 0.25s ease;
+    position: relative;
+    z-index: 2;
+}
+.msg.in {
+    align-self: flex-start;
+    background: rgba(35,35,48,0.92);
+    border-bottom-left-radius: 4px;
+}
+.msg.out {
+    align-self: flex-end;
+    background: var(--accent);
+    border-bottom-right-radius: 4px;
+}
+.msg-time {
+    font-size: 10px;
+    opacity: 0.6;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+
+/* --- "ПЕЧАТАЕТ" --- */
+.typing {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+    padding: 4px 16px;
+    display: none;
+}
+.typing.show { display: block; }
+.typing::after {
+    content: '...';
+    animation: dots 1.4s infinite;
+    display: inline-block;
+    width: 15px;
+    text-align: left;
+}
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+.chat-input-bar {
+    padding: 10px 12px 25px 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(10,10,15,0.9);
+    backdrop-filter: blur(15px);
+    z-index: 5;
+}
+.chat-input-bar input {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(35,35,48,0.85);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 22px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+.chat-input-bar button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* --- ВЫБОР ФОНА (мини-превью) --- */
+.bg-picker {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 10px;
+}
+.bg-swatch {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+.bg-swatch.selected { border-color: var(--accent); transform: scale(1.05); }
+       /* --- НОВАЯ МОДАЛКА ПЛЮСА (в стиле TG-сторис) --- */
+.plus-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: none;
+    z-index: 300;
+    backdrop-filter: blur(20px);
+    justify-content: center;
+    align-items: center;
+}
+.plus-modal.active { display: flex; }
+
+.plus-menu {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 340px;
+}
+.plus-option {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    transition: 0.2s;
+    font-size: 12px;
+    font-weight: 600;
+}
+.plus-option:active {
+    transform: scale(0.92);
+    background: rgba(255,255,255,0.15);
+}
+.plus-option-icon { font-size: 32px; }
+
+.plus-close {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* --- НАСТРОЙКИ --- */
+.settings-list {
+    padding: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.settings-group {
+    background: var(--bg-card);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+.settings-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    gap: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 15px;
+}
+.settings-item:last-child { border-bottom: none; }
+.settings-item:active { background: var(--bg-input); }
+.settings-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: var(--bg-input);
+    flex-shrink: 0;
+}
+.settings-label { flex: 1; }
+.settings-value { color: var(--text-muted); font-size: 13px; }
+
+/* --- КОМПОЗЕР (единый блок ввода на главной и в ЛС) --- */
+.composer {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 14px;
+    margin: 15px auto;
+    max-width: 570px;
+    border: 1px solid var(--border-color);
+}
+.composer textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 50px;
+}
+.composer-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+.composer-btn {
+    background: var(--bg-input);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.composer-btn.send {
+    background: var(--accent);
+    margin-left: auto;
+} 
     </style>
 </head>
 <body>
+    
  
     <!-- =========================================
          HTML РАЗМЕТКА (ВИЗУАЛЬНАЯ ЧАСТЬ)
@@ -645,19 +1143,45 @@
         </div>
         <div class="header-actions">
             <button onclick="switchTab('premium')">👑</button>
-            <button onclick="showToast('Настройки в разработке!')">⚙️</button>
+            <button onclick="document.getElementById('settingsModal').classList.add('active')">⚙️</button>
         </div>
     </header>
 
     <!-- ГЛАВНАЯ ЛЕНТА -->
     <main id="page-home" class="feed">
         
-        <!-- Баннер премиума в ленте -->
-        <div class="premium-banner" onclick="switchTab('premium')">
-            <div class="premium-title">Нужно продвижение?</div>
-            <div class="premium-text">Попробуйте Premium: эксклюзивные стикеры, отсутствие рекламы и приоритет в ленте.</div>
-            <button class="premium-btn">Узнать больше</button>
-        </div>
+        <!-- СТОРИС РЯД -->
+<div class="stories-row" id="storiesRow">
+    <div class="story-item" onclick="openPlusModal('story')">
+        <div class="story-ring my-story">＋</div>
+        <div class="story-name">Добавить</div>
+    </div>
+    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#3498db;">A</div></div><div class="story-name">Аня</div></div>
+    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#9b59b6;">О</div></div><div class="story-name">Олег</div></div>
+    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#e74c3c;">M</div></div><div class="story-name">Mike</div></div>
+    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#2ecc71;">S</div></div><div class="story-name">Sarah</div></div>
+    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
+</div>
+
+<!-- ЕДИНЫЙ КОМПОЗЕР: текст + медиа -->
+<div class="composer">
+    <textarea id="homeComposerText" placeholder="Что нового?.." rows="2"></textarea>
+    <div class="composer-actions">
+        <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
+        <button class="composer-btn" onclick="openPlusModal('video')">🎬 Видео</button>
+        <button class="composer-btn" onclick="openPlusModal('file')">📎 Файл</button>
+        <button class="composer-btn send" onclick="publishPost()">➤ Опубликовать</button>
+    </div>
+</div>
+
+<!-- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ -->
+<div class="premium-banner small" onclick="switchTab('premium')">
+    <div style="flex:1;">
+        <div class="premium-title">Premium 👑</div>
+        <div class="premium-text">Без рекламы и с бустами</div>
+    </div>
+    <button class="premium-btn">Попробовать</button>
+</div>
 
         <!-- Сюда JS будет вставлять посты -->
         <div id="feed-container"></div>
@@ -705,11 +1229,11 @@
     </main>
 
     <!-- ЗАГЛУШКИ ДЛЯ ДРУГИХ ВКЛАДОК (ЧАТЫ, МУЗЫКА, ИГРЫ, ПРОФИЛЬ) -->
-    <main id="page-chats" class="stub-page">
-        <div class="stub-icon">💬</div>
-        <div class="stub-title">Чаты</div>
-        <div class="stub-text">Здесь будут ваши переписки с друзьями и коллегами. Функция находится в разработке.</div>
-    </main>
+    <main id="page-chats" class="stub-page" style="padding:0; max-width:600px; margin:0 auto;">
+    <h2 style="padding: 20px 18px 8px 18px; font-size: 26px;">Чаты</h2>
+    <input type="text" class="chat-search" id="chatSearch" placeholder="🔍 Поиск людей...">
+    <div id="chatList"></div>
+</main>
 
     <main id="page-music" class="stub-page">
         <div class="stub-icon">🎵</div>
@@ -731,8 +1255,69 @@
     </main>
 
     <!-- КНОПКА ДОБАВЛЕНИЯ (ПЛЮСИК) -->
-    <button class="fab" onclick="openCreateModal()">+</button>
+    <button class="fab" onclick="openPlusModal('post')">+</button>
+ <!-- ОКНО ПЕРЕПИСКИ -->
+<div class="chat-window" id="chatWindow">
+    <div class="chat-topbar">
+        <button onclick="closeChat()">←</button>
+        <div class="chat-name" id="chatName">Чат</div>
+        <button onclick="showToast('Звонок: в разработке 📞')">📞</button>
+        <button onclick="openWallpaperPicker()">🎨</button>
+        <button onclick="blockCurrentChat()">🚫</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="typing" id="typingIndicator"></div>
+    <div class="chat-input-bar">
+        <input type="text" id="chatInput" placeholder="Сообщение..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">➤</button>
+    </div>
+</div>
 
+<!-- ПЛЮС-МОДАЛКА КРАСИВАЯ -->
+<div class="plus-modal" id="plusModal">
+    <button class="plus-close" onclick="closePlusModal()">✕</button>
+    <div class="plus-menu">
+        <div class="plus-option" onclick="pickMedia('photo')"><div class="plus-option-icon">📷</div>Фото</div>
+        <div class="plus-option" onclick="pickMedia('video')"><div class="plus-option-icon">🎬</div>Видео</div>
+        <div class="plus-option" onclick="pickMedia('file')"><div class="plus-option-icon">📎</div>Файл</div>
+        <div class="plus-option" onclick="pickMedia('story')"><div class="plus-option-icon">✨</div>История</div>
+    </div>
+</div>
+
+<!-- ВЫБОР ОБОЕВ -->
+<div class="plus-modal" id="wallpaperModal">
+    <button class="plus-close" onclick="document.getElementById('wallpaperModal').classList.remove('active')">✕</button>
+    <div style="padding:20px; text-align:center;">
+        <h3 style="margin-bottom:15px;">Выбери фон 💫</h3>
+        <div class="bg-picker" id="bgPicker"></div>
+    </div>
+</div>
+
+<!-- НАСТРОЙКИ (шестерёнка) -->
+<div class="plus-modal" id="settingsModal">
+    <button class="plus-close" onclick="document.getElementById('settingsModal').classList.remove('active')">✕</button>
+    <div class="settings-list" style="overflow-y:auto; max-height:85vh; width:100%;">
+        <h2 style="padding: 15px; font-size:24px;">Настройки ⚙️</h2>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">👤</div><div class="settings-label">Профиль</div><div class="settings-value">boss ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔔</div><div class="settings-label">Уведомления</div><div class="settings-value">Вкл ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🌙</div><div class="settings-label">Тёмная тема</div><div class="settings-value">Вкл ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔒</div><div class="settings-label">Приватность</div><div class="settings-value">›</div></div>
+        </div>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Обои чатов</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔊</div><div class="settings-label">Звуки</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">💾</div><div class="settings-label">Данные и память</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">🌐</div><div class="settings-label">Язык</div><div class="settings-value">RU ›</div></div>
+        </div>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">👑</div><div class="settings-label">Premium</div><div class="settings-value">Активен ›</div></div>
+            <div class="settings-item"><div class="settings-icon">❓</div><div class="settings-label">Помощь</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">ℹ️</div><div class="settings-label">О приложении</div><div class="settings-value">v1.0 ›</div></div>
+            <div class="settings-item" style="color:#e74c3c;"><div class="settings-icon">🚪</div><div class="settings-label">Выйти</div><div class="settings-value">›</div></div>
+        </div>
+    </div>
+</div>
     <!-- НИЖНЕЕ МЕНЮ НАВИГАЦИИ -->
     <nav class="bottom-nav">
         <div class="nav-item" id="nav-profile" onclick="switchTab('profile')">
@@ -1063,9 +1648,7 @@
         }
 
         // При загрузке страницы генерируем первые 5 постов
-        for (let i = 0; i < 5; i++) {
-            generatePost();
-        }
+        
 
         // Переменная-заглушка, чтобы скролл не срабатывал слишком часто
         let isGenerating = false;
@@ -1520,7 +2103,320 @@
             // Если лента открыта, можно незаметно добавить один пост (но мы этого делать не будем, чтобы не бесить пользователя)
             // Вместо этого просто обновляем счетчик в консоли.
         }, 30000);
+// ============ ЖИВЫЕ НОВОСТИ ИЗ ИНТЕРНЕТА (API) ============
+async function fetchRealArticle() {
+    try {
+        // 1. Просим Википедию дать случайную статью
+        const res = await fetch('https://ru.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*');
+        const data = await res.json();
+        
+        if (!data.query || !data.query.random) return null;
+        
+        const title = data.query.random[0].title;
+        
+        // 2. Получаем краткое описание и картинку этой статьи
+        const summaryRes = await fetch(`https://ru.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+        const summaryData = await summaryRes.json();
+        
+        return {
+            title: title,
+            text: summaryData.extract || "Узнайте больше об этом в Википедии!",
+            image: summaryData.thumbnail ? summaryData.thumbnail.source : null
+        };
+    } catch (e) {
+        console.warn("Не удалось загрузить живые данные, используем запасные:", e);
+        return null;
+    }
+}
 
+async function generateDailyPost() {
+    const allAuthors = [...russianBots, ...englishBots];
+    const author = allAuthors[Math.floor(Math.random() * allAuthors.length)];
+    
+    // Если это новостной бот или "Мир Фактов", тянем ЖИВУЮ статью из интернета!
+    if (author.badge === 'news' || author.name === 'Мир Фактов') {
+        // Показываем временный пост "Загрузка...", чтобы не было пустоты
+        const loadingId = 'loading-' + Date.now();
+        insertPost(author, "Загружаю свежие новости из интернета... ⏳", null, "Только что", loadingId);
+        
+        const realData = await fetchRealArticle();
+        
+        // Удаляем пост "Загрузка"
+        document.getElementById(loadingId)?.remove();
+        
+        if (realData) {
+            const fullText = `📰 **${realData.title}**\n\n${realData.text}`;
+            // Если у статьи есть картинка из Википедии — берем её, если нет — рандомную
+            const finalImage = realData.image || `https://picsum.photos/seed/${Date.now()}/600/400`;
+            
+            insertPost(author, fullText, finalImage, "Только что");
+            return;
+        }
+    }
+    
+    // Если это обычный бот (Токсичный, Олег и т.д.) — берем из нашего текстового массива
+    let textContent;
+    if (author.type === 'en') textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
+    else if (author.badge === 'toxic') textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
+    else textContent = toxicPosts.concat(facts, globalNews)[Math.floor(Math.random() * (toxicPosts.length + facts.length + globalNews.length))];
+    
+    const withPhoto = Math.random() < 0.6;
+    const imageUrl = withPhoto ? `https://picsum.photos/seed/${Date.now()}-${Math.random()}/600/400` : null;
+    
+    const times = ["Только что", "5 минут назад", "30 минут назад", "1 час назад", "3 часа назад"];
+    insertPost(author, textContent, imageUrl, times[Math.floor(Math.random() * times.length)]);
+}
+        function insertPost(author, text, imageUrl, time, customId = null) {
+    const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
+    const html = `
+        <div class="post" id="${postId}">
+            <div class="post-header">
+                <div class="post-avatar" style="background:${author.color};">${author.letter}</div>
+                <div class="post-meta">
+                    <div class="post-author">${author.name} ${author.badge ? `<span class="badge ${author.badge}">${author.badgeText}</span>` : ''}</div>
+                    <div class="post-time">${time}</div>
+                </div>
+            </div>
+            <div class="post-content">${text}</div>
+            ${imageUrl ? `<img src="${imageUrl}" class="post-image" loading="lazy">` : ''}
+            <div class="post-actions">
+                <button class="action-btn" onclick="like(this)">❤️ <span>0</span></button>
+                <button class="action-btn">🔄 <span>0</span></button>
+                <button class="action-btn">💬 <span>0</span></button>
+            </div>
+        </div>`;
+    document.getElementById('feed-container').insertAdjacentHTML('afterbegin', html);
+}
+        // ============ РАСШИРЕННАЯ БАЗА БОТОВ ============
+const russianBots = [
+    { name: "Токсичный Макс", color: "#e74c3c", letter: "М", badge: "toxic", badgeText: "BOT", bio: "Пишу без цензуры. Не нравится — проходи мимо.", type: "ru" },
+    { name: "Новости Сегодня", color: "#2ecc71", letter: "Н", badge: "news", badgeText: "АДМИН", bio: "Официальный канал. Только реальные новости 24/7.", type: "admin" },
+    { name: "Мир Фактов", color: "#3498db", letter: "Ф", badge: "news", badgeText: "CHANNEL", bio: "Интересные факты обо всём на свете.", type: "ru" },
+    { name: "Олег Петров", color: "#9b59b6", letter: "О", badge: "", badgeText: "", bio: "Программист. Люблю кофе, код и тишину.", type: "ru" },
+    { name: "Аня Смирнова", color: "#e84393", letter: "А", badge: "premium", badgeText: "VIP", bio: "Фотограф. Путешествия и вдохновение 📸", type: "ru" },
+    { name: "Тех-Гик Дима", color: "#00cec9", letter: "Д", badge: "news", badgeText: "TECH", bio: "Разбираю гаджеты и обзоры на всё новое.", type: "ru" },
+    { name: "Сплетница Катя", color: "#fd79a8", letter: "К", badge: "premium", badgeText: "VIP", bio: "Знаю всё о звёздах 💅", type: "ru" },
+    { name: "ЗОЖ-Гуру Сергей", color: "#6ab04c", letter: "С", badge: "", badgeText: "", bio: "Спорт, правильное питание и дисциплина.", type: "ru" }
+];
+
+const englishBots = [
+    { name: "Toxic Jake", color: "#c0392b", letter: "J", badge: "toxic", badgeText: "BOT", bio: "I speak my mind. Deal with it.", type: "en" },
+    { name: "Good News Global", color: "#27ae60", letter: "G", badge: "news", badgeText: "CHANNEL", bio: "Only positive world news 24/7.", type: "en" },
+    { name: "Mike Johnson", color: "#2980b9", letter: "M", badge: "", badgeText: "", bio: "Software engineer. Coffee addict.", type: "en" },
+    { name: "Sarah Williams", color: "#8e44ad", letter: "S", badge: "premium", badgeText: "VIP", bio: "Photographer & traveler 🌍", type: "en" },
+    { name: "Alex Cooper", color: "#16a085", letter: "A", badge: "news", badgeText: "TECH", bio: "Tech reviewer. New gadgets daily.", type: "en" },
+    { name: "Emma Stone", color: "#d35400", letter: "E", badge: "premium", badgeText: "VIP", bio: "Fashion. Gossip. Life. 💫", type: "en" },
+    { name: "John Carter", color: "#7f8c8d", letter: "J", badge: "", badgeText: "", bio: "Fitness coach. No excuses.", type: "en" }
+];
+        // ============ РЕАЛЬНАЯ СТАТИСТИКА ============
+const userStats = { posts: 0, videos: 0, friends: 0, followers: 0 };
+
+function updateStats() {
+    if(document.getElementById('statPosts')) {
+        document.getElementById('statPosts').textContent = userStats.posts;
+        document.getElementById('statVideos').textContent = userStats.videos;
+        document.getElementById('statFriends').textContent = userStats.friends;
+        document.getElementById('statFollowers').textContent = userStats.followers;
+    }
+}
+updateStats();
+
+function publishPost() {
+    const text = document.getElementById('homeComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: "boss", color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    insertPost(author, text, null, "Только что");
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('homeComposerText').value = '';
+    showToast('Пост опубликован! ✅');
+}
+        // ============ ДРУЗЬЯ И ЗАЯВКИ ============
+let pendingRequests = []; 
+let incomingFollowers = []; 
+
+function receiveFriendRequest(name, avatarColor, letter) {
+    pendingRequests.push({ name, avatarColor, letter });
+    renderFriendRequests();
+    playNotificationSound();
+}
+
+function renderFriendRequests() {
+    const box = document.getElementById('friendRequests');
+    if (!box) return;
+    if (pendingRequests.length === 0) {
+        box.innerHTML = '<span style="color:var(--text-muted); font-size:14px;">Пока пусто...</span>';
+        return;
+    }
+    box.innerHTML = pendingRequests.map((r, i) => `
+        <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border-color);">
+            <div class="chat-list-avatar" style="background:${r.avatarColor}; width:42px; height:42px; font-size:16px;">${r.letter}</div>
+            <div style="flex:1;"><b>${r.name}</b><br><small style="color:var(--text-muted);">хочет добавить в друзья</small></div>
+            <button onclick="acceptFriend(${i})" style="background:var(--success); border:none; color:white; padding:8px 14px; border-radius:10px; cursor:pointer; font-weight:700;">✓</button>
+        </div>
+    `).join('');
+}
+
+function acceptFriend(index) {
+    const r = pendingRequests[index];
+    pendingRequests.splice(index, 1);
+    userStats.friends++;
+    updateStats();
+    renderFriendRequests();
+    playNotificationSound();
+    showToast(`✅ ${r.name} теперь у тебя в друзьях!`);
+}
+
+function playNotificationSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99]; 
+        notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
+            gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.12 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.5);
+            osc.connect(gain).connect(ctx.destination);
+            osc.start(ctx.currentTime + i * 0.12);
+            osc.stop(ctx.currentTime + i * 0.12 + 0.6);
+        });
+    } catch (e) {}
+}
+        // ============ ЧАТЫ ============
+const WALLPAPERS = ['chat-bg-1','chat-bg-2','chat-bg-3','chat-bg-4','chat-bg-5','chat-bg-6','chat-bg-7','chat-bg-8','chat-bg-9','chat-bg-10'];
+const allBots = [...russianBots, ...englishBots];
+let currentChat = null;
+let currentWallpaper = localStorage.getItem('chatWallpaper') || 'chat-bg-1';
+let blockedUsers = JSON.parse(localStorage.getItem('blocked') || '[]');
+
+function renderChatList(filter = '') {
+    const list = document.getElementById('chatList');
+    if (!list) return;
+    const filtered = allBots.filter(b => b.name.toLowerCase().includes(filter.toLowerCase()));
+    list.innerHTML = filtered.map((bot, i) => `
+        <div class="chat-list-item" onclick="openChat('${bot.name}')">
+            <div class="chat-list-avatar" style="background:${bot.color};">${bot.letter}</div>
+            <div class="chat-list-info">
+                <div class="chat-list-name">${bot.name} ${bot.badge ? `<span class="badge ${bot.badge}">${bot.badgeText}</span>` : ''}</div>
+                <div class="chat-list-preview">Нажми, чтобы открыть</div>
+            </div>
+        </div>
+    `).join('') || '<div style="padding:20px; text-align:center; color:var(--text-muted);">Никого не найдено</div>';
+}
+renderChatList();
+
+document.getElementById('chatSearch')?.addEventListener('input', (e) => {
+    renderChatList(e.target.value);
+});
+
+function openChat(name) {
+    if (blockedUsers.includes(name)) return showToast('Этот пользователь у тебя в блоке 🚫');
+    const bot = allBots.find(b => b.name === name);
+    if (!bot) return;
+    if (bot.type === 'admin') return showToast('Это канал администрации. Писать нельзя 👑');
+    
+    currentChat = bot;
+    document.getElementById('chatWindow').classList.add('active');
+    document.getElementById('chatName').textContent = bot.name;
+    
+    const msgs = document.getElementById('chatMessages');
+    msgs.innerHTML = '';
+    msgs.className = 'chat-messages ' + currentWallpaper;
+    addMsg('Привет! Это ' + bot.name + '. ' + bot.bio, 'in');
+}
+
+function addMsg(text, dir) {
+    const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+    const div = document.createElement('div');
+    div.className = 'msg ' + dir;
+    div.innerHTML = text + `<span class="msg-time">${time}</span>`;
+    document.getElementById('chatMessages').appendChild(div);
+    document.getElementById('chatMessages').scrollTop = 999999;
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text || !currentChat) return;
+    
+    addMsg(text, 'out');
+    input.value = '';
+    
+    const typing = document.getElementById('typingIndicator');
+    typing.classList.add('show');
+    typing.textContent = currentChat.name + ' печатает';
+    
+    setTimeout(() => {
+        typing.classList.remove('show');
+        const replies = ["Понял тебя 👍", "Согласен!", "Ха, интересно 😄", "Давай позже обсудим", "Хорошая мысль", "Окей!"];
+        addMsg(replies[Math.floor(Math.random() * replies.length)], 'in');
+    }, 1500 + Math.random() * 1500);
+}
+
+function closeChat() {
+    document.getElementById('chatWindow').classList.remove('active');
+    currentChat = null;
+}
+
+function blockCurrentChat() {
+    if (!currentChat) return;
+    if (currentChat.type === 'admin') return showToast('Канал администрации нельзя заблокировать 👑');
+    blockedUsers.push(currentChat.name);
+    localStorage.setItem('blocked', JSON.stringify(blockedUsers));
+    showToast(currentChat.name + ' заблокирован 🚫');
+    closeChat();
+}
+
+function openWallpaperPicker() {
+    const picker = document.getElementById('bgPicker');
+    if(!picker) return;
+    picker.innerHTML = WALLPAPERS.map(w => 
+        `<div class="bg-swatch ${w}" onclick="setWallpaper('${w}')"></div>`
+    ).join('');
+    document.getElementById('wallpaperModal').classList.add('active');
+}
+
+function setWallpaper(w) {
+    currentWallpaper = w;
+    localStorage.setItem('chatWallpaper', w);
+    document.getElementById('chatMessages').className = 'chat-messages ' + w;
+    document.getElementById('wallpaperModal').classList.remove('active');
+    showToast('Фон изменён ✨');
+}
+        // ============ ПЛЮС-МОДАЛКА ============
+function openPlusModal(type) {
+    document.getElementById('plusModal').classList.add('active');
+}
+function closePlusModal() {
+    document.getElementById('plusModal').classList.remove('active');
+}
+
+function pickMedia(type) {
+    closePlusModal();
+    if (type === 'photo') {
+        const url = prompt('Вставь ссылку на фото:');
+        if (url) insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, '', url, 'Только что');
+    } else if (type === 'video') {
+        const url = prompt('Вставь ссылку на видео (YouTube):');
+        if (url) {
+            const embed = url.includes('youtube') 
+                ? `<iframe width="100%" height="200" src="${url.replace('watch?v=','embed/')}" frameborder="0" allowfullscreen style="border-radius:15px; margin-bottom:15px;"></iframe>`
+                : `<video src="${url}" controls style="width:100%; border-radius:15px; margin-bottom:15px;"></video>`;
+            insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, embed, null, 'Только что');
+            userStats.videos++;
+            updateStats();
+        }
+    } else if (type === 'file') {
+        showToast('📎 Файл прикреплён');
+    } else if (type === 'story') {
+        showToast('✨ История добавлена');
+    }
+}
     </script>
 </body>
 </html>
