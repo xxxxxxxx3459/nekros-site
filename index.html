@@ -1,4 +1,4 @@
-вы<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -1123,6 +1123,12 @@
     background: var(--accent);
     margin-left: auto;
 } 
+        /* --- ФИКС ОТСТУПОВ НА ГЛАВНОЙ --- */
+.feed { gap: 8px !important; padding: 10px !important; }
+.composer { margin: 5px auto 10px auto !important; }
+.premium-banner.small { margin: 5px auto 15px auto !important; padding: 12px 15px !important; }
+.stories-row { padding: 5px 15px 10px 15px !important; margin-bottom: 0 !important; }
+.post { margin-bottom: 10px !important; }
     </style>
 </head>
 <body>
@@ -1156,11 +1162,11 @@
         <div class="story-ring my-story">＋</div>
         <div class="story-name">Добавить</div>
     </div>
-    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#3498db;">A</div></div><div class="story-name">Аня</div></div>
-    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#9b59b6;">О</div></div><div class="story-name">Олег</div></div>
-    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#e74c3c;">M</div></div><div class="story-name">Mike</div></div>
-    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#2ecc71;">S</div></div><div class="story-name">Sarah</div></div>
-    <div class="story-item"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
+    <div class="story-item" onclick="viewStory('Аня', '#3498db', 'A')"><div class="story-ring"><div class="story-avatar" style="background:#3498db;">A</div></div><div class="story-name">Аня</div></div>
+    <div class="story-item" onclick="viewStory('Олег', '#9b59b6', 'О')"><div class="story-ring"><div class="story-avatar" style="background:#9b59b6;">О</div></div><div class="story-name">Олег</div></div>
+    <div class="story-item" onclick="viewStory('Mike', '#e74c3c', 'M')"><div class="story-ring"><div class="story-avatar" style="background:#e74c3c;">M</div></div><div class="story-name">Mike</div></div>
+    <div class="story-item" onclick="viewStory('Sarah', '#2ecc71', 'S')"><div class="story-ring"><div class="story-avatar" style="background:#2ecc71;">S</div></div><div class="story-name">Sarah</div></div>
+    <div class="story-item" onclick="viewStory('Дима', '#f39c12', 'Д')"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
 </div>
 
 <!-- ЕДИНЫЙ КОМПОЗЕР: текст + медиа -->
@@ -1272,7 +1278,20 @@
         <button onclick="sendMessage()">➤</button>
     </div>
 </div>
-
+<!-- ОКНО ПРОСМОТРА ИСТОРИИ -->
+<div class="chat-window" id="storyViewer" style="background:#000; z-index:400;">
+    <div class="chat-topbar" style="background:transparent; border:none; position:absolute; width:100%; top:0;">
+        <div class="chat-list-avatar" id="storyViewerAvatar">A</div>
+        <div class="chat-name" id="storyViewerName">Аня</div>
+        <button onclick="closeStory()">✕</button>
+    </div>
+    <!-- Полоска прогресса -->
+    <div style="position:absolute; top:60px; left:10px; right:10px; height:3px; background:rgba(255,255,255,0.3); z-index:10;">
+        <div id="storyProgress" style="width:0%; height:100%; background:white; transition:width 5s linear;"></div>
+    </div>
+    <!-- Картинка истории (рандомная) -->
+    <img id="storyViewerImg" src="" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+</div>
 <!-- ПЛЮС-МОДАЛКА КРАСИВАЯ -->
 <div class="plus-modal" id="plusModal">
     <button class="plus-close" onclick="closePlusModal()">✕</button>
@@ -2416,6 +2435,36 @@ function pickMedia(type) {
     } else if (type === 'story') {
         showToast('✨ История добавлена');
     }
+}
+        // ============ ЛОГИКА ИСТОРИЙ ============
+function viewStory(name, color, letter) {
+    document.getElementById('storyViewer').style.display = 'flex';
+    document.getElementById('storyViewerName').textContent = name;
+    
+    const avatar = document.getElementById('storyViewerAvatar');
+    avatar.textContent = letter;
+    avatar.style.background = color;
+    
+    // Загружаем случайную картинку
+    document.getElementById('storyViewerImg').src = `https://picsum.photos/seed/${Math.random()}/600/1000`;
+    
+    // Запускаем полоску прогресса (5 секунд)
+    const progress = document.getElementById('storyProgress');
+    progress.style.transition = 'none'; 
+    progress.style.width = '0%';
+    
+    setTimeout(() => {
+        progress.style.transition = 'width 5s linear'; 
+        progress.style.width = '100%';
+    }, 50);
+
+    // Автоматическое закрытие через 5 секунд
+    clearTimeout(window.storyTimeout);
+    window.storyTimeout = setTimeout(closeStory, 5000);
+}
+
+function closeStory() {
+    document.getElementById('storyViewer').style.display = 'none';
 }
     </script>
 </body>
