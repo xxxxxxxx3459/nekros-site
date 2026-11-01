@@ -2561,6 +2561,39 @@ function changeLanguage() {
         showToast(`Язык перевода изменён на ${userLang.toUpperCase()}`);
     }
 }
+        // ============ ПЕРЕВОД ИНТЕРФЕЙСА САЙТА ============
+const uiDictionary = {
+    ru: {
+        nav_profile: "Моя стр.", nav_chats: "Чаты", nav_home: "Главная", nav_music: "Музыка", nav_games: "Игры",
+        composer_ph: "Что нового?..", composer_btn: "Опубликовать", settings_title: "Настройки ⚙️"
+    },
+    en: {
+        nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
+        composer_ph: "What's new?..", composer_btn: "Publish", settings_title: "Settings ⚙️"
+    }
+};
+
+function updateUILanguage() {
+    const lang = (userLang === 'en') ? 'en' : 'ru'; 
+    const dict = uiDictionary[lang];
+
+    if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
+    if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
+    if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
+    if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
+    if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
+
+    const compTextarea = document.getElementById('homeComposerText');
+    if (compTextarea) compTextarea.placeholder = dict.composer_ph;
+
+    const pubBtn = document.querySelector('.composer-btn.send');
+    if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
+
+    const settTitle = document.querySelector('.settings-list h2');
+    if (settTitle) settTitle.textContent = dict.settings_title;
+}
+        // Запускаем перевод интерфейса при загрузке страницы
+document.addEventListener('DOMContentLoaded', updateUILanguage);
     </script>
 </body>
 </html>
