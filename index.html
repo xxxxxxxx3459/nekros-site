@@ -1160,7 +1160,71 @@
     transition: 0.2s;
 }
 .translate-btn:active { background: rgba(255, 255, 255, 0.1); }
-.translate-btn.translated { color: var(--success); border-color: rgba(46, 204, 113, 0.3); }
+.translate-btn.translated { color: var(--success); border-color: rgba(46, 204, 113, /* --- ЖИВАЯ РАМКА ДЛЯ ПОДПИСКИ --- */
+.premium-lock-frame {
+    position: relative;
+    padding: 3px; /* Толщина рамки */
+    border-radius: 22px;
+    overflow: hidden;
+    margin: 15px auto;
+    max-width: 570px;
+    box-shadow: 0 0 20px rgba(254, 202, 87, 0.2);
+}
+.premium-lock-frame::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: conic-gradient(transparent, #feca57, #ff4757, transparent 40%);
+    animation: rotate 3s linear infinite;
+    z-index: 0;
+}
+.premium-lock-content {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    z-index: 1;
+}
+.premium-lock-title {
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--premium-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+.premium-lock-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+/* --- СТИЛИ ДЛЯ ПРОФИЛЯ --- */
+.profile-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+}
+.tab-btn.active { color: var(--accent); }
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; width: 100%; height: 2px;
+    background: var(--accent); border-radius: 2px;
+}
     </style>
 </head>
 <body>
@@ -1201,8 +1265,17 @@
     <div class="story-item" onclick="viewStory('Дима', '#f39c12', 'Д')"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
 </div>
 
-<!-- ЕДИНЫЙ КОМПОЗЕР: текст + медиа -->
-<div class="composer">
+<!-- КОМПОЗЕР НА ГЛАВНОЙ (С ЗАМКОМ ДЛЯ ПРЕМИУМА) -->
+<div id="homePremiumLock" class="premium-lock-frame">
+    <div class="premium-lock-content">
+        <div class="premium-lock-title">Хочешь продвижения? 👑</div>
+        <div class="premium-lock-text">Писать посты в общую ленту могут только Premium-пользователи. Оформи подписку, чтобы твой голос услышали!</div>
+        <button class="premium-btn" onclick="switchTab('premium')">Купить подписку</button>
+    </div>
+</div>
+
+<!-- САМ КОМПОЗЕР (СКРЫТ, ПОКАЗЫВАЕТСЯ ТОЛЬКО ПРЕМИУМУ) -->
+<div class="composer" id="mainComposer" style="display: none;">
     <textarea id="homeComposerText" placeholder="Что нового?.." rows="2"></textarea>
     <div class="composer-actions">
         <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
@@ -1211,7 +1284,6 @@
         <button class="composer-btn send" onclick="publishPost()">➤ Опубликовать</button>
     </div>
 </div>
-
 <!-- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ -->
 <div class="premium-banner small" onclick="switchTab('premium')">
     <div style="flex:1;">
@@ -1286,11 +1358,39 @@
     </main>
 
     <main id="page-profile" class="stub-page">
-        <div class="avatar premium" style="width: 100px; height: 100px; font-size: 40px; margin: 0 auto 20px auto;">B</div>
-        <div class="stub-title">boss</div>
-        <div class="stub-text">Prime Premium User<br>Статистика: 148 постов • 15.4k подписчиков</div>
-        <button class="premium-btn" style="margin-top: 20px;" onclick="switchTab('premium')">Управлять подпиской</button>
-    </main>
+    <div class="avatar premium" style="width: 100px; height: 100px; font-size: 40px; margin: 20px auto 10px auto;">B</div>
+    <div class="stub-title" style="font-size: 24px; font-weight: 800;">boss</div>
+    <div class="stub-text" style="margin-bottom: 15px;">Prime Premium User</div>
+
+    <!-- РЕАЛЬНАЯ СТАТИСТИКА -->
+    <div class="profile-stats">
+        <div class="stat-item"><div class="stat-number" id="statPosts">0</div><div class="stat-label">Посты</div></div>
+        <div class="stat-item"><div class="stat-number" id="statVideos">0</div><div class="stat-label">Видео</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFriends">0</div><div class="stat-label">Друзья</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFollowers">0</div><div class="stat-label">Подписчики</div></div>
+    </div>
+
+    <!-- КОМПОЗЕР ДЛЯ СВОЕЙ СТРАНИЦЫ -->
+    <div class="composer" style="margin-top: 20px; text-align: left;">
+        <textarea id="profileComposerText" placeholder="Поделитесь чем-нибудь на своей странице..." rows="2"></textarea>
+        <div class="composer-actions">
+            <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
+            <button class="composer-btn send" onclick="publishProfilePost()">➤ На стену</button>
+        </div>
+    </div>
+
+    <!-- ВКЛАДКИ -->
+    <div class="profile-tabs">
+        <button class="tab-btn active" onclick="switchProfileTab('friends', this)">Друзья</button>
+        <button class="tab-btn" onclick="switchProfileTab('followers', this)">Подписчики</button>
+    </div>
+    <div id="profile-list" style="padding: 10px; text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+        У вас пока нет друзей.
+    </div>
+
+    <!-- СЮДА БУДУТ ПАДАТЬ ПОСТЫ С ТВОЕЙ СТРАНИЦЫ -->
+    <div id="profile-posts-container" style="padding: 0 15px;"></div>
+</main>
 
     <!-- КНОПКА ДОБАВЛЕНИЯ (ПЛЮСИК) -->
     <button class="fab" onclick="openPlusModal('post')">+</button>
@@ -2220,7 +2320,7 @@ async function generateDailyPost() {
     const times = ["Только что", "5 минут назад", "30 минут назад", "1 час назад", "3 часа назад"];
     insertPost(author, textContent, imageUrl, times[Math.floor(Math.random() * times.length)]);
 }
-        function insertPost(author, text, imageUrl, time, customId = null) {
+        function insertPost(author, text, imageUrl, time, customId = null, targetContainer = 'feed-container') {
     const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
     
     // Проверяем, нужен ли перевод (если текст на английском)
@@ -2245,7 +2345,7 @@ async function generateDailyPost() {
                 <button class="action-btn">💬 <span>0</span></button>
             </div>
         </div>`;
-    document.getElementById('feed-container').insertAdjacentHTML('afterbegin', html);
+    document.getElementById(targetContainer).insertAdjacentHTML('afterbegin', html);
 }
         // ============ РАСШИРЕННАЯ БАЗА БОТОВ ============
 const russianBots = [
@@ -2592,7 +2692,79 @@ function updateUILanguage() {
     if (settTitle) settTitle.textContent = dict.settings_title;
 }
         // Запускаем перевод интерфейса при загрузке страницы
-document.addEventListener('DOMContentLoaded', updateUILanguage);
+document.addEventListener('DOMContentLoaded', // ============ ЛОГИКА ПРОФИЛЯ И ПОДПИСКИ ============
+// По умолчанию подписки нет
+let isPremiumUser = false; 
+
+// Функция проверки: есть подписка или нет
+function checkPremiumStatus() {
+    const lock = document.getElementById('homePremiumLock');
+    const composer = document.getElementById('mainComposer');
+    
+    if (!lock || !composer) return; // Защита от ошибок
+
+    if (isPremiumUser) {
+        lock.style.display = 'none';
+        composer.style.display = 'block';
+    } else {
+        lock.style.display = 'block';
+        composer.style.display = 'none';
+    }
+}
+// Проверяем статус при загрузке страницы
+document.addEventListener('DOMContentLoaded', checkPremiumStatus);
+
+// Публикация поста на ГЛАВНОЙ (только для Премиум)
+function publishPost() {
+    if (!isPremiumUser) return showToast('Купите Premium, чтобы писать в общую ленту!');
+    
+    const text = document.getElementById('homeComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: "boss", color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    insertPost(author, text, null, "Только что"); // Летит в feed-container по умолчанию
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('homeComposerText').value = '';
+    showToast('Пост в общей ленте! ✅');
+}
+
+// Публикация поста на СВОЕЙ СТРАНИЦЕ
+function publishProfilePost() {
+    const text = document.getElementById('profileComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: "boss", color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    // Отправляем пост в контейнер профиля!
+    insertPost(author, text, null, "Только что", null, 'profile-posts-container');
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('profileComposerText').value = '';
+    showToast('Пост на твоей стене! ✅');
+}
+
+// Переключение вкладок Друзья / Подписчики
+function switchProfileTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const list = document.getElementById('profile-list');
+    
+    if (tab === 'friends') {
+        list.innerHTML = userStats.friends === 0 ? 'У вас пока нет друзей.' : `Ваши друзья (${userStats.friends})`;
+    } else {
+        list.innerHTML = userStats.followers === 0 ? 'У вас пока нет подписчиков.' : `Ваши подписчики (${userStats.followers})`;
+    }
+}
+
+// ТЕСТОВАЯ ФУНКЦИЯ (чтобы проверить, как выглядит главная с подпиской)
+// Ты можешь вызвать её в консоли браузера (F12), написав togglePremiumTest()
+function togglePremiumTest() {
+    isPremiumUser = !isPremiumUser;
+    checkPremiumStatus();
+    showToast(isPremiumUser ? 'Подписка активирована! 👑' : 'Подписка закончилась 🚫');
+}  
     </script>
 </body>
 </html>
