@@ -42,7 +42,9 @@
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar { width: 0px; }
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
 
         /* =========================================
            2. ШАПКА САЙТА (HEADER)
@@ -90,8 +92,21 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
-        .user-name { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-        .user-status { font-size: 13px; color: var(--premium-gradient); font-weight: 600; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .user-name {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .user-status {
+            font-size: 13px;
+            color: var(--premium-gradient);
+            font-weight: 600;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         .header-actions button {
             background: var(--bg-input);
@@ -106,7 +121,10 @@
             transition: 0.2s;
         }
 
-        .header-actions button:active { background: #3a3a48; transform: scale(0.95); }
+        .header-actions button:active {
+            background: #3a3a48;
+            transform: scale(0.95);
+        }
 
         /* =========================================
            3. НИЖНЕЕ МЕНЮ (BOTTOM NAVIGATION)
@@ -136,9 +154,19 @@
             width: 20%;
         }
 
-        .nav-item.active { color: var(--accent); }
-        .nav-icon { font-size: 24px; margin-bottom: 5px; transition: 0.2s; }
-        .nav-item:active .nav-icon { transform: translateY(-2px); }
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+            transition: 0.2s;
+        }
+
+        .nav-item:active .nav-icon {
+            transform: translateY(-2px);
+        }
 
         /* =========================================
            4. КНОПКА ДОБАВЛЕНИЯ (FAB)
@@ -163,19 +191,20 @@
             transition: transform 0.2s;
         }
 
-        .fab:active { transform: scale(0.85) rotate(45deg); }
+        .fab:active {
+            transform: scale(0.85) rotate(45deg);
+        }
 
         /* =========================================
            5. ЛЕНТА И КАРТОЧКИ ПОСТОВ
            ========================================= */
         .feed {
-            padding: 10px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 20px;
             max-width: 600px;
             margin: 0 auto;
-            align-items: center;
         }
 
         .post {
@@ -184,20 +213,68 @@
             padding: 18px;
             border: 1px solid var(--border-color);
             animation: fadeIn 0.4s ease forwards;
-            width: 100%;
-            max-width: 570px;
-            margin-bottom: 10px;
+            opacity: 0;
         }
 
-        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .post-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
-        .post-meta { display: flex; flex-direction: column; }
-        .post-author { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; }
-        .post-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-        .post-content { font-size: 15px; line-height: 1.6; margin-bottom: 15px; color: #e4e4e7; white-space: pre-wrap; }
-        .post-image { width: 100%; border-radius: 15px; margin-bottom: 15px; object-fit: cover; max-height: 350px; border: 1px solid var(--border-color); }
-        
-        .post-actions { display: flex; gap: 10px; }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-author {
+            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .post-content {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #e4e4e7;
+            white-space: pre-wrap;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            max-height: 350px;
+            border: 1px solid var(--border-color);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+        }
+
         .action-btn {
             flex: 1;
             padding: 12px;
@@ -214,16 +291,89 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .action-btn:active { background: #3a3a48; transform: scale(0.97); }
-        .action-btn.liked { color: var(--accent); background: rgba(255, 71, 87, 0.1); }
+
+        .action-btn:active {
+            background: #3a3a48;
+            transform: scale(0.97);
+        }
+
+        .action-btn.liked {
+            color: var(--accent);
+            background: rgba(255, 71, 87, 0.1);
+        }
 
         /* =========================================
-           6. БЕЙДЖИ И КНОПКИ
+           6. БЕЙДЖИ (МЕТКИ)
            ========================================= */
-        .badge { font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge.news { background: rgba(46, 204, 113, 0.2); color: var(--success); }
-        .badge.premium { background: var(--premium-gradient); color: #000; }
-        .badge.toxic { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+        .badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.news {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+
+        .badge.premium {
+            background: var(--premium-gradient);
+            color: #000;
+        }
+
+        .badge.toxic {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        /* =========================================
+           7. ПРЕМИУМ БАННЕР
+           ========================================= */
+        .premium-banner {
+            margin: 0 15px 20px 15px;
+            padding: 25px;
+            background: linear-gradient(135deg, #2a1b38, #1a1a24);
+            border-radius: var(--border-radius);
+            border: 1px solid #4a2f5e;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            max-width: 570px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .premium-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(254, 202, 87, 0.15) 0%, transparent 60%);
+            animation: rotate 10s linear infinite;
+        }
+
+        .premium-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #feca57;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .premium-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
 
         .premium-btn {
             background: var(--premium-gradient);
@@ -234,142 +384,876 @@
             font-size: 15px;
             color: #1a1a24;
             cursor: pointer;
+            position: relative;
+            z-index: 1;
             box-shadow: 0 4px 15px rgba(254, 202, 87, 0.3);
         }
 
         /* =========================================
-           7. СТОРИС И КОМПОЗЕР
+           8. МОДАЛЬНОЕ ОКНО СОЗДАНИЯ (ШТОРКА)
            ========================================= */
-        .stories-row {
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 200;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.active {
             display: flex;
-            gap: 14px;
-            overflow-x: auto;
-            padding: 5px 15px 10px 15px;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 30px 30px 0 0;
+            padding: 25px 20px 40px 20px;
+            border-top: 1px solid #3a3a48;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .create-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .create-option:active {
+            border-color: var(--accent);
+            background: var(--bg-input);
+            transform: scale(0.98);
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-input);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .option-info {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .option-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .option-arrow {
+            color: var(--text-muted);
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-card);
+            border: none;
+            color: var(--accent);
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           9. СТРАНИЦА PREMIUM (ТАРИФЫ)
+           ========================================= */
+        .premium-page {
+            display: none;
+            padding: 20px;
+            text-align: center;
             max-width: 600px;
             margin: 0 auto;
-            scrollbar-width: none;
         }
-        .stories-row::-webkit-scrollbar { display: none; }
-        .story-item { flex-shrink: 0; text-align: center; cursor: pointer; width: 75px; }
-        .story-ring { width: 70px; height: 70px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ff6b81, #ff4757, #feca57); margin-bottom: 6px; position: relative; }
-        .story-ring.my-story { background: var(--bg-card); border: 2px dashed var(--accent); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--accent); }
-        .story-ring img, .story-ring .story-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: white; }
-        .story-name { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .composer { background: var(--bg-card); border-radius: 20px; padding: 14px; margin: 5px auto 10px auto; width: 100%; max-width: 570px; border: 1px solid var(--border-color); }
-        .composer textarea { width: 100%; background: transparent; border: none; color: white; font-size: 15px; font-family: inherit; resize: none; outline: none; min-height: 50px; }
-        .composer-actions { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color); }
-        .composer-btn { background: var(--bg-input); border: none; color: white; padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .composer-btn.send { background: var(--accent); margin-left: auto; }
+        .premium-header {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* =========================================
-           8. ЖИВАЯ РАМКА ПРЕМИУМА
-           ========================================= */
-        .premium-lock-frame {
-            position: relative;
-            padding: 2px;
-            border-radius: 22px;
-            margin: 15px auto;
-            width: 100%;
-            max-width: 570px;
-            background: linear-gradient(45deg, #feca57, #ff4757, #feca57, #ff4757);
-            background-size: 300% 300%;
-            animation: gradientMove 3s ease infinite;
-            box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
-        }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .premium-lock-content {
+        .premium-card {
             background: var(--bg-card);
-            border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            text-align: left;
             position: relative;
-            z-index: 2;
+            overflow: hidden;
         }
-        .premium-lock-title { font-size: 20px; font-weight: 800; color: #feca57; margin-bottom: 10px; }
-        .premium-lock-text { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+        .premium-card.pro {
+            border-color: #feca57;
+            box-shadow: 0 10px 30px rgba(254, 202, 87, 0.15);
+            background: linear-gradient(180deg, #1f1b24 0%, var(--bg-card) 100%);
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            margin: 15px 0;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 900;
+            font-size: 18px;
+        }
 
         /* =========================================
-           9. ПРОФИЛЬ
+           10. ЗАГЛУШКИ ДЛЯ ДРУГИХ ВКЛАДОК
            ========================================= */
-        .stub-page { display: none; padding: 40px 20px; text-align: center; max-width: 600px; margin: 0 auto; animation: fadeIn 0.3s ease; }
-        .stub-icon { font-size: 80px; margin-bottom: 20px; opacity: 0.8; }
-        .stub-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-        .stub-text { color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+        .stub-page {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
 
-        .profile-stats { display: flex; justify-content: space-around; padding: 15px 20px; background: var(--bg-card); border-radius: var(--border-radius); margin: 15px auto; max-width: 570px; border: 1px solid var(--border-color); }
-        .stat-item { text-align: center; cursor: pointer; flex: 1; border-right: 1px solid var(--border-color); }
-        .stat-item:last-child { border-right: none; }
-        .stat-number { font-size: 20px; font-weight: 800; color: white; }
-        .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stub-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
 
-        .profile-tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0 10px 0; border-bottom: 1px solid var(--border-color); }
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); font-size: 15px; font-weight: 600; padding: 10px 20px; cursor: pointer; position: relative; }
-        .tab-btn.active { color: var(--accent); }
-        .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--accent); border-radius: 2px; }
+        .stub-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stub-text {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
 
         /* =========================================
-           10. ЧАТЫ И МОДАЛКИ
+           11. АНИМАЦИИ
            ========================================= */
-        .chat-search { margin: 12px 15px; padding: 12px 18px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; color: white; font-size: 14px; width: calc(100% - 30px); outline: none; }
-        .chat-search:focus { border-color: var(--accent); }
-        .chat-list-item { display: flex; align-items: center; padding: 14px 18px; gap: 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
-        .chat-list-item:active { background: var(--bg-card); }
-        .chat-list-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: white; flex-shrink: 0; }
-        .chat-list-info { flex: 1; min-width: 0; }
-        .chat-list-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 6px; }
-        .chat-list-preview { font-size: 13px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .chat-window { display: none; position: fixed; inset: 0; z-index: 150; flex-direction: column; }
-        .chat-window.active { display: flex; }
-        .chat-topbar { padding: 12px 15px; display: flex; align-items: center; gap: 10px; background: rgba(10,10,15,0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 5; }
-        .chat-topbar button { background: rgba(255,255,255,0.1); border: none; color: white; width: 38px; height: 38px; border-radius: 50%; font-size: 16px; cursor: pointer; }
-        .chat-topbar .chat-name { flex: 1; font-weight: 700; font-size: 16px; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
-        .msg { max-width: 75%; padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.4; word-wrap: break-word; animation: fadeIn 0.25s ease; position: relative; z-index: 2; }
-        .msg.in { align-self: flex-start; background: rgba(35,35,48,0.92); border-bottom-left-radius: 4px; }
-        .msg.out { align-self: flex-end; background: var(--accent); border-bottom-right-radius: 4px; }
-        .msg-time { font-size: 10px; opacity: 0.6; margin-top: 4px; display: block; text-align: right; }
-        
-        .chat-input-bar { padding: 10px 12px 25px 12px; display: flex; gap: 8px; align-items: center; background: rgba(10,10,15,0.9); backdrop-filter: blur(15px); z-index: 5; }
-        .chat-input-bar input { flex: 1; padding: 12px 16px; background: rgba(35,35,48,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; color: white; font-size: 14px; outline: none; }
-        .chat-input-bar button { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--accent); color: white; font-size: 18px; cursor: pointer; }
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* --- СТАТИСТИКА И ДРУЗЬЯ/ПОДПИСЧИКИ --- */
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 20px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    margin: 15px auto;
+    max-width: 570px;
+    border: 1px solid var(--border-color);
+}
+.stat-item {
+    text-align: center;
+    cursor: pointer;
+    flex: 1;
+    border-right: 1px solid var(--border-color);
+}
+.stat-item:last-child { border-right: none; }
+.stat-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+}
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        .bg-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 10px; }
-        .bg-swatch { aspect-ratio: 1; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
-        .bg-swatch.selected { border-color: var(--accent); transform: scale(1.05); }
+/* --- СТОРИС РЯД --- */
+.stories-row {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 10px 15px 15px 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    scrollbar-width: none;
+}
+.stories-row::-webkit-scrollbar { display: none; }
 
-        .plus-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; z-index: 300; backdrop-filter: blur(20px); justify-content: center; align-items: center; }
-        .plus-modal.active { display: flex; }
-        .plus-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 340px; }
-        .plus-option { width: 100px; height: 100px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: white; transition: 0.2s; font-size: 12px; font-weight: 600; }
-        .plus-option:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
-        .plus-option-icon { font-size: 32px; }
-        .plus-close { position: absolute; top: 25px; right: 25px; width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 22px; cursor: pointer; }
+.story-item {
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 75px;
+}
+.story-ring {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #ff6b81, #ff4757, #feca57);
+    margin-bottom: 6px;
+    position: relative;
+}
+.story-ring.my-story {
+    background: var(--bg-card);
+    border: 2px dashed var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--accent);
+}
+.story-ring img, .story-ring .story-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+}
+.story-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .settings-list { padding: 15px; max-width: 600px; margin: 0 auto; }
-        .settings-group { background: var(--bg-card); border-radius: 16px; margin-bottom: 15px; overflow: hidden; border: 1px solid var(--border-color); }
-        .settings-item { display: flex; align-items: center; padding: 16px 18px; gap: 14px; cursor: pointer; border-bottom: 1px solid var(--border-color); font-size: 15px; }
-        .settings-item:last-child { border-bottom: none; }
-        .settings-item:active { background: var(--bg-input); }
-        .settings-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: var(--bg-input); flex-shrink: 0; }
-        .settings-label { flex: 1; }
-        .settings-value { color: var(--text-muted); font-size: 13px; }
+/* --- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ --- */
+.premium-banner.small {
+    padding: 14px 18px;
+    margin: 12px auto;
+    max-width: 550px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.premium-banner.small .premium-title {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+.premium-banner.small .premium-text {
+    font-size: 11px;
+    margin-bottom: 0;
+    flex: 1;
+}
+.premium-banner.small .premium-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+       /* --- 10 ЖИВЫХ ОБОЕВ ДЛЯ ЧАТА --- */
+.chat-bg-1 {
+    background: radial-gradient(ellipse at top, #1a0033 0%, #000005 70%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='20' cy='20' r='1' fill='%23ffffff' opacity='0.7'/%3E%3Ccircle cx='60' cy='60' r='1' fill='%23ffffff' opacity='0.5'/%3E%3Ccircle cx='80' cy='30' r='1.2' fill='%23ffffff' opacity='0.8'/%3E%3Ccircle cx='40' cy='80' r='0.8' fill='%23ffffff' opacity='0.6'/%3E%3C/svg%3E");
+}
+.chat-bg-2 {
+    background: linear-gradient(160deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+.chat-bg-3 {
+    background: linear-gradient(180deg, #232526 0%, #414345 100%);
+}
+.chat-bg-4 {
+    background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);
+}
+.chat-bg-5 {
+    background: radial-gradient(circle at 20% 30%, #5b247a 0%, #1bcedf 100%);
+}
+.chat-bg-6 {
+    background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+.chat-bg-7 {
+    background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+}
+.chat-bg-8 {
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23fff' opacity='0.9'/%3E%3Ccircle cx='150' cy='100' r='1' fill='%23fff' opacity='0.6'/%3E%3Ccircle cx='80' cy='160' r='1.2' fill='%23fff' opacity='0.8'/%3E%3C/svg%3E");
+}
+.chat-bg-9 {
+    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 50%, #ff9500 100%);
+}
+.chat-bg-10 {
+    background: radial-gradient(circle at 70% 30%, #ff5f6d 0%, #ffc371 50%, #1a1a2e 100%);
+}
 
-        .translate-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--info); font-size: 12px; padding: 6px 12px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 12px; font-weight: 600; transition: 0.2s; }
-        .translate-btn:active { background: rgba(255, 255, 255, 0.1); }
-        .translate-btn.translated { color: var(--success); border-color: rgba(46, 204, 113, 0.3); }
+/* --- АНИМИРОВАННЫЙ БЛЕСК ДЛЯ "ЖИВЫХ" ОБОЕВ --- */
+.chat-window {
+    position: relative;
+    overflow: hidden;
+}
+.chat-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+        /* --- СПИСОК ЧАТОВ + ПОИСК --- */
+.chat-search {
+    margin: 12px 15px;
+    padding: 12px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    color: white;
+    font-size: 14px;
+    width: calc(100% - 30px);
+    outline: none;
+}
+.chat-search:focus { border-color: var(--accent); }
 
-        /* Общие анимации */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    gap: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+.chat-list-item:active { background: var(--bg-card); }
+.chat-list-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+.chat-list-info { flex: 1; min-width: 0; }
+.chat-list-name {
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.chat-list-preview {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- ОКНО ПЕРЕПИСКИ --- */
+.chat-window {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    flex-direction: column;
+}
+.chat-window.active { display: flex; }
+
+.chat-topbar {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    z-index: 5;
+}
+.chat-topbar button {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+}
+.chat-topbar .chat-name {
+    flex: 1;
+    font-weight: 700;
+    font-size: 16px;
+}
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+.msg {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    animation: fadeIn 0.25s ease;
+    position: relative;
+    z-index: 2;
+}
+.msg.in {
+    align-self: flex-start;
+    background: rgba(35,35,48,0.92);
+    border-bottom-left-radius: 4px;
+}
+.msg.out {
+    align-self: flex-end;
+    background: var(--accent);
+    border-bottom-right-radius: 4px;
+}
+.msg-time {
+    font-size: 10px;
+    opacity: 0.6;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+
+/* --- "ПЕЧАТАЕТ" --- */
+.typing {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+    padding: 4px 16px;
+    display: none;
+}
+.typing.show { display: block; }
+.typing::after {
+    content: '...';
+    animation: dots 1.4s infinite;
+    display: inline-block;
+    width: 15px;
+    text-align: left;
+}
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+.chat-input-bar {
+    padding: 10px 12px 25px 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(10,10,15,0.9);
+    backdrop-filter: blur(15px);
+    z-index: 5;
+}
+.chat-input-bar input {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(35,35,48,0.85);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 22px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+}
+.chat-input-bar button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* --- ВЫБОР ФОНА (мини-превью) --- */
+.bg-picker {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 10px;
+}
+.bg-swatch {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+.bg-swatch.selected { border-color: var(--accent); transform: scale(1.05); }
+       /* --- НОВАЯ МОДАЛКА ПЛЮСА (в стиле TG-сторис) --- */
+.plus-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: none;
+    z-index: 300;
+    backdrop-filter: blur(20px);
+    justify-content: center;
+    align-items: center;
+}
+.plus-modal.active { display: flex; }
+
+.plus-menu {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 340px;
+}
+.plus-option {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    transition: 0.2s;
+    font-size: 12px;
+    font-weight: 600;
+}
+.plus-option:active {
+    transform: scale(0.92);
+    background: rgba(255,255,255,0.15);
+}
+.plus-option-icon { font-size: 32px; }
+
+.plus-close {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* --- НАСТРОЙКИ --- */
+.settings-list {
+    padding: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.settings-group {
+    background: var(--bg-card);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+.settings-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    gap: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 15px;
+}
+.settings-item:last-child { border-bottom: none; }
+.settings-item:active { background: var(--bg-input); }
+.settings-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: var(--bg-input);
+    flex-shrink: 0;
+}
+.settings-label { flex: 1; }
+.settings-value { color: var(--text-muted); font-size: 13px; }
+
+/* --- КОМПОЗЕР (единый блок ввода на главной и в ЛС) --- */
+.composer {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 14px;
+    margin: 15px auto;
+    max-width: 570px;
+    border: 1px solid var(--border-color);
+}
+.composer textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 50px;
+}
+.composer-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+.composer-btn {
+    background: var(--bg-input);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.composer-btn.send {
+    background: var(--accent);
+    margin-left: auto;
+} 
+        /* --- ФИКС ОТСТУПОВ НА ГЛАВНОЙ --- */
+.feed { gap: 8px !important; padding: 10px !important; }
+.composer { margin: 5px auto 10px auto !important; }
+.premium-banner.small { margin: 5px auto 15px auto !important; padding: 12px 15px !important; }
+.stories-row { padding: 5px 15px 10px 15px !important; margin-bottom: 0 !important; }
+.post { margin-bottom: 10px !important; }
+        /* --- ФИКС ЦЕНТРИРОВАНИЯ ЛЕНТЫ --- */
+#page-home {
+    align-items: center;
+}
+.post, .composer, .premium-banner.small {
+    width: 100% !important;
+    max-width: 570px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.stories-row {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+        /* --- КНОПКА ПЕРЕВОДА --- */
+.translate-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--info);
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.translate-btn:active { background: rgba(255, 255, 255, 0.1); }
+.translate-btn.translated { color: var(--success); border-color: rgba(46, 204, 113, 0.3); }
+.premium-lock-content {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    z-index: 1;
+}
+.premium-lock-title {
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--premium-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+.premium-lock-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+/* --- СТИЛИ ДЛЯ ПРОФИЛЯ --- */
+.profile-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+}
+.tab-btn.active { color: var(--accent); }
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; width: 100%; height: 2px;
+    background: var(--accent); border-radius: 2px;
+}
+        /* --- ЖИВАЯ РАМКА ДЛЯ ПОДПИСКИ --- */
+.premium-lock-frame {
+    position: relative;
+    padding: 2px;
+    border-radius: 22px;
+    margin: 15px auto;
+    max-width: 570px;
+    background: linear-gradient(45deg, #feca57, #ff4757, #feca57, #ff4757);
+    background-size: 300% 300%;
+    animation: gradientMove 3s ease infinite;
+    box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.premium-lock-content {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.premium-lock-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #feca57;
+    margin-bottom: 10px;
+}
+.premium-lock-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
     </style>
 </head>
 <body>
     
+ 
+    <!-- =========================================
+         HTML РАЗМЕТКА (ВИЗУАЛЬНАЯ ЧАСТЬ)
+         ========================================= -->
+
     <!-- ШАПКА САЙТА -->
     <header class="header">
         <div class="profile-info" onclick="switchTab('profile')">
@@ -389,40 +1273,48 @@
     <main id="page-home" class="feed">
         
         <!-- СТОРИС РЯД -->
-        <div class="stories-row" id="storiesRow">
-            <div class="story-item" onclick="openPlusModal('story')">
-                <div class="story-ring my-story">＋</div>
-                <div class="story-name">Добавить</div>
-            </div>
-            <div class="story-item" onclick="viewStory('Аня', '#3498db', 'A')"><div class="story-ring"><div class="story-avatar" style="background:#3498db;">A</div></div><div class="story-name">Аня</div></div>
-            <div class="story-item" onclick="viewStory('Олег', '#9b59b6', 'О')"><div class="story-ring"><div class="story-avatar" style="background:#9b59b6;">О</div></div><div class="story-name">Олег</div></div>
-            <div class="story-item" onclick="viewStory('Mike', '#e74c3c', 'M')"><div class="story-ring"><div class="story-avatar" style="background:#e74c3c;">M</div></div><div class="story-name">Mike</div></div>
-            <div class="story-item" onclick="viewStory('Sarah', '#2ecc71', 'S')"><div class="story-ring"><div class="story-avatar" style="background:#2ecc71;">S</div></div><div class="story-name">Sarah</div></div>
-            <div class="story-item" onclick="viewStory('Дима', '#f39c12', 'Д')"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
-        </div>
+<div class="stories-row" id="storiesRow">
+    <div class="story-item" onclick="openPlusModal('story')">
+        <div class="story-ring my-story">＋</div>
+        <div class="story-name">Добавить</div>
+    </div>
+    <div class="story-item" onclick="viewStory('Аня', '#3498db', 'A')"><div class="story-ring"><div class="story-avatar" style="background:#3498db;">A</div></div><div class="story-name">Аня</div></div>
+    <div class="story-item" onclick="viewStory('Олег', '#9b59b6', 'О')"><div class="story-ring"><div class="story-avatar" style="background:#9b59b6;">О</div></div><div class="story-name">Олег</div></div>
+    <div class="story-item" onclick="viewStory('Mike', '#e74c3c', 'M')"><div class="story-ring"><div class="story-avatar" style="background:#e74c3c;">M</div></div><div class="story-name">Mike</div></div>
+    <div class="story-item" onclick="viewStory('Sarah', '#2ecc71', 'S')"><div class="story-ring"><div class="story-avatar" style="background:#2ecc71;">S</div></div><div class="story-name">Sarah</div></div>
+    <div class="story-item" onclick="viewStory('Дима', '#f39c12', 'Д')"><div class="story-ring"><div class="story-avatar" style="background:#f39c12;">Д</div></div><div class="story-name">Дима</div></div>
+</div>
 
-        <!-- ЗАМОК ПРЕМИУМА (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ПОДПИСКИ) -->
-        <div id="homePremiumLock" class="premium-lock-frame" style="display: none;">
-            <div class="premium-lock-content">
-                <div class="premium-lock-title">Хочешь продвижения? 👑</div>
-                <div class="premium-lock-text">Писать посты в общую ленту могут только Premium-пользователи. Оформи подписку, чтобы твой голос услышали!</div>
-                <button class="premium-btn" onclick="switchTab('premium')">Купить подписку</button>
-            </div>
-        </div>
+<!-- КОМПОЗЕР НА ГЛАВНОЙ (С ЗАМКОМ ДЛЯ ПРЕМИУМА) -->
+<div id="homePremiumLock" class="premium-lock-frame">
+    <div class="premium-lock-content">
+        <div class="premium-lock-title">Хочешь продвижения? 👑</div>
+        <div class="premium-lock-text">Писать посты в общую ленту могут только Premium-пользователи. Оформи подписку, чтобы твой голос услышали!</div>
+        <button class="premium-btn" onclick="switchTab('premium')">Купить подписку</button>
+    </div>
+</div>
 
-        <!-- КОМПОЗЕР НА ГЛАВНОЙ -->
-        <div class="composer" id="mainComposer">
-            <textarea id="homeComposerText" placeholder="Что нового?.." rows="2"></textarea>
-            <div class="composer-actions">
-                <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
-                <button class="composer-btn" onclick="openPlusModal('video')">🎬 Видео</button>
-                <button class="composer-btn" onclick="openPlusModal('file')">📎 Файл</button>
-                <button class="composer-btn send" onclick="publishPost()">➤ Опубликовать</button>
-            </div>
-        </div>
+<!-- САМ КОМПОЗЕР (СКРЫТ, ПОКАЗЫВАЕТСЯ ТОЛЬКО ПРЕМИУМУ) -->
+<div class="composer" id="mainComposer" style="display: none;">
+    <textarea id="homeComposerText" placeholder="Что нового?.." rows="2"></textarea>
+    <div class="composer-actions">
+        <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
+        <button class="composer-btn" onclick="openPlusModal('video')">🎬 Видео</button>
+        <button class="composer-btn" onclick="openPlusModal('file')">📎 Файл</button>
+        <button class="composer-btn send" onclick="publishPost()">➤ Опубликовать</button>
+    </div>
+</div>
+<!-- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ -->
+<div class="premium-banner small" onclick="switchTab('premium')">
+    <div style="flex:1;">
+        <div class="premium-title">Premium 👑</div>
+        <div class="premium-text">Без рекламы и с бустами</div>
+    </div>
+    <button class="premium-btn">Попробовать</button>
+</div>
 
         <!-- Сюда JS будет вставлять посты -->
-        <div id="feed-container" style="width: 100%; max-width: 570px;"></div>
+        <div id="feed-container"></div>
         
         <div style="text-align: center; color: var(--text-muted); padding: 20px; font-size: 14px;">
             Загрузка новых постов...
@@ -430,184 +1322,263 @@
     </main>
 
     <!-- СТРАНИЦА PREMIUM (ТАРИФЫ) -->
-    <main id="page-premium" class="stub-page">
+    <main id="page-premium" class="premium-page">
         <div class="premium-header">Выберите свой план</div>
         <p style="color: var(--text-muted); margin-bottom: 30px;">Посты для всех бесплатны. Premium дает только бусты и плюшки.</p>
 
+        <!-- Тариф Basic -->
         <div class="premium-card">
             <h3 style="font-size: 20px; margin-bottom: 5px;">Prime Basic</h3>
             <p style="color: var(--text-muted); font-size: 14px;">Для начинающих блогеров</p>
             <div class="price">299 ₽<span>/мес</span></div>
+            <ul class="features">
+                <li>Золотой значок Premium в профиле</li>
+                <li>Увеличение слотов на главной (до 12)</li>
+                <li>Полное отключение рекламы</li>
+                <li>Возможность ставить длинные истории</li>
+            </ul>
             <button class="premium-btn" style="width: 100%;" onclick="showToast('Оплата временно недоступна в демо-версии')">Купить Basic</button>
         </div>
 
-        <div class="premium-card pro" style="border-color: #feca57; box-shadow: 0 10px 30px rgba(254, 202, 87, 0.15);">
+        <!-- Тариф PRO -->
+        <div class="premium-card pro">
+            <div style="position: absolute; top: 20px; right: -30px; background: #feca57; color: #000; font-size: 12px; padding: 5px 40px; transform: rotate(45deg); font-weight: 800;">TOP</div>
             <h3 style="font-size: 20px; margin-bottom: 5px; color: #feca57;">Prime Premium</h3>
             <p style="color: var(--text-muted); font-size: 14px;">Максимальные возможности</p>
             <div class="price" style="color: #feca57;">699 ₽<span>/мес</span></div>
+            <ul class="features">
+                <li>Все возможности из Basic</li>
+                <li>Приоритет в ленте (ваши посты видят первыми)</li>
+                <li>Эксклюзивные стикеры и эмодзи</li>
+                <li>Возможность создавать "Сообщества"</li>
+                <li>Сбор новостей от ИИ 24/7</li>
+                <li>Скрытие статуса "Онлайн"</li>
+            </ul>
             <button class="premium-btn" style="width: 100%;" onclick="showToast('Оплата временно недоступна в демо-версии')">Оформить Premium</button>
         </div>
     </main>
 
-    <!-- ЧАТЫ -->
+    <!-- ЗАГЛУШКИ ДЛЯ ДРУГИХ ВКЛАДОК (ЧАТЫ, МУЗЫКА, ИГРЫ, ПРОФИЛЬ) -->
     <main id="page-chats" class="stub-page" style="padding:0; max-width:600px; margin:0 auto;">
-        <h2 style="padding: 20px 18px 8px 18px; font-size: 26px;">Чаты</h2>
-        <input type="text" class="chat-search" id="chatSearch" placeholder="🔍 Поиск людей...">
-        <div id="chatList"></div>
-    </main>
+    <h2 style="padding: 20px 18px 8px 18px; font-size: 26px;">Чаты</h2>
+    <input type="text" class="chat-search" id="chatSearch" placeholder="🔍 Поиск людей...">
+    <div id="chatList"></div>
+</main>
 
-    <!-- МУЗЫКА -->
     <main id="page-music" class="stub-page">
         <div class="stub-icon">🎵</div>
         <div class="stub-title">Музыка</div>
         <div class="stub-text">Слушайте музыку прямо в приложении. Мы добавляем миллионы треков. Ожидайте обновления!</div>
     </main>
 
-    <!-- ИГРЫ -->
     <main id="page-games" class="stub-page">
         <div class="stub-icon">🎮</div>
         <div class="stub-title">Игры</div>
         <div class="stub-text">Играйте в мини-игры со своими друзьями и зарабатывайте бонусы.</div>
     </main>
 
-    <!-- ПРОФИЛЬ -->
     <main id="page-profile" class="stub-page">
-        <div class="avatar premium" style="width: 100px; height: 100px; font-size: 40px; margin: 20px auto 10px auto;">B</div>
-        <div class="stub-title" style="font-size: 24px; font-weight: 800;">boss</div>
-        <div class="stub-text" style="margin-bottom: 15px;">Prime Premium User</div>
+    <div class="avatar premium" style="width: 100px; height: 100px; font-size: 40px; margin: 20px auto 10px auto;">B</div>
+    <div class="stub-title" style="font-size: 24px; font-weight: 800;">boss</div>
+    <div class="stub-text" style="margin-bottom: 15px;">Prime Premium User</div>
 
-        <div class="profile-stats">
-            <div class="stat-item"><div class="stat-number" id="statPosts">0</div><div class="stat-label">Посты</div></div>
-            <div class="stat-item"><div class="stat-number" id="statVideos">0</div><div class="stat-label">Видео</div></div>
-            <div class="stat-item"><div class="stat-number" id="statFriends">0</div><div class="stat-label">Друзья</div></div>
-            <div class="stat-item"><div class="stat-number" id="statFollowers">0</div><div class="stat-label">Подписчики</div></div>
-        </div>
+    <!-- РЕАЛЬНАЯ СТАТИСТИКА -->
+    <div class="profile-stats">
+        <div class="stat-item"><div class="stat-number" id="statPosts">0</div><div class="stat-label">Посты</div></div>
+        <div class="stat-item"><div class="stat-number" id="statVideos">0</div><div class="stat-label">Видео</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFriends">0</div><div class="stat-label">Друзья</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFollowers">0</div><div class="stat-label">Подписчики</div></div>
+    </div>
 
-        <div class="composer" style="margin-top: 20px; text-align: left;">
-            <textarea id="profileComposerText" placeholder="Поделитесь чем-нибудь на своей странице..." rows="2"></textarea>
-            <div class="composer-actions">
-                <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
-                <button class="composer-btn send" onclick="publishProfilePost()">➤ На стену</button>
-            </div>
+    <!-- КОМПОЗЕР ДЛЯ СВОЕЙ СТРАНИЦЫ -->
+    <div class="composer" style="margin-top: 20px; text-align: left;">
+        <textarea id="profileComposerText" placeholder="Поделитесь чем-нибудь на своей странице..." rows="2"></textarea>
+        <div class="composer-actions">
+            <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
+            <button class="composer-btn send" onclick="publishProfilePost()">➤ На стену</button>
         </div>
+    </div>
 
-        <div class="profile-tabs">
-            <button class="tab-btn active" onclick="switchProfileTab('friends', this)">Друзья</button>
-            <button class="tab-btn" onclick="switchProfileTab('followers', this)">Подписчики</button>
-        </div>
-        <div id="profile-list" style="padding: 10px; text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
-            У вас пока нет друзей.
-        </div>
+    <!-- ВКЛАДКИ -->
+    <div class="profile-tabs">
+        <button class="tab-btn active" onclick="switchProfileTab('friends', this)">Друзья</button>
+        <button class="tab-btn" onclick="switchProfileTab('followers', this)">Подписчики</button>
+    </div>
+    <div id="profile-list" style="padding: 10px; text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+        У вас пока нет друзей.
+    </div>
 
-        <div id="profile-posts-container" style="padding: 0 15px; text-align: left;"></div>
-    </main>
+    <!-- СЮДА БУДУТ ПАДАТЬ ПОСТЫ С ТВОЕЙ СТРАНИЦЫ -->
+    <div id="profile-posts-container" style="padding: 0 15px;"></div>
+</main>
 
     <!-- КНОПКА ДОБАВЛЕНИЯ (ПЛЮСИК) -->
     <button class="fab" onclick="openPlusModal('post')">+</button>
+ <!-- ОКНО ПЕРЕПИСКИ -->
+<div class="chat-window" id="chatWindow">
+    <div class="chat-topbar">
+        <button onclick="closeChat()">←</button>
+        <div class="chat-name" id="chatName">Чат</div>
+        <button onclick="showToast('Звонок: в разработке 📞')">📞</button>
+        <button onclick="openWallpaperPicker()">🎨</button>
+        <button onclick="blockCurrentChat()">🚫</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="typing" id="typingIndicator"></div>
+    <div class="chat-input-bar">
+        <input type="text" id="chatInput" placeholder="Сообщение..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">➤</button>
+    </div>
+</div>
+<!-- ОКНО ПРОСМОТРА ИСТОРИИ -->
+<div class="chat-window" id="storyViewer" style="background:#000; z-index:400;">
+    <div class="chat-topbar" style="background:transparent; border:none; position:absolute; width:100%; top:0;">
+        <div class="chat-list-avatar" id="storyViewerAvatar">A</div>
+        <div class="chat-name" id="storyViewerName">Аня</div>
+        <button onclick="closeStory()">✕</button>
+    </div>
+    <!-- Полоска прогресса -->
+    <div style="position:absolute; top:60px; left:10px; right:10px; height:3px; background:rgba(255,255,255,0.3); z-index:10;">
+        <div id="storyProgress" style="width:0%; height:100%; background:white; transition:width 5s linear;"></div>
+    </div>
+    <!-- Картинка истории (рандомная) -->
+    <img id="storyViewerImg" src="" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+</div>
+<!-- ПЛЮС-МОДАЛКА КРАСИВАЯ -->
+<div class="plus-modal" id="plusModal">
+    <button class="plus-close" onclick="closePlusModal()">✕</button>
+    <div class="plus-menu">
+        <div class="plus-option" onclick="pickMedia('photo')"><div class="plus-option-icon">📷</div>Фото</div>
+        <div class="plus-option" onclick="pickMedia('video')"><div class="plus-option-icon">🎬</div>Видео</div>
+        <div class="plus-option" onclick="pickMedia('file')"><div class="plus-option-icon">📎</div>Файл</div>
+    </div>
+</div>
 
-    <!-- ОКНО ПЕРЕПИСКИ -->
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-topbar">
-            <button onclick="closeChat()">←</button>
-            <div class="chat-name" id="chatName">Чат</div>
-            <button onclick="showToast('Звонок: в разработке 📞')">📞</button>
-            <button onclick="openWallpaperPicker()">🎨</button>
-            <button onclick="blockCurrentChat()">🚫</button>
+<!-- ВЫБОР ОБОЕВ -->
+<div class="plus-modal" id="wallpaperModal">
+    <button class="plus-close" onclick="document.getElementById('wallpaperModal').classList.remove('active')">✕</button>
+    <div style="padding:20px; text-align:center;">
+        <h3 style="margin-bottom:15px;">Выбери фон 💫</h3>
+        <div class="bg-picker" id="bgPicker"></div>
+    </div>
+</div>
+
+<!-- НАСТРОЙКИ (шестерёнка) -->
+<div class="plus-modal" id="settingsModal">
+    <button class="plus-close" onclick="document.getElementById('settingsModal').classList.remove('active')">✕</button>
+    <div class="settings-list" style="overflow-y:auto; max-height:85vh; width:100%;">
+        <h2 style="padding: 15px; font-size:24px;">Настройки ⚙️</h2>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">👤</div><div class="settings-label">Профиль</div><div class="settings-value">boss ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔔</div><div class="settings-label">Уведомления</div><div class="settings-value">Вкл ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🌙</div><div class="settings-label">Тёмная тема</div><div class="settings-value">Вкл ›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔒</div><div class="settings-label">Приватность</div><div class="settings-value">›</div></div>
         </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="typing" id="typingIndicator" style="display:none; font-size:12px; color:#aaa; padding-left:15px;"></div>
-        <div class="chat-input-bar">
-            <input type="text" id="chatInput" placeholder="Сообщение..." onkeydown="if(event.key==='Enter') sendMessage()">
-            <button onclick="sendMessage()">➤</button>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Обои чатов</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">🔊</div><div class="settings-label">Звуки</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">💾</div><div class="settings-label">Данные и память</div><div class="settings-value">›</div></div>
+           <div class="settings-item" onclick="changeLanguage()">
+    <div class="settings-icon">🌐</div>
+    <div class="settings-label">Язык</div>
+    <div class="settings-value" id="currentLangDisplay">RU ›</div>
+</div>
+        </div>
+        <div class="settings-group">
+            <div class="settings-item"><div class="settings-icon">👑</div><div class="settings-label">Premium</div><div class="settings-value">Активен ›</div></div>
+            <div class="settings-item"><div class="settings-icon">❓</div><div class="settings-label">Помощь</div><div class="settings-value">›</div></div>
+            <div class="settings-item"><div class="settings-icon">ℹ️</div><div class="settings-label">О приложении</div><div class="settings-value">v1.0 ›</div></div>
+            <div class="settings-item" style="color:#e74c3c;"><div class="settings-icon">🚪</div><div class="settings-label">Выйти</div><div class="settings-value">›</div></div>
         </div>
     </div>
-
-    <!-- ОКНО ПРОСМОТРА ИСТОРИИ -->
-    <div class="chat-window" id="storyViewer" style="background:#000; z-index:400;">
-        <div class="chat-topbar" style="background:transparent; border:none; position:absolute; width:100%; top:0; padding-top:15px;">
-            <div class="chat-list-avatar" id="storyViewerAvatar">A</div>
-            <div class="chat-name" id="storyViewerName">Аня</div>
-            <button onclick="closeStory()">✕</button>
-        </div>
-        <div style="position:absolute; top:70px; left:10px; right:10px; height:3px; background:rgba(255,255,255,0.3); z-index:10; border-radius:2px;">
-            <div id="storyProgress" style="width:0%; height:100%; background:white; transition:width 5s linear; border-radius:2px;"></div>
-        </div>
-        <img id="storyViewerImg" src="" style="width:100%; height:100%; object-fit:cover; opacity:0.9;">
-    </div>
-
-    <!-- ПЛЮС-МОДАЛКА -->
-    <div class="plus-modal" id="plusModal">
-        <button class="plus-close" onclick="closePlusModal()">✕</button>
-        <div class="plus-menu">
-            <div class="plus-option" onclick="pickMedia('photo')"><div class="plus-option-icon">📷</div>Фото</div>
-            <div class="plus-option" onclick="pickMedia('video')"><div class="plus-option-icon">🎬</div>Видео</div>
-            <div class="plus-option" onclick="pickMedia('file')"><div class="plus-option-icon">📎</div>Файл</div>
-        </div>
-    </div>
-
-    <!-- ВЫБОР ОБОЕВ -->
-    <div class="plus-modal" id="wallpaperModal">
-        <button class="plus-close" onclick="document.getElementById('wallpaperModal').classList.remove('active')">✕</button>
-        <div style="padding:20px; text-align:center;">
-            <h3 style="margin-bottom:15px;">Выбери фон 💫</h3>
-            <div class="bg-picker" id="bgPicker"></div>
-        </div>
-    </div>
-
-    <!-- НАСТРОЙКИ -->
-    <div class="plus-modal" id="settingsModal">
-        <button class="plus-close" onclick="document.getElementById('settingsModal').classList.remove('active')">✕</button>
-        <div class="settings-list" style="overflow-y:auto; max-height:85vh; width:100%;">
-            <h2 style="padding: 15px; font-size:24px;">Настройки ⚙️</h2>
-            <div class="settings-group">
-                <div class="settings-item"><div class="settings-icon">👤</div><div class="settings-label">Профиль</div><div class="settings-value">boss ›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">🔔</div><div class="settings-label">Уведомления</div><div class="settings-value">Вкл ›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">🌙</div><div class="settings-label">Тёмная тема</div><div class="settings-value">Вкл ›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">🔒</div><div class="settings-label">Приватность</div><div class="settings-value">›</div></div>
-            </div>
-            <div class="settings-group">
-                <div class="settings-item" onclick="openWallpaperPicker()"><div class="settings-icon">🎨</div><div class="settings-label">Обои чатов</div><div class="settings-value">›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">🔊</div><div class="settings-label">Звуки</div><div class="settings-value">›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">💾</div><div class="settings-label">Данные и память</div><div class="settings-value">›</div></div>
-                <div class="settings-item" onclick="changeLanguage()">
-                    <div class="settings-icon">🌐</div>
-                    <div class="settings-label">Язык</div>
-                    <div class="settings-value" id="currentLangDisplay">RU ›</div>
-                </div>
-            </div>
-            <div class="settings-group">
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">👑</div><div class="settings-label">Premium</div><div class="settings-value">Активен ›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">❓</div><div class="settings-label">Помощь</div><div class="settings-value">›</div></div>
-                <div class="settings-item" onclick="showToast('В разработке')"><div class="settings-icon">ℹ️</div><div class="settings-label">О приложении</div><div class="settings-value">v1.0 ›</div></div>
-                <div class="settings-item" style="color:#e74c3c;" onclick="showToast('В разработке')"><div class="settings-icon">🚪</div><div class="settings-label">Выйти</div><div class="settings-value">›</div></div>
-            </div>
-        </div>
-    </div>
-
+</div>
     <!-- НИЖНЕЕ МЕНЮ НАВИГАЦИИ -->
     <nav class="bottom-nav">
         <div class="nav-item" id="nav-profile" onclick="switchTab('profile')">
-            <div class="nav-icon">👤</div><span>Моя стр.</span>
+            <div class="nav-icon">👤</div>
+            <span>Моя стр.</span>
         </div>
         <div class="nav-item" id="nav-chats" onclick="switchTab('chats')">
-            <div class="nav-icon">💬</div><span>Чаты</span>
+            <div class="nav-icon">💬</div>
+            <span>Чаты</span>
         </div>
         <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
-            <div class="nav-icon">📱</div><span>Главная</span>
+            <div class="nav-icon">📱</div>
+            <span>Главная</span>
         </div>
         <div class="nav-item" id="nav-music" onclick="switchTab('music')">
-            <div class="nav-icon">🎵</div><span>Музыка</span>
+            <div class="nav-icon">🎵</div>
+            <span>Музыка</span>
         </div>
         <div class="nav-item" id="nav-games" onclick="switchTab('games')">
-            <div class="nav-icon">🎮</div><span>Игры</span>
+            <div class="nav-icon">🎮</div>
+            <span>Игры</span>
         </div>
     </nav>
 
+    <!-- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ (ШТОРКА СНИЗУ) -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <div class="modal-title">Создать</div>
+            <div class="modal-subtitle">Выбери, что хочешь сделать</div>
+
+            <div class="create-option" onclick="showToast('Редактор постов в разработке!')">
+                <div class="option-icon" style="color: #e74c3c;">📝</div>
+                <div class="option-info">
+                    <div class="option-title">Пост</div>
+                    <div class="option-desc">Текст, фото и музыка</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Камера недоступна в браузере')">
+                <div class="option-icon" style="color: #e67e22;">📸</div>
+                <div class="option-info">
+                    <div class="option-title">История</div>
+                    <div class="option-desc">Кружок вверху ленты</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Группа создана! (Демо)')">
+                <div class="option-icon" style="color: #3498db;">👥</div>
+                <div class="option-info">
+                    <div class="option-title">Группа</div>
+                    <div class="option-desc">Приватный чат</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Сообщество создано! (Демо)')">
+                <div class="option-icon" style="color: #2ecc71;">🌐</div>
+                <div class="option-info">
+                    <div class="option-title">Сообщество</div>
+                    <div class="option-desc">Глобальное сообщество</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <div class="create-option" onclick="showToast('Канал создан! (Демо)')">
+                <div class="option-icon" style="color: #9b59b6;">📢</div>
+                <div class="option-info">
+                    <div class="option-title">Канал</div>
+                    <div class="option-desc">Трансляция постов</div>
+                </div>
+                <div class="option-arrow">›</div>
+            </div>
+
+            <button class="cancel-btn" onclick="closeCreateModal()">Отмена</button>
+        </div>
+    </div>
+
     <!-- =========================================
-         JAVASCRIPT 
+         JAVASCRIPT (ОГРОМНЫЙ БЛОК ЛОГИКИ)
          ========================================= -->
     <script>
-        // ============ 1. БАЗЫ ДАННЫХ ТЕКСТОВ ============
+        
+        // =========================================
+        // БАЗА ДАННЫХ: ТОКСИЧНЫЕ ПОСТЫ (МАТЫ, ПОДЪЁБЫ)
+        // =========================================
         const toxicPosts = [
             "Чинил соседу ноут. Оказалось, просто шнур от зарядки отходил. Взял 500 рублей «за диагностику» 😂 (ну а хули, я не благотворительный фонд)",
             "Кто-то поставил дизлайк моему посту? Я найду твой IP, вычислю адрес и приду поговорить за жизнь. Шутка. Или нет. 😈",
@@ -628,9 +1599,43 @@
             "Люблю смотреть на людей в метро. Они все такие серьезные, будто решают судьбу мира. А потом выходят на своей остановке и идут в Пятерочку.",
             "Вот почему у богатых нет проблем с деньгами? Потому что они не тратят их на всякую хуйню. А я вот вчера купил светящийся в темноте чехол для телефона. Зачем?",
             "Мне кажется, я достиг просветления. Я понял, что работа - это не волк, но в лес все равно хочется.",
-            "Спорить с интернете - это как участвовать в паралимпиаде. Даже если выиграешь, все равно чувствуешь себя инвалидом."
+            "Спорить с интернете - это как участвовать в паралимпиаде. Даже если выиграешь, все равно чувствуешь себя инвалидом.",
+            "Однажды я решил заняться саморазвитием. Прочитал одну книгу. Понял, что это не мое. Вернулся к мемам.",
+            "Мне сказали, что нужно больше улыбаться. Я улыбнулся. Люди начали шарахаться. Больше не буду.",
+            "Вот у меня есть друзья. Но когда я пишу им 'го в доту', они отвечают 'не могу, я с девушкой'. А я что, не девушка? Ах да, точно.",
+            "Обожаю, когда люди пишут 'я не токсик, я просто говорю правду'. Нет, чувак, ты просто мудак.",
+            "Сейчас бы на море. Чтобы песок, солнце, и чтобы никто не спрашивал 'когда на работу выходишь?'.",
+            "Моя жизнь - это сплошной мем. Только смешно почему-то не мне, а окружающим.",
+            "Вчера лег в 10 вечера, чтобы выспаться. Проснулся в 4 утра, потому что мне приснилось, что я забыл закрыть вкладку с порнухой. Живи теперь с этим.",
+            "Люди, которые пишут 'доброе утро' в 6 утра, вы вообще люди? Дайте поспать, я не хочу знать, что вы там делаете.",
+            "Мне 25, а я до сих пор не знаю, кем хочу стать, когда вырасту. Кажется, я просто хочу стать тем, кто спит до 12 и не парится.",
+            "Вот смотришь на некоторых людей и думаешь: 'Как ты вообще дожил до своих лет?' А потом понимаешь: 'А, ну да, мама с папой все делали за него'.",
+            "Сейчас модно быть осознанным. Я вот осознал, что я ленивый кусок дерьма. И знаете, мне даже нравится.",
+            "Зачем люди ходят в клубы? Чтобы послушать громкую музыку, постоять в очереди в туалет и уехать домой с пустым кошельком. Гениально.",
+            "У меня есть суперспособность: я могу забыть, что хотел сказать, за секунду до того, как это скажу. Врачи говорят, это склероз. Я говорю, это магия.",
+            "В интернете все смелые. Пока дело не доходит до реального разговора, тут же 'ой, я не могу, у меня дела'.",
+            "Никогда не понимал людей, которые любят утренние пробежки. Вы вообще видели, как выглядит утро? Оно ужасное.",
+            "Иногда хочется просто исчезнуть. Но потом вспоминаешь, что у тебя есть кредит и подписка на Яндекс.Музыку. И остаешься.",
+            "Я не злопамятный. Я просто записываю все в блокнотик, чтобы потом вспомнить и отомстить.",
+            "Вот бы в жизни было кнопка 'Отменить'. Как в Word. Нажал и всё, ты снова чист и невинен.",
+            "Самая большая ложь в моей жизни: 'Я проснусь пораньше и всё успею'.",
+            "Я люблю свою работу. Я люблю её настолько, что каждый день мечтаю о том, как я ухожу с неё и больше никогда не возвращаюсь.",
+            "Люди делятся на два типа: те, кто ставит будильник на 7:00 и встает в 7:00, и те, кто ставит на 7:00 и встает в 7:30, проклиная всё на свете.",
+            "Мне кажется, я в прошлой жизни был котом. Я так же люблю спать, есть и чтобы меня не трогали.",
+            "Никогда не спорь с идиотом. Сначала он опустит тебя до своего уровня, а потом задавит опытом.",
+            "В детстве я думал, что взрослая жизнь - это свобода. Оказалось, это свобода платить за квартиру.",
+            "Я такой человек, что даже когда мне плохо, я сначала узнаю, как дела у других. А потом уже вспоминаю, что мне тоже хреново.",
+            "Зачем я купил абонемент в спортзал? Чтобы он лежал в кошельке и напоминал мне о моей лени.",
+            "Сейчас бы шашлычок, пиво и на природу. Но у меня есть работа, кредит и ответственность. Живу мечтой.",
+            "Мой мозг в 3 часа ночи: 'А помнишь, как ты опозорился в 2015 году?' Да, спасибо, что напомнил, теперь не усну.",
+            "Худшее чувство в мире - это когда ты забыл, зачем пришел в комнату. Просто стоишь, как идиот, и ждешь, когда память вернется.",
+            "Я не ленивый. Я просто в режиме энергосбережения. По умолчанию.",
+            "Если бы я получал 100 рублей за каждую свою тупую мысль, я бы уже купил себе остров. И назвал бы его 'Остров Лени'."
         ];
-        
+     
+        // =========================================
+        // БАЗА ДАННЫХ: МИРОВЫЕ НОВОСТИ (ENGLISH)
+        // =========================================
         const globalNews = [
             "🐬 Volunteers in Australia successfully rescued a pod of 19 dolphins stranded on the beach. Great job, guys!",
             "🌱 Scientists developed a new biodegradable plastic that dissolves in seawater in just 4 hours. The future is green.",
@@ -641,9 +1646,32 @@
             "💻 Apple announced a new program to teach coding to underprivileged kids in 50 countries for free.",
             "🚲 Paris has officially become a 100% bike-friendly city, removing the last of its inner-city car lanes.",
             "🐝 A new species of bee was discovered in the mountains, proving nature is still full of surprises.",
-            "🤖 A robotic dog just helped rescue a hiker lost in the Alps for 3 days. Technology saves lives."
+            "🤖 A robotic dog just helped rescue a hiker lost in the Alps for 3 days. Technology saves lives.",
+            "🍎 A farmer in Japan grew the world's first square watermelon that actually tastes sweet.",
+            "⚡ Tesla unveiled a new battery that charges in 5 minutes and lasts for 1000 miles.",
+            "🎓 Free university education is now available online for everyone in the EU through a new government platform.",
+            "🌊 Ocean cleanup project successfully removed 1 million kg of plastic from the Pacific Ocean this month.",
+            "🦁 A lion cub was safely returned to the wild after being treated by a local wildlife sanctuary.",
+            "🎉 A small town in Italy decided to pay people €30,000 to move there and start a business. The catch? You have to stay for 5 years.",
+            "🐕 A stray dog in Turkey was adopted by a local fire department after he kept following them to every rescue mission.",
+            "📱 A new app helps blind people navigate busy city streets using AI and their phone cameras. It's completely free.",
+            "🌻 The Netherlands just opened the world's largest vertical farm, producing fresh vegetables for 10,000 people daily.",
+            "🧬 Geneticists successfully edited a gene to cure a rare form of blindness in 15 children. A true miracle of science.",
+            "🏆 A 90-year-old grandmother just graduated from university with a degree in physics. She said she wanted to 'keep her brain sharp'.",
+            "🔋 A new solar panel technology can generate electricity even at night using the heat stored in the ground.",
+            "🐢 A sea turtle was released back into the ocean after being treated for plastic ingestion for 6 months.",
+            "🚆 Japan unveiled a new bullet train that travels at 400 km/h and uses 30% less energy than previous models.",
+            "🎬 A group of students made a short film about climate change that won an international award at the Cannes Film Festival.",
+            "🧠 Researchers found that regular afternoon naps can improve cognitive function by up to 20% in older adults.",
+            "🌋 A new geothermal energy plant in Iceland is now providing heat to 90% of the country's homes. A true green revolution.",
+            "🎁 A billionaire anonymously donated $500 million to a children's hospital in New York. Christmas came early.",
+            "🍲 A community kitchen in London serves 1000 free meals every day to anyone in need, no questions asked.",
+            "🌲 The government of Costa Rica announced that 98% of its electricity now comes from renewable sources. A global leader."
         ];
 
+        // =========================================
+        // БАЗА ДАННЫХ: ИНТЕРЕСНЫЕ ФАКТЫ (RUSSIAN)
+        // =========================================
         const facts = [
             "💡 Знаете ли вы, что медведи могут развивать скорость до 60 км/ч? Бегите, если что.",
             "💡 У осьминогов три сердца. Пока плывут, одно останавливается. Вот почему они ползают.",
@@ -654,439 +1682,288 @@
             "💡 У акул нет костей, их скелет полностью состоит из хрящей.",
             "💡 Если вынуть всю воду из Мирового океана, то солью можно покрыть всю сушу слоем в 150 метров.",
             "💡 Слишком много сахара в детстве может сделать вас более агрессивным во взрослой жизни.",
-            "💡 Молния бьет в Землю примерно 100 раз в секунду."
+            "💡 Молния бьет в Землю примерно 100 раз в секунду.",
+            "💡 У кошек потеют только подушечки лап.",
+            "💡 Бактерии в вашем теле весят около 2 килограммов.",
+            "💡 Муравьи никогда не спят. Они просто отдыхают.",
+            "💡 Слоны - единственные животные, которые не могут прыгать.",
+            "💡 Страусы прячут голову в песок не от страха, а чтобы перевернуть яйца в гнезде.",
+            "💡 Человек может прожить без еды около 3 недель, а без сна — всего 11 дней.",
+            "💡 Вода в океане содержит золото, но его концентрация слишком мала для добычи.",
+            "💡 Пчелы могут распознавать лица людей.",
+            "💡 У жирафов такое же количество шейных позвонков, как и у человека (7 штук).",
+            "💡 За всю жизнь человек во сне съедает около 70 различных насекомых и пауков.",
+            "💡 Самая большая клетка в организме человека — это яйцеклетка.",
+            "💡 Пингвины делают предложение своей половинке, даря ей камешек.",
+            "💡 Крокодилы не могут высовывать язык.",
+            "💡 У улитки около 25 000 зубов.",
+            "💡 Полярные медведи левши.",
+            "💡 Человеческий нос может запомнить около 50 000 различных запахов.",
+            "💡 Сердце креветки находится в её голове.",
+            "💡 Бабочки пробуют еду на вкус своими лапками.",
+            "💡 Морская звезда может вывернуть свой желудок наизнанку, чтобы переварить добычу снаружи.",
+            "💡 У слонов самая большая продолжительность беременности — 22 месяца.",
+            "💡 Коалы спят около 22 часов в сутки.",
+            "💡 Молоко бегемота имеет розовый цвет.",
+            "💡 В Японии есть остров, который полностью населен кроликами.",
+            "💡 Арахис — это не орех, а бобовая культура.",
+            "💡 Глаз человека может различать около 10 миллионов оттенков цвета.",
+            "💡 Стрекозы имеют 6 лап, но они не могут ходить.",
+            "💡 Сахар, добавленный в бензин, может остановить двигатель автомобиля.",
+            "💡 В среднем человек засыпает за 7 минут.",
+            "💡 Мозг человека на 73% состоит из воды. Обезвоживание снижает его работу.",
+            "💡 Самая сильная мышца в теле человека (относительно размера) — это мышца, сжимающая челюсти.",
+            "💡 У тигров полоски есть не только на шерсти, но и на коже.",
+            "💡 Колибри — единственная птица, которая может летать назад.",
+            "💡 Ногти на руках растут быстрее, чем на ногах, примерно в 4 раза.",
+            "💡 Венера — единственная планета Солнечной системы, которая вращается по часовой стрелке.",
+            "💡 У осьминога голубая кровь.",
+            "💡 В теле взрослого человека около 37 триллионов клеток.",
+            "💡 Если кричать в течение 8 лет, 7 месяцев и 6 дней, вы потратите достаточно энергии, чтобы нагреть одну чашку кофе.",
+            "💡 Самое старое дерево в мире — сосна Мафусаил, ей около 4850 лет.",
+            "💡 В Древнем Египте подушки делали из камня.",
+            "💡 Свет от Солнца до Земли доходит за 8 минут и 20 секунд.",
+            "💡 В 2016 году Snapchat отказался от предложения Facebook купить их за 3 миллиарда долларов. Сейчас их оценка выше.",
+            "💡 Пикассо носил с собой пистолет и стрелял холостыми в людей, которые задавали ему слишком много вопросов об искусстве.",
+            "💡 Первый компьютерный вирус был создан в 1971 году и назывался Creeper. Он просто выводил сообщение 'I'm the creeper, catch me if you can!'.",
+            "💡 Самое длинное слово в русском языке — 'превысокомногорассмотрительствующий' (35 букв).",
+            "💡 Билл Гейтс в 1977 году попал в тюрьму за вождение без прав. Он провел там несколько часов.",
+            "💡 Медведи не живут в Антарктиде. Они обитают только в Арктике.",
+            "💡 На Луне есть 'моря', но они не содержат воды. Это просто огромные кратеры, заполненные застывшей лавой."
         ];
 
-        const russianBots = [
-            { name: "Токсичный Макс", color: "#e74c3c", letter: "М", badge: "toxic", badgeText: "BOT", bio: "Пишу без цензуры. Не нравится — проходи мимо.", type: "ru" },
-            { name: "Новости Сегодня", color: "#2ecc71", letter: "Н", badge: "news", badgeText: "АДМИН", bio: "Официальный канал. Только реальные новости 24/7.", type: "admin" },
-            { name: "Мир Фактов", color: "#3498db", letter: "Ф", badge: "news", badgeText: "CHANNEL", bio: "Интересные факты обо всём на свете.", type: "ru" },
-            { name: "Олег Петров", color: "#9b59b6", letter: "О", badge: "", badgeText: "", bio: "Программист. Люблю кофе, код и тишину.", type: "ru" },
-            { name: "Аня Смирнова", color: "#e84393", letter: "А", badge: "premium", badgeText: "VIP", bio: "Фотограф. Путешествия и вдохновение 📸", type: "ru" }
+        // =========================================
+        // БАЗА ДАННЫХ: АВТОРЫ (ПРОФИЛИ БОТОВ)
+        // =========================================
+        const authors = [
+            { name: "Токсичный Бот", color: "#e74c3c", letter: "Т", badge: "toxic", badgeText: "BOT" },
+            { name: "Good News Global", color: "#2ecc71", letter: "G", badge: "news", badgeText: "CHANNEL" },
+            { name: "Мир Фактов", color: "#3498db", letter: "Ф", badge: "news", badgeText: "CHANNEL" },
+            { name: "Олег (Друг)", color: "#9b59b6", letter: "О", badge: "", badgeText: "" },
+            { name: "Мемный Паблик", color: "#f39c12", letter: "М", badge: "premium", badgeText: "PREMIUM" },
+            { name: "Аноним", color: "#34495e", letter: "А", badge: "", badgeText: "" },
+            { name: "Сплетница", color: "#e84393", letter: "С", badge: "premium", badgeText: "PREMIUM" },
+            { name: "Тех-Гик", color: "#00cec9", letter: "Т", badge: "news", badgeText: "CHANNEL" },
+            { name: "ЗОЖ-Гуру", color: "#6ab04c", letter: "З", badge: "", badgeText: "" }
         ];
 
-        const englishBots = [
-            { name: "Toxic Jake", color: "#c0392b", letter: "J", badge: "toxic", badgeText: "BOT", bio: "I speak my mind. Deal with it.", type: "en" },
-            { name: "Good News Global", color: "#27ae60", letter: "G", badge: "news", badgeText: "CHANNEL", bio: "Only positive world news 24/7.", type: "en" },
-            { name: "Mike Johnson", color: "#2980b9", letter: "M", badge: "", badgeText: "", bio: "Software engineer. Coffee addict.", type: "en" },
-            { name: "Sarah Williams", color: "#8e44ad", letter: "S", badge: "premium", badgeText: "VIP", bio: "Photographer & traveler 🌍", type: "en" }
-        ];
-
-        const allBots = [...russianBots, ...englishBots];
+        // =========================================
+        // ЛОГИКА ГЕНЕРАЦИИ ЛЕНТЫ (БЕСКОНЕЧНЫЙ СКРОЛЛ)
+        // =========================================
         
-        // ============ 2. СТАТИСТИКА И ПРОФИЛЬ ============
-        const currentUsername = "boss";
-        let isPremiumUser = (currentUsername === "boss"); 
-        const userStats = { posts: 0, videos: 0, friends: 0, followers: 0 };
-
-        function updateStats() {
-            if(document.getElementById('statPosts')) {
-                document.getElementById('statPosts').textContent = userStats.posts;
-                document.getElementById('statVideos').textContent = userStats.videos;
-                document.getElementById('statFriends').textContent = userStats.friends;
-                document.getElementById('statFollowers').textContent = userStats.followers;
-            }
-        }
-        document.addEventListener('DOMContentLoaded', updateStats);
-
-        function checkPremiumStatus() {
-            const lock = document.getElementById('homePremiumLock');
-            const composer = document.getElementById('mainComposer');
-            if (!lock || !composer) return;
-
-            if (isPremiumUser) {
-                lock.style.display = 'none';
-                composer.style.display = 'block';
-            } else {
-                lock.style.display = 'block';
-                composer.style.display = 'none';
-            }
-        }
-        document.addEventListener('DOMContentLoaded', checkPremiumStatus);
-
-        function switchProfileTab(tab, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const list = document.getElementById('profile-list');
-            if (tab === 'friends') {
-                list.innerHTML = userStats.friends === 0 ? 'У вас пока нет друзей.' : `Ваши друзья (${userStats.friends})`;
-            } else {
-                list.innerHTML = userStats.followers === 0 ? 'У вас пока нет подписчиков.' : `Ваши подписчики (${userStats.followers})`;
-            }
-        }
-
-        // ============ 3. ГЛАВНАЯ ЛЕНТА И ГЕНЕРАЦИЯ ============
+        // Находим контейнер, куда будем вставлять посты
         const feedContainer = document.getElementById('feed-container');
+        let postCount = 0; // Счетчик постов (для уникальных ID)
 
-        function insertPost(author, text, imageUrl, time, customId = null, targetContainer = 'feed-container') {
-            const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
-            const isEnglish = author.type === 'en' || (text.match(/[a-zA-Z]/) && !text.match(/[а-яА-Я]/));
-            const translateBtn = isEnglish ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">🌐 Перевести</button>` : '';
+        // Функция создания и вставки одного поста
+        function generatePost() {
+            // Рандом: будет ли пост токсичным?
+            const isToxic = Math.random() > 0.5;
+            
+            // Выбираем автора (если не токсик, то рандом из остальных)
+            const authorIndex = isToxic ? 0 : (Math.random() > 0.3 ? 1 : (Math.random() > 0.5 ? 2 : Math.floor(Math.random() * authors.length)));
+            const author = authors[authorIndex];
+            
+            let textContent = "";
+            let imageUrl = null;
 
-            const html = `
-                <div class="post" id="${postId}">
+            // Подбираем контент в зависимости от выбранного автора
+            if (author.name === "Токсичный Бот") {
+                textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
+            } else if (author.name === "Good News Global") {
+                textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
+                // Добавляем картинку к новостям (рандомно)
+                if (Math.random() > 0.4) {
+                    imageUrl = `https://picsum.photos/seed/${Math.floor(Math.random() * 1000)}/600/400`;
+                }
+            } else if (author.name === "Мир Фактов") {
+                textContent = facts[Math.floor(Math.random() * facts.length)];
+            } else {
+                // Если попался другой автор, мешаем все базы
+                const allContent = toxicPosts.concat(globalNews, facts);
+                textContent = allContent[Math.floor(Math.random() * allContent.length)];
+            }
+
+            // Генерируем случайное время
+            const timeOptions = ["Только что", "2 минуты назад", "15 минут назад", "1 час назад", "3 часа назад", "Вчера"];
+            const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+            
+            // Генерируем случайную статистику
+            const randomLikes = Math.floor(Math.random() * 2500) + 10;
+            const randomComments = Math.floor(Math.random() * 150);
+            const randomReposts = Math.floor(Math.random() * 300);
+
+            // Собираем HTML-код поста в виде строки
+            const postHTML = `
+                <div class="post" id="post-${postCount}">
                     <div class="post-header">
-                        <div class="post-avatar" style="background:${author.color};">${author.letter}</div>
+                        <div class="post-avatar" style="background: ${author.color};">${author.letter}</div>
                         <div class="post-meta">
-                            <div class="post-author">${author.name} ${author.badge ? `<span class="badge ${author.badge}">${author.badgeText}</span>` : ''}</div>
-                            <div class="post-time">${time}</div>
+                            <div class="post-author">
+                                ${author.name} 
+                                ${author.badge ? `<span class="badge ${author.badge}">${author.badgeText}</span>` : ''}
+                            </div>
+                            <div class="post-time">${randomTime}</div>
                         </div>
                     </div>
-                    <div class="post-content" id="content-${postId}">${text}</div>
-                    ${translateBtn}
-                    ${imageUrl ? `<img src="${imageUrl}" class="post-image" loading="lazy">` : ''}
+                    <div class="post-content">${textContent}</div>
+                    ${imageUrl ? `<img src="${imageUrl}" class="post-image" alt="Post Image" loading="lazy">` : ''}
                     <div class="post-actions">
-                        <button class="action-btn" onclick="like(this)">❤️ <span>0</span></button>
-                        <button class="action-btn">🔄 <span>0</span></button>
-                        <button class="action-btn">💬 <span>0</span></button>
-                    </div>
-                </div>`;
-                
-            const container = document.getElementById(targetContainer);
-            if (container) {
-                container.insertAdjacentHTML('afterbegin', html);
-            } else {
-                console.error("Не найден контейнер для постов: " + targetContainer);
-            }
-        }
-
-        async function fetchRealArticle() {
-            try {
-                const res = await fetch('https://ru.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*');
-                const data = await res.json();
-                if (!data.query || !data.query.random) return null;
-                const title = data.query.random[0].title;
-                const summaryRes = await fetch(`https://ru.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
-                const summaryData = await summaryRes.json();
-                return {
-                    title: title,
-                    text: summaryData.extract || "Узнайте больше об этом в Википедии!",
-                    image: summaryData.thumbnail ? summaryData.thumbnail.source : null
-                };
-            } catch (e) {
-                return null;
-            }
-        }
-
-        async function generateDailyPost() {
-            const author = allBots[Math.floor(Math.random() * allBots.length)];
-            
-            // Живые новости из Википедии
-            if (author.badge === 'news' || author.name === 'Мир Фактов') {
-                const loadingId = 'loading-' + Date.now();
-                insertPost(author, "Загружаю свежие новости... ⏳", null, "Только что", loadingId);
-                
-                const realData = await fetchRealArticle();
-                document.getElementById(loadingId)?.remove();
-                
-                if (realData) {
-                    const fullText = `📰 **${realData.title}**\n\n${realData.text}`;
-                    const finalImage = realData.image || `https://picsum.photos/seed/${Date.now()}/600/400`;
-                    insertPost(author, fullText, finalImage, "Только что");
-                    return;
-                }
-            }
-            
-            // Обычные посты
-            let textContent;
-            if (author.type === 'en') textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
-            else if (author.badge === 'toxic') textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
-            else textContent = facts[Math.floor(Math.random() * facts.length)];
-            
-            const withPhoto = Math.random() < 0.6;
-            const imageUrl = withPhoto ? `https://picsum.photos/seed/${Date.now()}-${Math.random()}/600/400` : null;
-            insertPost(author, textContent, imageUrl, "Только что");
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                for(let i=0; i<5; i++) { generateDailyPost(); }
-            }, 500);
-        });
-
-        function like(btn) {
-            const span = btn.querySelector('span');
-            let count = parseInt(span.innerText);
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                span.innerText = count - 1;
-            } else {
-                btn.classList.add('liked');
-                span.innerText = count + 1;
-                if (navigator.vibrate) navigator.vibrate(40);
-            }
-        }
-
-        // ============ 4. ПУБЛИКАЦИЯ ПОСТОВ ============
-        function publishPost() {
-            if (!isPremiumUser) return showToast('Купите Premium, чтобы писать в ленту!');
-            const text = document.getElementById('homeComposerText').value.trim();
-            if (!text) return showToast('Напиши что-нибудь!');
-            
-            const author = { name: currentUsername, color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
-            insertPost(author, text, null, "Только что", null, 'feed-container'); 
-            
-            userStats.posts++;
-            updateStats();
-            document.getElementById('homeComposerText').value = '';
-            showToast('Пост в ленте! ✅');
-        }
-
-        function publishProfilePost() {
-            const text = document.getElementById('profileComposerText').value.trim();
-            if (!text) return showToast('Напиши что-нибудь!');
-            
-            const author = { name: currentUsername, color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
-            insertPost(author, text, null, "Только что", null, 'profile-posts-container');
-            
-            userStats.posts++;
-            updateStats();
-            document.getElementById('profileComposerText').value = '';
-            showToast('Пост на стене! ✅');
-        }
-
-        // ============ 5. ЧАТЫ И ОБОИ ============
-        const WALLPAPERS = ['chat-bg-1','chat-bg-2','chat-bg-3','chat-bg-4','chat-bg-5','chat-bg-6','chat-bg-7','chat-bg-8','chat-bg-9','chat-bg-10'];
-        let currentChat = null;
-        let currentWallpaper = localStorage.getItem('chatWallpaper') || 'chat-bg-1';
-        let blockedUsers = JSON.parse(localStorage.getItem('blocked') || '[]');
-
-        function renderChatList(filter = '') {
-            const list = document.getElementById('chatList');
-            if (!list) return;
-            const filtered = allBots.filter(b => b.name.toLowerCase().includes(filter.toLowerCase()));
-            list.innerHTML = filtered.map((bot, i) => `
-                <div class="chat-list-item" onclick="openChat('${bot.name}')">
-                    <div class="chat-list-avatar" style="background:${bot.color};">${bot.letter}</div>
-                    <div class="chat-list-info">
-                        <div class="chat-list-name">${bot.name} ${bot.badge ? `<span class="badge ${bot.badge}">${bot.badgeText}</span>` : ''}</div>
-                        <div class="chat-list-preview">Нажми, чтобы открыть</div>
+                        <button class="action-btn" onclick="like(this)">❤️ <span>${randomLikes}</span></button>
+                        <button class="action-btn">🔄 <span>${randomReposts}</span></button>
+                        <button class="action-btn">💬 <span>${randomComments}</span></button>
                     </div>
                 </div>
-            `).join('') || '<div style="padding:20px; text-align:center; color:var(--text-muted);">Никого не найдено</div>';
-        }
-        document.addEventListener('DOMContentLoaded', () => renderChatList());
+            `;
 
-        document.getElementById('chatSearch')?.addEventListener('input', (e) => {
-            renderChatList(e.target.value);
-        });
-
-        function openChat(name) {
-            if (blockedUsers.includes(name)) return showToast('Этот пользователь у тебя в блоке 🚫');
-            const bot = allBots.find(b => b.name === name);
-            if (!bot) return;
-            if (bot.type === 'admin') return showToast('Это канал администрации. Писать нельзя 👑');
-            
-            currentChat = bot;
-            document.getElementById('chatWindow').classList.add('active');
-            document.getElementById('chatName').textContent = bot.name;
-            
-            const msgs = document.getElementById('chatMessages');
-            msgs.innerHTML = '';
-            msgs.className = 'chat-messages ' + currentWallpaper;
-            addMsg('Привет! Это ' + bot.name + '. ' + bot.bio, 'in');
+            // Вставляем HTML в конец контейнера
+            feedContainer.insertAdjacentHTML('beforeend', postHTML);
+            postCount++;
         }
 
-        function addMsg(text, dir) {
-            const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
-            const div = document.createElement('div');
-            div.className = 'msg ' + dir;
-            div.innerHTML = text + `<span class="msg-time">${time}</span>`;
-            document.getElementById('chatMessages').appendChild(div);
-            document.getElementById('chatMessages').scrollTop = 999999;
-        }
+        // При загрузке страницы генерируем первые 5 постов
+        
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text || !currentChat) return;
-            
-            addMsg(text, 'out');
-            input.value = '';
-            
-            const typing = document.getElementById('typingIndicator');
-            typing.style.display = 'block';
-            typing.textContent = currentChat.name + ' печатает...';
-            
+        // Переменная-заглушка, чтобы скролл не срабатывал слишком часто
+        let isGenerating = false;
+        
+        // Слушаем скролл пользователя (бесконечная лента)
+        window.addEventListener('scroll', () => {
+    // Если пользователь докрутил до низа (с запасом 800 пикселей)
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+        if (!isGenerating) {
+            isGenerating = true;
             setTimeout(() => {
-                typing.style.display = 'none';
-                const replies = ["Понял тебя 👍", "Согласен!", "Ха, интересно 😄", "Давай позже обсудим", "Хорошая мысль", "Окей!"];
-                addMsg(replies[Math.floor(Math.random() * replies.length)], 'in');
-            }, 1500 + Math.random() * 1500);
+                generateDailyPost();
+                generateDailyPost();
+                isGenerating = false;
+            }, 500); // Задержка, чтобы не лагало
         }
-
-        function closeChat() {
-            document.getElementById('chatWindow').classList.remove('active');
-            currentChat = null;
-        }
-
-        function blockCurrentChat() {
-            if (!currentChat) return;
-            if (currentChat.type === 'admin') return showToast('Канал администрации нельзя заблокировать 👑');
-            blockedUsers.push(currentChat.name);
-            localStorage.setItem('blocked', JSON.stringify(blockedUsers));
-            showToast(currentChat.name + ' заблокирован 🚫');
-            closeChat();
-        }
-
-        function openWallpaperPicker() {
-            const picker = document.getElementById('bgPicker');
-            if(!picker) return;
-            picker.innerHTML = WALLPAPERS.map(w => 
-                `<div class="bg-swatch ${w}" onclick="setWallpaper('${w}')"></div>`
-            ).join('');
-            document.getElementById('wallpaperModal').classList.add('active');
-        }
-
-        function setWallpaper(w) {
-            currentWallpaper = w;
-            localStorage.setItem('chatWallpaper', w);
-            document.getElementById('chatMessages').className = 'chat-messages ' + w;
-            document.getElementById('wallpaperModal').classList.remove('active');
-            showToast('Фон изменён ✨');
-        }
-
-        // ============ 6. МОДАЛКИ, ИСТОРИИ, ПЕРЕВОДЧИК ============
-        function openPlusModal(type) { document.getElementById('plusModal').classList.add('active'); }
-        function closePlusModal() { document.getElementById('plusModal').classList.remove('active'); }
-
-        function pickMedia(type) {
-            closePlusModal();
-            if (type === 'photo') {
-                const url = prompt('Вставь ссылку на фото:');
-                if (url) insertPost({name:currentUsername,color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, '', url, 'Только что');
-            } else if (type === 'video') {
-                const url = prompt('Вставь ссылку на видео (YouTube):');
-                if (url) {
-                    const embed = url.includes('youtube') 
-                        ? `<iframe width="100%" height="200" src="${url.replace('watch?v=','embed/')}" frameborder="0" allowfullscreen style="border-radius:15px; margin-bottom:15px;"></iframe>`
-                        : `<video src="${url}" controls style="width:100%; border-radius:15px; margin-bottom:15px;"></video>`;
-                    insertPost({name:currentUsername,color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, embed, null, 'Только что');
-                    userStats.videos++;
-                    updateStats();
-                }
-            } else if (type === 'file') {
-                showToast('📎 Файл прикреплён');
-            }
-        }
-
-        function viewStory(name, color, letter) {
-            document.getElementById('storyViewer').style.display = 'flex';
-            document.getElementById('storyViewerName').textContent = name;
-            const avatar = document.getElementById('storyViewerAvatar');
-            avatar.textContent = letter;
-            avatar.style.background = color;
+    }
+});
+     
+        // =========================================
+        // ИНТЕРАКТИВ: СИСТЕМА ЛАЙКОВ
+        // =========================================
+        
+        // Функция принимает кнопку, на которую нажали
+        function like(btn) {
+            // Находим span внутри кнопки, где лежит число лайков
+            const span = btn.querySelector('span');
+            // Превращаем текст в число
+            let count = parseInt(span.innerText);
             
-            document.getElementById('storyViewerImg').src = `https://picsum.photos/seed/${Math.random()}/600/1000`;
-            
-            const progress = document.getElementById('storyProgress');
-            progress.style.transition = 'none'; 
-            progress.style.width = '0%';
-            setTimeout(() => { progress.style.transition = 'width 5s linear'; progress.style.width = '100%;'; }, 50);
-
-            clearTimeout(window.storyTimeout);
-            window.storyTimeout = setTimeout(closeStory, 5000);
-        }
-
-        function closeStory() {
-            document.getElementById('storyViewer').style.display = 'none';
-        }
-
-        let userLang = localStorage.getItem('userLang') || 'ru';
-
-        async function translateText(postId) {
-            const contentEl = document.getElementById(`content-${postId}`);
-            const btn = document.getElementById(`btn-${postId}`);
-            if (!contentEl || !btn) return;
-
-            if (btn.classList.contains('translated')) {
-                contentEl.innerHTML = btn.dataset.original;
-                btn.classList.remove('translated');
-                btn.innerHTML = '🌐 Перевести';
-                return;
-            }
-
-            btn.dataset.original = contentEl.innerHTML;
-            btn.innerHTML = '⏳ Перевожу...';
-            
-            try {
-                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(contentEl.innerText)}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                const translatedText = data[0].map(item => item[0]).join('');
+            // Проверяем, есть ли уже класс 'liked' (значит, лайк уже стоит)
+            if (btn.classList.contains('liked')) {
+                // Если лайк стоит, убираем его
+                btn.classList.remove('liked');
+                // Уменьшаем счетчик
+                span.innerText = count - 1;
+            } else {
+                // Если лайка нет, добавляем класс
+                btn.classList.add('liked');
+                // Увеличиваем счетчик
+                span.innerText = count + 1;
                 
-                contentEl.innerHTML = translatedText;
-                btn.classList.add('translated');
-                btn.innerHTML = '✅ Оригинал';
-            } catch (error) {
-                btn.innerHTML = '❌ Ошибка';
-                showToast('Не удалось перевести. Проверьте интернет.');
-                setTimeout(() => btn.innerHTML = '🌐 Перевести', 2000);
+                // Небольшая вибрация для телефона (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate(40);
+                }
             }
         }
 
-        function changeLanguage() {
-            const choice = prompt("Выберите язык для перевода:\n1. Русский (ru)\n2. English (en)\n3. Español (es)\n4. Deutsch (de)\n\nВведите код языка (например, ru):", userLang);
-            if (choice && choice.length === 2) {
-                userLang = choice.toLowerCase();
-                localStorage.setItem('userLang', userLang);
-                const langDisplay = document.getElementById('currentLangDisplay');
-                if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
-                updateUILanguage();
-                showToast(`Язык перевода изменён на ${userLang.toUpperCase()}`);
-            }
-        }
-
-        const uiDictionary = {
-            ru: { nav_profile: "Моя стр.", nav_chats: "Чаты", nav_home: "Главная", nav_music: "Музыка", nav_games: "Игры", composer_ph: "Что нового?..", composer_btn: "Опубликовать", settings_title: "Настройки ⚙️" },
-            en: { nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games", composer_ph: "What's new?..", composer_btn: "Publish", settings_title: "Settings ⚙️" }
-        };
-
-        function updateUILanguage() {
-            const lang = (userLang === 'en') ? 'en' : 'ru'; 
-            const dict = uiDictionary[lang];
-
-            if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
-            if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
-            if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
-            if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
-            if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
-
-            const compTextarea = document.getElementById('homeComposerText');
-            if (compTextarea) compTextarea.placeholder = dict.composer_ph;
-
-            const pubBtn = document.querySelector('.composer-btn.send');
-            if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
-
-            const settTitle = document.querySelector('.settings-list h2');
-            if (settTitle) settTitle.textContent = dict.settings_title;
-        }
-        document.addEventListener('DOMContentLoaded', updateUILanguage);
-
-        // ============ 7. НАВИГАЦИЯ И УВЕДОМЛЕНИЯ ============
+        // =========================================
+        // ИНТЕРАКТИВ: ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК (НИЖНЕЕ МЕНЮ)
+        // =========================================
+        
         function switchTab(tabName) {
+            // Массив со всеми возможными вкладками
             const pages = ['home', 'premium', 'chats', 'music', 'games', 'profile'];
+            
+            // 1. Скрываем все страницы и убираем активный класс с иконок
             pages.forEach(page => {
                 const el = document.getElementById(`page-${page}`);
-                if (el) el.style.display = 'none';
+                if (el) {
+                    el.style.display = 'none';
+                }
+                
                 const nav = document.getElementById(`nav-${page}`);
-                if (nav) nav.classList.remove('active');
+                if (nav) {
+                    nav.classList.remove('active');
+                }
             });
 
+            // 2. Показываем нужную страницу
             const activePage = document.getElementById(`page-${tabName}`);
             if (activePage) {
-                activePage.style.display = (tabName === 'home') ? 'flex' : 'block';
+                // Если это главная, ей нужен display: flex (т.к. это лента)
+                // Остальным страницам нужен display: block
+                if (tabName === 'home') {
+                    activePage.style.display = 'flex';
+                } else {
+                    activePage.style.display = 'block';
+                }
             }
 
+            // 3. Подсвечиваем активную иконку в меню
             const activeNav = document.getElementById(`nav-${tabName}`);
-            if (activeNav) activeNav.classList.add('active');
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 4. Прокручиваем страницу наверх (чтобы не оставался скролл с прошлой вкладки)
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
+        // =========================================
+        // ИНТЕРАКТИВ: МОДАЛЬНОЕ ОКНО (ШТОРКА С ПЛЮСОМ)
+        // =========================================
+        
+        // Открыть шторку
+        function openCreateModal() {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                modal.classList.add('active');
+                // Блокируем скролл на фоне, пока открыта шторка
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Закрыть шторку
+        function closeCreateModal() {
+            const modal = document.getElementById('createModal');
+            if (modal) {
+                modal.classList.remove('active');
+                // Возвращаем скролл
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Закрытие шторки при клике на темный фон (вне самой шторки)
+        const modalOverlay = document.getElementById('createModal');
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', function(e) {
+                // Проверяем, что клик был именно по фону, а не по содержимому
+                if (e.target === this) {
+                    closeCreateModal();
+                }
+            });
+        }
+
+        // =========================================
+        // ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (TOAST)
+        // =========================================
+        
+        // Функция для красивых уведомлений вместо стандартного alert()
         function showToast(message) {
+            // Создаем новый div
             const toast = document.createElement('div');
             toast.innerText = message;
+            
+            // Применяем стили прямо через JS (чтобы не раздувать CSS)
             toast.style.position = 'fixed';
             toast.style.bottom = '110px';
             toast.style.left = '50%';
@@ -1107,36 +1984,807 @@
             toast.style.width = 'max-content';
             toast.style.maxWidth = '80%';
 
+            // Добавляем в body
             document.body.appendChild(toast);
 
+            // Анимация появления (через 10 мс)
             setTimeout(() => {
                 toast.style.opacity = '1';
                 toast.style.transform = 'translateX(-50%) translateY(0)';
             }, 10);
 
+            // Анимация исчезновения и удаление (через 3 секунды)
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateX(-50%) translateY(20px)';
-                setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+                
+                // Удаляем элемент из DOM после окончания анимации
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
             }, 3000);
         }
+     
+        // =========================================
+        // 6. ИМИТАЦИЯ ЖИВОЙ АКТИВНОСТИ (БОТЫ РАБОТАЮТ)
+        // =========================================
+        
+        // Эта функция запускается каждые 12 секунд и добавляет лайки случайным постам.
+        // Это создает ощущение, что на сайте реально сидят люди.
+        setInterval(() => {
+            // Находим все посты на странице
+            const posts = document.querySelectorAll('.post');
+            
+            // Если постов нет, ничего не делаем
+            if (posts.length > 0) {
+                // Выбираем случайный пост
+                const randomPost = posts[Math.floor(Math.random() * posts.length)];
+                
+                // Находим кнопку лайка в этом посте (первая кнопка с классом action-btn)
+                const likeBtn = randomPost.querySelector('.action-btn');
+                
+                // Проверяем, что кнопка существует и на ней еще нет нашего лайка
+                if (likeBtn && !likeBtn.classList.contains('liked')) {
+                    const span = likeBtn.querySelector('span');
+                    let count = parseInt(span.innerText);
+                    
+                    // Прибавляем от 1 до 5 лайков
+                    let addLikes = Math.floor(Math.random() * 5) + 1;
+                    span.innerText = count + addLikes;
+                }
+            }
+        }, 12000);
 
-        // Живые обои в CSS (добавлены для корректной работы JS)
-        const styleBg = document.createElement('style');
-        styleBg.innerHTML = `
-            .chat-bg-1 { background: radial-gradient(ellipse at top, #1a0033 0%, #000005 70%); }
-            .chat-bg-2 { background: linear-gradient(160deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
-            .chat-bg-3 { background: linear-gradient(180deg, #232526 0%, #414345 100%); }
-            .chat-bg-4 { background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%); }
-            .chat-bg-5 { background: radial-gradient(circle at 20% 30%, #5b247a 0%, #1bcedf 100%); }
-            .chat-bg-6 { background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
-            .chat-bg-7 { background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%); }
-            .chat-bg-8 { background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
-            .chat-bg-9 { background: linear-gradient(135deg, #ffb347 0%, #ffcc33 50%, #ff9500 100%); }
-            .chat-bg-10 { background: radial-gradient(circle at 70% 30%, #ff5f6d 0%, #ffc371 50%, #1a1a2e 100%); }
-        `;
-        document.head.appendChild(styleBg);
+        // =========================================
+        // 7. ФУНКЦИЯ ОБНОВЛЕНИЯ ЛЕНТЫ (REFRESH)
+        // =========================================
+        
+        // Эта функция позволяет очистить ленту и загрузить новые посты (как свайп вниз)
+        function refreshFeed() {
+            // Очищаем контейнер с постами
+            if (feedContainer) {
+                feedContainer.innerHTML = '';
+            }
+            
+            // Сбрасываем счетчик
+            postCount = 0;
+            
+            // Показываем уведомление
+            showToast('Лента обновлена! Загружаем новости... 🔄');
+            
+            // Генерируем новые 5 постов с небольшой задержкой для эффекта
+            setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                    generatePost();
+                }
+            }, 500);
+        }
 
+        // Привязываем обновление ленты к заголовку (если нажать на "Главная" еще раз)
+        const homeNav = document.getElementById('nav-home');
+        if (homeNav) {
+            homeNav.addEventListener('click', () => {
+                // Если мы уже на главной, обновляем ленту
+                if (document.getElementById('page-home').style.display !== 'none') {
+                    refreshFeed();
+                }
+            });
+        }
+
+       
+
+        // =========================================
+        // 9. ЗАЩИТА ОТ ОШИБОК И ПРОВЕРКА ЭЛЕМЕНТОВ
+        // =========================================
+        
+        // Проверяем, что все критически важные элементы загрузились
+        window.addEventListener('DOMContentLoaded', () => {
+            // Проверка контейнера ленты
+            if (!document.getElementById('feed-container')) {
+                console.error('Ошибка: Не найден контейнер для ленты (feed-container)');
+            }
+            
+            // Проверка нижнего меню
+            if (!document.querySelector('.bottom-nav')) {
+                console.error('Ошибка: Не найдено нижнее меню (bottom-nav)');
+            }
+            
+            // Проверка кнопки плюса
+            if (!document.querySelector('.fab')) {
+                console.error('Ошибка: Не найдена кнопка добавления (fab)');
+            }
+            
+            // Логируем успешный запуск
+            console.log('✅ X-Social успешно загружен!');
+            console.log('🤖 Боты активны и готовы генерировать контент.');
+            console.log('👑 Premium система инициализирована.');
+        });
+
+        // =========================================
+        // 10. ДОПОЛНИТЕЛЬНАЯ ЛОГИКА ДЛЯ ПРЕМИУМ СТРАНИЦЫ
+        // =========================================
+        
+        // Функция для имитации покупки (если пользователь нажал на кнопку)
+        function buyPremium(planName) {
+            // Показываем уведомление о том, что это демо
+            showToast(`Вы выбрали тариф: ${planName}. Оплата пока недоступна.`);
+            
+            // Можно добавить визуальный эффект (например, подсветку карточки)
+            const cards = document.querySelectorAll('.premium-card');
+            cards.forEach(card => {
+                card.style.transform = 'scale(1)';
+            });
+        }
+
+        // =========================================
+        // 11. ФУНКЦИЯ ДЛЯ ВЫВОДА ВСЕХ ЛАЙКОВ (ДЛЯ ТЕСТА)
+        // =========================================
+        
+        // Просто для проверки, что код работает корректно
+        function countAllLikes() {
+            const likes = document.querySelectorAll('.action-btn span');
+            let total = 0;
+            likes.forEach(span => {
+                total += parseInt(span.innerText) || 0;
+            });
+            console.log(`Всего лайков в ленте: ${total}`);
+            return total;
+        }
+
+        // =========================================
+        // 12. АВТО-СКРОЛЛ ДЛЯ БЕСКОНЕЧНОЙ ЛЕНТЫ
+        // =========================================
+        
+        // Добавляем обработчик колесика мыши для плавной подгрузки
+        // (Это дополнение к событию scroll, которое было в Части 3)
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            // Очищаем предыдущий таймер
+            clearTimeout(scrollTimeout);
+            
+            // Устанавливаем новый таймер, чтобы не спамить генерацию
+            scrollTimeout = setTimeout(() => {
+                // Проверяем, что мы не на странице Premium и не в модалке
+                const isPremiumOpen = document.getElementById('page-premium').style.display === 'block';
+                const isModalOpen = document.getElementById('createModal').classList.contains('active');
+                
+                if (!isPremiumOpen && !isModalOpen) {
+                    // Логика подгрузки уже есть в Части 3, тут просто дополнительная проверка
+                }
+            }, 100);
+        });
+
+        // =========================================
+        // 13. ЛОГИКА ДЛЯ КНОПКИ "ОБНОВИТЬ ЛЕНТУ" (ЕСЛИ ДОБАВИМ)
+        // =========================================
+        
+        // Эта функция просто вызывает refreshFeed с анимацией
+        function manualRefresh() {
+            // Прокручиваем наверх
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Через 300 мс очищаем и генерируем заново
+            setTimeout(() => {
+                refreshFeed();
+            }, 300);
+        }
+
+        console.log('🚀 Все системы X-Social работают в штатном режиме!');
+     
+        // =========================================
+        // 14. ФИНАЛЬНАЯ ЛОГИКА ДЛЯ ПРЕМИУМ-КАРТОЧЕК
+        // =========================================
+        
+        // Эта функция добавляет эффект "пульсации" при нажатии на карточку тарифа
+        const premiumCards = document.querySelectorAll('.premium-card');
+        
+        if (premiumCards) {
+            premiumCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Добавляем временный класс для анимации (если нет)
+                    this.style.transition = 'transform 0.1s ease';
+                    this.style.transform = 'scale(0.98)';
+                    
+                    // Возвращаем обратно через 100 мс
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 100);
+                });
+            });
+        }
+
+        // =========================================
+        // 15. ПРОВЕРКА НА МОБИЛЬНЫЕ УСТРОЙСТВА
+        // =========================================
+        
+        // Определяем, открыт ли сайт с телефона
+        function isMobile() {
+            return window.innerWidth <= 600;
+        }
+
+        // Если это телефон, логируем в консоль (для отладки)
+        if (isMobile()) {
+            console.log('📱 Обнаружено мобильное устройство. Включен адаптивный режим.');
+        } else {
+            console.log('💻 Обнаружен компьютер. Сайт выглядит как приложение.');
+        }
+
+        // =========================================
+        // 16. ОБРАБОТКА ОШИБОК ЗАГРУЗКИ КАРТИНОК
+        // =========================================
+        
+        // Если картинка из интернета не загрузилась, мы просто скрываем её,
+        // чтобы не было "битых" иконок в ленте.
+        document.body.addEventListener('error', function(e) {
+            // Если ошибка произошла на элементе img
+            if (e.target.tagName === 'IMG') {
+                // Скрываем картинку
+                e.target.style.display = 'none';
+                console.warn('Не удалось загрузить изображение:', e.target.src);
+            }
+        }, true); // Используем фазу перехвата (capture), чтобы поймать ошибку
+
+        // =========================================
+        // 17. ФИНАЛЬНЫЙ ПРИВЕТСТВЕННЫЙ ЛОГ
+        // =========================================
+        
+        setTimeout(() => {
+            console.log('%c👋 Добро пожаловать в X-Social!', 'color: #ff4757; font-size: 20px; font-weight: bold;');
+            console.log('%cСайт полностью загружен и готов к работе.', 'color: #8e8e9e; font-size: 14px;');
+            console.log('%cАвторы ботов: Токсичный Бот, Good News Global, Мир Фактов.', 'color: #2ecc71; font-size: 12px;');
+            console.log('%cPremium система активна.', 'color: #feca57; font-size: 12px;');
+        }, 1000);
+
+        // =========================================
+        // 18. "УМНЫЙ" СБРОС ФОРМЫ (ЕСЛИ БУДЕТ РЕДАКТОР)
+        // =========================================
+        
+        // Функция для очистки полей ввода (на будущее, если добавим создание постов)
+        function clearPostForm() {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            showToast('Поля очищены!');
+        }
+
+        // =========================================
+        // 19. ИМИТАЦИЯ ЗАГРУЗКИ НОВОСТЕЙ (КРАСИВЫЙ ЭФФЕКТ)
+        // =========================================
+        
+        // Каждые 30 секунд имитируем "проверку новых новостей"
+        setInterval(() => {
+            // Просто логируем в консоль, чтобы ты видел, что бот работает
+            console.log('🔍 Сканирую интернет на наличие свежих новостей...');
+            
+            // Если лента открыта, можно незаметно добавить один пост (но мы этого делать не будем, чтобы не бесить пользователя)
+            // Вместо этого просто обновляем счетчик в консоли.
+        }, 30000);
+// ============ ЖИВЫЕ НОВОСТИ ИЗ ИНТЕРНЕТА (API) ============
+async function fetchRealArticle() {
+    try {
+        // 1. Просим Википедию дать случайную статью
+        const res = await fetch('https://ru.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*');
+        const data = await res.json();
+        
+        if (!data.query || !data.query.random) return null;
+        
+        const title = data.query.random[0].title;
+        
+        // 2. Получаем краткое описание и картинку этой статьи
+        const summaryRes = await fetch(`https://ru.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+        const summaryData = await summaryRes.json();
+        
+        return {
+            title: title,
+            text: summaryData.extract || "Узнайте больше об этом в Википедии!",
+            image: summaryData.thumbnail ? summaryData.thumbnail.source : null
+        };
+    } catch (e) {
+        console.warn("Не удалось загрузить живые данные, используем запасные:", e);
+        return null;
+    }
+}
+
+async function generateDailyPost() {
+    const allAuthors = [...russianBots, ...englishBots];
+    const author = allAuthors[Math.floor(Math.random() * allAuthors.length)];
+    
+    // Если это новостной бот или "Мир Фактов", тянем ЖИВУЮ статью из интернета!
+    if (author.badge === 'news' || author.name === 'Мир Фактов') {
+        // Показываем временный пост "Загрузка...", чтобы не было пустоты
+        const loadingId = 'loading-' + Date.now();
+        insertPost(author, "Загружаю свежие новости из интернета... ⏳", null, "Только что", loadingId);
+        
+        const realData = await fetchRealArticle();
+        
+        // Удаляем пост "Загрузка"
+        document.getElementById(loadingId)?.remove();
+        
+        if (realData) {
+            const fullText = `📰 **${realData.title}**\n\n${realData.text}`;
+            // Если у статьи есть картинка из Википедии — берем её, если нет — рандомную
+            const finalImage = realData.image || `https://picsum.photos/seed/${Date.now()}/600/400`;
+            
+            insertPost(author, fullText, finalImage, "Только что");
+            return;
+        }
+    }
+    
+    // Если это обычный бот (Токсичный, Олег и т.д.) — берем из нашего текстового массива
+    let textContent;
+    if (author.type === 'en') textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
+    else if (author.badge === 'toxic') textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
+    else textContent = toxicPosts.concat(facts, globalNews)[Math.floor(Math.random() * (toxicPosts.length + facts.length + globalNews.length))];
+    
+    const withPhoto = Math.random() < 0.6;
+    const imageUrl = withPhoto ? `https://picsum.photos/seed/${Date.now()}-${Math.random()}/600/400` : null;
+    
+    const times = ["Только что", "5 минут назад", "30 минут назад", "1 час назад", "3 часа назад"];
+    insertPost(author, textContent, imageUrl, times[Math.floor(Math.random() * times.length)]);
+}
+        function insertPost(author, text, imageUrl, time, customId = null, targetContainer = 'feed-container') {
+    const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
+    
+    const isEnglish = author.type === 'en' || (text.match(/[a-zA-Z]/) && !text.match(/[а-яА-Я]/));
+    const translateBtn = isEnglish ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">🌐 Перевести</button>` : '';
+
+    const html = `
+        <div class="post" id="${postId}">
+            <div class="post-header">
+                <div class="post-avatar" style="background:${author.color};">${author.letter}</div>
+                <div class="post-meta">
+                    <div class="post-author">${author.name} ${author.badge ? `<span class="badge ${author.badge}">${author.badgeText}</span>` : ''}</div>
+                    <div class="post-time">${time}</div>
+                </div>
+            </div>
+            <div class="post-content" id="content-${postId}">${text}</div>
+            ${translateBtn}
+            ${imageUrl ? `<img src="${imageUrl}" class="post-image" loading="lazy">` : ''}
+            <div class="post-actions">
+                <button class="action-btn" onclick="like(this)">❤️ <span>0</span></button>
+                <button class="action-btn">🔄 <span>0</span></button>
+                <button class="action-btn">💬 <span>0</span></button>
+            </div>
+        </div>`;
+        
+    const container = document.getElementById(targetContainer);
+    if (container) {
+        container.insertAdjacentHTML('afterbegin', html);
+    } else {
+        console.error("Не найден контейнер для постов: " + targetContainer);
+    }
+}
+        // ============ РАСШИРЕННАЯ БАЗА БОТОВ ============
+const russianBots = [
+    { name: "Токсичный Макс", color: "#e74c3c", letter: "М", badge: "toxic", badgeText: "BOT", bio: "Пишу без цензуры. Не нравится — проходи мимо.", type: "ru" },
+    { name: "Новости Сегодня", color: "#2ecc71", letter: "Н", badge: "news", badgeText: "АДМИН", bio: "Официальный канал. Только реальные новости 24/7.", type: "admin" },
+    { name: "Мир Фактов", color: "#3498db", letter: "Ф", badge: "news", badgeText: "CHANNEL", bio: "Интересные факты обо всём на свете.", type: "ru" },
+    { name: "Олег Петров", color: "#9b59b6", letter: "О", badge: "", badgeText: "", bio: "Программист. Люблю кофе, код и тишину.", type: "ru" },
+    { name: "Аня Смирнова", color: "#e84393", letter: "А", badge: "premium", badgeText: "VIP", bio: "Фотограф. Путешествия и вдохновение 📸", type: "ru" },
+    { name: "Тех-Гик Дима", color: "#00cec9", letter: "Д", badge: "news", badgeText: "TECH", bio: "Разбираю гаджеты и обзоры на всё новое.", type: "ru" },
+    { name: "Сплетница Катя", color: "#fd79a8", letter: "К", badge: "premium", badgeText: "VIP", bio: "Знаю всё о звёздах 💅", type: "ru" },
+    { name: "ЗОЖ-Гуру Сергей", color: "#6ab04c", letter: "С", badge: "", badgeText: "", bio: "Спорт, правильное питание и дисциплина.", type: "ru" }
+];
+
+const englishBots = [
+    { name: "Toxic Jake", color: "#c0392b", letter: "J", badge: "toxic", badgeText: "BOT", bio: "I speak my mind. Deal with it.", type: "en" },
+    { name: "Good News Global", color: "#27ae60", letter: "G", badge: "news", badgeText: "CHANNEL", bio: "Only positive world news 24/7.", type: "en" },
+    { name: "Mike Johnson", color: "#2980b9", letter: "M", badge: "", badgeText: "", bio: "Software engineer. Coffee addict.", type: "en" },
+    { name: "Sarah Williams", color: "#8e44ad", letter: "S", badge: "premium", badgeText: "VIP", bio: "Photographer & traveler 🌍", type: "en" },
+    { name: "Alex Cooper", color: "#16a085", letter: "A", badge: "news", badgeText: "TECH", bio: "Tech reviewer. New gadgets daily.", type: "en" },
+    { name: "Emma Stone", color: "#d35400", letter: "E", badge: "premium", badgeText: "VIP", bio: "Fashion. Gossip. Life. 💫", type: "en" },
+    { name: "John Carter", color: "#7f8c8d", letter: "J", badge: "", badgeText: "", bio: "Fitness coach. No excuses.", type: "en" }
+];
+        // ============ РЕАЛЬНАЯ СТАТИСТИКА ============
+const userStats = { posts: 0, videos: 0, friends: 0, followers: 0 };
+
+function updateStats() {
+    if(document.getElementById('statPosts')) {
+        document.getElementById('statPosts').textContent = userStats.posts;
+        document.getElementById('statVideos').textContent = userStats.videos;
+        document.getElementById('statFriends').textContent = userStats.friends;
+        document.getElementById('statFollowers').textContent = userStats.followers;
+    }
+}
+updateStats();
+
+function publishPost() {
+    const text = document.getElementById('homeComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: "boss", color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    insertPost(author, text, null, "Только что");
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('homeComposerText').value = '';
+    showToast('Пост опубликован! ✅');
+}
+        // ============ ДРУЗЬЯ И ЗАЯВКИ ============
+let pendingRequests = []; 
+let incomingFollowers = []; 
+
+function receiveFriendRequest(name, avatarColor, letter) {
+    pendingRequests.push({ name, avatarColor, letter });
+    renderFriendRequests();
+    playNotificationSound();
+}
+
+function renderFriendRequests() {
+    const box = document.getElementById('friendRequests');
+    if (!box) return;
+    if (pendingRequests.length === 0) {
+        box.innerHTML = '<span style="color:var(--text-muted); font-size:14px;">Пока пусто...</span>';
+        return;
+    }
+    box.innerHTML = pendingRequests.map((r, i) => `
+        <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border-color);">
+            <div class="chat-list-avatar" style="background:${r.avatarColor}; width:42px; height:42px; font-size:16px;">${r.letter}</div>
+            <div style="flex:1;"><b>${r.name}</b><br><small style="color:var(--text-muted);">хочет добавить в друзья</small></div>
+            <button onclick="acceptFriend(${i})" style="background:var(--success); border:none; color:white; padding:8px 14px; border-radius:10px; cursor:pointer; font-weight:700;">✓</button>
+        </div>
+    `).join('');
+}
+
+function acceptFriend(index) {
+    const r = pendingRequests[index];
+    pendingRequests.splice(index, 1);
+    userStats.friends++;
+    updateStats();
+    renderFriendRequests();
+    playNotificationSound();
+    showToast(`✅ ${r.name} теперь у тебя в друзьях!`);
+}
+
+function playNotificationSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99]; 
+        notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
+            gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.12 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.5);
+            osc.connect(gain).connect(ctx.destination);
+            osc.start(ctx.currentTime + i * 0.12);
+            osc.stop(ctx.currentTime + i * 0.12 + 0.6);
+        });
+    } catch (e) {}
+}
+        // ============ ЧАТЫ ============
+const WALLPAPERS = ['chat-bg-1','chat-bg-2','chat-bg-3','chat-bg-4','chat-bg-5','chat-bg-6','chat-bg-7','chat-bg-8','chat-bg-9','chat-bg-10'];
+const allBots = [...russianBots, ...englishBots];
+let currentChat = null;
+let currentWallpaper = localStorage.getItem('chatWallpaper') || 'chat-bg-1';
+let blockedUsers = JSON.parse(localStorage.getItem('blocked') || '[]');
+
+function renderChatList(filter = '') {
+    const list = document.getElementById('chatList');
+    if (!list) return;
+    const filtered = allBots.filter(b => b.name.toLowerCase().includes(filter.toLowerCase()));
+    list.innerHTML = filtered.map((bot, i) => `
+        <div class="chat-list-item" onclick="openChat('${bot.name}')">
+            <div class="chat-list-avatar" style="background:${bot.color};">${bot.letter}</div>
+            <div class="chat-list-info">
+                <div class="chat-list-name">${bot.name} ${bot.badge ? `<span class="badge ${bot.badge}">${bot.badgeText}</span>` : ''}</div>
+                <div class="chat-list-preview">Нажми, чтобы открыть</div>
+            </div>
+        </div>
+    `).join('') || '<div style="padding:20px; text-align:center; color:var(--text-muted);">Никого не найдено</div>';
+}
+renderChatList();
+
+document.getElementById('chatSearch')?.addEventListener('input', (e) => {
+    renderChatList(e.target.value);
+});
+
+function openChat(name) {
+    if (blockedUsers.includes(name)) return showToast('Этот пользователь у тебя в блоке 🚫');
+    const bot = allBots.find(b => b.name === name);
+    if (!bot) return;
+    if (bot.type === 'admin') return showToast('Это канал администрации. Писать нельзя 👑');
+    
+    currentChat = bot;
+    document.getElementById('chatWindow').classList.add('active');
+    document.getElementById('chatName').textContent = bot.name;
+    
+    const msgs = document.getElementById('chatMessages');
+    msgs.innerHTML = '';
+    msgs.className = 'chat-messages ' + currentWallpaper;
+    addMsg('Привет! Это ' + bot.name + '. ' + bot.bio, 'in');
+}
+
+function addMsg(text, dir) {
+    const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+    const div = document.createElement('div');
+    div.className = 'msg ' + dir;
+    div.innerHTML = text + `<span class="msg-time">${time}</span>`;
+    document.getElementById('chatMessages').appendChild(div);
+    document.getElementById('chatMessages').scrollTop = 999999;
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text || !currentChat) return;
+    
+    addMsg(text, 'out');
+    input.value = '';
+    
+    const typing = document.getElementById('typingIndicator');
+    typing.classList.add('show');
+    typing.textContent = currentChat.name + ' печатает';
+    
+    setTimeout(() => {
+        typing.classList.remove('show');
+        const replies = ["Понял тебя 👍", "Согласен!", "Ха, интересно 😄", "Давай позже обсудим", "Хорошая мысль", "Окей!"];
+        addMsg(replies[Math.floor(Math.random() * replies.length)], 'in');
+    }, 1500 + Math.random() * 1500);
+}
+
+function closeChat() {
+    document.getElementById('chatWindow').classList.remove('active');
+    currentChat = null;
+}
+
+function blockCurrentChat() {
+    if (!currentChat) return;
+    if (currentChat.type === 'admin') return showToast('Канал администрации нельзя заблокировать 👑');
+    blockedUsers.push(currentChat.name);
+    localStorage.setItem('blocked', JSON.stringify(blockedUsers));
+    showToast(currentChat.name + ' заблокирован 🚫');
+    closeChat();
+}
+
+function openWallpaperPicker() {
+    const picker = document.getElementById('bgPicker');
+    if(!picker) return;
+    picker.innerHTML = WALLPAPERS.map(w => 
+        `<div class="bg-swatch ${w}" onclick="setWallpaper('${w}')"></div>`
+    ).join('');
+    document.getElementById('wallpaperModal').classList.add('active');
+}
+
+function setWallpaper(w) {
+    currentWallpaper = w;
+    localStorage.setItem('chatWallpaper', w);
+    document.getElementById('chatMessages').className = 'chat-messages ' + w;
+    document.getElementById('wallpaperModal').classList.remove('active');
+    showToast('Фон изменён ✨');
+}
+        // ============ ПЛЮС-МОДАЛКА ============
+function openPlusModal(type) {
+    document.getElementById('plusModal').classList.add('active');
+}
+function closePlusModal() {
+    document.getElementById('plusModal').classList.remove('active');
+}
+
+function pickMedia(type) {
+    closePlusModal();
+    if (type === 'photo') {
+        const url = prompt('Вставь ссылку на фото:');
+        if (url) insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, '', url, 'Только что');
+    } else if (type === 'video') {
+        const url = prompt('Вставь ссылку на видео (YouTube):');
+        if (url) {
+            const embed = url.includes('youtube') 
+                ? `<iframe width="100%" height="200" src="${url.replace('watch?v=','embed/')}" frameborder="0" allowfullscreen style="border-radius:15px; margin-bottom:15px;"></iframe>`
+                : `<video src="${url}" controls style="width:100%; border-radius:15px; margin-bottom:15px;"></video>`;
+            insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, embed, null, 'Только что');
+            userStats.videos++;
+            updateStats();
+        }
+    } else if (type === 'file') {
+        showToast('📎 Файл прикреплён');
+    } else if (type === 'story') {
+        showToast('✨ История добавлена');
+    }
+}
+        // ============ ЛОГИКА ИСТОРИЙ ============
+function viewStory(name, color, letter) {
+    document.getElementById('storyViewer').style.display = 'flex';
+    document.getElementById('storyViewerName').textContent = name;
+    
+    const avatar = document.getElementById('storyViewerAvatar');
+    avatar.textContent = letter;
+    avatar.style.background = color;
+    
+    // Загружаем случайную картинку
+    document.getElementById('storyViewerImg').src = `https://picsum.photos/seed/${Math.random()}/600/1000`;
+    
+    // Запускаем полоску прогресса (5 секунд)
+    const progress = document.getElementById('storyProgress');
+    progress.style.transition = 'none'; 
+    progress.style.width = '0%';
+    
+    setTimeout(() => {
+        progress.style.transition = 'width 5s linear'; 
+        progress.style.width = '100%';
+    }, 50);
+
+    // Автоматическое закрытие через 5 секунд
+    clearTimeout(window.storyTimeout);
+    window.storyTimeout = setTimeout(closeStory, 5000);
+}
+
+function closeStory() {
+    document.getElementById('storyViewer').style.display = 'none';
+}
+        // ============ ПЕРЕВОДЧИК ============
+let userLang = localStorage.getItem('userLang') || 'ru';
+
+async function translateText(postId) {
+    const contentEl = document.getElementById(`content-${postId}`);
+    const btn = document.getElementById(`btn-${postId}`);
+    if (!contentEl || !btn) return;
+
+    // Если уже переведено - возвращаем оригинал
+    if (btn.classList.contains('translated')) {
+        contentEl.innerHTML = btn.dataset.original;
+        btn.classList.remove('translated');
+        btn.innerHTML = '🌐 Перевести';
+        return;
+    }
+
+    // Сохраняем оригинал
+    btn.dataset.original = contentEl.innerHTML;
+    btn.innerHTML = '⏳ Перевожу...';
+    
+    try {
+        // Бесплатный API Google Translate
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(contentEl.innerText)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Собираем переведенный текст
+        const translatedText = data[0].map(item => item[0]).join('');
+        
+        contentEl.innerHTML = translatedText;
+        btn.classList.add('translated');
+        btn.innerHTML = '✅ Оригинал';
+        
+    } catch (error) {
+        btn.innerHTML = '❌ Ошибка';
+        showToast('Не удалось перевести. Проверьте интернет.');
+        setTimeout(() => btn.innerHTML = '🌐 Перевести', 2000);
+    }
+}
+
+function changeLanguage() {
+    const choice = prompt("Выберите язык для перевода:\n1. Русский (ru)\n2. English (en)\n3. Español (es)\n4. Deutsch (de)\n\nВведите код языка (например, ru):", userLang);
+    
+    if (choice && choice.length === 2) {
+        userLang = choice.toLowerCase();
+        localStorage.setItem('userLang', userLang);
+        
+        const langDisplay = document.getElementById('currentLangDisplay');
+        if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
+        
+        showToast(`Язык перевода изменён на ${userLang.toUpperCase()}`);
+    }
+}
+        // ============ ПЕРЕВОД ИНТЕРФЕЙСА САЙТА ============
+const uiDictionary = {
+    ru: {
+        nav_profile: "Моя стр.", nav_chats: "Чаты", nav_home: "Главная", nav_music: "Музыка", nav_games: "Игры",
+        composer_ph: "Что нового?..", composer_btn: "Опубликовать", settings_title: "Настройки ⚙️"
+    },
+    en: {
+        nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
+        composer_ph: "What's new?..", composer_btn: "Publish", settings_title: "Settings ⚙️"
+    }
+};
+
+function updateUILanguage() {
+    const lang = (userLang === 'en') ? 'en' : 'ru'; 
+    const dict = uiDictionary[lang];
+
+    if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
+    if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
+    if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
+    if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
+    if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
+
+    const compTextarea = document.getElementById('homeComposerText');
+    if (compTextarea) compTextarea.placeholder = dict.composer_ph;
+
+    const pubBtn = document.querySelector('.composer-btn.send');
+    if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
+
+    const settTitle = document.querySelector('.settings-list h2');
+    if (settTitle) settTitle.textContent = dict.settings_title;
+}
+       // Запускаем перевод интерфейса при загрузке страницы
+document.addEventListener('DOMContentLoaded', updateUILanguage);
+
+// ============ ЛОГИКА ПРОФИЛЯ И ПОДПИСКИ ============
+let currentUsername = "boss"; // Твой никнейм
+let isPremiumUser = (currentUsername === "boss"); // Если ник boss - премиум есть
+
+// Функция проверки: есть подписка или нет
+function checkPremiumStatus() {
+    const lock = document.getElementById('homePremiumLock');
+    const composer = document.getElementById('mainComposer');
+    
+    if (!lock || !composer) return; // Защита от ошибок
+
+    if (isPremiumUser) {
+        lock.style.display = 'none';
+        composer.style.display = 'block';
+    } else {
+        lock.style.display = 'block';
+        composer.style.display = 'none';
+    }
+}
+// Проверяем статус при загрузке страницы
+document.addEventListener('DOMContentLoaded', checkPremiumStatus);
+
+// Принудительная загрузка постов при старте (чтобы лента не была пустой)
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        for(let i=0; i<5; i++) {
+            if(typeof generateDailyPost === 'function') generateDailyPost();
+        }
+    }, 500);
+});
+
+// Публикация поста на ГЛАВНОЙ (только для Премиум)
+function publishPost() {
+    if (!isPremiumUser) return showToast('Купите Premium, чтобы писать в общую ленту!');
+    
+    const text = document.getElementById('homeComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: currentUsername, color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    insertPost(author, text, null, "Только что"); // Летит в feed-container по умолчанию
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('homeComposerText').value = '';
+    showToast('Пост в общей ленте! ✅');
+}
+
+// Публикация поста на СВОЕЙ СТРАНИЦЕ
+function publishProfilePost() {
+    const text = document.getElementById('profileComposerText').value.trim();
+    if (!text) return showToast('Напиши что-нибудь!');
+    
+    const author = { name: currentUsername, color: "#ff4757", letter: "B", badge: "premium", badgeText: "PREMIUM" };
+    // Отправляем пост в контейнер профиля!
+    insertPost(author, text, null, "Только что", null, 'profile-posts-container');
+    
+    userStats.posts++;
+    updateStats();
+    document.getElementById('profileComposerText').value = '';
+    showToast('Пост на твоей стене! ✅');
+}
+
+// Переключение вкладок Друзья / Подписчики
+function switchProfileTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const list = document.getElementById('profile-list');
+    
+    if (tab === 'friends') {
+        list.innerHTML = userStats.friends === 0 ? 'У вас пока нет друзей.' : `Ваши друзья (${userStats.friends})`;
+    } else {
+        list.innerHTML = userStats.followers === 0 ? 'У вас пока нет подписчиков.' : `Ваши подписчики (${userStats.followers})`;
+    }
+}
+
+// ТЕСТОВАЯ ФУНКЦИЯ
+function togglePremiumTest() {
+    isPremiumUser = !isPremiumUser;
+    checkPremiumStatus();
+    showToast(isPremiumUser ? 'Подписка активирована! 👑' : 'Подписка закончилась 🚫');
+}
     </script>
 </body>
 </html>
