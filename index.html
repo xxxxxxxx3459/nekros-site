@@ -1225,6 +1225,43 @@
     bottom: -1px; left: 0; width: 100%; height: 2px;
     background: var(--accent); border-radius: 2px;
 }
+        /* --- ЖИВАЯ РАМКА ДЛЯ ПОДПИСКИ --- */
+.premium-lock-frame {
+    position: relative;
+    padding: 2px;
+    border-radius: 22px;
+    margin: 15px auto;
+    max-width: 570px;
+    background: linear-gradient(45deg, #feca57, #ff4757, #feca57, #ff4757);
+    background-size: 300% 300%;
+    animation: gradientMove 3s ease infinite;
+    box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.premium-lock-content {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.premium-lock-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #feca57;
+    margin-bottom: 10px;
+}
+.premium-lock-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
     </style>
 </head>
 <body>
@@ -2323,7 +2360,6 @@ async function generateDailyPost() {
         function insertPost(author, text, imageUrl, time, customId = null, targetContainer = 'feed-container') {
     const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
     
-    // Проверяем, нужен ли перевод (если текст на английском)
     const isEnglish = author.type === 'en' || (text.match(/[a-zA-Z]/) && !text.match(/[а-яА-Я]/));
     const translateBtn = isEnglish ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">🌐 Перевести</button>` : '';
 
@@ -2345,7 +2381,13 @@ async function generateDailyPost() {
                 <button class="action-btn">💬 <span>0</span></button>
             </div>
         </div>`;
-    document.getElementById(targetContainer).insertAdjacentHTML('afterbegin', html);
+        
+    const container = document.getElementById(targetContainer);
+    if (container) {
+        container.insertAdjacentHTML('afterbegin', html);
+    } else {
+        console.error("Не найден контейнер для постов: " + targetContainer);
+    }
 }
         // ============ РАСШИРЕННАЯ БАЗА БОТОВ ============
 const russianBots = [
@@ -2765,6 +2807,7 @@ function togglePremiumTest() {
     checkPremiumStatus();
     showToast(isPremiumUser ? 'Подписка активирована! 👑' : 'Подписка закончилась 🚫');
 }  
+        
     </script>
 </body>
 </html>
