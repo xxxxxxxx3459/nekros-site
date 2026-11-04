@@ -2638,18 +2638,18 @@ async function translateText(postId) {
     btn.innerHTML = '⏳ Перевожу...';
     
     try {
-        // Бесплатный API Google Translate
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(contentEl.innerText)}`;
-        const response = await fetch(url);
+        // Берем первые 500 символов, чтобы API не зависал
+        let textToTranslate = contentEl.innerText.substring(0, 500); 
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=auto|${userLang}`);
         const data = await response.json();
         
-        // Собираем переведенный текст
-        const translatedText = data[0].map(item => item[0]).join('');
-        
-        contentEl.innerHTML = translatedText;
-        btn.classList.add('translated');
-        btn.innerHTML = '✅ Оригинал';
-        
+        if (data.responseData && data.responseData.translatedText) {
+            contentEl.innerHTML = data.responseData.translatedText;
+            btn.classList.add('translated');
+            btn.innerHTML = '✅ Оригинал';
+        } else {
+            throw new Error('Ошибка API');
+        }
     } catch (error) {
         btn.innerHTML = '❌ Ошибка';
         showToast('Не удалось перевести. Проверьте интернет.');
@@ -2686,20 +2686,26 @@ function updateUILanguage() {
     const lang = (userLang === 'en') ? 'en' : 'ru'; 
     const dict = uiDictionary[lang];
 
+    // Перевод нижнего меню
     if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
     if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
     if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
     if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
     if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
 
+    // Перевод поля ввода на главной
     const compTextarea = document.getElementById('homeComposerText');
     if (compTextarea) compTextarea.placeholder = dict.composer_ph;
 
-    const pubBtn = document.querySelector('.composer-btn.send');
+    // Перевод кнопки "Опубликовать"
+    const pubBtn = document.querySelector('#mainComposer .composer-btn.send');
     if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
 
-    const settTitle = document.querySelector('.settings-list h2');
-    if (settTitle) settTitle.textContent = dict.settings_title;
+    // Перевод заголовков на страницах (Чаты, Музыка, Игры, Настройки)
+    if(document.querySelector('.settings-list h2')) document.querySelector('.settings-list h2').textContent = dict.settings_title;
+    if(document.querySelector('#page-chats h2')) document.querySelector('#page-chats h2').textContent = (lang === 'en' ? 'Chats' : 'Чаты');
+    if(document.querySelector('#page-music .stub-title')) document.querySelector('#page-music .stub-title').textContent = (lang === 'en' ? 'Music' : 'Музыка');
+    if(document.querySelector('#page-games .stub-title')) document.querySelector('#page-games .stub-title').textContent = (lang === 'en' ? 'Games' : 'Игры');
 }
        // Запускаем перевод интерфейса при загрузке страницы
 document.addEventListener('DOMContentLoaded', updateUILanguage);
