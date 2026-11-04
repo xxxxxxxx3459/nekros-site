@@ -2308,7 +2308,7 @@ async function generateDailyPost() {
             // Если у статьи есть картинка из Википедии — берем её, если нет — рандомную
             const finalImage = realData.image || `https://picsum.photos/seed/${Date.now()}/600/400`;
             
-            insertPost(author, fullText, finalImage, "Только что");
+            insertPost(author, fullText, finalImage, "Только что", null, 'feed-container', 'beforeend');
             return;
         }
     }
