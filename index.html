@@ -2640,7 +2640,7 @@ async function translateText(postId) {
     try {
         // Берем первые 500 символов, чтобы API не зависал
         let textToTranslate = contentEl.innerText.substring(0, 500); 
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=auto|${userLang}`);
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${userLang}`);
         const data = await response.json();
         
         if (data.responseData && data.responseData.translatedText) {
