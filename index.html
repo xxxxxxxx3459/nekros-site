@@ -2332,35 +2332,50 @@ async function generateDailyPost() {
     const allAuthors = [...russianBots, ...englishBots];
     const author = allAuthors[Math.floor(Math.random() * allAuthors.length)];
     
-    // Если это новостной бот или "Мир Фактов", тянем ЖИВУЮ статью из интернета!
+    let textContent = "";
+    let imageUrl = null;
+
+    // Если новостной бот - тянем Википедию
     if (author.badge === 'news' || author.name === 'Мир Фактов') {
-        // Показываем временный пост "Загрузка...", чтобы не было пустоты
         const loadingId = 'loading-' + Date.now();
         insertPost(author, "Загружаю свежие новости из интернета... ⏳", null, "Только что", loadingId, 'feed-container', 'beforeend');
         
         const realData = await fetchRealArticle();
-        
-        // Удаляем пост "Загрузка"
         document.getElementById(loadingId)?.remove();
         
         if (realData) {
             const fullText = `📰 **${realData.title}**\n\n${realData.text}`;
-            // Если у статьи есть картинка из Википедии — берем её, если нет — рандомную
-            const finalImage = realData.image || `https://picsum.photos/seed/${Date.now()}/600/400`;
+            const finalImage = realData.image || getRelevantImage(realData.title);
             
             insertPost(author, fullText, finalImage, "Только что", null, 'feed-container', 'beforeend');
             return;
         }
     }
     
-    // Если это обычный бот (Токсичный, Олег и т.д.) — берем из нашего текстового массива
-    let textContent;
-    if (author.type === 'en') textContent = globalNews[Math.floor(Math.random() * globalNews.length)];
-    else if (author.badge === 'toxic') textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)];
-    else textContent = toxicPosts.concat(facts, globalNews)[Math.floor(Math.random() * (toxicPosts.length + facts.length + globalNews.length))];
+    // Если Токсичный бот - тянем живую шутку
+    if (author.badge === 'toxic') {
+        const liveJoke = await fetchLiveJoke();
+        if (liveJoke) {
+            textContent = liveJoke;
+        } else {
+            textContent = toxicPosts[Math.floor(Math.random() * toxicPosts.length)]; 
+        }
+    } 
+    // Если обычный бот - берем живой факт
+    else {
+        const liveFact = await fetchLiveFact();
+        if (liveFact) {
+            textContent = `💡 ${liveFact}`;
+        } else {
+            textContent = facts[Math.floor(Math.random() * facts.length)];
+        }
+    }
     
-    const withPhoto = Math.random() < 0.6;
-    const imageUrl = withPhoto ? `https://picsum.photos/seed/${Date.now()}-${Math.random()}/600/400` : null;
+    // ВСЕГДА подбираем картинку по тексту
+    const withPhoto = Math.random() < 0.8; // 80% постов будут с картинками!
+    if (withPhoto && textContent) {
+        imageUrl = getRelevantImage(textContent);
+    }
     
     const times = ["Только что", "5 минут назад", "30 минут назад", "1 час назад", "3 часа назад"];
     insertPost(author, textContent, imageUrl, times[Math.floor(Math.random() * times.length)], null, 'feed-container', 'beforeend');
@@ -2697,55 +2712,91 @@ async function translateText(postId) {
     }
 }
 
-function changeLanguage() {
-    const choice = prompt("Выберите язык для перевода:\n1. Русский (ru)\n2. English (en)\n3. Español (es)\n4. Deutsch (de)\n\nВведите код языка (например, ru):", userLang);
-    
-    if (choice && choice.length === 2) {
-        userLang = choice.toLowerCase();
-        localStorage.setItem('userLang', userLang);
-        
-        const langDisplay = document.getElementById('currentLangDisplay');
-        if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
-        
-        showToast(`Язык перевода изменён на ${userLang.toUpperCase()}`);
-    }
+function openLanguageModal() {
+    const grid = document.getElementById('langGrid');
+    grid.innerHTML = availableLangs.map(l => `
+        <div class="lang-option ${userLang === l.code ? 'active' : ''}" onclick="setLanguage('${l.code}')">
+            <div class="lang-flag">${l.flag}</div>
+            <div class="lang-name">${l.name}</div>
+        </div>
+    `).join('');
+    document.getElementById('languageModal').classList.add('active');
 }
-        // ============ ПЕРЕВОД ИНТЕРФЕЙСА САЙТА ============
+
+function setLanguage(code) {
+    userLang = code;
+    localStorage.setItem('userLang', userLang);
+    updateUILanguage();
+    document.getElementById('languageModal').classList.remove('active');
+    showToast(`Язык изменён на ${code.toUpperCase()} 🌍`);
+    renderChatList();
+}
+
+// ============ РАСШИРЕННЫЙ ПЕРЕВОД ИНТЕРФЕЙСА ============
+const availableLangs = [
+    { code: 'ru', flag: '🇷🇺', name: 'Русский' },
+    { code: 'en', flag: '🇺🇸', name: 'English' },
+    { code: 'es', flag: '🇪🇸', name: 'Español' },
+    { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
+    { code: 'fr', flag: '🇫🇷', name: 'Français' },
+    { code: 'zh', flag: '🇨🇳', name: '中文' }
+];
+
 const uiDictionary = {
     ru: {
         nav_profile: "Моя стр.", nav_chats: "Чаты", nav_home: "Главная", nav_music: "Музыка", nav_games: "Игры",
-        composer_ph: "Что нового?..", composer_btn: "Опубликовать", settings_title: "Настройки ⚙️"
+        composer_ph: "Что нового?..", composer_btn: "Опубликовать",
+        sett_title: "Настройки ⚙️", sett_profile: "Профиль", sett_notif: "Уведомления", sett_theme: "Тёмная тема", sett_privacy: "Приватность",
+        sett_wall: "Обои чатов", sett_sound: "Звуки", sett_data: "Данные и память", sett_lang: "Язык", sett_prem: "Premium", sett_help: "Помощь", sett_about: "О приложении", sett_exit: "Выйти"
     },
     en: {
         nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
-        composer_ph: "What's new?..", composer_btn: "Publish", settings_title: "Settings ⚙️"
+        composer_ph: "What's new?..", composer_btn: "Publish",
+        sett_title: "Settings ⚙️", sett_profile: "Profile", sett_notif: "Notifications", sett_theme: "Dark Theme", sett_privacy: "Privacy",
+        sett_wall: "Chat Wallpapers", sett_sound: "Sounds", sett_data: "Data & Storage", sett_lang: "Language", sett_prem: "Premium", sett_help: "Help", sett_about: "About App", sett_exit: "Log out"
+    },
+    es: {
+        nav_profile: "Perfil", nav_chats: "Chats", nav_home: "Inicio", nav_music: "Música", nav_games: "Juegos",
+        composer_ph: "¿Qué hay de nuevo?..", composer_btn: "Publicar",
+        sett_title: "Ajustes ⚙️", sett_profile: "Perfil", sett_notif: "Notificaciones", sett_theme: "Tema Oscuro", sett_privacy: "Privacidad",
+        sett_wall: "Fondos de chat", sett_sound: "Sonidos", sett_data: "Datos y memoria", sett_lang: "Idioma", sett_prem: "Premium", sett_help: "Ayuda", sett_about: "Acerca de", sett_exit: "Salir"
     }
 };
 
 function updateUILanguage() {
-    const lang = (userLang === 'en') ? 'en' : 'ru'; 
+    const lang = uiDictionary[userLang] ? userLang : 'en';
     const dict = uiDictionary[lang];
 
-    // Перевод нижнего меню
     if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
     if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
     if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
     if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
     if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
 
-    // Перевод поля ввода на главной
     const compTextarea = document.getElementById('homeComposerText');
     if (compTextarea) compTextarea.placeholder = dict.composer_ph;
-
-    // Перевод кнопки "Опубликовать"
     const pubBtn = document.querySelector('#mainComposer .composer-btn.send');
     if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
 
-    // Перевод заголовков на страницах (Чаты, Музыка, Игры, Настройки)
-    if(document.querySelector('.settings-list h2')) document.querySelector('.settings-list h2').textContent = dict.settings_title;
-    if(document.querySelector('#page-chats h2')) document.querySelector('#page-chats h2').textContent = (lang === 'en' ? 'Chats' : 'Чаты');
-    if(document.querySelector('#page-music .stub-title')) document.querySelector('#page-music .stub-title').textContent = (lang === 'en' ? 'Music' : 'Музыка');
-    if(document.querySelector('#page-games .stub-title')) document.querySelector('#page-games .stub-title').textContent = (lang === 'en' ? 'Games' : 'Игры');
+    if(document.querySelector('.settings-list h2')) document.querySelector('.settings-list h2').textContent = dict.sett_title;
+    const settItems = document.querySelectorAll('.settings-list .settings-item');
+    if (settItems.length >= 12) {
+        settItems[0].querySelector('.settings-label').textContent = dict.sett_profile;
+        settItems[1].querySelector('.settings-label').textContent = dict.sett_notif;
+        settItems[2].querySelector('.settings-label').textContent = dict.sett_theme;
+        settItems[3].querySelector('.settings-label').textContent = dict.sett_privacy;
+        settItems[4].querySelector('.settings-label').textContent = dict.sett_wall;
+        settItems[5].querySelector('.settings-label').textContent = dict.sett_sound;
+        settItems[6].querySelector('.settings-label').textContent = dict.sett_data;
+        settItems[7].querySelector('.settings-label').textContent = dict.sett_lang;
+        settItems[8].querySelector('.settings-label').textContent = dict.sett_prem;
+        settItems[9].querySelector('.settings-label').textContent = dict.sett_help;
+        settItems[10].querySelector('.settings-label').textContent = dict.sett_about;
+        settItems[11].querySelector('.settings-label').textContent = dict.sett_exit;
+    }
+
+    const langDisplay = document.getElementById('currentLangDisplay');
+    if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
 }
        // Запускаем перевод интерфейса при загрузке страницы
 document.addEventListener('DOMContentLoaded', updateUILanguage);
@@ -2830,6 +2881,46 @@ function togglePremiumTest() {
     isPremiumUser = !isPremiumUser;
     checkPremiumStatus();
     showToast(isPremiumUser ? 'Подписка активирована! 👑' : 'Подписка закончилась 🚫');
+}
+        // ============ ГЕНЕРАТОР ЖИВЫХ ДАННЫХ И КАРТИНОК ============
+
+// 1. Берем случайную картинку по ключевому слову из текста
+function getRelevantImage(text) {
+    try {
+        const cleanText = text.replace(/[^\w\sа-яА-Я]/gi, '');
+        const words = cleanText.split(' ').filter(w => w.length > 4);
+        
+        let keyword = "news";
+        if (words.length > 0) {
+            keyword = words[Math.floor(Math.random() * words.length)];
+        }
+        
+        return `https://loremflickr.com/600/400/${encodeURIComponent(keyword)}?lock=${Date.now()}`;
+    } catch (e) {
+        return `https://picsum.photos/seed/${Date.now()}/600/400`;
+    }
+}
+
+// 2. Получаем свежие факты из интернета
+async function fetchLiveFact() {
+    try {
+        const res = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random');
+        const data = await res.json();
+        return data.text; 
+    } catch (e) {
+        return null;
+    }
+}
+
+// 3. Получаем свежие шутки для токсичного бота
+async function fetchLiveJoke() {
+    try {
+        const res = await fetch('https://v2.jokeapi.dev/joke/Any?type=single&blacklistFlags=nsfw,religious,political,racist,sexist,explicit');
+        const data = await res.json();
+        return data.joke;
+    } catch (e) {
+        return null;
+    }
 }
     </script>
 </body>
