@@ -1245,6 +1245,36 @@
     margin-bottom: 20px;
     line-height: 1.5;
 }
+        /* --- СТИЛИ ДЛЯ ВЫБОРА ЯЗЫКА --- */
+.lang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 400px;
+}
+.lang-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.lang-option:hover, .lang-option.active {
+    background: rgba(255, 71, 87, 0.1);
+    border-color: var(--accent);
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);
+}
+.lang-flag { font-size: 24px; }
+.lang-name { font-weight: 600; font-size: 15px; color: white; }
     </style>
 </head>
 <body>
@@ -1478,7 +1508,7 @@
             <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Обои чатов</div><div class="settings-value">›</div></div>
             <div class="settings-item"><div class="settings-icon">🔊</div><div class="settings-label">Звуки</div><div class="settings-value">›</div></div>
             <div class="settings-item"><div class="settings-icon">💾</div><div class="settings-label">Данные и память</div><div class="settings-value">›</div></div>
-           <div class="settings-item" onclick="changeLanguage()">
+           <div class="settings-item" onclick="openLanguageModal()">
     <div class="settings-icon">🌐</div>
     <div class="settings-label">Язык</div>
     <div class="settings-value" id="currentLangDisplay">RU ›</div>
@@ -1515,7 +1545,17 @@
             <span>Игры</span>
         </div>
     </nav>
-
+<!-- ОКНО ВЫБОРА ЯЗЫКА -->
+<div class="plus-modal" id="languageModal">
+    <button class="plus-close" onclick="document.getElementById('languageModal').classList.remove('active')">✕</button>
+    <div style="text-align: center;">
+        <h2 style="margin-bottom: 5px;">Выберите язык 🌍</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Интерфейс и посты будут переведены</p>
+        <div class="lang-grid" id="langGrid">
+            <!-- Сюда JS сгенерирует список языков -->
+        </div>
+    </div>
+</div>
     <!-- МОДАЛЬНОЕ ОКНО СОЗДАНИЯ (ШТОРКА СНИЗУ) -->
     <div class="modal" id="createModal">
         <div class="modal-content">
