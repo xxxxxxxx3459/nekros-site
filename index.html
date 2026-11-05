@@ -1275,6 +1275,20 @@
 }
 .lang-flag { font-size: 24px; }
 .lang-name { font-weight: 600; font-size: 15px; color: white; }
+        /* --- ПУСТОЕ СОСТОЯНИЕ ЧАТА --- */
+.chat-empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 50px auto;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    max-width: 80%;
+    line-height: 1.4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
     </style>
 </head>
 <body>
@@ -1424,7 +1438,8 @@
     <div class="composer" style="margin-top: 20px; text-align: left;">
         <textarea id="profileComposerText" placeholder="Поделитесь чем-нибудь на своей странице..." rows="2"></textarea>
         <div class="composer-actions">
-            <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
+           <button class="composer-btn" onclick="openPlusModal('photo', 'profile-posts-container')">📷 Фото</button>
+            <button class="composer-btn" onclick="openPlusModal('video', 'profile-posts-container')">🎬 Видео</button>
             <button class="composer-btn send" onclick="publishProfilePost()">➤ На стену</button>
         </div>
     </div>
@@ -2614,7 +2629,8 @@ function setWallpaper(w) {
     showToast('Фон изменён ✨');
 }
         // ============ ПЛЮС-МОДАЛКА ============
-function openPlusModal(type) {
+function openPlusModal(type, target = 'feed-container') {
+    window.currentMediaTarget = target; // Запоминаем, куда кидать пост
     document.getElementById('plusModal').classList.add('active');
 }
 function closePlusModal() {
@@ -2623,23 +2639,28 @@ function closePlusModal() {
 
 function pickMedia(type) {
     closePlusModal();
+    const target = window.currentMediaTarget || 'feed-container'; // Берем запомненное место (главная или профиль)
+    
     if (type === 'photo') {
-        const url = prompt('Вставь ссылку на фото:');
-        if (url) insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, '', url, 'Только что');
+        const url = prompt('Вставь ссылку на фото (URL):');
+        if (url) {
+            insertPost({name:"boss", color:"#ff4757", letter:"B", badge:"premium", badgeText:"PREMIUM"}, '', url, 'Только что', null, target);
+            userStats.posts++;
+            updateStats();
+        }
     } else if (type === 'video') {
         const url = prompt('Вставь ссылку на видео (YouTube):');
         if (url) {
             const embed = url.includes('youtube') 
                 ? `<iframe width="100%" height="200" src="${url.replace('watch?v=','embed/')}" frameborder="0" allowfullscreen style="border-radius:15px; margin-bottom:15px;"></iframe>`
                 : `<video src="${url}" controls style="width:100%; border-radius:15px; margin-bottom:15px;"></video>`;
-            insertPost({name:"boss",color:"#ff4757",letter:"B",badge:"premium",badgeText:"PREMIUM"}, embed, null, 'Только что');
+            
+            insertPost({name:"boss", color:"#ff4757", letter:"B", badge:"premium", badgeText:"PREMIUM"}, embed, null, 'Только что', null, target);
             userStats.videos++;
             updateStats();
         }
     } else if (type === 'file') {
         showToast('📎 Файл прикреплён');
-    } else if (type === 'story') {
-        showToast('✨ История добавлена');
     }
 }
         // ============ ЛОГИКА ИСТОРИЙ ============
@@ -2747,19 +2768,22 @@ const uiDictionary = {
         nav_profile: "Моя стр.", nav_chats: "Чаты", nav_home: "Главная", nav_music: "Музыка", nav_games: "Игры",
         composer_ph: "Что нового?..", composer_btn: "Опубликовать",
         sett_title: "Настройки ⚙️", sett_profile: "Профиль", sett_notif: "Уведомления", sett_theme: "Тёмная тема", sett_privacy: "Приватность",
-        sett_wall: "Обои чатов", sett_sound: "Звуки", sett_data: "Данные и память", sett_lang: "Язык", sett_prem: "Premium", sett_help: "Помощь", sett_about: "О приложении", sett_exit: "Выйти"
+        sett_wall: "Обои чатов", sett_sound: "Звуки", sett_data: "Данные и память", sett_lang: "Язык", sett_prem: "Premium", sett_help: "Помощь", sett_about: "О приложении", sett_exit: "Выйти",
+        chat_empty: "Привет! 👋 Начните диалог первым!"
     },
     en: {
         nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
         composer_ph: "What's new?..", composer_btn: "Publish",
         sett_title: "Settings ⚙️", sett_profile: "Profile", sett_notif: "Notifications", sett_theme: "Dark Theme", sett_privacy: "Privacy",
-        sett_wall: "Chat Wallpapers", sett_sound: "Sounds", sett_data: "Data & Storage", sett_lang: "Language", sett_prem: "Premium", sett_help: "Help", sett_about: "About App", sett_exit: "Log out"
+        sett_wall: "Chat Wallpapers", sett_sound: "Sounds", sett_data: "Data & Storage", sett_lang: "Language", sett_prem: "Premium", sett_help: "Help", sett_about: "About App", sett_exit: "Log out",
+        chat_empty: "Hello! 👋 Start the dialog first!"
     },
     es: {
         nav_profile: "Perfil", nav_chats: "Chats", nav_home: "Inicio", nav_music: "Música", nav_games: "Juegos",
         composer_ph: "¿Qué hay de nuevo?..", composer_btn: "Publicar",
         sett_title: "Ajustes ⚙️", sett_profile: "Perfil", sett_notif: "Notificaciones", sett_theme: "Tema Oscuro", sett_privacy: "Privacidad",
-        sett_wall: "Fondos de chat", sett_sound: "Sonidos", sett_data: "Datos y memoria", sett_lang: "Idioma", sett_prem: "Premium", sett_help: "Ayuda", sett_about: "Acerca de", sett_exit: "Salir"
+        sett_wall: "Fondos de chat", sett_sound: "Sonidos", sett_data: "Datos y memoria", sett_lang: "Idioma", sett_prem: "Premium", sett_help: "Ayuda", sett_about: "Acerca de", sett_exit: "Salir",
+        chat_empty: "¡Hola! 👋 ¡Inicia el diálogo primero!"
     }
 };
 
@@ -2922,6 +2946,105 @@ async function fetchLiveJoke() {
         return null;
     }
 }
+        // ============ СИСТЕМА ЖИВЫХ УВЕДОМЛЕНИЙ ============
+let notifications = []; 
+
+function openNotifications() {
+    document.getElementById('notificationsModal').classList.add('active');
+    document.getElementById('notifBadge').style.display = 'none';
+    document.getElementById('notifBadge').textContent = '0';
+    renderNotifications();
+}
+
+function renderNotifications() {
+    const list = document.getElementById('notifList');
+    if (notifications.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Пока нет новых уведомлений</p>';
+        return;
+    }
+    list.innerHTML = notifications.map((n, i) => `
+        <div class="notif-card">
+            <div class="notif-avatar" style="background: ${n.color};">${n.letter}</div>
+            <div class="notif-content">
+                <div class="notif-title">${n.name}</div>
+                <div class="notif-desc">${n.text}</div>
+            </div>
+            ${n.type === 'friend_request' ? `
+                <div class="notif-actions">
+                    <button class="notif-btn accept" onclick="acceptRequest(${i})">✓</button>
+                    <button class="notif-btn reject" onclick="rejectRequest(${i})">✕</button>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+function triggerRandomEvent() {
+    const allBots = [...russianBots, ...englishBots];
+    const bot = allBots[Math.floor(Math.random() * allBots.length)];
+    
+    const isFriendReq = Math.random() > 0.5;
+    
+    if (isFriendReq) {
+        notifications.push({
+            type: 'friend_request',
+            name: bot.name,
+            color: bot.color,
+            letter: bot.letter,
+            text: 'хочет добавить вас в друзья'
+        });
+        showToast(`Новая заявка в друзья от ${bot.name}!`);
+    } else {
+        notifications.push({
+            type: 'system',
+            name: bot.name,
+            color: bot.color,
+            letter: bot.letter,
+            text: 'оценил(а) ваш пост ❤️'
+        });
+    }
+
+    if (!document.getElementById('notificationsModal').classList.contains('active')) {
+        const badge = document.getElementById('notifBadge');
+        badge.style.display = 'block';
+        badge.textContent = parseInt(badge.textContent) + 1;
+    }
+
+    playNotificationSound(); 
+    renderNotifications();
+}
+
+function acceptRequest(index) {
+    const req = notifications[index];
+    notifications.splice(index, 1); 
+    userStats.friends++; 
+    updateStats();
+    renderNotifications();
+    playNotificationSound();
+    showToast(`✅ ${req.name} теперь у вас в друзьях!`);
+}
+
+function rejectRequest(index) {
+    const req = notifications[index];
+    notifications.splice(index, 1);
+    userStats.followers++; 
+    updateStats();
+    renderNotifications();
+    showToast(`${req.name} теперь просто подписчик.`);
+}
+
+// НОВЫЙ ТАЙМЕР (вместо 45 секунд)
+function scheduleNextEvent() {
+    const minTime = 20 * 60 * 1000; 
+    const maxTime = 60 * 60 * 1000; 
+    const randomDelay = Math.floor(Math.random() * (maxTime - minTime + 1) + minTime);
+    
+    setTimeout(() => {
+        triggerRandomEvent();
+        scheduleNextEvent(); 
+    }, randomDelay);
+}
+scheduleNextEvent(); // Запуск
     </script>
 </body>
 </html>
