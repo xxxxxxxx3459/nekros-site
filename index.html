@@ -1464,7 +1464,7 @@
     <div class="chat-topbar">
         <button onclick="closeChat()">←</button>
         <div class="chat-name" id="chatName">Чат</div>
-        <button onclick="showToast('Звонок: в разработке 📞')">📞</button>
+      <button onclick="startCall(currentChat.name, currentChat.color, currentChat.letter)">📞</button>
         <button onclick="openWallpaperPicker()">🎨</button>
         <button onclick="blockCurrentChat()">🚫</button>
     </div>
@@ -1488,6 +1488,19 @@
     </div>
     <!-- Картинка истории (рандомная) -->
     <img id="storyViewerImg" src="" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+</div>
+    <!-- ОКНО ЗВОНКА -->
+<div class="chat-window" id="callWindow" style="background: rgba(10,10,15,0.98); z-index: 500; align-items: center; justify-content: center; text-align: center;">
+    <div style="padding: 30px; width: 100%;">
+        <div class="avatar premium" style="width: 120px; height: 120px; font-size: 50px; margin: 0 auto 20px auto;" id="callAvatar">B</div>
+        <h2 id="callName" style="margin-bottom: 10px; font-size: 28px;">Вызов...</h2>
+        <p style="color: var(--text-muted); margin-bottom: 50px;">Соединение...</p>
+        
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            <button onclick="closeCall()" style="width: 70px; height: 70px; border-radius: 50%; background: #e74c3c; border: none; color: white; font-size: 30px; cursor: pointer; box-shadow: 0 5px 15px rgba(231,76,60,0.4);">✕</button>
+        </div>
+        <p style="margin-top: 30px; color: var(--text-muted); font-size: 14px; background: rgba(255,255,255,0.05); display: inline-block; padding: 8px 15px; border-radius: 20px;">Звонки в разработке 🛠</p>
+    </div>
 </div>
 <!-- ПЛЮС-МОДАЛКА КРАСИВАЯ -->
 <div class="plus-modal" id="plusModal">
@@ -3045,6 +3058,20 @@ function scheduleNextEvent() {
     }, randomDelay);
 }
 scheduleNextEvent(); // Запуск
+        // ============ ЗВОНКИ ============
+function startCall(name, color, letter) {
+    document.getElementById('callWindow').style.display = 'flex';
+    document.getElementById('callName').textContent = name;
+    
+    const av = document.getElementById('callAvatar');
+    av.textContent = letter;
+    av.style.background = color;
+}
+
+function closeCall() {
+    document.getElementById('callWindow').style.display = 'none';
+    showToast('Звонок завершен 📴');
+}
     </script>
 </body>
 </html>
