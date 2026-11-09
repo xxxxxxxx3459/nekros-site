@@ -1428,26 +1428,27 @@
 
     <!-- РЕАЛЬНАЯ СТАТИСТИКА -->
     <div class="profile-stats">
-        <div class="stat-item"><div class="stat-number" id="statPosts">0</div><div class="stat-label">Посты</div></div>
-        <div class="stat-item"><div class="stat-number" id="statVideos">0</div><div class="stat-label">Видео</div></div>
-        <div class="stat-item"><div class="stat-number" id="statFriends">0</div><div class="stat-label">Друзья</div></div>
-        <div class="stat-item"><div class="stat-number" id="statFollowers">0</div><div class="stat-label">Подписчики</div></div>
+        <div class="stat-item"><div class="stat-number" id="statPosts">0</div><div class="stat-label" id="lbl-posts">Посты</div></div>
+        <div class="stat-item"><div class="stat-number" id="statVideos">0</div><div class="stat-label" id="lbl-videos">Видео</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFriends">0</div><div class="stat-label" id="lbl-friends">Друзья</div></div>
+        <div class="stat-item"><div class="stat-number" id="statFollowers">0</div><div class="stat-label" id="lbl-followers">Подписчики</div></div>
     </div>
 
     <!-- КОМПОЗЕР ДЛЯ СВОЕЙ СТРАНИЦЫ -->
     <div class="composer" style="margin-top: 20px; text-align: left;">
         <textarea id="profileComposerText" placeholder="Поделитесь чем-нибудь на своей странице..." rows="2"></textarea>
         <div class="composer-actions">
-           <button class="composer-btn" onclick="openPlusModal('photo', 'profile-posts-container')">📷 Фото</button>
-            <button class="composer-btn" onclick="openPlusModal('video', 'profile-posts-container')">🎬 Видео</button>
-            <button class="composer-btn send" onclick="publishProfilePost()">➤ На стену</button>
+         <button class="composer-btn" id="btn-prof-photo" onclick="openPlusModal('photo', 'profile-posts-container')">📷 Фото</button>
+            <button class="composer-btn" id="btn-prof-video" onclick="openPlusModal('video', 'profile-posts-container')">🎬 Видео</button>
+            <button class="composer-btn" id="btn-prof-file" onclick="openPlusModal('file', 'profile-posts-container')">📎 Файл</button>
+            <button class="composer-btn send" id="btn-prof-wall" onclick="publishProfilePost()">➤ На стену</button>
         </div>
     </div>
 
     <!-- ВКЛАДКИ -->
     <div class="profile-tabs">
-        <button class="tab-btn active" onclick="switchProfileTab('friends', this)">Друзья</button>
-        <button class="tab-btn" onclick="switchProfileTab('followers', this)">Подписчики</button>
+        <button class="tab-btn active" id="btn-tab-friends" onclick="switchProfileTab('friends', this)">Друзья</button>
+            <button class="tab-btn" id="btn-tab-followers" onclick="switchProfileTab('followers', this)">Подписчики</button>
     </div>
     <div id="profile-list" style="padding: 10px; text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
         У вас пока нет друзей.
@@ -1506,9 +1507,9 @@
 <div class="plus-modal" id="plusModal">
     <button class="plus-close" onclick="closePlusModal()">✕</button>
     <div class="plus-menu">
-        <div class="plus-option" onclick="pickMedia('photo')"><div class="plus-option-icon">📷</div>Фото</div>
-        <div class="plus-option" onclick="pickMedia('video')"><div class="plus-option-icon">🎬</div>Видео</div>
-        <div class="plus-option" onclick="pickMedia('file')"><div class="plus-option-icon">📎</div>Файл</div>
+        <div class="plus-option" id="btn-plus-photo" onclick="pickMedia('photo')"><div class="plus-option-icon">📷</div>Фото</div>
+        <div class="plus-option" id="btn-plus-video" onclick="pickMedia('video')"><div class="plus-option-icon">🎬</div>Видео</div>
+        <div class="plus-option" id="btn-plus-file" onclick="pickMedia('file')"><div class="plus-option-icon">📎</div>Файл</div>
     </div>
 </div>
 
@@ -2411,8 +2412,8 @@ async function generateDailyPost() {
         function insertPost(author, text, imageUrl, time, customId = null, targetContainer = 'feed-container', position = 'afterbegin') {
     const postId = customId || 'post-' + Date.now() + Math.floor(Math.random()*1000);
     
-    const isEnglish = author.type === 'en' || (text.match(/[a-zA-Z]/) && !text.match(/[а-яА-Я]/));
-    const translateBtn = isEnglish ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">🌐 Перевести</button>` : '';
+    const dict = uiDictionary[userLang] || uiDictionary['en'];
+    const translateBtn = text ? `<button class="translate-btn" id="btn-${postId}" onclick="translateText('${postId}')">${dict.trans_btn}</button>` : '';
 
     const html = `
         <div class="post" id="${postId}">
@@ -2712,37 +2713,41 @@ let userLang = localStorage.getItem('userLang') || 'ru';
 async function translateText(postId) {
     const contentEl = document.getElementById(`content-${postId}`);
     const btn = document.getElementById(`btn-${postId}`);
+    const dict = uiDictionary[userLang] || uiDictionary['en'];
     if (!contentEl || !btn) return;
 
     // Если уже переведено - возвращаем оригинал
     if (btn.classList.contains('translated')) {
         contentEl.innerHTML = btn.dataset.original;
         btn.classList.remove('translated');
-        btn.innerHTML = '🌐 Перевести';
+        btn.innerHTML = dict.trans_btn || '🌐 Translate';
         return;
     }
 
-    // Сохраняем оригинал
     btn.dataset.original = contentEl.innerHTML;
-    btn.innerHTML = '⏳ Перевожу...';
+    btn.innerHTML = '⏳...';
     
     try {
-        // Берем первые 500 символов, чтобы API не зависал
-        let textToTranslate = contentEl.innerText.substring(0, 500); 
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${userLang}`);
+        const textToTranslate = contentEl.innerText.substring(0, 1500); 
+        // Используем Google Translate (работает с автоопределением языка)
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`;
+        const response = await fetch(url);
         const data = await response.json();
         
-        if (data.responseData && data.responseData.translatedText) {
-            contentEl.innerHTML = data.responseData.translatedText;
+        if (data && data[0]) {
+            let translatedText = "";
+            data[0].forEach(item => {
+                if (item[0]) translatedText += item[0];
+            });
+            contentEl.innerHTML = translatedText;
             btn.classList.add('translated');
-            btn.innerHTML = '✅ Оригинал';
+            btn.innerHTML = dict.trans_orig || '✅ Original';
         } else {
-            throw new Error('Ошибка API');
+            throw new Error('API error');
         }
     } catch (error) {
-        btn.innerHTML = '❌ Ошибка';
-        showToast('Не удалось перевести. Проверьте интернет.');
-        setTimeout(() => btn.innerHTML = '🌐 Перевести', 2000);
+        btn.innerHTML = '❌ Error';
+        setTimeout(() => btn.innerHTML = dict.trans_btn || '🌐 Translate', 2000);
     }
 }
 
@@ -2782,39 +2787,89 @@ const uiDictionary = {
         composer_ph: "Что нового?..", composer_btn: "Опубликовать",
         sett_title: "Настройки ⚙️", sett_profile: "Профиль", sett_notif: "Уведомления", sett_theme: "Тёмная тема", sett_privacy: "Приватность",
         sett_wall: "Обои чатов", sett_sound: "Звуки", sett_data: "Данные и память", sett_lang: "Язык", sett_prem: "Premium", sett_help: "Помощь", sett_about: "О приложении", sett_exit: "Выйти",
-        chat_empty: "Привет! 👋 Начните диалог первым!"
+        chat_empty: "Привет! 👋 Начните диалог первым!",
+        lbl_posts: "Посты", lbl_videos: "Видео", lbl_friends: "Друзья", lbl_followers: "Подписчики",
+        prof_ph: "Поделитесь чем-нибудь на своей странице...", prof_photo: "Фото", prof_video: "Видео", prof_file: "Файл", prof_wall: "На стену",
+        tab_friends: "Друзья", tab_followers: "Подписчики", plus_photo: "Фото", plus_video: "Видео", plus_file: "Файл",
+        trans_btn: "🌐 Перевести", trans_orig: "✅ Оригинал"
     },
     en: {
         nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
         composer_ph: "What's new?..", composer_btn: "Publish",
         sett_title: "Settings ⚙️", sett_profile: "Profile", sett_notif: "Notifications", sett_theme: "Dark Theme", sett_privacy: "Privacy",
         sett_wall: "Chat Wallpapers", sett_sound: "Sounds", sett_data: "Data & Storage", sett_lang: "Language", sett_prem: "Premium", sett_help: "Help", sett_about: "About App", sett_exit: "Log out",
-        chat_empty: "Hello! 👋 Start the dialog first!"
+        chat_empty: "Hello! 👋 Start the dialog first!",
+        lbl_posts: "Posts", lbl_videos: "Videos", lbl_friends: "Friends", lbl_followers: "Followers",
+        prof_ph: "Share something on your page...", prof_photo: "Photo", prof_video: "Video", prof_file: "File", prof_wall: "To Wall",
+        tab_friends: "Friends", tab_followers: "Followers", plus_photo: "Photo", plus_video: "Video", plus_file: "File",
+        trans_btn: "🌐 Translate", trans_orig: "✅ Original"
     },
     es: {
         nav_profile: "Perfil", nav_chats: "Chats", nav_home: "Inicio", nav_music: "Música", nav_games: "Juegos",
         composer_ph: "¿Qué hay de nuevo?..", composer_btn: "Publicar",
         sett_title: "Ajustes ⚙️", sett_profile: "Perfil", sett_notif: "Notificaciones", sett_theme: "Tema Oscuro", sett_privacy: "Privacidad",
         sett_wall: "Fondos de chat", sett_sound: "Sonidos", sett_data: "Datos y memoria", sett_lang: "Idioma", sett_prem: "Premium", sett_help: "Ayuda", sett_about: "Acerca de", sett_exit: "Salir",
-        chat_empty: "¡Hola! 👋 ¡Inicia el diálogo primero!"
+        chat_empty: "¡Hola! 👋 ¡Inicia el diálogo primero!",
+        lbl_posts: "Publicaciones", lbl_videos: "Videos", lbl_friends: "Amigos", lbl_followers: "Seguidores",
+        prof_ph: "Comparte algo en tu página...", prof_photo: "Foto", prof_video: "Video", prof_file: "Archivo", prof_wall: "Al Muro",
+        tab_friends: "Amigos", tab_followers: "Seguidores", plus_photo: "Foto", plus_video: "Video", plus_file: "Archivo",
+        trans_btn: "🌐 Traducir", trans_orig: "✅ Original"
+    },
+    de: {
+        nav_profile: "Profil", nav_chats: "Chats", nav_home: "Start", nav_music: "Musik", nav_games: "Spiele",
+        composer_ph: "Was gibt's Neues?..", composer_btn: "Posten", sett_title: "Einstellungen ⚙️", sett_profile: "Profil", sett_notif: "Mitteilungen", sett_theme: "Dunkles Thema", sett_privacy: "Privatsphäre", sett_wall: "Chat-Hintergründe", sett_sound: "Töne", sett_data: "Daten & Speicher", sett_lang: "Sprache", sett_prem: "Premium", sett_help: "Hilfe", sett_about: "Über App", sett_exit: "Ausloggen",
+        chat_empty: "Hallo! 👋 Starte den Dialog!", lbl_posts: "Beiträge", lbl_videos: "Videos", lbl_friends: "Freunde", lbl_followers: "Follower", prof_ph: "Teile etwas...", prof_photo: "Foto", prof_video: "Video", prof_file: "Datei", prof_wall: "An Pinnwand", tab_friends: "Freunde", tab_followers: "Follower", plus_photo: "Foto", plus_video: "Video", plus_file: "Datei", trans_btn: "🌐 Übersetzen", trans_orig: "✅ Original"
+    },
+    fr: {
+        nav_profile: "Profil", nav_chats: "Discussions", nav_home: "Accueil", nav_music: "Musique", nav_games: "Jeux",
+        composer_ph: "Quoi de neuf ?..", composer_btn: "Publier", sett_title: "Paramètres ⚙️", sett_profile: "Profil", sett_notif: "Notifications", sett_theme: "Thème Sombre", sett_privacy: "Confidentialité", sett_wall: "Fonds de chat", sett_sound: "Sons", sett_data: "Données", sett_lang: "Langue", sett_prem: "Premium", sett_help: "Aide", sett_about: "À propos", sett_exit: "Déconnexion",
+        chat_empty: "Salut ! 👋 Commencez la discussion !", lbl_posts: "Posts", lbl_videos: "Vidéos", lbl_friends: "Amis", lbl_followers: "Abonnés", prof_ph: "Partagez quelque chose...", prof_photo: "Photo", prof_video: "Vidéo", prof_file: "Fichier", prof_wall: "Au Mur", tab_friends: "Amis", tab_followers: "Abonnés", plus_photo: "Photo", plus_video: "Vidéo", plus_file: "Fichier", trans_btn: "🌐 Traduire", trans_orig: "✅ Original"
+    },
+    zh: {
+        nav_profile: "主页", nav_chats: "聊天", nav_home: "首页", nav_music: "音乐", nav_games: "游戏",
+        composer_ph: "有什么新鲜事？..", composer_btn: "发布", sett_title: "设置 ⚙️", sett_profile: "个人资料", sett_notif: "通知", sett_theme: "深色主题", sett_privacy: "隐私", sett_wall: "聊天壁纸", sett_sound: "声音", sett_data: "数据", sett_lang: "语言", sett_prem: "会员", sett_help: "帮助", sett_about: "关于", sett_exit: "退出登录",
+        chat_empty: "你好！👋 开始对话吧！", lbl_posts: "帖子", lbl_videos: "视频", lbl_friends: "好友", lbl_followers: "粉丝", prof_ph: "分享新鲜事...", prof_photo: "照片", prof_video: "视频", prof_file: "文件", prof_wall: "发布到主页", tab_friends: "好友", tab_followers: "粉丝", plus_photo: "照片", plus_video: "视频", plus_file: "文件", trans_btn: "🌐 翻译", trans_orig: "✅ 原文"
     }
 };
 
 function updateUILanguage() {
-    const lang = uiDictionary[userLang] ? userLang : 'en';
+    const lang = uiDictionary[userLang] ? userLang : 'en'; 
     const dict = uiDictionary[lang];
 
+    // Меню
     if(document.querySelector('#nav-profile span')) document.querySelector('#nav-profile span').textContent = dict.nav_profile;
     if(document.querySelector('#nav-chats span')) document.querySelector('#nav-chats span').textContent = dict.nav_chats;
     if(document.querySelector('#nav-home span')) document.querySelector('#nav-home span').textContent = dict.nav_home;
     if(document.querySelector('#nav-music span')) document.querySelector('#nav-music span').textContent = dict.nav_music;
     if(document.querySelector('#nav-games span')) document.querySelector('#nav-games span').textContent = dict.nav_games;
 
-    const compTextarea = document.getElementById('homeComposerText');
-    if (compTextarea) compTextarea.placeholder = dict.composer_ph;
-    const pubBtn = document.querySelector('#mainComposer .composer-btn.send');
-    if (pubBtn) pubBtn.innerHTML = `➤ ${dict.composer_btn}`;
+    // Главная
+    if (document.getElementById('homeComposerText')) document.getElementById('homeComposerText').placeholder = dict.composer_ph;
+    if (document.querySelector('#mainComposer .composer-btn.send')) document.querySelector('#mainComposer .composer-btn.send').innerHTML = `➤ ${dict.composer_btn}`;
 
+    // Профиль (Статистика)
+    if(document.getElementById('lbl-posts')) document.getElementById('lbl-posts').textContent = dict.lbl_posts;
+    if(document.getElementById('lbl-videos')) document.getElementById('lbl-videos').textContent = dict.lbl_videos;
+    if(document.getElementById('lbl-friends')) document.getElementById('lbl-friends').textContent = dict.lbl_friends;
+    if(document.getElementById('lbl-followers')) document.getElementById('lbl-followers').textContent = dict.lbl_followers;
+
+    // Профиль (Композер)
+    if(document.getElementById('profileComposerText')) document.getElementById('profileComposerText').placeholder = dict.prof_ph;
+    if(document.getElementById('btn-prof-photo')) document.getElementById('btn-prof-photo').innerHTML = `📷 ${dict.prof_photo}`;
+    if(document.getElementById('btn-prof-video')) document.getElementById('btn-prof-video').innerHTML = `🎬 ${dict.prof_video}`;
+    if(document.getElementById('btn-prof-file')) document.getElementById('btn-prof-file').innerHTML = `📎 ${dict.prof_file}`;
+    if(document.getElementById('btn-prof-wall')) document.getElementById('btn-prof-wall').innerHTML = `➤ ${dict.prof_wall}`;
+
+    // Профиль (Вкладки)
+    if(document.getElementById('btn-tab-friends')) document.getElementById('btn-tab-friends').textContent = dict.tab_friends;
+    if(document.getElementById('btn-tab-followers')) document.getElementById('btn-tab-followers').textContent = dict.tab_followers;
+
+    // Меню плюсика
+    if(document.getElementById('btn-plus-photo')) document.getElementById('btn-plus-photo').innerHTML = `<div class="plus-option-icon">📷</div>${dict.plus_photo}`;
+    if(document.getElementById('btn-plus-video')) document.getElementById('btn-plus-video').innerHTML = `<div class="plus-option-icon">🎬</div>${dict.plus_video}`;
+    if(document.getElementById('btn-plus-file')) document.getElementById('btn-plus-file').innerHTML = `<div class="plus-option-icon">📎</div>${dict.plus_file}`;
+
+    // Настройки
     if(document.querySelector('.settings-list h2')) document.querySelector('.settings-list h2').textContent = dict.sett_title;
     const settItems = document.querySelectorAll('.settings-list .settings-item');
     if (settItems.length >= 12) {
