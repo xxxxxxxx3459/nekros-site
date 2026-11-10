@@ -1378,19 +1378,19 @@
 <div class="composer" id="mainComposer" style="display: none;">
     <textarea id="homeComposerText" placeholder="Что нового?.." rows="2"></textarea>
     <div class="composer-actions">
-        <button class="composer-btn" onclick="openPlusModal('photo')">📷 Фото</button>
-        <button class="composer-btn" onclick="openPlusModal('video')">🎬 Видео</button>
-        <button class="composer-btn" onclick="openPlusModal('file')">📎 Файл</button>
-        <button class="composer-btn send" onclick="publishPost()">➤ Опубликовать</button>
+        <button class="composer-btn" id="btn-home-photo" onclick="openPlusModal('photo')">📷 Фото</button>
+        <button class="composer-btn" id="btn-home-video" onclick="openPlusModal('video')">🎬 Видео</button>
+        <button class="composer-btn" id="btn-home-file" onclick="openPlusModal('file')">📎 Файл</button>
+        <button class="composer-btn send" id="btn-home-send" onclick="publishPost()">➤ Опубликовать</button>
     </div>
 </div>
 <!-- УМЕНЬШЕННЫЙ БАННЕР РЕКЛАМЫ -->
 <div class="premium-banner small" onclick="switchTab('premium')">
     <div style="flex:1;">
-        <div class="premium-title">Premium 👑</div>
-        <div class="premium-text">Без рекламы и с бустами</div>
+        <div class="premium-title" id="prem-banner-title">Premium 👑</div>
+        <div class="premium-text" id="prem-banner-desc">Без рекламы и с бустами</div>
     </div>
-    <button class="premium-btn">Попробовать</button>
+    <button class="premium-btn" id="prem-banner-btn">Попробовать</button>
 </div>
 
         <!-- Сюда JS будет вставлять посты -->
