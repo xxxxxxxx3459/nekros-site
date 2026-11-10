@@ -1289,6 +1289,30 @@
     line-height: 1.4;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+        /* --- КНОПКА ПЕРЕВОДА В ЧАТЕ --- */
+.msg-translate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.msg-translate-btn:active {
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0.95);
+}
+.msg-translate-btn.translated {
+    color: var(--success);
+    border-color: rgba(46, 204, 113, 0.3);
+}
     </style>
 </head>
 <body>
@@ -2586,9 +2610,19 @@ function openChat(name) {
 
 function addMsg(text, dir) {
     const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+    const msgId = 'msg-' + Date.now() + Math.floor(Math.random()*1000);
     const div = document.createElement('div');
     div.className = 'msg ' + dir;
-    div.innerHTML = text + `<span class="msg-time">${time}</span>`;
+    div.id = msgId;
+    
+    const dict = uiDictionary[userLang] || uiDictionary['en'];
+    const btnText = dict.trans_btn || '🌐 Перевести';
+    
+    // Кнопку показываем только для входящих сообщений
+    const translateBtn = (dir === 'in') ? `<br><button class="msg-translate-btn" id="btn-${msgId}" onclick="translateChatMsg('${msgId}')">${btnText}</button>` : '';
+    
+    div.innerHTML = `<span class="msg-text">${text}</span><span class="msg-time">${time}</span>${translateBtn}`;
+    
     document.getElementById('chatMessages').appendChild(div);
     document.getElementById('chatMessages').scrollTop = 999999;
 }
@@ -2605,11 +2639,18 @@ function sendMessage() {
     typing.classList.add('show');
     typing.textContent = currentChat.name + ' печатает';
     
-    setTimeout(() => {
-        typing.classList.remove('show');
-        const replies = ["Понял тебя 👍", "Согласен!", "Ха, интересно 😄", "Давай позже обсудим", "Хорошая мысль", "Окей!"];
-        addMsg(replies[Math.floor(Math.random() * replies.length)], 'in');
-    }, 1500 + Math.random() * 1500);
+   setTimeout(() => {
+            typing.classList.remove('show');
+            
+            let replies = [];
+            if (currentChat && currentChat.type === 'en') {
+                replies = ["Got it 👍", "I agree with you!", "That's interesting 😄", "Let's discuss later", "Good point!"];
+            } else {
+                replies = ["Понял тебя 👍", "Согласен!", "Ха, интересно 😄", "Давай позже обсудим", "Хорошая мысль"];
+            }
+            
+            addMsg(replies[Math.floor(Math.random() * replies.length)], 'in');
+        }, 1500 + Math.random() * 1500); 
 }
 
 function closeChat() {
@@ -3126,6 +3167,42 @@ function startCall(name, color, letter) {
 function closeCall() {
     document.getElementById('callWindow').style.display = 'none';
     showToast('Звонок завершен 📴');
+}
+        // ============ ПЕРЕВОД В ЧАТАХ ============
+async function translateChatMsg(msgId) {
+    const msgDiv = document.getElementById(msgId);
+    if (!msgDiv) return;
+    
+    const textSpan = msgDiv.querySelector('.msg-text');
+    const btn = msgDiv.querySelector('.msg-translate-btn');
+    const dict = uiDictionary[userLang] || uiDictionary['en'];
+    
+    // Если уже переведено - возвращаем оригинал
+    if (btn.classList.contains('translated')) {
+        textSpan.textContent = btn.dataset.original;
+        btn.classList.remove('translated');
+        btn.innerHTML = dict.trans_btn;
+        return;
+    }
+    
+    btn.dataset.original = textSpan.textContent;
+    btn.innerHTML = '⏳...';
+    
+    try {
+        // Отправляем запрос в Google Translate
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textSpan.textContent)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        let translated = data[0].map(item => item[0]).join('');
+        textSpan.textContent = translated;
+        
+        btn.classList.add('translated');
+        btn.innerHTML = dict.trans_orig || '✅ Оригинал';
+    } catch (e) {
+        btn.innerHTML = '❌ Ошибка';
+        setTimeout(() => btn.innerHTML = dict.trans_btn, 2000);
+    }
 }
     </script>
 </body>
