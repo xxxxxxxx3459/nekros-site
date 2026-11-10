@@ -1289,29 +1289,41 @@
     line-height: 1.4;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-        /* --- КНОПКА ПЕРЕВОДА В ЧАТЕ --- */
+        /* --- СОВРЕМЕННЫЙ СТИЛЬ КНОПКИ ПЕРЕВОДА --- */
 .msg-translate-btn {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a0a0b0;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
     padding: 4px 8px;
-    border-radius: 10px;
-    margin-top: 6px;
+    border-radius: 8px;
+    margin-top: 8px;
     cursor: pointer;
     font-weight: 600;
+    align-self: flex-start; /* Кнопка прижата к левому краю */
     transition: 0.2s;
 }
-.msg-translate-btn:active {
-    background: rgba(0, 0, 0, 0.4);
-    transform: scale(0.95);
+.msg-translate-btn:active { 
+    background: rgba(255, 255, 255, 0.15); 
+    transform: scale(0.95); 
 }
-.msg-translate-btn.translated {
-    color: var(--success);
-    border-color: rgba(46, 204, 113, 0.3);
+.msg-translate-btn.translated { 
+    color: var(--success); 
+    background: rgba(46, 204, 113, 0.1); 
+}
+        /* --- ПЕРЕОПРЕДЕЛЕНИЕ СТИЛЕЙ ЧАТА (чтобы убрать отступы) --- */
+.msg {
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 80% !important;
+    padding: 10px 14px !important;
+}
+.msg-time {
+    align-self: flex-end !important;
+    margin-top: 4px !important;
 }
     </style>
 </head>
@@ -2605,7 +2617,13 @@ function openChat(name) {
     const msgs = document.getElementById('chatMessages');
     msgs.innerHTML = '';
     msgs.className = 'chat-messages ' + currentWallpaper;
-    addMsg('Привет! Это ' + bot.name + '. ' + bot.bio, 'in');
+    let greeting = "";
+    if (bot.type === 'en') {
+        greeting = `Hello! I am ${bot.name}. ${bot.bio}`;
+    } else {
+        greeting = `Привет! Я ${bot.name}. ${bot.bio}`;
+    }
+    addMsg(greeting, 'in');
 }
 
 function addMsg(text, dir) {
@@ -2618,10 +2636,16 @@ function addMsg(text, dir) {
     const dict = uiDictionary[userLang] || uiDictionary['en'];
     const btnText = dict.trans_btn || '🌐 Перевести';
     
-    // Кнопку показываем только для входящих сообщений
-    const translateBtn = (dir === 'in') ? `<br><button class="msg-translate-btn" id="btn-${msgId}" onclick="translateChatMsg('${msgId}')">${btnText}</button>` : '';
+    let translateBtn = '';
+    if (dir === 'in') {
+        translateBtn = `<button class="msg-translate-btn" id="btn-${msgId}" onclick="translateChatMsg('${msgId}')">${btnText}</button>`;
+    }
     
-    div.innerHTML = `<span class="msg-text">${text}</span><span class="msg-time">${time}</span>${translateBtn}`;
+    div.innerHTML = `
+        <span class="msg-text">${text}</span>
+        <span class="msg-time">${time}</span>
+        ${translateBtn}
+    `;
     
     document.getElementById('chatMessages').appendChild(div);
     document.getElementById('chatMessages').scrollTop = 999999;
