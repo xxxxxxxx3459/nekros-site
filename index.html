@@ -2789,23 +2789,32 @@ async function translateText(postId) {
         return;
     }
 
+    // Сохраняем оригинальный текст перед переводом
     btn.dataset.original = contentEl.innerHTML;
     btn.innerHTML = '⏳...';
     
     try {
-        // Ограничиваем текст до 500 символов (этот API не любит длинные тексты)
-        let textToTranslate = contentEl.innerText.substring(0, 500); 
+        let textToTranslate = contentEl.innerText.substring(0, 1000); 
         
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=auto|${userLang}`;
+        // ИСПОЛЬЗУЕМ GOOGLE API
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`;
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data.responseData && data.responseData.translatedText) {
-            contentEl.innerHTML = data.responseData.translatedText;
+        let translatedText = "";
+        if (data && data[0]) {
+            data[0].forEach(item => {
+                if (item[0]) translatedText += item[0];
+            });
+        }
+
+        // Дополнительная защита: если API вернул ошибку в тексте, не показываем её
+        if (translatedText && !translatedText.toUpperCase().includes('INVALID SOURCE LANGUAGE')) {
+            contentEl.innerHTML = translatedText;
             btn.classList.add('translated');
             btn.innerHTML = dict.trans_orig;
         } else {
-            throw new Error('API error');
+            throw new Error('API Error');
         }
     } catch (error) {
         btn.innerHTML = '❌ Error';
