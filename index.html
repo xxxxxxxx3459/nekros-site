@@ -2785,7 +2785,7 @@ async function translateText(postId) {
     if (btn.classList.contains('translated')) {
         contentEl.innerHTML = btn.dataset.original;
         btn.classList.remove('translated');
-        btn.innerHTML = dict.trans_btn || '🌐 Translate';
+        btn.innerHTML = dict.trans_btn;
         return;
     }
 
@@ -2793,26 +2793,24 @@ async function translateText(postId) {
     btn.innerHTML = '⏳...';
     
     try {
-        const textToTranslate = contentEl.innerText.substring(0, 1500); 
-        // Используем Google Translate (работает с автоопределением языка)
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`;
+        // Ограничиваем текст до 500 символов (этот API не любит длинные тексты)
+        let textToTranslate = contentEl.innerText.substring(0, 500); 
+        
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=auto|${userLang}`;
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data && data[0]) {
-            let translatedText = "";
-            data[0].forEach(item => {
-                if (item[0]) translatedText += item[0];
-            });
-            contentEl.innerHTML = translatedText;
+        if (data.responseData && data.responseData.translatedText) {
+            contentEl.innerHTML = data.responseData.translatedText;
             btn.classList.add('translated');
-            btn.innerHTML = dict.trans_orig || '✅ Original';
+            btn.innerHTML = dict.trans_orig;
         } else {
             throw new Error('API error');
         }
     } catch (error) {
         btn.innerHTML = '❌ Error';
-        setTimeout(() => btn.innerHTML = dict.trans_btn || '🌐 Translate', 2000);
+        // Если ошибка - возвращаем кнопку обратно через 2 секунды
+        setTimeout(() => btn.innerHTML = dict.trans_btn, 2000);
     }
 }
 
