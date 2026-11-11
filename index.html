@@ -2789,36 +2789,56 @@ async function translateText(postId) {
         return;
     }
 
-    // Сохраняем оригинальный текст перед переводом
     btn.dataset.original = contentEl.innerHTML;
     btn.innerHTML = '⏳...';
     
+    // ОЧИЩАЕМ ТЕКСТ ОТ ПЕРЕНОСОВ СТРОК (это ломало API)
+    let rawText = contentEl.innerText;
+    let textToTranslate = rawText.replace(/\n/g, ' ').substring(0, 800);
+
     try {
-        let textToTranslate = contentEl.innerText.substring(0, 1000); 
-        
-        // ИСПОЛЬЗУЕМ GOOGLE API
+        // ПЕРВАЯ ПОПЫТКА: Google API
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`;
         const response = await fetch(url);
-        const data = await response.json();
         
+        if (!response.ok) throw new Error('Google API Failed');
+        
+        const data = await response.json();
         let translatedText = "";
+        
         if (data && data[0]) {
             data[0].forEach(item => {
                 if (item[0]) translatedText += item[0];
             });
         }
 
-        // Дополнительная защита: если API вернул ошибку в тексте, не показываем её
-        if (translatedText && !translatedText.toUpperCase().includes('INVALID SOURCE LANGUAGE')) {
+        if (translatedText && !translatedText.toUpperCase().includes('INVALID')) {
             contentEl.innerHTML = translatedText;
             btn.classList.add('translated');
             btn.innerHTML = dict.trans_orig;
         } else {
-            throw new Error('API Error');
+            throw new Error('Empty translation');
         }
+
     } catch (error) {
+        // ВТОРАЯ ПОПЫТКА: Если Google упал, пробуем MyMemory (принудительно с англ)
+        try {
+            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${userLang}`;
+            const fallbackRes = await fetch(fallbackUrl);
+            const fallbackData = await fallbackRes.json();
+
+            if (fallbackData.responseData && fallbackData.responseData.translatedText) {
+                contentEl.innerHTML = fallbackData.responseData.translatedText;
+                btn.classList.add('translated');
+                btn.innerHTML = dict.trans_orig;
+                return;
+            }
+        } catch (e) {
+            console.log("Fallback also failed");
+        }
+
+        // Если оба API не справились
         btn.innerHTML = '❌ Error';
-        // Если ошибка - возвращаем кнопку обратно через 2 секунды
         setTimeout(() => btn.innerHTML = dict.trans_btn, 2000);
     }
 }
