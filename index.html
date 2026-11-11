@@ -2860,6 +2860,7 @@ const uiDictionary = {
         home_photo: "Фото", home_video: "Видео", home_file: "Файл", home_send: "Опубликовать",
         prem_title: "Premium 👑", prem_desc: "Без рекламы и с бустами", prem_btn: "Попробовать",
         lang_title: "Выберите язык 🌍", lang_desc: "Интерфейс и посты будут переведены"
+        empty_friends: "У вас пока нет друзей.", empty_followers: "У вас пока нет подписчиков.",
     },
     en: {
         nav_profile: "Profile", nav_chats: "Chats", nav_home: "Home", nav_music: "Music", nav_games: "Games",
@@ -2874,6 +2875,7 @@ const uiDictionary = {
         home_photo: "Photo", home_video: "Video", home_file: "File", home_send: "Publish",
         prem_title: "Premium 👑", prem_desc: "No ads and with boosts", prem_btn: "Try it",
         lang_title: "Select Language 🌍", lang_desc: "Interface and posts will be translated"
+    empty_friends: "You have no friends yet.", empty_followers: "You have no followers yet.",
     },
     es: {
         nav_profile: "Perfil", nav_chats: "Chats", nav_home: "Inicio", nav_music: "Música", nav_games: "Juegos",
@@ -2888,6 +2890,7 @@ const uiDictionary = {
         home_photo: "Foto", home_video: "Video", home_file: "Archivo", home_send: "Publicar",
         prem_title: "Premium 👑", prem_desc: "Sin anuncios y con mejoras", prem_btn: "Probar",
         lang_title: "Seleccionar idioma 🌍", lang_desc: "La interfaz y las publicaciones se traducirán"
+        empty_friends: "Aún no tienes amigos.", empty_followers: "Aún no tienes seguidores.",
     },
     de: {
         nav_profile: "Profil", nav_chats: "Chats", nav_home: "Start", nav_music: "Musik", nav_games: "Spiele",
@@ -2896,6 +2899,7 @@ const uiDictionary = {
         home_photo: "Foto", home_video: "Video", home_file: "Datei", home_send: "Posten",
         prem_title: "Premium 👑", prem_desc: "Keine Werbung und Boosts", prem_btn: "Ausprobieren",
         lang_title: "Sprache wählen 🌍", lang_desc: "Oberfläche und Beiträge werden übersetzt"
+        empty_friends: "Du hast noch keine Freunde.", empty_followers: "Du hast noch keine Follower.",
     },
     fr: {
         nav_profile: "Profil", nav_chats: "Discussions", nav_home: "Accueil", nav_music: "Musique", nav_games: "Jeux",
@@ -2904,6 +2908,7 @@ const uiDictionary = {
         home_photo: "Photo", home_video: "Vidéo", home_file: "Fichier", home_send: "Publier",
         prem_title: "Premium 👑", prem_desc: "Sans pub et avec boosts", prem_btn: "Essayer",
         lang_title: "Choisir la langue 🌍", lang_desc: "L'interface et les publications seront traduites"
+        empty_friends: "Vous n'avez pas encore d'amis.", empty_followers: "Vous n'avez pas encore d'abonnés.",
     },
     zh: {
         nav_profile: "主页", nav_chats: "聊天", nav_home: "首页", nav_music: "音乐", nav_games: "游戏",
@@ -2912,6 +2917,7 @@ const uiDictionary = {
         home_photo: "照片", home_video: "视频", home_file: "文件", home_send: "发布",
         prem_title: "Premium 👑", prem_desc: "无广告和带提升", prem_btn: "尝试",
         lang_title: "选择语言 🌍", lang_desc: "界面和帖子将被翻译"
+        empty_friends: "您还没有好友。", empty_followers: "您还没有粉丝。",
     }
 };
 
@@ -2984,6 +2990,16 @@ function updateUILanguage() {
 
     const langDisplay = document.getElementById('currentLangDisplay');
     if (langDisplay) langDisplay.textContent = userLang.toUpperCase() + ' ›';
+    // Обновляем текст на вкладках профиля при смене языка
+    const activeTab = document.querySelector('.tab-btn.active');
+    if (activeTab) {
+        const list = document.getElementById('profile-list');
+        if (activeTab.id === 'btn-tab-friends') {
+            list.innerHTML = userStats.friends === 0 ? dict.empty_friends : `${dict.tab_friends} (${userStats.friends})`;
+        } else {
+            list.innerHTML = userStats.followers === 0 ? dict.empty_followers : `${dict.tab_followers} (${userStats.followers})`;
+        }
+    }
 }
        // Запускаем перевод интерфейса при загрузке страницы
 document.addEventListener('DOMContentLoaded', updateUILanguage);
@@ -3055,11 +3071,12 @@ function switchProfileTab(tab, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const list = document.getElementById('profile-list');
+    const dict = uiDictionary[userLang] || uiDictionary['en'];
     
     if (tab === 'friends') {
-        list.innerHTML = userStats.friends === 0 ? 'У вас пока нет друзей.' : `Ваши друзья (${userStats.friends})`;
+        list.innerHTML = userStats.friends === 0 ? dict.empty_friends : `${dict.tab_friends} (${userStats.friends})`;
     } else {
-        list.innerHTML = userStats.followers === 0 ? 'У вас пока нет подписчиков.' : `Ваши подписчики (${userStats.followers})`;
+        list.innerHTML = userStats.followers === 0 ? dict.empty_followers : `${dict.tab_followers} (${userStats.followers})`;
     }
 }
 
