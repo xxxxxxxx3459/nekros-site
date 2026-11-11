@@ -2792,52 +2792,30 @@ async function translateText(postId) {
     btn.dataset.original = contentEl.innerHTML;
     btn.innerHTML = '⏳...';
     
-    // ОЧИЩАЕМ ТЕКСТ ОТ ПЕРЕНОСОВ СТРОК (это ломало API)
+    // Очищаем от переносов строк и ограничиваем длину
     let rawText = contentEl.innerText;
-    let textToTranslate = rawText.replace(/\n/g, ' ').substring(0, 800);
+    let textToTranslate = rawText.replace(/\n/g, ' ').substring(0, 500);
+
+    // Умное определение языка (если есть кириллица - значит русский)
+    let sourceLang = 'en';
+    if (/[а-яА-ЯёЁ]/.test(textToTranslate)) {
+        sourceLang = 'ru';
+    }
 
     try {
-        // ПЕРВАЯ ПОПЫТКА: Google API
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${userLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`;
+        // Используем стабильный API MyMemory
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=${sourceLang}|${userLang}`;
         const response = await fetch(url);
-        
-        if (!response.ok) throw new Error('Google API Failed');
-        
         const data = await response.json();
-        let translatedText = "";
         
-        if (data && data[0]) {
-            data[0].forEach(item => {
-                if (item[0]) translatedText += item[0];
-            });
-        }
-
-        if (translatedText && !translatedText.toUpperCase().includes('INVALID')) {
-            contentEl.innerHTML = translatedText;
+        if (data.responseData && data.responseData.translatedText) {
+            contentEl.innerHTML = data.responseData.translatedText;
             btn.classList.add('translated');
             btn.innerHTML = dict.trans_orig;
         } else {
-            throw new Error('Empty translation');
+            throw new Error('API error');
         }
-
     } catch (error) {
-        // ВТОРАЯ ПОПЫТКА: Если Google упал, пробуем MyMemory (принудительно с англ)
-        try {
-            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${userLang}`;
-            const fallbackRes = await fetch(fallbackUrl);
-            const fallbackData = await fallbackRes.json();
-
-            if (fallbackData.responseData && fallbackData.responseData.translatedText) {
-                contentEl.innerHTML = fallbackData.responseData.translatedText;
-                btn.classList.add('translated');
-                btn.innerHTML = dict.trans_orig;
-                return;
-            }
-        } catch (e) {
-            console.log("Fallback also failed");
-        }
-
-        // Если оба API не справились
         btn.innerHTML = '❌ Error';
         setTimeout(() => btn.innerHTML = dict.trans_btn, 2000);
     }
